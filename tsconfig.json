@@ -1,22 +1,19 @@
 {
   "compilerOptions": {
-    "strictNullChecks": true,
-    // "module": "es6",
-    "jsx": "react",
-    "target": "es6",
-    // "allowJs": true,
-
-    "sourceMap": false,
-    "pretty": true,
-
-    "noImplicitAny": false,
-    "noEmitOnError": true,
-    "removeComments": false,
-    "allowSyntheticDefaultImports": true,
+    "module": "esnext",
     "moduleResolution": "node",
+    "target": "es6",
+    "jsx": "preserve",
+    "sourceMap": false,
+    "baseUrl": ".",
+    "rootDir": "src",
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
   },
-
   "exclude": [
     "node_modules",
+    "dist",
   ]
 }

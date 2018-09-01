@@ -1,0 +1,16 @@
+{
+  "short_name": "H2C",
+  "name": "CC98",
+  "description": "H2C - CC98 Forum PWA version.",
+  "icons": [
+    {
+      "src": "icons/snowball.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#66ccff",
+  "background_color": "#ffffff"
+}

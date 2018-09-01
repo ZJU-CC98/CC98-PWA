@@ -7,7 +7,7 @@ import Hot from './pages/Hot'
 import Topic from './pages/Topic'
 import LogIn from './pages/LogIn'
 
-const App = (props) => (
+const App = () => (
   <BrowserRouter>
     <div>
       <TopBar />

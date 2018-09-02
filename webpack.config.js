@@ -1,8 +1,8 @@
 const path = require('path')
 const HTMLWebpackPlugin = require("html-webpack-plugin")
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const WorkboxPlugin = require('workbox-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const WorkboxPlugin = require('workbox-webpack-plugin')
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const merge = require("webpack-merge")
 
@@ -50,7 +50,6 @@ const commom = {
       filename: 'index.html',
       favicon: './public/favicon.ico',
       inject: true,
-      MANIFEST_PATH: '/manifest.json',
     }),
 
     new CopyWebpackPlugin([

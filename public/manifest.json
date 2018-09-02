@@ -1,7 +1,7 @@
 {
-  "short_name": "H2C",
-  "name": "CC98",
-  "description": "H2C - CC98 Forum PWA version.",
+  "short_name": "CC98",
+  "name": "CC98 论坛",
+  "description": "ZJU CC98 Forum PWA version.",
   "icons": [
     {
       "src": "icons/snowball.png",

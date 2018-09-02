@@ -1,5 +1,4 @@
 import { getLocalStorage } from './storage'
-import { BlockOverflowProperty } from 'csstype';
 
 async function cc98Fetch(url: string, init: RequestInit) {
   const baseUrl = "https://api-v2.cc98.org"
@@ -12,9 +11,11 @@ async function cc98Fetch(url: string, init: RequestInit) {
 
 export async function GET(url: string, init?: RequestInit) {
 
+  // TODO: refresh access_token
+
   const requestInit: RequestInit = {
     headers: new Headers({
-      Authorization: "bearer " + getLocalStorage('access_token')
+      Authorization: `bearer ${getLocalStorage('access_token')}`,
     }),
     ...init,
     // credentials: "include",

@@ -10,12 +10,12 @@
     "serve": "serve dist -s -p 8000"
   },
   "dependencies": {
+    "@cc98/state": "^1.0.0",
     "@material-ui/core": "^3.0.1",
     "@material-ui/icons": "^3.0.1",
     "emotion": "^9.2.8",
-    "immer": "^1.6.0",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "react": "^16.5.1",
+    "react-dom": "^16.5.1",
     "react-emotion": "^9.2.8",
     "react-router-dom": "^4.3.1"
   },
@@ -26,22 +26,22 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.0.0",
     "@types/node": "^10.9.4",
-    "@types/react": "^16.4.13",
+    "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
-    "@types/react-router-dom": "^4.3.0",
-    "babel-loader": "^8.0.0-beta.6",
+    "@types/react-router-dom": "^4.3.1",
+    "babel-loader": "^8.0.2",
     "babel-plugin-emotion": "^9.2.8",
     "babel-plugin-transform-imports": "^1.5.0",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",
     "cross-env": "^5.2.0",
-    "html-webpack-plugin": "^4.0.0-alpha",
+    "html-webpack-plugin": "^4.0.0-alpha.2",
     "typescript": "^3.0.3",
     "url-loader": "^1.1.1",
-    "webpack": "^4.17.1",
+    "webpack": "^4.19.0",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.7",
+    "webpack-dev-server": "^3.1.8",
     "webpack-merge": "^4.1.4",
-    "workbox-webpack-plugin": "^3.4.1"
+    "workbox-webpack-plugin": "^3.5.0"
   }
 }

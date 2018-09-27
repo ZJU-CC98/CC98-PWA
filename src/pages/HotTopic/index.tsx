@@ -1,8 +1,20 @@
 import React from 'react'
+import { css } from 'emotion'
+
+import {
+  Typography,
+} from '@material-ui/core'
+
+import TopBar from '../../components/TopBar'
+import TopicList from './TopicList'
 
 
-const Hot = () => {
-  return <p>Hello, world</p>
-}
+const HotTopic: React.SFC = () => (
+  <>
+    <TopBar />
 
-export default Hot
+    <TopicList />
+  </>
+)
+
+export default HotTopic

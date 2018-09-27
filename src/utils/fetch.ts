@@ -1,15 +1,15 @@
 import { getLocalStorage } from './storage'
 
-async function cc98Fetch(url: string, init: RequestInit) {
+async function cc98Fetch<T>(url: string, init: RequestInit) {
   const baseUrl = "https://api-v2.cc98.org"
   const requestURL = `${baseUrl}/${url}`
 
   // console.log("Fetch: " + requestURL)
   const response = await fetch(requestURL, init)
-  return await response.json()
+  return await response.json() as T
 }
 
-export async function GET(url: string, init?: RequestInit) {
+export async function GET<T = any>(url: string, init?: RequestInit) {
 
   // TODO: refresh access_token
 
@@ -27,5 +27,5 @@ export async function GET(url: string, init?: RequestInit) {
   //       return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
   //     }).join('&')
 
-  return await cc98Fetch(url, requestInit)
+  return await cc98Fetch<T>(url, requestInit)
 }

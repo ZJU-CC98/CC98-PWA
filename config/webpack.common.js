@@ -1,18 +1,16 @@
 const path = require('path')
 const HTMLWebpackPlugin = require("html-webpack-plugin")
-const CleanWebpackPlugin = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const merge = require("webpack-merge")
 
-const commom = {
+module.exports = {
   entry: {
     main: './src/index.tsx',
   },
 
   output: {
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname, './../dist'),
     publicPath: '/',
     filename: 'js/[name].[hash:8].js'
   },
@@ -61,45 +59,8 @@ const commom = {
     new WorkboxPlugin.GenerateSW({
       swDest: "service-worker.js",
       clientsClaim: true,
-      skipWaiting: true
+      skipWaiting: true,
     }),
   ],
 }
 
-if (process.env.NODE_ENV === 'development') {
-  module.exports = merge(commom, {
-    mode: "development",
-
-    devtool: 'eval-source-map',
-
-    devServer: {
-      historyApiFallback: true,
-      open: true,
-      port: 8000,
-      stats: 'errors-only',
-
-      // proxy: {
-      //   "/api": {
-      //     target: "",
-      //     changeOrigin: true,
-      //   },
-      // },
-    },
-  })
-}
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = merge(commom, {
-    mode: "production",
-
-    plugins: [
-      new CleanWebpackPlugin(['dist']),
-    ],
-
-    optimization: {
-      splitChunks: {
-        chunks: 'all',
-      },
-    },
-  })
-}

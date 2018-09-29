@@ -6,20 +6,21 @@ import { IHotTopic } from 'api'
 import TpoicItem from './TopicItem'
 
 type State = {
-  hotTopic: IHotTopic[]
+  hotTopics: IHotTopic[]
 }
 
 class TopicList extends React.Component<{}, State> {
 
   state: State = {
-    hotTopic: []
+    hotTopics: []
   }
 
   async componentDidMount() {
-    const hotTopic = await GET<IHotTopic[]>('topic/hot')
+    const hotTopics = await GET<IHotTopic[]>('topic/hot')
+    // TODO: error handle
 
     this.setState({
-      hotTopic
+      hotTopics
     })
   }
 
@@ -27,7 +28,7 @@ class TopicList extends React.Component<{}, State> {
     return (
       <>
         {
-          this.state.hotTopic.map((info) => (
+          this.state.hotTopics.map((info) => (
             <TpoicItem
               key={info.id}
               info={info}

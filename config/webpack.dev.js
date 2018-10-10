@@ -8,8 +8,9 @@ module.exports = merge(common, {
 
   devServer: {
     historyApiFallback: true,
-    open: true,
     port: 8000,
+    host: '0.0.0.0',
+    // open: true,
     stats: 'errors-only',
 
     // proxy: {

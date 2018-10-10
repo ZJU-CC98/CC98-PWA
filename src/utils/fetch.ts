@@ -1,14 +1,8 @@
 import { getLocalStorage } from './storage'
 
-interface Either<Left = {
-  status: number,
-  msg: string,
-}, Right = any> {
-  Left: Left
-  Right: Right
-}
 
 async function cc98Fetch<T>(url: string, init: RequestInit) {
+  // const baseUrl = "https://apitest.niconi.cc"
   const baseUrl = "https://api-v2.cc98.org"
   const requestURL = `${baseUrl}/${url}`
 
@@ -43,7 +37,7 @@ export async function GET<T = any>(url: string, init?: RequestInit) {
   // const queryStr = !params
   //   ? ''
   //   : '?' + Object.keys(params).map((key) => {
-  //       return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+  //       return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
   //     }).join('&')
 
   return await cc98Fetch<T>(url, requestInit)

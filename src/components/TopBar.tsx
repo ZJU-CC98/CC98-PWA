@@ -9,16 +9,23 @@ import {
 
 import {
   Menu as MenuIcon
-} from '@material-ui/icons';
+} from '@material-ui/icons'
 
 const grow = css`
   flex-grow: 1;
 `
 
+const icon = css`
+  && {
+    margin-left: -12px;
+    margin-right: 5px;
+  }
+`
+
 const TopBar: React.SFC = () => (
   <AppBar position="sticky">
     <Toolbar>
-      <IconButton color="inherit">
+      <IconButton className={icon} color="inherit">
         <MenuIcon />
       </IconButton>
 

@@ -1,38 +1,58 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 
-import {
-  Typography,
-} from '@material-ui/core'
-
+import TopBar from '../../components/TopBar'
 import PostHead from './PostHead'
 import PostList from './PostList'
 
 import { GET } from '../../utils/fetch'
+import { ITopic } from '@cc98/api'
 
 
 type Props = RouteComponentProps<{
   topicID: string
 }>
 
-const Topic: React.SFC<Props> = (props) => {
-  const topicID = parseInt(props.match.params.topicID)
+type State = {
+  topicInfo: ITopic | null
+}
 
-  // GET(`/topic/${topicID}`)
-
-  if (isNaN(topicID)) {
-    props.history.push('/404')
-    return null
+class Topic extends React.PureComponent<Props, State> {
+  state: State = {
+    topicInfo: null,
   }
 
-  return (
-    <>
-      <PostHead />
-      <PostList
-        topicID={topicID}
-      />
-    </>
-  )
+  async componentDidMount() {
+    const topicID = parseInt(this.props.match.params.topicID)
+
+    if (isNaN(topicID)) {
+      this.props.history.push('/404')
+      return null
+    }
+
+    const topicInfo = await GET<ITopic>(`/topic/${topicID}`)
+    this.setState({
+      topicInfo
+    })
+  }
+
+  render() {
+    const { topicInfo } = this.state
+    return (
+      <>
+        <TopBar />
+        { topicInfo && <>
+          <PostHead
+            topicInfo={topicInfo}
+          />
+          <PostList
+          topicID={topicInfo.id}
+          />
+        </>
+        }
+      </>
+    )
+  }
 }
 
 export default Topic

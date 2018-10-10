@@ -10,14 +10,13 @@ import {
   Typography,
 } from '@material-ui/core'
 
-import ArrowDropUp from '@material-ui/icons/ArrowDropUp'
-import ArrowDropDown from '@material-ui/icons/ArrowDropDown'
-import ShareIcon from '@material-ui/icons/Share'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
+import { IPost, IUser } from '@cc98/api'
 
-import { IPost } from 'api'
-import { IUser } from 'api'
+const root = css`
+  margin-top: 6px;
+`
 
 const floor = css`
   margin-right: 4px;
@@ -66,7 +65,7 @@ class PostItem extends React.PureComponent<Props, State> {
   render() {
     const { postInfo, userInfo } = this.props
     return (
-      <Card>
+      <Card square elevation={0} className={root}>
 
         <CardHeader
           avatar={
@@ -82,7 +81,7 @@ class PostItem extends React.PureComponent<Props, State> {
           subheader={new Date(postInfo.time).toLocaleString()}
           action={
             <IconButton>
-              <span className={floor}>{postInfo.floor + ' L'}</span>
+              <span className={floor}>{`${postInfo.floor} L`}</span>
             </IconButton>
           }
         />
@@ -91,13 +90,7 @@ class PostItem extends React.PureComponent<Props, State> {
           <Typography> {postInfo.content} </Typography>
         </CardContent>
 
-        <CardActions disableActionSpacing>
-          <IconButton><ArrowDropUp /></IconButton>
-          <Typography> {postInfo.likeCount} </Typography>
-          <IconButton><ArrowDropDown /></IconButton>
-          <Typography> {postInfo.dislikeCount} </Typography>
-          <IconButton><ShareIcon /></IconButton>
-
+        <CardActions>
           {userInfo && userInfo.signatureCode && <IconButton
             className={cx(expand, {
               [expandOpen]: this.state.expanded,

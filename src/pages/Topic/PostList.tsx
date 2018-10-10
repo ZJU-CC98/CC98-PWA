@@ -3,7 +3,7 @@ import React from 'react'
 import PostItem from './PostItem'
 
 import { GET } from '../../utils/fetch'
-import { IPost, IUser } from 'api'
+import { IPost, IUser } from '@cc98/api'
 
 type Props = {
   topicID: number

@@ -18,7 +18,12 @@ module.exports = {
   module: {
     rules: [{
         test: /\.[jt]sx?$/,
-        exclude: /node_modules/,
+        // some @cc98 packages are ES6
+        exclude: /node_modules\/(?![@cc98])/,
+        include: [
+          path.join(__dirname, '../', 'src'),
+          path.join(__dirname, '../', 'node_modules', '@cc98'),
+        ],
         loader: 'babel-loader',
         options: {
           cacheDirectory: true,
@@ -35,9 +40,10 @@ module.exports = {
   },
 
   resolve: {
-    // alias: {
-
-    // }
+    // fix: yarn link @cc98 with peerDependencies, can't find 'react'
+    alias: {
+      react: path.resolve('./node_modules/react'),
+    },
 
     extensions: ['.js', '.jsx', '.ts', '.tsx']
   },

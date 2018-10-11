@@ -22,6 +22,12 @@ const icon = css`
   }
 `
 
+const login = css`
+  && {
+    margin-right: -12px;
+  }
+`
+
 const TopBar: React.SFC = () => (
   <AppBar position="sticky">
     <Toolbar>
@@ -35,6 +41,7 @@ const TopBar: React.SFC = () => (
       </Typography>
 
       <Button
+        className={login}
         color="inherit" size="small"
       > Login
       </Button>

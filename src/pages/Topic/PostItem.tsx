@@ -13,6 +13,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { IPost, IUser } from '@cc98/api'
+import UBB from '@cc98/ubb-react'
 
 const root = css`
   margin-top: 6px;
@@ -64,6 +65,11 @@ class PostItem extends React.PureComponent<Props, State> {
 
   render() {
     const { postInfo, userInfo } = this.props
+
+    if (postInfo.isDeleted) {
+      return null
+    }
+
     return (
       <Card square elevation={0} className={root}>
 
@@ -87,7 +93,9 @@ class PostItem extends React.PureComponent<Props, State> {
         />
 
         <CardContent>
-          <Typography> {postInfo.content} </Typography>
+          <Typography component="div">
+            {UBB(postInfo.content)}
+          </Typography>
         </CardContent>
 
         <CardActions>
@@ -103,7 +111,7 @@ class PostItem extends React.PureComponent<Props, State> {
 
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography component="p"> {userInfo && userInfo.signatureCode} </Typography>
+            <Typography> {userInfo && userInfo.signatureCode} </Typography>
           </CardContent>
         </Collapse>
 

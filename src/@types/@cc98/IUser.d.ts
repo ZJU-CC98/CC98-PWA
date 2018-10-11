@@ -21,7 +21,7 @@ declare module '@cc98/api' {
     */
     introduction: string
     /**
-    * 用户个性签名
+    * 用户签名档
     */
     signatureCode: string
     /**

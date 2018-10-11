@@ -4,7 +4,7 @@
   "description": "ZJU CC98 Forum PWA version.",
   "icons": [
     {
-      "src": "icons/snowball.png",
+      "src": "icons/snowball-144.png",
       "sizes": "144x144",
       "type": "image/png"
     }

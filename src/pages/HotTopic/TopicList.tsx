@@ -1,10 +1,8 @@
 import React from 'react'
-import {
-  withRouter, RouteComponentProps
-} from 'react-router-dom'
 import { css } from 'emotion'
 
-import { GET } from '../../utils/fetch'
+import { GET } from '@/utils/fetch'
+import history from '@/utils/history'
 import { IHotTopic } from '@cc98/api'
 
 import {
@@ -20,7 +18,7 @@ type State = {
   hotTopics: IHotTopic[]
 }
 
-class TopicList extends React.Component<RouteComponentProps, State> {
+class TopicList extends React.Component<{}, State> {
   state: State = {
     hotTopics: []
   }
@@ -35,7 +33,7 @@ class TopicList extends React.Component<RouteComponentProps, State> {
   }
 
   jump2Post = (topicID: number) => {
-    this.props.history.push('/topic/' + topicID)
+    history.push('/topic/' + topicID)
   }
 
   render() {
@@ -58,4 +56,4 @@ class TopicList extends React.Component<RouteComponentProps, State> {
   }
 }
 
-export default withRouter(TopicList)
+export default TopicList

@@ -1,11 +1,10 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 
-import TopBar from '../../components/TopBar'
 import PostHead from './PostHead'
 import PostList from './PostList'
 
-import { GET } from '../../utils/fetch'
+import { GET } from '@/utils/fetch'
 import { ITopic } from '@cc98/api'
 
 
@@ -40,7 +39,6 @@ class Topic extends React.PureComponent<Props, State> {
     const { topicInfo } = this.state
     return (
       <>
-        <TopBar />
         { topicInfo && <>
           <PostHead
             topicInfo={topicInfo}

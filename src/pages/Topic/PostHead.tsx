@@ -8,8 +8,12 @@ import {
 import { ITopic } from '@cc98/api'
 
 const root = css`
-  padding: 16px;
+  position: sticky;
+  top: 0;
+  padding: 18px;
   background-color: #fff;
+  /* z-index of TopBar is 1100 and DrawerMenu is 1200 */
+  z-index: 1105;
 `
 
 type Props = {

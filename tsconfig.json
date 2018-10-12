@@ -5,15 +5,18 @@
     "target": "es6",
     "jsx": "preserve",
     "sourceMap": false,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "rootDir": "src",
     "noImplicitAny": true,
     "strictNullChecks": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "exclude": [
     "node_modules",
     "dist",
-  ]
+  ],
 }

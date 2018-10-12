@@ -7,9 +7,9 @@ import {
   Button, IconButton,
 } from '@material-ui/core'
 
-import {
-  Menu as MenuIcon
-} from '@material-ui/icons'
+import MenuIcon from '@material-ui/icons/Menu'
+
+import DrawerMenu from './DrawerMenu'
 
 const grow = css`
   flex-grow: 1;
@@ -28,25 +28,58 @@ const login = css`
   }
 `
 
-const TopBar: React.SFC = () => (
-  <AppBar position="sticky">
-    <Toolbar>
-      <IconButton className={icon} color="inherit">
-        <MenuIcon />
-      </IconButton>
+type State = {
+  isDrawerOpen: boolean
+}
 
-      <Typography
-        className={grow} color="inherit"
-      > CC98
-      </Typography>
+class TopBar extends React.PureComponent<{}, State> {
 
-      <Button
-        className={login}
-        color="inherit" size="small"
-      > Login
-      </Button>
-    </Toolbar>
-  </AppBar>
-)
+  state: State = {
+    isDrawerOpen: false,
+  }
+
+  openDrawer = () => {
+    this.setState({
+      isDrawerOpen: true,
+    })
+  }
+
+  closeDrawer = () => {
+    this.setState({
+      isDrawerOpen: false,
+    })
+  }
+
+  render() {
+    const { isDrawerOpen } = this.state
+    return (
+      <AppBar position="sticky">
+      <Toolbar>
+        <IconButton className={icon} color="inherit"
+          onClick={this.openDrawer}
+        >
+          <MenuIcon />
+        </IconButton>
+        <DrawerMenu
+          open={isDrawerOpen}
+          onClose={this.closeDrawer}
+        />
+
+        <Typography
+          className={grow} color="inherit"
+        > CC98
+        </Typography>
+
+        <Button
+          className={login}
+          color="inherit" size="small"
+        > Login
+        </Button>
+      </Toolbar>
+    </AppBar>
+    )
+  }
+
+}
 
 export default TopBar

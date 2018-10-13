@@ -32,7 +32,7 @@ class TopicList extends React.Component<{}, State> {
     })
   }
 
-  jump2Post = (topicID: number) => {
+  jump2Post(topicID: number) {
     history.push('/topic/' + topicID)
   }
 

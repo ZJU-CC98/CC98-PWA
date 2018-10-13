@@ -1,22 +1,17 @@
 import React from 'react'
 import { Router, Switch, Route } from 'react-router-dom'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 
 import history from '@/utils/history'
+import theme from './theme'
 
 import TopBar from './components/TopBar'
 
 import HotTopic from './pages/HotTopic'
 import Topic from './pages/Topic'
-
 import Page404 from './pages/Error/404'
 import Page401 from './pages/Error/401'
 
-const theme = createMuiTheme({
-  typography: {
-    useNextVariants: true,
-  },
-})
 
 const App: React.SFC = () => (
   <>

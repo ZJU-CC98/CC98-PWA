@@ -3,17 +3,33 @@ import { css } from 'emotion'
 
 import {
   Typography,
+  IconButton,
 } from '@material-ui/core'
 
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
+
 import { ITopic } from '@cc98/api'
+import history from '@/utils/history'
+
+// FIXME: if history stack is empty ?
+const goback = () => history.goBack()
 
 const root = css`
+  display: flex;
+  align-items: center;
   position: sticky;
   top: 0;
-  padding: 18px;
+  padding: 5px 18px;
   background-color: #fff;
   /* z-index of TopBar is 1100 and DrawerMenu is 1200 */
   z-index: 1105;
+`
+
+const gobackIcon = css`
+  && {
+    margin-left: -12px;
+    margin-right: 5px;
+  }
 `
 
 type Props = {
@@ -22,6 +38,9 @@ type Props = {
 
 const PostHead: React.SFC<Props> = ({topicInfo}) => (
   <div className={root}>
+    <IconButton className={gobackIcon} onClick={goback}>
+      <KeyboardBackspaceIcon />
+    </IconButton>
     <Typography variant="subtitle2">
       {topicInfo.title}
     </Typography>

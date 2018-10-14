@@ -25,7 +25,6 @@ class TopicList extends React.Component<{}, State> {
 
   async componentDidMount() {
     const hotTopics = await GET<IHotTopic[]>('topic/hot')
-    // TODO: error handle
 
     this.setState({
       hotTopics

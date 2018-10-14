@@ -49,6 +49,7 @@ class TopicList extends React.Component<Props, State> {
     if (isLoading || isEnd)
       return
 
+    // loadingDom 出现在可视区域
     const distance = this.loadingDom.current
       && (window.innerHeight - this.loadingDom.current.getBoundingClientRect().top)
 
@@ -98,9 +99,9 @@ class TopicList extends React.Component<Props, State> {
             />
           ))
         }
-        { !isEnd && <div className={loading} ref={this.loadingDom}>
-            <CircularProgress />
-          </div>
+        {!isEnd && <div className={loading} ref={this.loadingDom}>
+          <CircularProgress />
+        </div>
         }
       </>
     )

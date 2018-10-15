@@ -24,10 +24,12 @@ class TopicList extends React.Component<{}, State> {
   }
 
   async componentDidMount() {
-    const hotTopics = await GET<IHotTopic[]>('topic/hot')
+    const res = await GET<IHotTopic[]>('topic/hot')
 
-    this.setState({
-      hotTopics
+    res.map(hotTopics => {
+      this.setState({
+        hotTopics
+      })
     })
   }
 

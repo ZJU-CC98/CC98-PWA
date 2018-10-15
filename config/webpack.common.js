@@ -42,8 +42,6 @@ module.exports = {
   resolve: {
     // notice this settting should sync with tsconfig.json
     alias: {
-      // fix: yarn link @cc98 with peerDependencies, can't find 'react'
-      react: path.resolve('./node_modules/react'),
       '@': path.resolve('./src'),
     },
 

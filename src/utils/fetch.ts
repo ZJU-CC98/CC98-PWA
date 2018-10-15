@@ -1,40 +1,22 @@
 import { getLocalStorage } from './storage'
 
-class Success<T> {
-  of() {
+import { Try, Success, Failure } from './fp/Try'
 
-  }
+
+interface FetchError {
+  /**
+   * http 状态码
+   */
+  status: number
+  /**
+   * 错误信息
+   */
+  msg: string
+  /**
+   * response 本体
+   */
+  response: Response
 }
-
-class Failure<T> {
-  of() {
-
-  }
-}
-
-class Try<S, F> {
-
-  isSuccess: boolean
-  _value: Success<S> | Failure<F>
-
-  of() {
-
-  }
-
-  success() {
-
-  }
-
-  fail() {
-
-  }
-
-  defaultErrorHandle() {
-
-  }
-}
-
-
 
 async function cc98Fetch<T>(url: string, init: RequestInit) {
   // const baseUrl = "https://apitest.niconi.cc"
@@ -47,10 +29,14 @@ async function cc98Fetch<T>(url: string, init: RequestInit) {
   if (response.status !== 200) {
     // TODO:
 
-    // return Try.of(Failure.of({}))
+    return Try.of<T, FetchError>(Failure.of({
+      status: response.status,
+      msg: await response.text(),
+      response,
+    }))
   }
 
-  return await response.json() as T
+  return Try.of<T, FetchError>(Success.of(await response.json()))
 }
 
 

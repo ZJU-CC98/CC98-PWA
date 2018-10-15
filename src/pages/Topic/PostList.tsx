@@ -63,15 +63,18 @@ class TopicList extends React.Component<Props, State> {
       isLoading: true,
     })
 
-    const postList = await GET<IPost[]>(`topic/${topicID}/post?from=${from}&size=${size}`)
+    const res = await GET<IPost[]>(`topic/${topicID}/post?from=${from}&size=${size}`)
 
-    this.setState({
-      postList: this.state.postList.concat(postList),
-      from: from + postList.length,
+    res
+      .map(postList => {
+        this.setState({
+          postList: this.state.postList.concat(postList),
+          from: from + postList.length,
 
-      isLoading: false,
-      isEnd: postList.length !== size,
-    })
+          isLoading: false,
+          isEnd: postList.length !== size,
+        })
+      })
   }
 
   async componentDidMount() {

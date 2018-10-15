@@ -29,10 +29,15 @@ class Topic extends React.PureComponent<Props, State> {
       return null
     }
 
-    const topicInfo = await GET<ITopic>(`/topic/${topicID}`)
-    this.setState({
-      topicInfo
-    })
+    const res = await GET<ITopic>(`/topic/${topicID}`)
+
+    res
+      .fail()
+      .succeed(topicInfo => {
+        this.setState({
+          topicInfo
+        })
+      })
   }
 
   render() {

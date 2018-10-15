@@ -1,3 +1,7 @@
+
+/**
+ * 跳转 OAuth 登陆
+ */
 export function OAuth() {
   const query = {
     client_id: "d3c6b528-1eb1-4bf3-8f39-08d5b8a11569",

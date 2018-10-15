@@ -26,9 +26,7 @@ async function cc98Fetch<T>(url: string, init: RequestInit) {
   // console.log("Fetch: " + requestURL)
   const response = await fetch(requestURL, init)
 
-  if (response.status !== 200) {
-    // TODO:
-
+  if (!(response.ok && response.status === 200)) {
     return Try.of<T, FetchError>(Failure.of({
       status: response.status,
       msg: await response.text(),
@@ -44,11 +42,11 @@ interface GETOptions {
   /**
    * 是否需要携带 token
    */
-  authorization: boolean
+  authorization?: boolean
   /**
    * headers 参数（需要 Authorization 请设置 authorization = true）
    */
-  headers: Headers | string[][] | Record<string, string>
+  headers?: Headers | string[][] | Record<string, string>
   /**
    * 其他请求参数
    */
@@ -56,7 +54,7 @@ interface GETOptions {
   /**
    * URL 参数
    */
-  params: {
+  params?: {
     [key: string]: string
   }
 }
@@ -70,7 +68,6 @@ export async function GET<T = any>(url: string, options?: GETOptions) {
 
     headers.Authorization = `bearer ${accessToken}`
   }
-
 
   const requestInit: RequestInit = {
     headers: new Headers({

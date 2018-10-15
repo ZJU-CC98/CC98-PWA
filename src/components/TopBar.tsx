@@ -10,6 +10,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu'
 
 import DrawerMenu from './DrawerMenu'
+import { OAuth } from '@/utils/OAuth'
 
 const grow = css`
   flex-grow: 1;
@@ -73,6 +74,7 @@ class TopBar extends React.PureComponent<{}, State> {
         <Button
           className={login}
           color="inherit" size="small"
+          onClick={() => OAuth()}
         > Login
         </Button>
       </Toolbar>

@@ -53,7 +53,7 @@ export class Try<S, F> {
 
   _value: Success<S> | Failure<F>
   /**
-   * 标识是否已经进行过 Failure 处理
+   * 标识是否已经进行过 fail 处理
    */
   _hasHandleErr: boolean = false
 

@@ -10,7 +10,8 @@
   "plugins": [
     ["@babel/plugin-proposal-class-properties", { "loose": true }],
     ["transform-imports", {
-      "@material-ui/core": { "transform": "@material-ui/core/${member}" }
+      "@material-ui/core": { "transform": "@material-ui/core/${member}" },
+      "lodash-es": { "transform": "lodash-es/${member}" }
     }]
   ],
   "env": {

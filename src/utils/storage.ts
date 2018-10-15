@@ -1,3 +1,6 @@
+
+// TODO: cache data like access_token globally ?
+
 export function setLocalStorage(key: string, value: string | object, expireIn = 0): void {
   localStorage.setItem(
     key,

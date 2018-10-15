@@ -1,5 +1,6 @@
 import React from 'react'
 import { css } from 'emotion'
+import { debounce } from 'lodash-es'
 
 import { CircularProgress } from '@material-ui/core'
 import PostItem from './PostItem'
@@ -42,7 +43,26 @@ class TopicList extends React.Component<Props, State> {
     isEnd: false,
   }
 
+  /**
+   * 存储 debounce 之后的 fetch 函数
+   */
+  bindFunc: () => void
+
+  /**
+   * loading 图标 <CircularProgress />
+   */
   loadingDom = React.createRef<HTMLDivElement>()
+
+  async componentDidMount() {
+    this.fetchPosts()
+
+    this.bindFunc = debounce(this.fetchPosts, 200)
+    window.addEventListener('scroll', this.bindFunc)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.bindFunc)
+  }
 
   fetchPosts = async () => {
     const { isLoading, isEnd } = this.state
@@ -63,7 +83,9 @@ class TopicList extends React.Component<Props, State> {
       isLoading: true,
     })
 
-    const res = await GET<IPost[]>(`topic/${topicID}/post?from=${from}&size=${size}`)
+    const res = await GET<IPost[]>(`topic/${topicID}/post?from=${from}&size=${size}`, {
+      authorization: true
+    })
 
     res
       .map(postList => {
@@ -75,17 +97,6 @@ class TopicList extends React.Component<Props, State> {
           isEnd: postList.length !== size,
         })
       })
-  }
-
-  async componentDidMount() {
-    this.fetchPosts()
-
-    //TODO: debounce
-    window.addEventListener('scroll', this.fetchPosts)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.fetchPosts)
   }
 
   render() {

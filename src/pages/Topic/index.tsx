@@ -29,7 +29,9 @@ class Topic extends React.PureComponent<Props, State> {
       return null
     }
 
-    const res = await GET<ITopic>(`/topic/${topicID}`)
+    const res = await GET<ITopic>(`/topic/${topicID}`, {
+      authorization: true
+    })
 
     res
       .fail()

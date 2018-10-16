@@ -20,11 +20,12 @@ const App: React.SFC = () => (
     <Switch>
       <Route path="/" exact component={HotTopic} />
       <Route path="/hotTopic" exact component={HotTopic} />
+      {/* <Route path="/newTopics" exact component={newTopics} */}
       <Route path="/topic/:topicID" component={Topic} />
 
-      <Route path="/login" exact component={LogIn} />
-      <Route path="/404" exact component={Page404} />
-      <Route path="/401" exact component={Page401} />
+      <Route path="/logIn" exact component={LogIn} />
+      <Route path="/error/404" exact component={Page404} />
+      <Route path="/error/401" exact component={Page401} />
     </Switch>
   </>
 )

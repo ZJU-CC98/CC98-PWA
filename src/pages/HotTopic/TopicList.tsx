@@ -24,13 +24,14 @@ class TopicList extends React.Component<{}, State> {
   }
 
   async componentDidMount() {
-    const res = await GET<IHotTopic[]>('topic/hot')
+    const hotTopics = await GET<IHotTopic[]>('topic/hot')
 
-    res.map(hotTopics => {
-      this.setState({
-        hotTopics
+    hotTopics
+      .map(hotTopics => {
+        this.setState({
+          hotTopics
+        })
       })
-    })
   }
 
   jump2Post(topicID: number) {

@@ -2,18 +2,12 @@ import React from 'react'
 import { css } from 'emotion'
 import { debounce } from 'lodash-es'
 
-import { CircularProgress } from '@material-ui/core'
+import LoadingCircle from '@/components/LoadingCircle'
 import PostItem from './PostItem'
 
 import { GET } from '@/utils/fetch'
 import { IPost, IUser } from '@cc98/api'
 
-
-const loading = css`
-  display: flex;
-  justify-content: center;
-  margin: 15px 0;
-`
 
 type Props = {
   topicID: number
@@ -83,11 +77,9 @@ class TopicList extends React.Component<Props, State> {
       isLoading: true,
     })
 
-    const res = await GET<IPost[]>(`topic/${topicID}/post?from=${from}&size=${size}`, {
-      authorization: true
-    })
+    const posts = await GET<IPost[]>(`topic/${topicID}/post?from=${from}&size=${size}`)
 
-    res
+    posts
       .map(postList => {
         this.setState({
           postList: this.state.postList.concat(postList),
@@ -113,9 +105,9 @@ class TopicList extends React.Component<Props, State> {
             />
           ))
         }
-        {!isEnd && <div className={loading} ref={this.loadingDom}>
-          <CircularProgress />
-        </div>
+        {!isEnd && <div ref={this.loadingDom}>
+            <LoadingCircle />
+          </div>
         }
       </>
     )

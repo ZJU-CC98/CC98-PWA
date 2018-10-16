@@ -1,6 +1,7 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 
+import LoadingCircle from '@/components/LoadingCircle'
 import PostHead from './PostHead'
 import PostList from './PostList'
 
@@ -29,11 +30,9 @@ class Topic extends React.PureComponent<Props, State> {
       return null
     }
 
-    const res = await GET<ITopic>(`/topic/${topicID}`, {
-      authorization: true
-    })
+    const topic = await GET<ITopic>(`/topic/${topicID}`)
 
-    res
+    topic
       .fail()
       .succeed(topicInfo => {
         this.setState({
@@ -44,17 +43,20 @@ class Topic extends React.PureComponent<Props, State> {
 
   render() {
     const { topicInfo } = this.state
+
+    if (topicInfo === null) {
+      return (
+        <LoadingCircle />
+      )
+    }
     return (
       <>
-        { topicInfo && <>
-          <PostHead
-            topicInfo={topicInfo}
-          />
-          <PostList
+        <PostHead
+          topicInfo={topicInfo}
+        />
+        <PostList
           topicID={topicInfo.id}
-          />
-        </>
-        }
+        />
       </>
     )
   }

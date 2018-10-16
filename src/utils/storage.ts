@@ -1,6 +1,9 @@
-
-// TODO: cache data like access_token globally ?
-
+/**
+ * 在 localStorage 中存储一个键值对
+ * @param key key
+ * @param value value
+ * @param expireIn 有效期，单位 s
+ */
 export function setLocalStorage(key: string, value: string | object, expireIn = 0): void {
   localStorage.setItem(
     key,
@@ -18,6 +21,10 @@ export function setLocalStorage(key: string, value: string | object, expireIn = 
   }
 }
 
+
+/**
+ * 从 localStorage 中取出一个值，过期的值会被清除
+ */
 export function getLocalStorage(key: string): string | object | null {
   const value = localStorage.getItem(key)
   const expirationTime = localStorage.getItem(`${key}_expirationTime`)

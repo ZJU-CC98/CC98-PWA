@@ -1,4 +1,4 @@
-import { getLocalStorage } from './storage'
+import { getLocalStorage, setLocalStorage } from './storage'
 
 import { Try, Success, Failure } from './fp/Try'
 
@@ -37,14 +37,13 @@ async function cc98Fetch<T>(url: string, init: RequestInit) {
   return Try.of<T, FetchError>(Success.of(await response.json()))
 }
 
-
 interface GETOptions {
   /**
-   * 是否需要携带 token
+   * 标识不携带 access_token，默认携带
    */
-  authorization?: boolean
+  noAuthorization?: true
   /**
-   * headers 参数（需要 Authorization 请设置 authorization = true）
+   * headers 参数
    */
   headers?: Headers | string[][] | Record<string, string>
   /**
@@ -59,32 +58,22 @@ interface GETOptions {
   }
 }
 
-export async function GET<T = any>(url: string, options?: GETOptions) {
-
-  const headers: GETOptions["headers"] = {}
-  if (options && options.authorization) {
-    const accessToken = getLocalStorage('access_token')
-    // TODO: if need refresh access_token
-
-    headers.Authorization = `bearer ${accessToken}`
-  }
-
+export async function GET<T = any>(url: string, options: GETOptions = {}) {
   const requestInit: RequestInit = {
     headers: new Headers({
-      ...headers,
-      ...(options && options.headers)
+      //  access_token
+      Authorization: options.noAuthorization
+        ? ''
+        : getAccessToken(),
+      ...options.headers
     }),
-    ...(options && options.requestInit),
     // credentials: "include",
+    ...options.requestInit,
   }
 
-  let queryStr = ''
-  if (options && options.params) {
-    const params = options.params
-    queryStr = '?' + Object.keys(params).map((key) => (
-      encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
-    )).join('&')
-  }
+  const queryStr = options.params
+    ? `?${encodeParams(options.params)}`
+    : ''
 
   return await cc98Fetch<T>(url + queryStr, requestInit)
 }
@@ -93,3 +82,74 @@ export async function GET<T = any>(url: string, options?: GETOptions) {
 // export async function POST<T = any>() {
 
 // }
+
+
+/**
+ * just like $.param
+ */
+function encodeParams(params: {[key: string]: string}) {
+  return Object.keys(params).map((key) => (
+    encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
+  )).join('&')
+}
+
+
+/**
+ * 从本地取得 access_token，如果过期尝试刷新
+ */
+function getAccessToken(): string {
+  const accessToken = getLocalStorage('access_token')
+  // TODO: if need refresh access_token
+
+  return `${accessToken}`
+}
+
+
+/**
+ * 登陆
+ */
+export async function logIn(username: string, password: string): Promise<boolean> {
+  /**
+   * 请求的正文部分
+   * 密码模式需要 5个参数
+   * 其中 client_id 和 client_secret 来自申请的应用，grant_type 值为 "password"
+   */
+  const requestBody = {
+      client_id: '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+      client_secret: '8b53f727-08e2-4509-8857-e34bf92b27f2',
+      grant_type: 'password',
+      username,
+      password,
+      scope: 'cc98-api openid offline_access',
+  }
+
+  const response = await fetch('https://openid.cc98.org/connect/token', {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }),
+    body: encodeParams(requestBody),
+  })
+
+  if (!(response.ok && response.status === 200)) {
+    // TODO:
+    console.log('LogIn fail: fetch token fail')
+    return false
+  }
+
+  interface Token {
+    access_token: string
+    expires_in: number
+    refresh_token: string
+    token_type: string
+  }
+
+  const token: Token = await response.json()
+  const access_token = `${token.token_type} ${token.access_token}`
+
+  setLocalStorage('access_token', access_token, token.expires_in)
+  // refresh_token 有效期一个月
+  setLocalStorage('refresh_token', token.refresh_token, 2592000)
+
+  return true
+}

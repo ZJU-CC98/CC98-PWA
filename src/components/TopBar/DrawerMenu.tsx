@@ -32,11 +32,14 @@ const TopBar: React.SFC<Props> = ({open, onClose}) => (
       className={list}
       onClick={onClose}
     >
+      <ListItem button onClick={() => {jump('/logIn')}}>
+        <ListItemText primary="登录" />
+      </ListItem>
+      <Divider />
       <ListItem button onClick={() => {jump('/')}}>
         <ListItemIcon><HomeIcon /></ListItemIcon>
         <ListItemText primary="主页" />
       </ListItem>
-      <Divider />
       <ListItem button onClick={() => {jump('/hotTopic')}}>
         <ListItemIcon><Whatshot /></ListItemIcon>
         <ListItemText primary="十大" />

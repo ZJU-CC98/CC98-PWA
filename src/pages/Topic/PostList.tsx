@@ -1,8 +1,6 @@
 import React from 'react'
-import { css } from 'emotion'
-import { debounce } from 'lodash-es'
 
-import LoadingCircle from '@/components/LoadingCircle'
+import InfinitiList from '@/components/InfinitiList'
 import PostItem from './PostItem'
 
 import { GET } from '@/utils/fetch'
@@ -37,39 +35,11 @@ class TopicList extends React.Component<Props, State> {
     isEnd: false,
   }
 
-  /**
-   * 存储 debounce 之后的 fetch 函数
-   */
-  bindFunc: () => void
-
-  /**
-   * loading 图标 <CircularProgress />
-   */
-  loadingDom = React.createRef<HTMLDivElement>()
-
   async componentDidMount() {
     this.fetchPosts()
-
-    this.bindFunc = debounce(this.fetchPosts, 200)
-    window.addEventListener('scroll', this.bindFunc)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.bindFunc)
   }
 
   fetchPosts = async () => {
-    const { isLoading, isEnd } = this.state
-    if (isLoading || isEnd)
-      return
-
-    // loadingDom 出现在可视区域
-    const distance = this.loadingDom.current
-      && (window.innerHeight - this.loadingDom.current.getBoundingClientRect().top)
-
-    if (distance === null || distance < 0)
-      return
-
     const { topicID } = this.props
     const { from, size } = this.state
 
@@ -92,12 +62,15 @@ class TopicList extends React.Component<Props, State> {
   }
 
   render() {
-    const { postList, userMap, isEnd } = this.state
+    const { postList, userMap, isLoading, isEnd } = this.state
 
     return (
-      <>
-        {
-          postList.map((info) => (
+      <InfinitiList
+        isLoading={isLoading}
+        isEnd={isEnd}
+        callback={this.fetchPosts}
+      >
+        {postList.map((info) => (
             <PostItem
               key={info.id}
               postInfo={info}
@@ -105,11 +78,7 @@ class TopicList extends React.Component<Props, State> {
             />
           ))
         }
-        {!isEnd && <div ref={this.loadingDom}>
-            <LoadingCircle />
-          </div>
-        }
-      </>
+      </InfinitiList>
     )
   }
 }

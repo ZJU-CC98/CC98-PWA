@@ -3,13 +3,12 @@ import React from 'react'
 
 import {
   ListItem, ListItemText,
-  // Typography,
 } from '@material-ui/core'
 
-import { IHotTopic } from '@cc98/api'
+import { ITopic } from '@cc98/api'
 
 type Props = {
-  info: IHotTopic,
+  info: ITopic
   click?: (topicID: number) => void
 }
 
@@ -19,7 +18,7 @@ const TopicItem: React.SFC<Props> = ({info, click}) => (
     onClick={() => click && click(info.id)}
   >
     <ListItemText
-      primary={info.boardName}
+      primary={info.userName}
       secondary={info.title}
     />
   </ListItem>

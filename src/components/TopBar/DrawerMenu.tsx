@@ -23,13 +23,26 @@ const list = css`
   width: 180px;
 `
 
+const jump = (link: string) => () => {
+  history.push(link)
+}
+
+type ItemProps = {
+  icon: React.ReactElement<any>
+  text: string
+  link: string
+}
+
+const Item: React.SFC<ItemProps> = ({icon, text, link}) => (
+  <ListItem button onClick={jump(link)}>
+    <ListItemIcon>{icon}</ListItemIcon>
+    <ListItemText primary={text} />
+  </ListItem>
+)
+
 type Props = {
   open: boolean
   onClose: () => void
-}
-
-const jump = (url: string) => {
-  history.push(url)
 }
 
 const TopBar: React.SFC<Props> = ({open, onClose}) => (
@@ -39,31 +52,14 @@ const TopBar: React.SFC<Props> = ({open, onClose}) => (
       onClick={onClose}
     >
       <UserInfo />
+
       <Divider />
-      <ListItem button onClick={() => {jump('/')}}>
-        <ListItemIcon><HomeIcon /></ListItemIcon>
-        <ListItemText primary="主页" />
-      </ListItem>
-      <ListItem button onClick={() => {jump('/hotTopic')}}>
-        <ListItemIcon><Whatshot /></ListItemIcon>
-        <ListItemText primary="十大" />
-      </ListItem>
-      <ListItem button onClick={() => {jump('/newTopic')}}>
-        <ListItemIcon><FiberNew /></ListItemIcon>
-        <ListItemText primary="新帖" />
-      </ListItem>
-      <ListItem button onClick={() => {jump('/boardList')}}>
-        <ListItemIcon><AspectRatio /></ListItemIcon>
-        <ListItemText primary="版面" />
-      </ListItem>
-      <ListItem button onClick={() => {jump('/userCenter')}}>
-        <ListItemIcon><DashBoard /></ListItemIcon>
-        <ListItemText primary="个人中心" />
-      </ListItem>
-      <ListItem button onClick={() => {jump('/setting')}}>
-        <ListItemIcon><Settings /></ListItemIcon>
-        <ListItemText primary="个性化" />
-      </ListItem>
+      <Item icon={<HomeIcon />} text="主页" link="/" />
+      <Item icon={<Whatshot />} text="十大" link="/hotTopic" />
+      <Item icon={<FiberNew />} text="新帖" link="/newTopic" />
+      <Item icon={<AspectRatio />} text="版面" link="/boardList" />
+      <Item icon={<DashBoard />} text="个人中心" link="/userCenter" />
+      <Item icon={<Settings />} text="个性化" link="/setting" />
     </List>
   </Drawer>
 )

@@ -1,17 +1,16 @@
 import React from 'react'
 import { css } from 'emotion'
 
-import {
-  Typography,
-} from '@material-ui/core'
+import HotTopicList from './HotTopicList'
 
-import TopicList from './TopicList'
-
+const root = css`
+  background-color: #fff;
+`
 
 const HotTopic: React.SFC = () => (
-  <>
-    <TopicList />
-  </>
+  <div className={root}>
+    <HotTopicList />
+  </div>
 )
 
 export default HotTopic

@@ -8,6 +8,7 @@ import theme from './theme'
 import TopBar from './components/TopBar'
 
 import HotTopic from './pages/HotTopic'
+import NewTopic from './pages/NewTopic'
 import Topic from './pages/Topic'
 import LogIn from './pages/LogIn'
 import Page401 from './pages/Error/401'
@@ -20,7 +21,7 @@ const App: React.SFC = () => (
     <Switch>
       <Route path="/" exact component={HotTopic} />
       <Route path="/hotTopic" exact component={HotTopic} />
-      {/* <Route path="/newTopics" exact component={newTopics} */}
+      <Route path="/newTopic" exact component={NewTopic} />
       <Route path="/topic/:topicID" component={Topic} />
 
       <Route path="/logIn" exact component={LogIn} />

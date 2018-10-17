@@ -14,7 +14,7 @@ declare module '@cc98/api' {
     title: string
     /**
      * 发布时间
-     * example: 2018-10-10T01:43:26.11+08:00
+     * 格式: 2018-10-10T01:43:26.11+08:00
      */
     time: string
     /**
@@ -35,7 +35,6 @@ declare module '@cc98/api' {
     disableHot: boolean
     /**
      * 最后回复时间
-     * example: 2018-10-10T23:18:42.17
      */
     lastPostTime: string
 

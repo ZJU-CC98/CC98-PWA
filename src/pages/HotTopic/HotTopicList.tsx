@@ -1,18 +1,12 @@
 import React from 'react'
-import { css } from 'emotion'
 
-import { GET } from '@/utils/fetch'
 import history from '@/utils/history'
+import { GET } from '@/utils/fetch'
 import { IHotTopic } from '@cc98/api'
 
-import {
-  List
-} from '@material-ui/core'
-import TpoicItem from './TopicItem'
+import { List } from '@material-ui/core'
+import HotTopicItem from './HotTopicItem'
 
-const root = css`
-  background-color: #fff;
-`
 
 type State = {
   hotTopics: IHotTopic[]
@@ -27,7 +21,8 @@ class TopicList extends React.Component<{}, State> {
     const hotTopics = await GET<IHotTopic[]>('topic/hot')
 
     hotTopics
-      .map(hotTopics => {
+      .fail()
+      .succeed(hotTopics => {
         this.setState({
           hotTopics
         })
@@ -41,19 +36,17 @@ class TopicList extends React.Component<{}, State> {
   render() {
     const { hotTopics } = this.state
     return (
-      <div className={root}>
-        <List>
-          {
-            hotTopics.map(info => (
-              <TpoicItem
-                key={info.id}
-                info={info}
-                click={this.jump2Post}
-              />
-            ))
-          }
-        </List>
-      </div>
+      <List>
+        {
+          hotTopics.map(info => (
+            <HotTopicItem
+              key={info.id}
+              info={info}
+              click={this.jump2Post}
+            />
+          ))
+        }
+      </List>
     )
   }
 }

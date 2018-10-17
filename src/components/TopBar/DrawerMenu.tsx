@@ -10,11 +10,17 @@ import {
 
 import HomeIcon from '@material-ui/icons/Home'
 import Whatshot from '@material-ui/icons/Whatshot'
+import FiberNew from '@material-ui/icons/FiberNew'
+import AspectRatio from '@material-ui/icons/AspectRatio'
+import DashBoard from '@material-ui/icons/DashBoard'
+import Settings from '@material-ui/icons/Settings'
 
 import history from '@/utils/history'
 
+import UserInfo from './UserInfo'
+
 const list = css`
-  width: 200px;
+  width: 180px;
 `
 
 type Props = {
@@ -27,14 +33,12 @@ const jump = (url: string) => {
 }
 
 const TopBar: React.SFC<Props> = ({open, onClose}) => (
-  <Drawer open={open}>
+  <Drawer open={open} onClose={onClose}>
     <List
       className={list}
       onClick={onClose}
     >
-      <ListItem button onClick={() => {jump('/logIn')}}>
-        <ListItemText primary="登录" />
-      </ListItem>
+      <UserInfo />
       <Divider />
       <ListItem button onClick={() => {jump('/')}}>
         <ListItemIcon><HomeIcon /></ListItemIcon>
@@ -43,6 +47,22 @@ const TopBar: React.SFC<Props> = ({open, onClose}) => (
       <ListItem button onClick={() => {jump('/hotTopic')}}>
         <ListItemIcon><Whatshot /></ListItemIcon>
         <ListItemText primary="十大" />
+      </ListItem>
+      <ListItem button onClick={() => {jump('/newTopic')}}>
+        <ListItemIcon><FiberNew /></ListItemIcon>
+        <ListItemText primary="新帖" />
+      </ListItem>
+      <ListItem button onClick={() => {jump('/boardList')}}>
+        <ListItemIcon><AspectRatio /></ListItemIcon>
+        <ListItemText primary="版面" />
+      </ListItem>
+      <ListItem button onClick={() => {jump('/userCenter')}}>
+        <ListItemIcon><DashBoard /></ListItemIcon>
+        <ListItemText primary="个人中心" />
+      </ListItem>
+      <ListItem button onClick={() => {jump('/setting')}}>
+        <ListItemIcon><Settings /></ListItemIcon>
+        <ListItemText primary="个性化" />
       </ListItem>
     </List>
   </Drawer>

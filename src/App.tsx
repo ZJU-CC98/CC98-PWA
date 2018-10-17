@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Switch, Route } from 'react-router-dom'
+import { Router, Switch, Route, Redirect } from 'react-router-dom'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 
 import history from '@/utils/history'
@@ -10,8 +10,8 @@ import TopBar from './components/TopBar'
 import HotTopic from './pages/HotTopic'
 import Topic from './pages/Topic'
 import LogIn from './pages/LogIn'
-import Page404 from './pages/Error/404'
 import Page401 from './pages/Error/401'
+import Page404 from './pages/Error/404'
 
 
 const App: React.SFC = () => (
@@ -24,8 +24,9 @@ const App: React.SFC = () => (
       <Route path="/topic/:topicID" component={Topic} />
 
       <Route path="/logIn" exact component={LogIn} />
-      <Route path="/error/404" exact component={Page404} />
       <Route path="/error/401" exact component={Page401} />
+      <Route path="/error/404" exact component={Page404} />
+      <Route path="/" render={() => (<Redirect to="/error/404" />)} />
     </Switch>
   </>
 )

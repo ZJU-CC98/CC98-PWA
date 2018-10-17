@@ -33,7 +33,9 @@ module.exports = {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'url-loader',
         options: {
+          fallback: 'file-loader',
           limit: 4096,
+          outputPath: 'static/',
         },
       },
     ]

@@ -98,8 +98,6 @@ export class Try<S, F> {
     if (this._value.constructor === Success) {
       func(((this._value as Success<S>).value()))
     }
-
-    return this
   }
 
   /**

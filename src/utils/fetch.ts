@@ -9,7 +9,7 @@ interface FetchError {
    */
   status: number
   /**
-   * 错误信息
+   * 错误信息，取自 response.text()
    */
   msg: string
   /**
@@ -18,7 +18,7 @@ interface FetchError {
   response: Response
 }
 
-async function cc98Fetch<T>(url: string, init: RequestInit) {
+async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, FetchError>> {
   // const baseUrl = "https://apitest.niconi.cc"
   const baseUrl = "https://api-v2.cc98.org"
   const requestURL = `${baseUrl}/${url}`
@@ -105,10 +105,17 @@ function getAccessToken(): string {
 }
 
 
+interface Token {
+  access_token: string
+  expires_in: number
+  refresh_token: string
+  token_type: string
+}
+
 /**
- * 登陆
+ * 登录
  */
-export async function logIn(username: string, password: string): Promise<boolean> {
+export async function logIn(username: string, password: string): Promise<Try<Token, FetchError>> {
   /**
    * 请求的正文部分
    * 密码模式需要 5个参数
@@ -132,24 +139,12 @@ export async function logIn(username: string, password: string): Promise<boolean
   })
 
   if (!(response.ok && response.status === 200)) {
-    // TODO:
-    console.log('LogIn fail: fetch token fail')
-    return false
+    return Try.of<Token, FetchError>(Failure.of({
+      status: response.status,
+      msg: await response.text(),
+      response,
+    }))
   }
 
-  interface Token {
-    access_token: string
-    expires_in: number
-    refresh_token: string
-    token_type: string
-  }
-
-  const token: Token = await response.json()
-  const access_token = `${token.token_type} ${token.access_token}`
-
-  setLocalStorage('access_token', access_token, token.expires_in)
-  // refresh_token 有效期一个月
-  setLocalStorage('refresh_token', token.refresh_token, 2592000)
-
-  return true
+  return Try.of<Token, FetchError>(Success.of(await response.json()))
 }

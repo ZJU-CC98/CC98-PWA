@@ -6,7 +6,7 @@ import { CircularProgress } from '@material-ui/core'
 const loading = css`
   display: flex;
   justify-content: center;
-  margin: 15px 0;
+  padding: 15px 0;
 `
 
 const LoadingCircle: React.SFC = () => (

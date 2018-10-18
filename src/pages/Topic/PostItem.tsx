@@ -75,12 +75,10 @@ class PostItem extends React.PureComponent<Props, State> {
 
         <CardHeader
           avatar={
-            <Avatar>
-              {
-                userInfo && userInfo.portraitUrl
-                  ? <img src={userInfo.portraitUrl} />
-                  : 'H'
-              }
+            <Avatar
+              src={userInfo ? userInfo.portraitUrl : undefined}
+            >
+              9
             </Avatar>
           }
           title={postInfo.userName}
@@ -98,7 +96,7 @@ class PostItem extends React.PureComponent<Props, State> {
           </Typography>
         </CardContent>
 
-        <CardActions>
+        {/* <CardActions>
           {userInfo && userInfo.signatureCode && <IconButton
             className={cx(expand, {
               [expandOpen]: this.state.expanded,
@@ -111,10 +109,9 @@ class PostItem extends React.PureComponent<Props, State> {
 
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography> {userInfo && userInfo.signatureCode} </Typography>
+            <Typography> {userInfo && UBB(userInfo.signatureCode)} </Typography>
           </CardContent>
-        </Collapse>
-
+        </Collapse> */}
       </Card>
     )
   }

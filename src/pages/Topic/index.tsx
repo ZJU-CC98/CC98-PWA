@@ -1,5 +1,5 @@
 import React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { navigate } from '@reach/router'
 
 import LoadingCircle from '@/components/LoadingCircle'
 import PostHead from './PostHead'
@@ -9,9 +9,9 @@ import { GET } from '@/utils/fetch'
 import { ITopic } from '@cc98/api'
 
 
-type Props = RouteComponentProps<{
+type Props = {
   topicID: string
-}>
+}
 
 type State = {
   topicInfo: ITopic | null
@@ -23,10 +23,10 @@ class Topic extends React.PureComponent<Props, State> {
   }
 
   async componentDidMount() {
-    const topicID = parseInt(this.props.match.params.topicID)
+    const topicID = parseInt(this.props.topicID)
 
     if (isNaN(topicID)) {
-      this.props.history.push('/404')
+      navigate('/404')
       return null
     }
 

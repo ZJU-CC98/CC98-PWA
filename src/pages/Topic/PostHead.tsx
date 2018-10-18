@@ -9,10 +9,9 @@ import {
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 
 import { ITopic } from '@cc98/api'
-import history from '@/utils/history'
 
 // FIXME: if history stack is empty ?
-const goback = () => history.goBack()
+const goback = () => window.history.back()
 
 const root = css`
   display: flex;

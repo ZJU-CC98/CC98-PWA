@@ -1,4 +1,5 @@
 import React from 'react'
+import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
 import {
@@ -9,8 +10,9 @@ import {
   CircularProgress,
 } from '@material-ui/core'
 
+import basicInstance from '@/model/basicInstance'
+
 import { logIn } from '@/utils/fetch'
-import history from '@/utils/history'
 import { setLocalStorage } from '@/utils/storage'
 
 import snowball from '@/assets/snowball.png'
@@ -107,8 +109,10 @@ class LogIn extends React.PureComponent<{}, State> {
           // refresh_token 有效期一个月
           setLocalStorage('refresh_token', token.refresh_token, 2592000)
 
+          basicInstance.LogIn()
+
           setTimeout(
-            () => history.push('/'),
+            () => navigate('/'),
             1500
           )
         }

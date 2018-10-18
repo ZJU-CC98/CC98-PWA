@@ -1,6 +1,6 @@
 import React from 'react'
+import { navigate } from '@reach/router'
 
-import history from '@/utils/history'
 import { GET } from '@/utils/fetch'
 import { IHotTopic } from '@cc98/api'
 
@@ -30,7 +30,7 @@ class TopicList extends React.Component<{}, State> {
   }
 
   jump2Post(topicID: number) {
-    history.push('/topic/' + topicID)
+    navigate('/topic/' + topicID)
   }
 
   render() {

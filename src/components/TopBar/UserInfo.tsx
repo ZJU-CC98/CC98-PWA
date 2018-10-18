@@ -1,40 +1,59 @@
 import React from 'react'
+import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
 import {
   Avatar,
-  Typography,
 } from '@material-ui/core'
 
+import basicInstance from '@/model/basicInstance'
 
-import history from '@/utils/history'
+import defaultAvatarImg from '@/assets/9.png'
+import { IMyInfo } from '@cc98/api';
 
 const root = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+
   /** <List> has style padding-top: 8px */
   padding-bottom: 5px;
-  width: 100%;
   color: rgba(0, 0, 0, 0.54);
 `
 
 const avatar =  css`
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  && {
+    width: 50px;
+    height: 50px;
+  }
 `
 
-const logIn = () => {
-  history.push('/logIn')
+const tologIn = () => {
+  navigate('/logIn')
 }
 
-const UserInfo: React.SFC = () => (
+type Props = {
+  isLogIn: boolean
+  info: IMyInfo | null
+}
+
+const UserInfo: React.SFC<Props> = ({isLogIn, info}) => (
   <div className={root}>
-    <div className={avatar}>
-      <Avatar onClick={logIn}>
-        9
-      </Avatar>
-    </div>
+    <Avatar
+      className={avatar}
+      src={isLogIn ? info && info.portraitUrl : defaultAvatarImg}
+      onClick={isLogIn ? () => {} : tologIn}
+    />
   </div>
 )
 
-export default UserInfo
+const Connect: React.SFC = () => (
+  <UserInfo
+    isLogIn={basicInstance.state.isLogIn}
+    info={basicInstance.state.myInfo}
+  />
+)
+
+export default Connect

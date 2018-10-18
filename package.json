@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.dev.js --progress --hot",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
+    "bundle-analyze": "cross-env NODE_ENV=production webpack --config config/webpack.bundle-analyze.js",
     "serve": "serve dist -s -p 8000"
   },
   "dependencies": {
@@ -14,24 +15,23 @@
     "@cc98/ubb-react": "^1.0.0",
     "@material-ui/core": "^3.2.2",
     "@material-ui/icons": "^3.0.1",
+    "@reach/router": "^1.2.1",
     "emotion": "^9.2.12",
     "lodash-es": "^4.17.11",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-emotion": "^9.2.12",
-    "react-router-dom": "^4.3.1"
+    "react-dom": "^16.5.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.0",
+    "@babel/core": "^7.1.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.1.0",
     "@types/lodash-es": "^4.17.1",
-    "@types/node": "^10.11.7",
-    "@types/react": "^16.4.16",
+    "@types/node": "^10.12.0",
+    "@types/reach__router": "^1.2.0",
+    "@types/react": "^16.4.18",
     "@types/react-dom": "^16.0.9",
-    "@types/react-router-dom": "^4.3.1",
     "babel-loader": "^8.0.4",
     "babel-plugin-emotion": "^9.2.11",
     "babel-plugin-transform-imports": "^1.5.1",
@@ -42,7 +42,8 @@
     "html-webpack-plugin": "^4.0.0-beta.2",
     "typescript": "^3.1.3",
     "url-loader": "^1.1.2",
-    "webpack": "^4.20.2",
+    "webpack": "^4.21.0",
+    "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.9",
     "webpack-merge": "^4.1.4",

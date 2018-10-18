@@ -73,7 +73,7 @@ class TopBar extends React.PureComponent<{}, State> {
         <Button
           className={login}
           color="inherit" size="small"
-        > v0.4.0-alpha
+        > v0.5.0-alpha
         </Button>
       </Toolbar>
     </AppBar>

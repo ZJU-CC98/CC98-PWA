@@ -18,7 +18,7 @@ const TopicItem: React.SFC<Props> = ({info, click}) => (
     onClick={() => click && click(info.id)}
   >
     <ListItemText
-      primary={info.userName}
+      primary={info.isAnonymous ? '[匿名]' : info.userName}
       secondary={info.title}
     />
   </ListItem>

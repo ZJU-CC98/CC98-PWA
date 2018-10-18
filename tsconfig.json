@@ -9,6 +9,7 @@
     "rootDir": "src",
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "skipLibCheck": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "paths": {

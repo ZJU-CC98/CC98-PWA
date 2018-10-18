@@ -5,15 +5,22 @@ import LoadingCircle from '@/components/LoadingCircle'
 
 
 type Props = {
+  /**
+   * 列表正在加载中，回调不会重复触发
+   */
   isLoading: boolean
+  /**
+   * 列表已加载完成，不需要再触发回调
+   */
   isEnd: boolean
+  /**
+   * 列表底部 loading 出现的回调
+   */
   callback: (...args: any[]) => any
-
-  children: React.ReactNode
 }
 
 
-class InfinieList extends React.PureComponent<Props, {}> {
+class InfinieList extends React.PureComponent<Props> {
   /**
    * 存储 debounce 之后的函数
    */

@@ -1,4 +1,5 @@
 import React from 'react'
+import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
 import {
@@ -15,16 +16,14 @@ import AspectRatio from '@material-ui/icons/AspectRatio'
 import DashBoard from '@material-ui/icons/DashBoard'
 import Settings from '@material-ui/icons/Settings'
 
-import history from '@/utils/history'
-
 import UserInfo from './UserInfo'
 
 const list = css`
-  width: 180px;
+  width: 200px;
 `
 
 const jump = (link: string) => () => {
-  history.push(link)
+  navigate(link)
 }
 
 type ItemProps = {

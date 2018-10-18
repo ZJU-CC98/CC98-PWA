@@ -6,6 +6,10 @@ import { IMyInfo } from '@cc98/api'
 
 interface State {
   /**
+   * 侧边栏是否展开
+   */
+  isDrawerOpen: boolean
+  /**
    * 是否登录
    */
   isLogIn: boolean
@@ -17,6 +21,7 @@ interface State {
 
 class BasicContainer extends Container<State> {
   state: State = {
+    isDrawerOpen: false,
     isLogIn: !!getLocalStorage('access_token'),
     myInfo: null
   }
@@ -55,8 +60,23 @@ class BasicContainer extends Container<State> {
       state.isLogIn = false
     })
   }
+
+  OpenDrawer() {
+    this.put(state => {
+      state.isDrawerOpen = true
+    })
+  }
+
+  CloseDrawer() {
+    this.put(state => {
+      state.isDrawerOpen = false
+    })
+  }
 }
 
 const basicInstance = new BasicContainer()
 
-export default basicInstance
+export {
+  basicInstance as default,
+  BasicContainer as BasicContainer,
+}

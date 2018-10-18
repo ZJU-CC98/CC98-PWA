@@ -16,8 +16,6 @@ import AspectRatio from '@material-ui/icons/AspectRatio'
 import DashBoard from '@material-ui/icons/DashBoard'
 import Settings from '@material-ui/icons/Settings'
 
-import UserInfo from './UserInfo'
-
 const list = css`
   width: 200px;
 `
@@ -44,14 +42,13 @@ type Props = {
   onClose: () => void
 }
 
-const TopBar: React.SFC<Props> = ({open, onClose}) => (
+const TopBar: React.SFC<Props> = ({open, onClose, children}) => (
   <Drawer open={open} onClose={onClose}>
     <List
       className={list}
       onClick={onClose}
     >
-      <UserInfo />
-
+      {children}
       <Divider />
       <Item icon={<HomeIcon />} text="主页" link="/" />
       <Item icon={<Whatshot />} text="十大" link="/hotTopic" />

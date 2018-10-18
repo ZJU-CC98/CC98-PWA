@@ -10,7 +10,6 @@ injectGlobal`
   }
   body {
     margin: 0;
-    background-color: #eee;
     /* 禁止 Safari 的双击放大 */
     touch-action: manipulation;
   }
@@ -27,6 +26,10 @@ injectGlobal`
   input:-webkit-autofill:focus {
     animation-name: autofill;
     animation-fill-mode: both;
+  }
+  /* https://stackoverflow.com/questions/5106934/prevent-grey-overlay-on-touchstart-in-mobile-safari-webview */
+  div {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
 `
 

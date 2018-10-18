@@ -78,7 +78,7 @@ class PostItem extends React.PureComponent<Props, State> {
             <Avatar
               src={userInfo ? userInfo.portraitUrl : undefined}
             >
-              9
+              匿
             </Avatar>
           }
           title={postInfo.userName}

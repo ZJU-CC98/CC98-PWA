@@ -5,26 +5,35 @@ import { GET } from '@/utils/fetch'
 import { IHotTopic } from '@cc98/api'
 
 import { List } from '@material-ui/core'
+import LoadingCircle from '@/components/LoadingCircle'
 import HotTopicItem from './HotTopicItem'
 
 
 type State = {
   hotTopics: IHotTopic[]
+  isLoading: boolean
 }
 
 class TopicList extends React.Component<{}, State> {
   state: State = {
-    hotTopics: []
+    hotTopics: [],
+    isLoading: false,
   }
 
   async componentDidMount() {
+
+    this.setState({
+      isLoading: true,
+    })
+
     const hotTopics = await GET<IHotTopic[]>('topic/hot')
 
     hotTopics
       .fail()
       .succeed(hotTopics => {
         this.setState({
-          hotTopics
+          hotTopics,
+          isLoading: false,
         })
       })
   }
@@ -34,7 +43,11 @@ class TopicList extends React.Component<{}, State> {
   }
 
   render() {
-    const { hotTopics } = this.state
+    const { hotTopics, isLoading } = this.state
+    if (isLoading) {
+      return <LoadingCircle />
+    }
+
     return (
       <List>
         {

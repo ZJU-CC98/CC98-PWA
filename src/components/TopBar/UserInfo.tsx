@@ -3,7 +3,7 @@ import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
 import {
-  Avatar,
+  Avatar, Typography,
 } from '@material-ui/core'
 
 import basicInstance from '@/model/basicInstance'
@@ -13,10 +13,11 @@ import { IMyInfo } from '@cc98/api';
 
 const root = css`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100px;
+  height: 120px;
 
   /** <List> has style padding-top: 8px */
   padding-bottom: 5px;
@@ -25,8 +26,14 @@ const root = css`
 
 const avatar =  css`
   && {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
+  }
+`
+
+const name = css`
+  && {
+    margin-top: 12px;
   }
 `
 
@@ -46,14 +53,10 @@ const UserInfo: React.SFC<Props> = ({isLogIn, info}) => (
       src={isLogIn ? info && info.portraitUrl : defaultAvatarImg}
       onClick={isLogIn ? () => {} : tologIn}
     />
+    <Typography className={name} variant="body1">
+      {isLogIn ? info && info.name : '笨蛋⑨'}
+    </Typography>
   </div>
 )
 
-const Connect: React.SFC = () => (
-  <UserInfo
-    isLogIn={basicInstance.state.isLogIn}
-    info={basicInstance.state.myInfo}
-  />
-)
-
-export default Connect
+export default UserInfo

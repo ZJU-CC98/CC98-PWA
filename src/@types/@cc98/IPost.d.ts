@@ -69,7 +69,7 @@ declare module '@cc98/api' {
      */
     time: string,
     /**
-     * 帖子标题 ?
+     * 帖子标题
      */
     title: string,
     /**

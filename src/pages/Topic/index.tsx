@@ -1,5 +1,6 @@
 import React from 'react'
 import { navigate } from '@reach/router'
+import { css } from 'emotion'
 
 import LoadingCircle from '@/components/LoadingCircle'
 import PostHead from './PostHead'
@@ -8,6 +9,9 @@ import PostList from './PostList'
 import { GET } from '@/utils/fetch'
 import { ITopic } from '@cc98/api'
 
+const root = css`
+  background-color: #eee;
+`
 
 type Props = {
   topicID: string
@@ -50,14 +54,14 @@ class Topic extends React.PureComponent<Props, State> {
       )
     }
     return (
-      <>
+      <div className={root}>
         <PostHead
           topicInfo={topicInfo}
         />
         <PostList
           topicID={topicInfo.id}
         />
-      </>
+      </div>
     )
   }
 }

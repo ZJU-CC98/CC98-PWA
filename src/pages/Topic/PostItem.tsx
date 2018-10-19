@@ -17,6 +17,7 @@ import UBB from '@cc98/ubb-react'
 
 const root = css`
   margin-top: 6px;
+  background-color: #ccc;
 `
 
 const floor = css`

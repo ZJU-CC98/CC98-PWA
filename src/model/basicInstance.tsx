@@ -2,7 +2,7 @@ import { Container } from '@cc98/state'
 
 import { GET } from '@/utils/fetch'
 import { getLocalStorage } from '@/utils/storage'
-import { IMyInfo } from '@cc98/api'
+import { IUser } from '@cc98/api'
 
 interface State {
   /**
@@ -16,7 +16,7 @@ interface State {
   /**
    * 个人账户信息
    */
-  myInfo: IMyInfo | null
+  myInfo: IUser | null
 }
 
 class BasicContainer extends Container<State> {
@@ -35,7 +35,7 @@ class BasicContainer extends Container<State> {
     if (!this.state.isLogIn)
       return
 
-    const myInfo = await GET<IMyInfo>('me')
+    const myInfo = await GET<IUser>('me')
     myInfo
       .fail()
       .succeed(

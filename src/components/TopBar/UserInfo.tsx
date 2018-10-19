@@ -6,10 +6,8 @@ import {
   Avatar, Typography,
 } from '@material-ui/core'
 
-import basicInstance from '@/model/basicInstance'
-
 import defaultAvatarImg from '@/assets/9.png'
-import { IMyInfo } from '@cc98/api';
+import { IUser } from '@cc98/api';
 
 const root = css`
   display: flex;
@@ -43,7 +41,7 @@ const tologIn = () => {
 
 type Props = {
   isLogIn: boolean
-  info: IMyInfo | null
+  info: IUser | null
 }
 
 const UserInfo: React.SFC<Props> = ({isLogIn, info}) => (

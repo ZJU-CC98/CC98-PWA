@@ -11,9 +11,7 @@ const img = css`
 `
 
 // https://github.com/reach/router/issues/44
-const goback = () => {
-  window.history.back()
-}
+const goback = () => window.history.back()
 
 const Page404: React.SFC = () => (
   <LayoutCenter>

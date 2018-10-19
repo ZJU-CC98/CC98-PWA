@@ -1,28 +1,23 @@
 import React from 'react'
 import { css } from 'emotion'
 
-import bg9 from '@/assets/background-9.png'
+import bg9 from '@/assets/bg9.png'
 import LayoutCenter from '@/components/LayoutCenter'
 import basicInstance from '@/model/basicInstance'
 import { Button, Typography } from '@material-ui/core'
 
 const img = css`
   position: fixed;
-  right: 0;
-  bottom: 0;
+  width: 100%;
   height: 100%;
-  z-index: -1;
   opacity: 0.75;
-  transition: opacity 2s;
-
-  @media screen and (min-width: 450px) {
-    opacity: 0;
-  }
+  background-image: url(${bg9});
+  background-size: cover;
 `
 
 const button = css`
   && {
-    transform: translateY(-35px);
+    transform: translateY(30px);
   }
 `
 
@@ -37,9 +32,7 @@ const text = css`
 
 const Home: React.SFC = () => (
   <>
-    <img className={img}
-      src={bg9}
-    />
+    <div className={img} />
     <LayoutCenter>
       <Button className={button}
         variant="outlined"

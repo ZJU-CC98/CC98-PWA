@@ -16,6 +16,15 @@ import basicInstance, { BasicContainer } from '@/model/basicInstance'
 import DrawerMenu from './DrawerMenu'
 import UserInfo from './UserInfo'
 
+const root = css`
+  && {
+    height: 56px;
+  }
+`
+
+const placeholder = css`
+  height: 56px;
+`
 
 const grow = css`
   flex-grow: 1;
@@ -37,7 +46,9 @@ const login = css`
 const TopBar: React.SFC<{
   onOpen: () => void
 }> = ({onOpen}) => (
-  <AppBar position="sticky">
+  // 占位
+  <>
+  <AppBar position="fixed" className={root}>
     <Toolbar>
       <IconButton className={icon} color="inherit"
         onClick={onOpen}
@@ -57,6 +68,8 @@ const TopBar: React.SFC<{
         </Button>
     </Toolbar>
   </AppBar>
+  <div className={placeholder}></div>
+  </>
 )
 
 const Wrapper: React.SFC = () => (
@@ -65,8 +78,10 @@ const Wrapper: React.SFC = () => (
       <>
         <TopBar onOpen={() => basicInstance.OpenDrawer()}/>
         <DrawerMenu
+          isLogIn={basic.state.isLogIn}
           open={basic.state.isDrawerOpen}
           onClose={() => basicInstance.CloseDrawer()}
+          onLogout={() => basicInstance.LogOut()}
         >
           <UserInfo
             isLogIn={basic.state.isLogIn}

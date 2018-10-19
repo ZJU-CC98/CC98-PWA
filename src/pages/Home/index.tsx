@@ -7,11 +7,17 @@ import basicInstance from '@/model/basicInstance'
 import { Button, Typography } from '@material-ui/core'
 
 const img = css`
-  position: absolute;
+  position: fixed;
+  right: 0;
   bottom: 0;
-  width: 100%;
+  height: 100%;
   z-index: -1;
-  opacity: 0.45;
+  opacity: 0.75;
+  transition: opacity 2s;
+
+  @media screen and (min-width: 450px) {
+    opacity: 0;
+  }
 `
 
 const button = css`
@@ -37,6 +43,7 @@ const Home: React.SFC = () => (
     <LayoutCenter>
       <Button className={button}
         variant="outlined"
+        disableRipple
         onClick={() => basicInstance.OpenDrawer()}
       >
         <Typography className={text}>

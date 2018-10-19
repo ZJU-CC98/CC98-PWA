@@ -15,17 +15,16 @@ const root = css`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 120px;
+  margin: 12px 0;
 
   /** <List> has style padding-top: 8px */
   padding-bottom: 5px;
-  color: rgba(0, 0, 0, 0.54);
 `
 
 const avatar =  css`
   && {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
   }
 `
 

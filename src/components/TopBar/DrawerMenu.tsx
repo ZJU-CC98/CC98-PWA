@@ -15,9 +15,10 @@ import FiberNew from '@material-ui/icons/FiberNew'
 import AspectRatio from '@material-ui/icons/AspectRatio'
 import DashBoard from '@material-ui/icons/DashBoard'
 import Settings from '@material-ui/icons/Settings'
+import ExitToApp from '@material-ui/icons/ExitToApp'
 
 const list = css`
-  width: 200px;
+  width: 190px;
 `
 
 const jump = (link: string) => () => {
@@ -27,22 +28,24 @@ const jump = (link: string) => () => {
 type ItemProps = {
   icon: React.ReactElement<any>
   text: string
-  link: string
+  onClick: () => void
 }
 
-const Item: React.SFC<ItemProps> = ({icon, text, link}) => (
-  <ListItem button onClick={jump(link)}>
+const Item: React.SFC<ItemProps> = ({icon, text, onClick}) => (
+  <ListItem button onClick={onClick}>
     <ListItemIcon>{icon}</ListItemIcon>
     <ListItemText primary={text} />
   </ListItem>
 )
 
 type Props = {
+  isLogIn: boolean
   open: boolean
   onClose: () => void
+  onLogout: () => void
 }
 
-const TopBar: React.SFC<Props> = ({open, onClose, children}) => (
+const TopBar: React.SFC<Props> = ({isLogIn, open, onClose, onLogout, children}) => (
   <Drawer open={open} onClose={onClose}>
     <List
       className={list}
@@ -50,12 +53,15 @@ const TopBar: React.SFC<Props> = ({open, onClose, children}) => (
     >
       {children}
       <Divider />
-      <Item icon={<HomeIcon />} text="主页" link="/" />
-      <Item icon={<Whatshot />} text="十大" link="/hotTopic" />
-      <Item icon={<FiberNew />} text="新帖" link="/newTopic" />
-      <Item icon={<AspectRatio />} text="版面" link="/boardList" />
-      <Item icon={<DashBoard />} text="个人中心" link="/userCenter" />
-      <Item icon={<Settings />} text="个性化" link="/setting" />
+      <Item icon={<HomeIcon />} text="主页" onClick={jump('/')} />
+      <Item icon={<Whatshot />} text="十大" onClick={jump('/hotTopic')} />
+      <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopic')} />
+      <Item icon={<AspectRatio />} text="版面" onClick={jump('/boardList')} />
+      {isLogIn && <>
+        <Item icon={<DashBoard />} text="个人中心" onClick={jump('/userCenter')} />
+        <Item icon={<Settings />} text="个性化" onClick={jump('/setting')} />
+        <Item icon={<ExitToApp />} text="登出" onClick={onLogout} />
+      </>}
     </List>
   </Drawer>
 )

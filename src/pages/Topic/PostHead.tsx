@@ -18,10 +18,15 @@ const root = css`
   align-items: center;
   position: sticky;
   top: 0;
-  padding: 5px 18px;
+  height: 56px;
+  padding: 0 18px;
   background-color: #fff;
   /* z-index of TopBar is 1100 and DrawerMenu is 1200 */
   z-index: 1105;
+
+  @media (min-width: 600px) {
+    height: 64px;
+  }
 `
 
 const gobackIcon = css`

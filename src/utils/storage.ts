@@ -43,3 +43,12 @@ export function getLocalStorage(key: string): string | object | null {
     ? JSON.parse(value.slice(4))
     : value.slice(4)
 }
+
+
+/**
+ * 从 localStorage 中删除一个值，对应的 ${key}_expirationTime 也会被删除
+ */
+export function removeLocalStorage(key: string): void {
+  localStorage.removeItem(key)
+  localStorage.removeItem(`${key}_expirationTime`)
+}

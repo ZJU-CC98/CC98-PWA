@@ -85,6 +85,8 @@ class LogIn extends React.PureComponent<{}, State> {
       logInFail: false,
     })
 
+
+    // FIXME: 登陆逻辑移动到 basic model 中去
     const token = await logIn(username, password)
 
     token

@@ -16,14 +16,13 @@ import basicInstance, { BasicContainer } from '@/model/basicInstance'
 import DrawerMenu from './DrawerMenu'
 import UserInfo from './UserInfo'
 
-const root = css`
-  && {
-    height: 56px;
-  }
-`
 
 const placeholder = css`
   height: 56px;
+
+  @media (min-width: 600px) {
+    height: 64px;
+  }
 `
 
 const grow = css`
@@ -46,29 +45,28 @@ const login = css`
 const TopBar: React.SFC<{
   onOpen: () => void
 }> = ({onOpen}) => (
-  // 占位
   <>
-  <AppBar position="fixed" className={root}>
-    <Toolbar>
-      <IconButton className={icon} color="inherit"
-        onClick={onOpen}
-      >
-        <MenuIcon />
-      </IconButton>
+    <AppBar position="fixed">
+      <Toolbar>
+        <IconButton className={icon} color="inherit"
+          onClick={onOpen}
+        >
+          <MenuIcon />
+        </IconButton>
 
-      <Typography
-        className={grow} color="inherit"
-      > CC98
-      </Typography>
+        <Typography
+          className={grow} color="inherit"
+        > CC98
+        </Typography>
 
-      <Button
-        className={login}
-        color="inherit" size="small"
-      > {version}
-        </Button>
-    </Toolbar>
-  </AppBar>
-  <div className={placeholder}></div>
+        <Button
+          className={login}
+          color="inherit" size="small"
+        > {version}
+          </Button>
+      </Toolbar>
+    </AppBar>
+    <div className={placeholder}></div>
   </>
 )
 

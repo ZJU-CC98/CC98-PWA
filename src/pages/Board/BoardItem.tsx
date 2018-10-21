@@ -10,20 +10,24 @@ type Props = {
     data:IBoard;
 }
 
-const BoardItemStyle=css`
-    margin-left:1rem;
-    margin-left:1rem;
-`;
+
 const CardStyle=css`&&{
-    margin:0.5rem 0.5rem 0.5rem 0.5rem;
+    margin:0.25rem 0.25rem 0.25rem 0.25rem;
+    font-size:0.8rem;
+    padding-left:0.2rem;
+    padding-right:0.2rem;
+    padding-top:0;
+    padding-bottom:0;
+    min-height:32px;
+    min-width:80px;
 }`
 export default class extends React.PureComponent<Props>{
     render(){
         const {data}=this.props;
-        return  ( 
-             <Button onClick={()=>navigate(`/board/${data.id}/1`)} className={CardStyle} variant="outlined" color="primary"> {data.name}</Button>
-           
-              
+        return  (
+             <Button onClick={()=>navigate(`/board/${data.id}/1`)} className={CardStyle} variant="outlined" > {data.name}</Button>
+
+
       )
     }
 }

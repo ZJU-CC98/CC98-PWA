@@ -40,8 +40,8 @@ export default class extends React.PureComponent<Props>{
         if(title.length>9)title+="...";
         return (
         <ListItem onClick={()=>navigate(`/topic/${data.id}`)} className={root} button>
-        <ListItemText className={text} primary={title} secondary={data.lastPostTime} />
-        <ListItemText className={subText} secondary={<div className={text}><div>{"作者:"+data.userName}</div><div>{"回复:"+data.replyCount}</div></div>} />
+        <ListItemText className={text} primary={title} secondary={new Date(data.lastPostTime).toLocaleString()} />
+        <ListItemText className={subText} secondary={<div className={text}><div>{"作者:"+data.userName?data.userName:"匿名"}</div><div>{"回复:"+data.replyCount}</div></div>} />
         </ListItem>)
     }
 }

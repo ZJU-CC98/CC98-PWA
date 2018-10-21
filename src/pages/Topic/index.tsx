@@ -5,6 +5,7 @@ import { css } from 'emotion'
 import LoadingCircle from '@/components/LoadingCircle'
 import PostHead from './PostHead'
 import PostList from './PostList'
+import Editor from './Editor';
 
 import { GET } from '@/utils/fetch'
 import { ITopic } from '@cc98/api'
@@ -61,6 +62,7 @@ class Topic extends React.PureComponent<Props, State> {
         <PostList
           topicID={topicInfo.id}
         />
+        <Editor />
       </div>
     )
   }

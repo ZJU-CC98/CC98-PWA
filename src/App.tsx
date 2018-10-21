@@ -11,10 +11,13 @@ import TopBar from './components/TopBar'
 import Home from './pages/Home'
 import HotTopic from './pages/HotTopic'
 import NewTopic from './pages/NewTopic'
+import BoardList from './pages/Board';
+import Board from './pages/Board/Board';
 import Topic from './pages/Topic'
 import LogIn from './pages/LogIn'
 import Page401 from './pages/Error/401'
 import Page404 from './pages/Error/404'
+
 
 // TODO: cache
 const Route: React.SFC<RouteComponentProps & {
@@ -33,6 +36,8 @@ const App: React.SFC = () => (
       <Route path="/hotTopic" component={HotTopic} />
       <Route path="/newTopic" component={NewTopic} />
       <Route path="/topic/:topicID" component={Topic} />
+      <Route path="/boardList" component={BoardList} />
+      <Route path="/board/:id/:page?" component={Board} />
 
       <Route path="/logIn" component={LogIn} />
       <Route path="/error/401" component={Page401} />

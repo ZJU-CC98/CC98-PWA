@@ -1,7 +1,7 @@
 import { Container } from '@cc98/state'
 
-import { GET } from '@/utils/fetch'
-import { getLocalStorage } from '@/utils/storage'
+import { GET, logIn } from '@/utils/fetch'
+import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/utils/storage'
 import { IUser } from '@cc98/api'
 
 interface State {
@@ -47,15 +47,33 @@ class BasicContainer extends Container<State> {
       )
   }
 
-  LogIn() {
-    this.put(state => {
-      state.isLogIn = true
-    })
+  async LogIn(username: string, password: string) {
+    const token = await logIn(username, password)
+
+    token
+      .fail()
+      .succeed(
+        token => {
+          const access_token = `${token.token_type} ${token.access_token}`
+          setLocalStorage('access_token', access_token, token.expires_in)
+          // refresh_token 有效期一个月
+          setLocalStorage('refresh_token', token.refresh_token, 2592000)
+
+          this.put(state => {
+            state.isLogIn = true
+          })
+        }
+      )
 
     this.FreshInfo()
+
+    return token
   }
 
   LogOut() {
+    removeLocalStorage('access_token')
+    removeLocalStorage('refresh_token')
+
     this.put(state => {
       state.isLogIn = false
     })

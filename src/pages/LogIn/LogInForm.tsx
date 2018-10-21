@@ -12,9 +12,6 @@ import {
 
 import basicInstance from '@/model/basicInstance'
 
-import { logIn } from '@/utils/fetch'
-import { setLocalStorage } from '@/utils/storage'
-
 import snowball from '@/assets/snowball.png'
 
 const root = css`
@@ -85,9 +82,7 @@ class LogIn extends React.PureComponent<{}, State> {
       logInFail: false,
     })
 
-
-    // FIXME: 登陆逻辑移动到 basic model 中去
-    const token = await logIn(username, password)
+    const token = await basicInstance.LogIn(username, password)
 
     token
       .fail(
@@ -104,15 +99,7 @@ class LogIn extends React.PureComponent<{}, State> {
         }
       )
       .succeed(
-        token => {
-          const access_token = `${token.token_type} ${token.access_token}`
-
-          setLocalStorage('access_token', access_token, token.expires_in)
-          // refresh_token 有效期一个月
-          setLocalStorage('refresh_token', token.refresh_token, 2592000)
-
-          basicInstance.LogIn()
-
+        _ => {
           setTimeout(
             () => navigate('/'),
             1500

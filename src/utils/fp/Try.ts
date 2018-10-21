@@ -87,6 +87,13 @@ export class Try<S, F> {
   // some methods not fp but useful
 
   /**
+   * 是否成功
+   */
+  isSuccess() {
+    return this._value.constructor === Success
+  }
+
+  /**
    * 成功回调
    */
   succeed(func: (x: S) => void) {

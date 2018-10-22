@@ -5,6 +5,7 @@ import { injectGlobal } from 'emotion'
 import App from './App'
 
 injectGlobal`
+
   * {
     box-sizing: border-box;
   }

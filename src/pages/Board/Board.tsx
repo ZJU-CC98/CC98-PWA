@@ -5,8 +5,8 @@ import List from '@material-ui/core/List';
 import TopicItem from './TopicItem';
 import { css } from 'emotion';
 import BoardHead from './BoardHead';
-import Pagination from 'rc-pagination';
-import Select from 'rc-select';
+//import Pagination from 'rc-pagination';
+//import Select from 'rc-select';
 //import 'rc-pagination/assets/index.css';
 //import 'rc-select/assets/index.css';
 type Props = {
@@ -23,7 +23,7 @@ const BoardStyle = css`&&{
   align-items:center;
   width:100%;
 }`
-const ListStyle=css`&&{
+const ListStyle = css`&&{
   width:100%;
 }`
 export default class extends React.Component<Props, State>{
@@ -62,7 +62,7 @@ export default class extends React.Component<Props, State>{
       }
     )
   }
-  onChange = (current:number) => {
+  onChange = (current: number) => {
     console.log('onChange:current=', current);
   }
   render() {
@@ -70,15 +70,7 @@ export default class extends React.Component<Props, State>{
     return (
       <div className={BoardStyle}>
         <BoardHead data={board} />
-        <Pagination
-        selectComponentClass={Select}
-          showSizeChanger
-          showQuickJumper={{ goButton: <button>确定</button> }}
-          defaultPageSize={20}
-          defaultCurrent={1}
-          onChange={this.onChange}
-          total={450}
-  />
+
         <List className={ListStyle} component="nav">
           {topics.map((topic) => <TopicItem data={topic} />)}
         </List>
@@ -88,3 +80,12 @@ export default class extends React.Component<Props, State>{
     );
   }
 }
+{/* <Pagination
+selectComponentClass={Select}
+  showSizeChanger
+  showQuickJumper={{ goButton: <button>确定</button> }}
+  defaultPageSize={20}
+  defaultCurrent={1}
+  onChange={this.onChange}
+  total={450}
+/> */}

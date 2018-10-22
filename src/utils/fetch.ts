@@ -4,7 +4,6 @@ import { Try, Success, Failure } from './fp/Try'
 
 import host from '@/model/apiHost'
 
-
 interface FetchError {
   /**
    * http 状态码
@@ -30,11 +29,13 @@ async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, Fetc
   const response = await fetch(requestURL, init)
 
   if (!(response.ok && response.status === 200)) {
-    return Try.of<T, FetchError>(Failure.of({
-      status: response.status,
-      msg: await response.text(),
-      response,
-    }))
+    return Try.of<T, FetchError>(
+      Failure.of({
+        status: response.status,
+        msg: await response.text(),
+        response,
+      })
+    )
   }
 
   return Try.of<T, FetchError>(Success.of(await response.json()))
@@ -65,18 +66,14 @@ export async function GET<T = any>(url: string, options: GETOptions = {}) {
   const requestInit: RequestInit = {
     headers: new Headers({
       //  access_token
-      Authorization: options.noAuthorization
-        ? ''
-        : getAccessToken(),
-      ...options.headers
+      Authorization: options.noAuthorization ? '' : getAccessToken(),
+      ...options.headers,
     }),
     // credentials: "include",
     ...options.requestInit,
   }
 
-  const queryStr = options.params
-    ? `?${encodeParams(options.params)}`
-    : ''
+  const queryStr = options.params ? `?${encodeParams(options.params)}` : ''
 
   return await cc98Fetch<T>(url + queryStr, requestInit)
 }
@@ -105,11 +102,9 @@ export async function POST<T = any>(url: string, options: POSTOptions = {}) {
     method: 'POST',
     headers: new Headers({
       //  access_token
-      Authorization: options.noAuthorization
-        ? ''
-        : getAccessToken(),
+      Authorization: options.noAuthorization ? '' : getAccessToken(),
       'Content-Type': 'application/json',
-      ...options.headers
+      ...options.headers,
     }),
     body: options.params && JSON.stringify(options.params),
     ...options.requestInit,
@@ -117,7 +112,6 @@ export async function POST<T = any>(url: string, options: POSTOptions = {}) {
 
   return await cc98Fetch<T>(url, requestInit)
 }
-
 
 type PUTOptions = POSTOptions
 
@@ -126,11 +120,9 @@ export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
     method: 'PUT',
     headers: new Headers({
       //  access_token
-      Authorization: options.noAuthorization
-        ? ''
-        : getAccessToken(),
+      Authorization: options.noAuthorization ? '' : getAccessToken(),
       'Content-Type': 'application/json',
-      ...options.headers
+      ...options.headers,
     }),
     body: options.params && JSON.stringify(options.params),
     ...options.requestInit,
@@ -139,16 +131,14 @@ export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
   return await cc98Fetch<T>(url, requestInit)
 }
 
-
 /**
  * just like $.param
  */
-function encodeParams(params: {[key: string]: string}) {
-  return Object.keys(params).map((key) => (
-    encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
-  )).join('&')
+function encodeParams(params: { [key: string]: string }) {
+  return Object.keys(params)
+    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+    .join('&')
 }
-
 
 /**
  * 从本地取得 access_token，如果过期尝试刷新
@@ -159,7 +149,6 @@ function getAccessToken(): string {
 
   return `${accessToken}`
 }
-
 
 interface Token {
   access_token: string
@@ -178,12 +167,12 @@ export async function logIn(username: string, password: string): Promise<Try<Tok
    * 其中 client_id 和 client_secret 来自申请的应用，grant_type 值为 "password"
    */
   const requestBody = {
-      client_id: '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
-      client_secret: '8b53f727-08e2-4509-8857-e34bf92b27f2',
-      grant_type: 'password',
-      username,
-      password,
-      scope: 'cc98-api openid offline_access',
+    client_id: '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+    client_secret: '8b53f727-08e2-4509-8857-e34bf92b27f2',
+    grant_type: 'password',
+    username,
+    password,
+    scope: 'cc98-api openid offline_access',
   }
 
   const response = await fetch(host.state.oauth, {
@@ -195,11 +184,13 @@ export async function logIn(username: string, password: string): Promise<Try<Tok
   })
 
   if (!(response.ok && response.status === 200)) {
-    return Try.of<Token, FetchError>(Failure.of({
-      status: response.status,
-      msg: await response.text(),
-      response,
-    }))
+    return Try.of<Token, FetchError>(
+      Failure.of({
+        status: response.status,
+        msg: await response.text(),
+        response,
+      })
+    )
   }
 
   return Try.of<Token, FetchError>(Success.of(await response.json()))

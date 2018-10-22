@@ -1,10 +1,7 @@
 import React from 'react'
 import { css } from 'emotion'
 
-import {
-  Typography,
-  IconButton,
-} from '@material-ui/core'
+import { Typography, IconButton } from '@material-ui/core'
 
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 
@@ -40,14 +37,12 @@ type Props = {
   topicInfo: ITopic
 }
 
-const PostHead: React.SFC<Props> = ({topicInfo}) => (
+const PostHead: React.SFC<Props> = ({ topicInfo }) => (
   <div className={root}>
     <IconButton className={gobackIcon} onClick={goback}>
       <KeyboardBackspaceIcon />
     </IconButton>
-    <Typography variant="subtitle2">
-      {topicInfo.title}
-    </Typography>
+    <Typography variant="subtitle2">{topicInfo.title}</Typography>
   </div>
 )
 

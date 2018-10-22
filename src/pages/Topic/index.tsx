@@ -5,7 +5,7 @@ import { css } from 'emotion'
 import LoadingCircle from '@/components/LoadingCircle'
 import PostHead from './PostHead'
 import PostList from './PostList'
-import Editor from './Editor';
+import Editor from './Editor'
 
 import { GET } from '@/utils/fetch'
 import { ITopic } from '@cc98/api'
@@ -37,31 +37,23 @@ class Topic extends React.PureComponent<Props, State> {
 
     const topic = await GET<ITopic>(`/topic/${topicID}`)
 
-    topic
-      .fail()
-      .succeed(topicInfo => {
-        this.setState({
-          topicInfo
-        })
+    topic.fail().succeed(topicInfo => {
+      this.setState({
+        topicInfo,
       })
+    })
   }
 
   render() {
     const { topicInfo } = this.state
 
     if (topicInfo === null) {
-      return (
-        <LoadingCircle />
-      )
+      return <LoadingCircle />
     }
     return (
       <div className={root}>
-        <PostHead
-          topicInfo={topicInfo}
-        />
-        <PostList
-          topicID={topicInfo.id}
-        />
+        <PostHead topicInfo={topicInfo} />
+        <PostList topicID={topicInfo.id} />
         <Editor />
       </div>
     )

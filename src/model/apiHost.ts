@@ -5,7 +5,7 @@ import basic from './basicInstance'
 
 export enum HostType {
   defaultHost,
-  Proxy
+  Proxy,
 }
 
 interface Host {
@@ -23,7 +23,7 @@ const defaultHost: Host = {
 const proxy: Host = {
   oauth: 'https://openid0.cc98.inzju.com/connect/token',
   api: 'https://api0.cc98.inzju.com',
-  type: HostType.Proxy
+  type: HostType.Proxy,
 }
 
 export class Store extends Container<Host> {
@@ -51,4 +51,4 @@ export class Store extends Container<Host> {
   }
 }
 
-export default new Store
+export default new Store()

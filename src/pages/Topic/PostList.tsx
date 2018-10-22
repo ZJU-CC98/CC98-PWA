@@ -6,7 +6,6 @@ import PostItem from './PostItem'
 import { GET } from '@/utils/fetch'
 import { IPost, IUser } from '@cc98/api'
 
-
 type Props = {
   topicID: number
 }
@@ -49,67 +48,50 @@ class TopicList extends React.Component<Props, State> {
 
     const posts = await GET<IPost[]>(`topic/${topicID}/post?from=${from}&size=${size}`)
 
-    posts
-      .fail()
-      .succeed(postList => {
-        this.fetchUsers(postList)
+    posts.fail().succeed(postList => {
+      this.fetchUsers(postList)
 
-        this.setState({
-          postList: this.state.postList.concat(postList),
-          from: from + postList.length,
+      this.setState({
+        postList: this.state.postList.concat(postList),
+        from: from + postList.length,
 
-          isLoading: false,
-          isEnd: postList.length !== size,
-        })
+        isLoading: false,
+        isEnd: postList.length !== size,
       })
+    })
   }
 
   fetchUsers = async (postList: IPost[]) => {
     const query = postList
       .map(p => p.userId)
-      .filter( u => u )
-      .map( u => `id=${u}`)
+      .filter(u => u)
+      .map(u => `id=${u}`)
       .join('&')
 
-    if (!query)
-      return
+    if (!query) return
 
     const users = await GET<IUser[]>(`user?${query}`)
 
-    users
-      .fail()
-      .succeed(users => {
-
-        const newUsers: State["userMap"] = {}
-        users.forEach(user => {
-          newUsers[user.id] = user
-        })
-
-        this.setState({
-          userMap: Object.assign(
-            {}, this.state.userMap, newUsers,
-          )
-        })
+    users.fail().succeed(users => {
+      const newUsers: State['userMap'] = {}
+      users.forEach(user => {
+        newUsers[user.id] = user
       })
+
+      this.setState({
+        userMap: Object.assign({}, this.state.userMap, newUsers),
+      })
+    })
   }
 
   render() {
     const { postList, userMap, isLoading, isEnd } = this.state
 
     return (
-      <InfinitiList
-        isLoading={isLoading}
-        isEnd={isEnd}
-        callback={this.fetchPosts}
-      >
-        {postList.map((info) => (
-            <PostItem
-              key={info.id}
-              postInfo={info}
-              userInfo={userMap[info.userId]}
-            />
-          ))
-        }
+      <InfinitiList isLoading={isLoading} isEnd={isEnd} callback={this.fetchPosts}>
+        {postList.map(info => (
+          <PostItem key={info.id} postInfo={info} userInfo={userMap[info.userId]} />
+        ))}
       </InfinitiList>
     )
   }

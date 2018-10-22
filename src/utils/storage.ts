@@ -7,9 +7,7 @@
 export function setLocalStorage(key: string, value: string | object, expireIn = 0): void {
   localStorage.setItem(
     key,
-    typeof value === 'object'
-      ? `obj-${JSON.stringify(value)}`
-      : `str-${value}`
+    typeof value === 'object' ? `obj-${JSON.stringify(value)}` : `str-${value}`
   )
 
   // 设置有效期
@@ -20,7 +18,6 @@ export function setLocalStorage(key: string, value: string | object, expireIn = 
     localStorage.removeItem(`${key}_expirationTime`)
   }
 }
-
 
 /**
  * 从 localStorage 中取出一个值，过期的值会被清除
@@ -39,11 +36,8 @@ export function getLocalStorage(key: string): string | object | null {
     return null
   }
 
-  return value.startsWith('obj-')
-    ? JSON.parse(value.slice(4))
-    : value.slice(4)
+  return value.startsWith('obj-') ? JSON.parse(value.slice(4)) : value.slice(4)
 }
-
 
 /**
  * 从 localStorage 中删除一个值，对应的 ${key}_expirationTime 也会被删除

@@ -2,8 +2,10 @@ import React from 'react'
 import { css, cx } from 'emotion'
 
 import {
-  Card, CardContent,
-  CardHeader, CardActions,
+  Card,
+  CardContent,
+  CardHeader,
+  CardActions,
   Collapse,
   Avatar,
   IconButton,
@@ -39,11 +41,11 @@ type Props = {
   /**
    * 帖子信息
    */
-  postInfo: IPost,
+  postInfo: IPost
   /**
    * 用户信息
    */
-  userInfo: IUser | null,
+  userInfo: IUser | null
 }
 
 type State = {
@@ -60,7 +62,7 @@ class PostItem extends React.PureComponent<Props, State> {
 
   onExpandClick = () => {
     this.setState({
-      expanded: !this.state.expanded
+      expanded: !this.state.expanded,
     })
   }
 
@@ -73,15 +75,8 @@ class PostItem extends React.PureComponent<Props, State> {
 
     return (
       <Card square elevation={0} className={root}>
-
         <CardHeader
-          avatar={
-            <Avatar
-              src={userInfo ? userInfo.portraitUrl : undefined}
-            >
-              匿
-            </Avatar>
-          }
+          avatar={<Avatar src={userInfo ? userInfo.portraitUrl : undefined}>匿</Avatar>}
           title={postInfo.userName}
           subheader={new Date(postInfo.time).toLocaleString()}
           action={
@@ -92,9 +87,7 @@ class PostItem extends React.PureComponent<Props, State> {
         />
 
         <CardContent>
-          <Typography component="div">
-            {UBB(postInfo.content)}
-          </Typography>
+          <Typography component="div">{UBB(postInfo.content)}</Typography>
         </CardContent>
 
         {/* <CardActions>

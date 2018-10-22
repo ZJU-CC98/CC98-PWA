@@ -8,7 +8,6 @@ import { List } from '@material-ui/core'
 import LoadingCircle from '@/components/LoadingCircle'
 import HotTopicItem from './HotTopicItem'
 
-
 type State = {
   hotTopics: IHotTopic[]
   isLoading: boolean
@@ -21,21 +20,18 @@ class TopicList extends React.Component<{}, State> {
   }
 
   async componentDidMount() {
-
     this.setState({
       isLoading: true,
     })
 
     const hotTopics = await GET<IHotTopic[]>('topic/hot')
 
-    hotTopics
-      .fail()
-      .succeed(hotTopics => {
-        this.setState({
-          hotTopics,
-          isLoading: false,
-        })
+    hotTopics.fail().succeed(hotTopics => {
+      this.setState({
+        hotTopics,
+        isLoading: false,
       })
+    })
   }
 
   jump2Post(topicID: number) {
@@ -50,15 +46,9 @@ class TopicList extends React.Component<{}, State> {
 
     return (
       <List>
-        {
-          hotTopics.map(info => (
-            <HotTopicItem
-              key={info.id}
-              info={info}
-              click={this.jump2Post}
-            />
-          ))
-        }
+        {hotTopics.map(info => (
+          <HotTopicItem key={info.id} info={info} click={this.jump2Post} />
+        ))}
       </List>
     )
   }

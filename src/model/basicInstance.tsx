@@ -23,7 +23,7 @@ class BasicContainer extends Container<State> {
   state: State = {
     isDrawerOpen: false,
     isLogIn: !!getLocalStorage('access_token'),
-    myInfo: null
+    myInfo: null,
   }
 
   constructor() {
@@ -32,38 +32,29 @@ class BasicContainer extends Container<State> {
   }
 
   async FreshInfo() {
-    if (!this.state.isLogIn)
-      return
+    if (!this.state.isLogIn) return
 
     const myInfo = await GET<IUser>('me')
-    myInfo
-      .fail()
-      .succeed(
-        (myInfo) => {
-          this.put(state => {
-            state.myInfo = myInfo
-          })
-        }
-      )
+    myInfo.fail().succeed(myInfo => {
+      this.put(state => {
+        state.myInfo = myInfo
+      })
+    })
   }
 
   async LogIn(username: string, password: string) {
     const token = await logIn(username, password)
 
-    token
-      .fail()
-      .succeed(
-        token => {
-          const access_token = `${token.token_type} ${token.access_token}`
-          setLocalStorage('access_token', access_token, token.expires_in)
-          // refresh_token 有效期一个月
-          setLocalStorage('refresh_token', token.refresh_token, 2592000)
+    token.fail().succeed(token => {
+      const access_token = `${token.token_type} ${token.access_token}`
+      setLocalStorage('access_token', access_token, token.expires_in)
+      // refresh_token 有效期一个月
+      setLocalStorage('refresh_token', token.refresh_token, 2592000)
 
-          this.put(state => {
-            state.isLogIn = true
-          })
-        }
-      )
+      this.put(state => {
+        state.isLogIn = true
+      })
+    })
 
     this.FreshInfo()
 
@@ -94,7 +85,4 @@ class BasicContainer extends Container<State> {
 
 const basicInstance = new BasicContainer()
 
-export {
-  basicInstance as default,
-  BasicContainer as BasicContainer,
-}
+export { basicInstance as default, BasicContainer }

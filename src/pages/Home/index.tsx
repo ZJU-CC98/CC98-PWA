@@ -31,19 +31,17 @@ const text = css`
   }
 `
 
-
 const Home: React.SFC = () => (
   <>
     <div className={img} />
     <LayoutCenter>
-      <Button className={button}
+      <Button
+        className={button}
         variant="outlined"
         disableRipple
         onClick={() => basicInstance.OpenDrawer()}
       >
-        <Typography className={text}>
-          琪露诺 の CC98
-        </Typography>
+        <Typography className={text}>琪露诺 の CC98</Typography>
       </Button>
     </LayoutCenter>
   </>

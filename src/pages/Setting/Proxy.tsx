@@ -9,7 +9,10 @@ export default () => (
     {({ state: { type }, useDefault, useProxy }: Store) => (
       <ListItem>
         <ListItemText primary="使用代理" />
-        <Switch onClick={type === HostType.Proxy ? useDefault : useProxy} checked={type === HostType.Proxy} />
+        <Switch
+          onClick={type === HostType.Proxy ? useDefault : useProxy}
+          checked={type === HostType.Proxy}
+        />
       </ListItem>
     )}
   </Subscribe>

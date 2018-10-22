@@ -24,7 +24,7 @@ declare module '@cc98/api' {
     /**
      * 发布者用户名
      */
-    userName: string,
+    userName: string
     /**
      * 是否匿名
      */
@@ -86,6 +86,6 @@ declare module '@cc98/api' {
 
     isInternalOnly: boolean
 
-    boardName?:string
+    boardName?: string
   }
 }

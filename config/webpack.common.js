@@ -30,6 +30,27 @@ module.exports = {
         }
       },
       {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader',
+        ]
+      },
+      // {
+      //   test: /\.less$/,
+      //   include: /node_modules/,
+      //   use: [
+      //     'style-loader',
+      //     'css-loader',
+      //     {
+      //       loader: 'less-loader',
+      //       options: {
+      //         javascriptEnabled: true
+      //       }
+      //     },
+      //   ]
+      // },
+      {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'url-loader',
         options: {

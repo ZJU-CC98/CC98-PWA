@@ -14,6 +14,7 @@ import NewTopic from './pages/NewTopic'
 import BoardList from './pages/Board';
 import Board from './pages/Board/Board';
 import UserCenter from './pages/UserCenter';
+import Setting from './pages/Setting'
 import Topic from './pages/Topic'
 import LogIn from './pages/LogIn'
 import Page401 from './pages/Error/401'
@@ -42,6 +43,7 @@ const App: React.SFC = () => (
       <Route path="/board/:id/:page" component={Board} />
       <Route path="/userCenter" component={UserCenter} />
       <Route path="/user/:id" component={UserCenter} />
+      <Route path="/setting" component={Setting} />
 
       <Route path="/logIn" component={LogIn} />
       <Route path="/error/401" component={Page401} />

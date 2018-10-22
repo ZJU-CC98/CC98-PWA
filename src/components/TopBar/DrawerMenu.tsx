@@ -57,9 +57,9 @@ const TopBar: React.SFC<Props> = ({isLogIn, open, onClose, onLogout, children}) 
       <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopic')} />
       <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopic')} />
       <Item icon={<AspectRatio />} text="版面" onClick={jump('/boardList')} />
+      <Item icon={<Settings />} text="个性化" onClick={jump('/setting')} />
       {isLogIn && <>
         <Item icon={<DashBoard />} text="个人中心" onClick={jump('/userCenter')} />
-        <Item icon={<Settings />} text="个性化" onClick={jump('/setting')} />
         <Item icon={<ExitToApp />} text="登出" onClick={onLogout} />
       </>}
     </List>

@@ -2,6 +2,8 @@ import { getLocalStorage } from './storage'
 
 import { Try, Success, Failure } from './fp/Try'
 
+import host from '@/model/apiHost'
+
 
 interface FetchError {
   /**
@@ -21,7 +23,7 @@ interface FetchError {
 async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, FetchError>> {
   // const baseUrl = "https://apitest.niconi.cc"
   // const baseUrl = "https://api-v2.cc98.org"
-  const baseUrl = "https://api0.cc98.inzju.com";
+  const baseUrl = host.state.api
   const requestURL = `${baseUrl}/${url}`
 
   // console.log("Fetch: " + requestURL)
@@ -184,7 +186,7 @@ export async function logIn(username: string, password: string): Promise<Try<Tok
       scope: 'cc98-api openid offline_access',
   }
 
-  const response = await fetch('https://openid.cc98.org/connect/token', {
+  const response = await fetch(host.state.oauth, {
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',

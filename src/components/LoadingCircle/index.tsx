@@ -10,7 +10,7 @@ const loading = css`
 `
 
 const LoadingCircle: React.SFC = () => (
-  <div className={loading} >
+  <div className={loading}>
     <CircularProgress />
   </div>
 )

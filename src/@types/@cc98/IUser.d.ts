@@ -1,72 +1,72 @@
 declare module '@cc98/api' {
   export interface IUser {
     /**
-    * 用户名
-    */
+     * 用户名
+     */
     name: string
     /**
-    * 用户性别
-    */
+     * 用户性别
+     */
     gender: 0 | 1
     /**
-    * 用户生日
-    */
+     * 用户生日
+     */
     birthday: string
     /**
-    * 用户个人简介图片
-    */
+     * 用户个人简介图片
+     */
     photourl: string
     /**
-    * 用户个人简介
-    */
+     * 用户个人简介
+     */
     introduction: string
     /**
-    * 用户签名档
-    */
+     * 用户签名档
+     */
     signatureCode: string
     /**
-    * id
-    */
+     * id
+     */
     id: number
     /**
-    * 当前用户是否关注了该用户
-    */
+     * 当前用户是否关注了该用户
+     */
     isFollowing: boolean
     /**
-    * 邮箱地址
-    */
+     * 邮箱地址
+     */
     emailAddress: string
     /**
-    * QQ
-    */
+     * QQ
+     */
     qq: string
     /**
-    * 发帖数
-    */
+     * 发帖数
+     */
     postCount: number
     /**
-    * 威望
-    */
+     * 威望
+     */
     prestige: number
     /**
-    * 显示的用户组
-    */
+     * 显示的用户组
+     */
     displayTitle: string
     /**
-    * 全站权限等级
-    */
+     * 全站权限等级
+     */
     privilege: string
     /**
-    * 注册时间
-    */
+     * 注册时间
+     */
     registerTime: string
     /**
-    * 最后登录时间
-    */
+     * 最后登录时间
+     */
     lastLogOnTime: string
     /**
-    * 自定义头衔
-    */
+     * 自定义头衔
+     */
     customTitle: string
     /**
      * 用户锁定状态：0正常  1锁定  2屏蔽  3全站TP

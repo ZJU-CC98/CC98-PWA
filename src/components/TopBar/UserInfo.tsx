@@ -2,12 +2,10 @@ import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
-import {
-  Avatar, Typography,
-} from '@material-ui/core'
+import { Avatar, Typography } from '@material-ui/core'
 
 import defaultAvatarImg from '@/assets/9.png'
-import { IUser } from '@cc98/api';
+import { IUser } from '@cc98/api'
 
 const root = css`
   display: flex;
@@ -21,7 +19,7 @@ const root = css`
   padding-bottom: 5px;
 `
 
-const avatar =  css`
+const avatar = css`
   && {
     width: 70px;
     height: 70px;
@@ -43,7 +41,7 @@ type Props = {
   info: IUser | null
 }
 
-const UserInfo: React.SFC<Props> = ({isLogIn, info}) => (
+const UserInfo: React.SFC<Props> = ({ isLogIn, info }) => (
   <div className={root}>
     <Avatar
       className={avatar}

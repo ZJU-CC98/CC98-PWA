@@ -15,13 +15,9 @@ const goback = () => window.history.back()
 
 const Page404: React.SFC = () => (
   <LayoutCenter>
-    <img className={img}
-      src={img404} alt="404"
-      onClick={goback}
-    />
+    <img className={img} src={img404} alt="404" onClick={goback} />
   </LayoutCenter>
 )
-
 
 export default Page404
 

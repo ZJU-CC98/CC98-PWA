@@ -50,7 +50,6 @@ export class Failure<T> {
  * Try 函子，98 错误处理定制版
  */
 export class Try<S, F> {
-
   _value: Success<S> | Failure<F>
   /**
    * 标识是否已经进行过 fail 处理
@@ -74,15 +73,12 @@ export class Try<S, F> {
    * @param func 类型签名 S -> U
    */
   map<U>(func: (x: S) => U) {
-
     if (this._value.constructor === Success) {
       return Try.of<U, F>((this._value as Success<S>).map(func))
-    }
-    else {
+    } else {
       return Try.of<U, F>((this._value as Failure<F>).map(id => id))
     }
   }
-
 
   // some methods not fp but useful
 
@@ -99,11 +95,11 @@ export class Try<S, F> {
   succeed(func: (x: S) => void) {
     // force handle error before get value
     if (!this._hasHandleErr) {
-      throw('[Try] You must use `fail` to handle error first.')
+      throw '[Try] You must use `fail` to handle error first.'
     }
 
     if (this._value.constructor === Success) {
-      func(((this._value as Success<S>).value()))
+      func((this._value as Success<S>).value())
     }
   }
 
@@ -114,7 +110,7 @@ export class Try<S, F> {
     this._hasHandleErr = true
 
     if (this._value.constructor === Failure) {
-      errHandleFunc && errHandleFunc(((this._value as Failure<F>).value()))
+      errHandleFunc && errHandleFunc((this._value as Failure<F>).value())
     }
 
     return this

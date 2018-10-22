@@ -33,11 +33,7 @@ injectGlobal`
   }
 `
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-)
-
+ReactDOM.render(<App />, document.getElementById('root'))
 
 // if ('serviceWorker' in navigator) {
 //   window.addEventListener('load', () => {

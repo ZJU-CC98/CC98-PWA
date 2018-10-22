@@ -3,7 +3,6 @@ import { debounce } from 'lodash-es'
 
 import LoadingCircle from '@/components/LoadingCircle'
 
-
 type Props = {
   /**
    * 列表正在加载中，回调不会重复触发
@@ -19,7 +18,6 @@ type Props = {
   callback: (...args: any[]) => any
 }
 
-
 class InfinieList extends React.PureComponent<Props> {
   /**
    * 存储 debounce 之后的函数
@@ -33,15 +31,14 @@ class InfinieList extends React.PureComponent<Props> {
   componentDidMount() {
     const func = () => {
       const { isLoading, isEnd, callback } = this.props
-      if (isLoading || isEnd)
-        return
+      if (isLoading || isEnd) return
 
       // loadingDom 出现在可视区域
-      const distance = this.loadingDom.current
-        && (window.innerHeight - this.loadingDom.current.getBoundingClientRect().top)
+      const distance =
+        this.loadingDom.current &&
+        window.innerHeight - this.loadingDom.current.getBoundingClientRect().top
 
-      if (distance === null || distance < 0)
-        return
+      if (distance === null || distance < 0) return
 
       callback()
     }
@@ -60,10 +57,11 @@ class InfinieList extends React.PureComponent<Props> {
     return (
       <>
         {children}
-        {!isEnd && <div ref={this.loadingDom}>
+        {!isEnd && (
+          <div ref={this.loadingDom}>
             <LoadingCircle />
           </div>
-        }
+        )}
       </>
     )
   }

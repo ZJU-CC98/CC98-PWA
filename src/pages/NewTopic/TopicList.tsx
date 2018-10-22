@@ -8,7 +8,6 @@ import TpoicItem from './TopicItem'
 import { GET } from '@/utils/fetch'
 import { ITopic } from '@cc98/api'
 
-
 type State = {
   topicList: ITopic[]
 
@@ -42,16 +41,15 @@ class TopicList extends React.Component<{}, State> {
 
     const posts = await GET<ITopic[]>(`topic/new?from=${from}&size=${size}`)
 
-    posts
-      .map(topicList => {
-        this.setState({
-          topicList: this.state.topicList.concat(topicList),
-          from: from + topicList.length,
+    posts.map(topicList => {
+      this.setState({
+        topicList: this.state.topicList.concat(topicList),
+        from: from + topicList.length,
 
-          isLoading: false,
-          isEnd: topicList.length !== size,
-        })
+        isLoading: false,
+        isEnd: topicList.length !== size,
       })
+    })
   }
 
   jump2Post(topicID: number) {
@@ -62,21 +60,11 @@ class TopicList extends React.Component<{}, State> {
     const { topicList, isLoading, isEnd } = this.state
 
     return (
-      <InfinitiList
-        isLoading={isLoading}
-        isEnd={isEnd}
-        callback={this.fetchTopics}
-      >
+      <InfinitiList isLoading={isLoading} isEnd={isEnd} callback={this.fetchTopics}>
         <List>
-          {
-            topicList.map(info => (
-              <TpoicItem
-                key={info.id}
-                info={info}
-                click={this.jump2Post}
-              />
-            ))
-          }
+          {topicList.map(info => (
+            <TpoicItem key={info.id} info={info} click={this.jump2Post} />
+          ))}
         </List>
       </InfinitiList>
     )

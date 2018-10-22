@@ -2,8 +2,10 @@ import React from 'react'
 import { css, cx } from 'emotion'
 
 import {
-  Card, CardContent,
-  CardHeader, CardActions,
+  Card,
+  CardContent,
+  CardHeader,
+  CardActions,
   Collapse,
   Avatar,
   IconButton,
@@ -40,11 +42,11 @@ type Props = {
   /**
    * 帖子信息
    */
-  postInfo: IPost,
+  postInfo: IPost
   /**
    * 用户信息
    */
-  userInfo: IUser | null,
+  userInfo: IUser | null
 }
 
 type State = {
@@ -63,7 +65,7 @@ class PostItem extends React.PureComponent<Props, State> {
 
   onExpandClick = () => {
     this.setState({
-      expanded: !this.state.expanded
+      expanded: !this.state.expanded,
     })
   }
 
@@ -76,8 +78,8 @@ class PostItem extends React.PureComponent<Props, State> {
 
     return (
       <Card square elevation={0} className={root}>
-
         <CardHeader
+<<<<<<< HEAD
           avatar={
             <Avatar
               className={CursorStyle}
@@ -88,6 +90,10 @@ class PostItem extends React.PureComponent<Props, State> {
             </Avatar>
           }
           title={<div className={CursorStyle} onClick={() => { navigate(`/user/${postInfo.userId}`) }}>{postInfo.userName}</div>}
+=======
+          avatar={<Avatar src={userInfo ? userInfo.portraitUrl : undefined}>匿</Avatar>}
+          title={postInfo.userName}
+>>>>>>> 6793fe3b1b7af77bdd39bc11a5a76a6249a1d858
           subheader={new Date(postInfo.time).toLocaleString()}
           action={
             <IconButton>
@@ -97,9 +103,7 @@ class PostItem extends React.PureComponent<Props, State> {
         />
 
         <CardContent>
-          <Typography component="div">
-            {UBB(postInfo.content)}
-          </Typography>
+          <Typography component="div">{UBB(postInfo.content)}</Typography>
         </CardContent>
 
         {/* <CardActions>

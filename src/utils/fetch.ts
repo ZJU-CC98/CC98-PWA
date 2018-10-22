@@ -97,7 +97,7 @@ interface POSTOptions {
   params?: any
 }
 
-export async function Fetch<T = any>(url: string, options: POSTOptions = {}) {
+export async function POST<T = any>(url: string, options: POSTOptions = {}) {
   const requestInit: RequestInit = {
     method: 'POST',
     headers: new Headers({

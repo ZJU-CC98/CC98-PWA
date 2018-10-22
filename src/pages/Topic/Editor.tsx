@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { css } from 'emotion';
 import {ITopic} from '@cc98/api';
-
+import {POST} from '@/utils/fetch';
 type Props = {
     topic:ITopic
 }
@@ -31,7 +31,7 @@ export default class extends React.Component<Props, State>{
             title: ""
         }
         const contentJson = JSON.stringify(content);
-        // to do 
+        const postData = await POST(`/topic/${topic.id}/post`,{params:contentJson});
     }
     render() {
         return (

@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { injectGlobal } from 'emotion'
-
 import App from './App'
 
 injectGlobal`

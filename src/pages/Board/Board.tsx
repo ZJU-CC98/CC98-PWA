@@ -5,17 +5,20 @@ import List from '@material-ui/core/List';
 import TopicItem from './TopicItem';
 import { css } from 'emotion';
 import BoardHead from './BoardHead';
-//import Pagination from 'rc-pagination';
-//import Select from 'rc-select';
-//import 'rc-pagination/assets/index.css';
-//import 'rc-select/assets/index.css';
+import Pagination from 'rc-pagination';
+import Select from 'rc-select';
+import 'rc-pagination/assets/index.css';
+import 'rc-select/assets/index.css';
+import { navigate } from '@reach/router';
+
 type Props = {
   id: string,
   page: string | null | undefined
 }
 type State = {
   board: IBoard | null,
-  topics: ITopic[]
+  topics: ITopic[],
+  size:number
 }
 const BoardStyle = css`&&{
   display:flex;
@@ -26,10 +29,16 @@ const BoardStyle = css`&&{
 const ListStyle = css`&&{
   width:100%;
 }`
+const PaginationStyle = css`
+  width:100%;
+  display:flex;
+  justify-content:center;
+`
 export default class extends React.Component<Props, State>{
   state: State = {
     board: null,
-    topics: []
+    topics: [],
+    size:0
   }
   async componentDidMount() {
     this.getBoard();
@@ -39,7 +48,10 @@ export default class extends React.Component<Props, State>{
     const { id } = this.props;
     const boardData = await GET<IBoard>(`board/${id}`);
     boardData.map(
-      board => this.setState({ board })
+      board => {
+        const size = (board.topicCount - board.topicCount % 20) / 20 + 1
+        this.setState({ board ,size});
+      }
     )
   }
   getTopics = async () => {
@@ -63,13 +75,23 @@ export default class extends React.Component<Props, State>{
     )
   }
   onChange = (current: number) => {
-    console.log('onChange:current=', current);
+    navigate(`/board/${this.props.id}/${current}`);
+    this.getTopics();
   }
   render() {
-    const { topics, board } = this.state;
+    const { topics, board,size } = this.state;
     return (
       <div className={BoardStyle}>
         <BoardHead data={board} />
+        <div className={PaginationStyle}>
+          <Pagination
+            simple
+            defaultCurrent={1}
+            onChange={this.onChange}
+            total={size}
+          />
+          </div>
+
 
         <List className={ListStyle} component="nav">
           {topics.map((topic) => <TopicItem data={topic} />)}
@@ -80,12 +102,3 @@ export default class extends React.Component<Props, State>{
     );
   }
 }
-{/* <Pagination
-selectComponentClass={Select}
-  showSizeChanger
-  showQuickJumper={{ goButton: <button>确定</button> }}
-  defaultPageSize={20}
-  defaultCurrent={1}
-  onChange={this.onChange}
-  total={450}
-/> */}

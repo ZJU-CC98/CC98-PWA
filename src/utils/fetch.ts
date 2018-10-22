@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from './storage'
+import { getLocalStorage } from './storage'
 
 import { Try, Success, Failure } from './fp/Try'
 
@@ -79,10 +79,63 @@ export async function GET<T = any>(url: string, options: GETOptions = {}) {
   return await cc98Fetch<T>(url + queryStr, requestInit)
 }
 
+interface POSTOptions {
+  /**
+   * 标识不携带 access_token，默认携带
+   */
+  noAuthorization?: true
+  /**
+   * headers 参数，默认 Content-Type: application/json
+   */
+  headers?: Headers | string[][] | Record<string, string>
+  /**
+   * 其他请求参数
+   */
+  requestInit?: RequestInit
+  /**
+   * 参数，默认转为 json
+   */
+  params?: any
+}
 
-// export async function POST<T = any>() {
+export async function POST<T = any>(url: string, options: POSTOptions = {}) {
+  const requestInit: RequestInit = {
+    method: 'POST',
+    headers: new Headers({
+      //  access_token
+      Authorization: options.noAuthorization
+        ? ''
+        : getAccessToken(),
+      'Content-Type': 'application/json',
+      ...options.headers
+    }),
+    body: options.params && JSON.stringify(options.params),
+    ...options.requestInit,
+  }
 
-// }
+  return await cc98Fetch<T>(url, requestInit)
+}
+
+
+type PUTOptions = POSTOptions
+
+export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
+  const requestInit: RequestInit = {
+    method: 'PUT',
+    headers: new Headers({
+      //  access_token
+      Authorization: options.noAuthorization
+        ? ''
+        : getAccessToken(),
+      'Content-Type': 'application/json',
+      ...options.headers
+    }),
+    body: options.params && JSON.stringify(options.params),
+    ...options.requestInit,
+  }
+
+  return await cc98Fetch<T>(url, requestInit)
+}
 
 
 /**

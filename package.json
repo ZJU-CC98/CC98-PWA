@@ -8,7 +8,8 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.dev.js --progress --hot",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
     "bundle-analyze": "cross-env NODE_ENV=production webpack --config config/webpack.bundle-analyze.js",
-    "serve": "serve dist -s -p 8000"
+    "serve": "serve dist -s -p 8000",
+    "beautify-all": "yarn run prettier --config .prettierrc --write 'src/**/*.{ts,tsx}'"
   },
   "dependencies": {
     "@cc98/state": "^1.0.0",

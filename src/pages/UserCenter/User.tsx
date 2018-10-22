@@ -20,7 +20,8 @@ import InfinitiList from '@/components/InfinitiList';
 import getBoardNameById from "@/utils/getBoardName";
 import {navigate} from '@reach/router';
 type Props = {
-  info: IUser
+  info: IUser,
+  isUserCenter:boolean
 }
 type State = {
   recentTopics: ITopic[],
@@ -138,7 +139,7 @@ export default withStyles(styles)(class extends React.Component<Props & { classe
 
   }
   render() {
-    const { classes, info } = this.props;
+    const { classes, info,isUserCenter } = this.props;
     const { isLoading, isEnd, recentTopics } = this.state;
     if (info)
       return (
@@ -148,7 +149,12 @@ export default withStyles(styles)(class extends React.Component<Props & { classe
               <Avatar className={classes.bigAvatar} src={info.portraitUrl} />
             }
             title={<div className={UserNameStyle}>{info.name}</div>}
-            action={<Button color="primary">编辑</Button>}
+            action={
+            <div>
+              <Button color="primary">{isUserCenter?"编辑":"关注"}</Button>
+              {!isUserCenter?<Button color="primary">私信</Button>:null}
+              </div>
+              }
           />
           <List className={OptionStyle}>
             <Divider />
@@ -236,10 +242,13 @@ const TopicItemTimeStyle=css`
 const TopicItemBoardStyle=css`
   font-size :0.8rem;
   color:#35a7ff;
+  cursor:pointer;
 `
 const TopicItemTitleStyle=css`&&{
-  width:100%
+  width:100%;
+  cursor:pointer;
 }`
+
 const TopicItem = (props: TopicProps) => {
   return (
     <ListItem>

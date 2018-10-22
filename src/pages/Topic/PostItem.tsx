@@ -14,6 +14,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { IPost, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
+import { navigate } from '@reach/router';
 
 const root = css`
   margin-top: 6px;
@@ -52,7 +53,9 @@ type State = {
    */
   expanded: boolean
 }
-
+const CursorStyle = css`
+  cursor:pointer;
+`
 class PostItem extends React.PureComponent<Props, State> {
   state: State = {
     expanded: false,
@@ -77,12 +80,14 @@ class PostItem extends React.PureComponent<Props, State> {
         <CardHeader
           avatar={
             <Avatar
+              className={CursorStyle}
+              onClick={() => { navigate(`/user/${postInfo.userId}`) }}
               src={userInfo ? userInfo.portraitUrl : undefined}
             >
               匿
             </Avatar>
           }
-          title={postInfo.userName}
+          title={<div className={CursorStyle} onClick={() => { navigate(`/user/${postInfo.userId}`) }}>{postInfo.userName}</div>}
           subheader={new Date(postInfo.time).toLocaleString()}
           action={
             <IconButton>

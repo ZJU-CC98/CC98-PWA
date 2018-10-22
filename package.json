@@ -18,6 +18,8 @@
     "@reach/router": "^1.2.1",
     "emotion": "^9.2.12",
     "lodash-es": "^4.17.11",
+    "rc-pagination": "^1.17.3",
+    "rc-select": "^8.4.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },

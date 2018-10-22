@@ -20,7 +20,8 @@ interface FetchError {
 
 async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, FetchError>> {
   // const baseUrl = "https://apitest.niconi.cc"
-  const baseUrl = "https://api-v2.cc98.org"
+  // const baseUrl = "https://api-v2.cc98.org"
+  const baseUrl = "https://api0.cc98.inzju.com";
   const requestURL = `${baseUrl}/${url}`
 
   // console.log("Fetch: " + requestURL)

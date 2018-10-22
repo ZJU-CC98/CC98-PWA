@@ -5,6 +5,10 @@ import List from '@material-ui/core/List';
 import TopicItem from './TopicItem';
 import { css } from 'emotion';
 import BoardHead from './BoardHead';
+import Pagination from 'rc-pagination';
+import Select from 'rc-select';
+//import 'rc-pagination/assets/index.css';
+//import 'rc-select/assets/index.css';
 type Props = {
   id: string,
   page: string | null | undefined
@@ -58,11 +62,23 @@ export default class extends React.Component<Props, State>{
       }
     )
   }
+  onChange = (current:number) => {
+    console.log('onChange:current=', current);
+  }
   render() {
     const { topics, board } = this.state;
     return (
       <div className={BoardStyle}>
         <BoardHead data={board} />
+        <Pagination
+        selectComponentClass={Select}
+          showSizeChanger
+          showQuickJumper={{ goButton: <button>确定</button> }}
+          defaultPageSize={20}
+          defaultCurrent={1}
+          onChange={this.onChange}
+          total={450}
+  />
         <List className={ListStyle} component="nav">
           {topics.map((topic) => <TopicItem data={topic} />)}
         </List>

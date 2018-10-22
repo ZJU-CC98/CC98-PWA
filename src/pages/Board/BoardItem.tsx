@@ -25,7 +25,7 @@ export default class extends React.PureComponent<Props>{
     render(){
         const {data}=this.props;
         return  (
-             <Button onClick={()=>navigate(`/board/${data.id}/1`)} className={CardStyle} variant="outlined" > {data.name}</Button>
+             <Button onClick={()=>navigate(`/board/${data.id}`)} className={CardStyle} variant="outlined" > {data.name}</Button>
 
 
       )

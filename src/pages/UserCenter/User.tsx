@@ -20,8 +20,8 @@ import InfinitiList from '@/components/InfinitiList'
 import getBoardNameById from '@/utils/getBoardName'
 import { navigate } from '@reach/router'
 type Props = {
-  info: IUser,
-  isUserCenter:boolean
+  info: IUser
+  isUserCenter: boolean
 }
 type State = {
   recentTopics: ITopic[]
@@ -140,79 +140,8 @@ export default withStyles(styles)(
         })
       }
     }
-<<<<<<< HEAD
-
-  }
-  render() {
-    const { classes, info,isUserCenter } = this.props;
-    const { isLoading, isEnd, recentTopics } = this.state;
-    if (info)
-      return (
-        <div className={UserStyle}>
-          <CardHeader className={classes.row} classes={{ action: classes.action }}
-            avatar={
-              <Avatar className={classes.bigAvatar} src={info.portraitUrl} />
-            }
-            title={<div className={UserNameStyle}>{info.name}</div>}
-            action={
-            <div>
-              <Button color="primary">{isUserCenter?"编辑":"关注"}</Button>
-              {!isUserCenter?<Button color="primary">私信</Button>:null}
-              </div>
-              }
-          />
-          <List className={OptionStyle}>
-            <Divider />
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="性别" secondary={info.gender===1?"男":"女"} />
-            </ListItem>
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="发帖" secondary={info.postCount} />
-            </ListItem>
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="粉丝" secondary={info.fanCount} />
-            </ListItem>
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="财富值" secondary={info.wealth} />
-            </ListItem>
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="威望" secondary={info.prestige} />
-            </ListItem>
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="风评" secondary={info.popularity} />
-            </ListItem>
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="注册时间" secondary={new Date(info.registerTime).toLocaleString()} />
-            </ListItem>
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="最后登录" secondary={new Date(info.lastLogOnTime).toLocaleString()} />
-            </ListItem>
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="生日" secondary={new Date(info.birthday).toLocaleDateString()} />
-            </ListItem>
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="邮箱" secondary={info.emailAddress} />
-            </ListItem>
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="QQ" secondary={info.qq} />
-            </ListItem>
-            <ListItem classes={{ root: classes.itemRoot }}>
-              <ListItemText classes={{ root: classes.root, primary: classes.primary, secondary: classes.secondary }} primary="被删帖数" secondary={info.deleteCount} />
-            </ListItem>
-            <Divider />
-          </List>
-          <ExpansionPanel classes={{ expanded: classes.expanded, root: classes.expandRoot }} defaultExpanded={true}>
-            <ExpansionPanelSummary style={{ maxHeight: "30px", minHeight: "30px" }} className={ExpandPanelSummaryStyle} expandIcon={<ExpandMoreIcon />}>
-              <Typography >发表主题</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails classes={{root:classes.expandDetailRoot}}>
-              <InfinitiList
-                isLoading={isLoading}
-                isEnd={isEnd}
-                callback={this.getRecentTopics}
-=======
     render() {
-      const { classes, info } = this.props
+      const { classes, info, isUserCenter } = this.props
       const { isLoading, isEnd, recentTopics } = this.state
       if (info)
         return (
@@ -222,7 +151,12 @@ export default withStyles(styles)(
               classes={{ action: classes.action }}
               avatar={<Avatar className={classes.bigAvatar} src={info.portraitUrl} />}
               title={<div className={UserNameStyle}>{info.name}</div>}
-              action={<Button color="primary">编辑</Button>}
+              action={
+                <div>
+                  <Button color="primary">{isUserCenter ? '编辑' : '关注'}</Button>
+                  {!isUserCenter ? <Button color="primary">私信</Button> : null}
+                </div>
+              }
             />
             <List className={OptionStyle}>
               <Divider />
@@ -368,7 +302,6 @@ export default withStyles(styles)(
                 style={{ maxHeight: '30px', minHeight: '30px' }}
                 className={ExpandPanelSummaryStyle}
                 expandIcon={<ExpandMoreIcon />}
->>>>>>> 6793fe3b1b7af77bdd39bc11a5a76a6249a1d858
               >
                 <Typography>发表主题</Typography>
               </ExpansionPanelSummary>
@@ -405,28 +338,18 @@ const TopicItemTimeStyle = css`
   margin-left: 2rem;
   color: rgba(0, 0, 0, 0.54);
 `
-<<<<<<< HEAD
-const TopicItemBoardStyle=css`
-  font-size :0.8rem;
-  color:#35a7ff;
-  cursor:pointer;
-`
-const TopicItemTitleStyle=css`&&{
-  width:100%;
-  cursor:pointer;
-}`
-
-=======
 const TopicItemBoardStyle = css`
   font-size: 0.8rem;
   color: #35a7ff;
+  cursor: pointer;
 `
 const TopicItemTitleStyle = css`
   && {
     width: 100%;
+    cursor: pointer;
   }
 `
->>>>>>> 6793fe3b1b7af77bdd39bc11a5a76a6249a1d858
+
 const TopicItem = (props: TopicProps) => {
   return (
     <ListItem>

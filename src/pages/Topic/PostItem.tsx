@@ -16,7 +16,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { IPost, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
-import { navigate } from '@reach/router';
+import { navigate } from '@reach/router'
 
 const root = css`
   margin-top: 6px;
@@ -56,7 +56,7 @@ type State = {
   expanded: boolean
 }
 const CursorStyle = css`
-  cursor:pointer;
+  cursor: pointer;
 `
 class PostItem extends React.PureComponent<Props, State> {
   state: State = {
@@ -79,21 +79,27 @@ class PostItem extends React.PureComponent<Props, State> {
     return (
       <Card square elevation={0} className={root}>
         <CardHeader
-<<<<<<< HEAD
           avatar={
             <Avatar
               className={CursorStyle}
-              onClick={() => { navigate(`/user/${postInfo.userId}`) }}
+              onClick={() => {
+                navigate(`/user/${postInfo.userId}`)
+              }}
               src={userInfo ? userInfo.portraitUrl : undefined}
             >
               匿
             </Avatar>
           }
-          title={<div className={CursorStyle} onClick={() => { navigate(`/user/${postInfo.userId}`) }}>{postInfo.userName}</div>}
-=======
-          avatar={<Avatar src={userInfo ? userInfo.portraitUrl : undefined}>匿</Avatar>}
-          title={postInfo.userName}
->>>>>>> 6793fe3b1b7af77bdd39bc11a5a76a6249a1d858
+          title={
+            <div
+              className={CursorStyle}
+              onClick={() => {
+                navigate(`/user/${postInfo.userId}`)
+              }}
+            >
+              {postInfo.userName}
+            </div>
+          }
           subheader={new Date(postInfo.time).toLocaleString()}
           action={
             <IconButton>

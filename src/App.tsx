@@ -41,11 +41,7 @@ const App: React.SFC = () => (
       <Route path="/board/:id/:page" component={Board} />
       <Route path="/userCenter" component={UserCenter} />
       <Route path="/user/:id" component={UserCenter} />
-<<<<<<< HEAD
-      <Route path="/user/name/:name" component={UserCenter} />
-=======
       <Route path="/setting" component={Setting} />
->>>>>>> 6793fe3b1b7af77bdd39bc11a5a76a6249a1d858
 
       <Route path="/logIn" component={LogIn} />
       <Route path="/error/401" component={Page401} />

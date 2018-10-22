@@ -43,6 +43,7 @@
     "css-loader": "^1.0.0",
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^4.0.0-beta.2",
+    "husky": "^1.1.2",
     "lint-staged": "^7.3.0",
     "prettier": "^1.14.3",
     "style-loader": "^0.23.1",

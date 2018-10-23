@@ -1,3 +1,7 @@
+/**
+ * @author dongyansong
+ * @date 2018-10-23
+ */
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/utils/storage'
 import { Container } from '@cc98/state'
 

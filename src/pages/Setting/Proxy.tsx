@@ -1,8 +1,8 @@
-import React from 'react'
 import { Subscribe } from '@cc98/state'
 import { ListItem, ListItemText, Switch } from '@material-ui/core'
+import React from 'react'
 
-import store, { Store, HostType } from '@/model/apiHost'
+import store, { HostType, Store } from '@/model/apiHost'
 
 export default () => (
   <Subscribe to={[store]}>

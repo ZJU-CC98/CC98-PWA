@@ -1,5 +1,5 @@
-import React from 'react'
 import { navigate } from '@reach/router'
+import React from 'react'
 
 import InfinitiList from '@/components/InfinitiList'
 import { List } from '@material-ui/core'
@@ -8,7 +8,7 @@ import TpoicItem from './TopicItem'
 import { GET } from '@/utils/fetch'
 import { ITopic } from '@cc98/api'
 
-type State = {
+interface State {
   topicList: ITopic[]
 
   from: number
@@ -53,7 +53,7 @@ class TopicList extends React.Component<{}, State> {
   }
 
   jump2Post(topicID: number) {
-    navigate('/topic/' + topicID)
+    navigate(`/topic/${topicID}`)
   }
 
   render() {

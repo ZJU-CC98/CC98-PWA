@@ -1,11 +1,11 @@
-import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
+import React from 'react'
 
 import LoadingCircle from '@/components/LoadingCircle'
+import Editor from './Editor'
 import PostHead from './PostHead'
 import PostList from './PostList'
-import Editor from './Editor'
 
 import { GET } from '@/utils/fetch'
 import { ITopic } from '@cc98/api'
@@ -14,11 +14,11 @@ const root = css`
   background-color: #eee;
 `
 
-type Props = {
+interface Props {
   topicID: string
 }
 
-type State = {
+interface State {
   topicInfo: ITopic | null
 }
 
@@ -28,7 +28,7 @@ class Topic extends React.PureComponent<Props, State> {
   }
 
   async componentDidMount() {
-    const topicID = parseInt(this.props.topicID)
+    const topicID = parseInt(this.props.topicID, 10)
 
     if (isNaN(topicID)) {
       navigate('/404')

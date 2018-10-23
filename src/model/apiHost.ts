@@ -1,5 +1,5 @@
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/utils/storage'
 import { Container } from '@cc98/state'
-import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/utils/storage'
 
 import basic from './basicInstance'
 
@@ -8,25 +8,25 @@ export enum HostType {
   Proxy,
 }
 
-interface Host {
+interface IHost {
   oauth: string
   api: string
   type: HostType
 }
 
-const defaultHost: Host = {
+const defaultHost: IHost = {
   oauth: 'https://openid.cc98.org/connect/token',
   api: 'https://api-v2.cc98.org',
   type: HostType.defaultHost,
 }
 
-const proxy: Host = {
+const proxy: IHost = {
   oauth: 'https://openid0.cc98.inzju.com/connect/token',
   api: 'https://api0.cc98.inzju.com',
   type: HostType.Proxy,
 }
 
-export class Store extends Container<Host> {
+export class Store extends Container<IHost> {
   constructor() {
     super()
     this.state = getLocalStorage('proxy') ? proxy : defaultHost
@@ -39,7 +39,7 @@ export class Store extends Container<Host> {
       Object.assign(state, defaultHost)
     })
     removeLocalStorage('proxy')
-    basic.LogOut() // logout when change proxy
+    basic.logOut() // logout when change proxy
   }
 
   useProxy() {
@@ -47,7 +47,7 @@ export class Store extends Container<Host> {
       Object.assign(state, proxy)
     })
     setLocalStorage('proxy', 'proxy')
-    basic.LogOut() // logout when change proxy
+    basic.logOut() // logout when change proxy
   }
 }
 

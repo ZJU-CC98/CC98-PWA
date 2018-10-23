@@ -1,13 +1,13 @@
-import React from 'react'
 import { GET } from '@/utils/fetch'
 import { IBaseBoard } from '@cc98/api'
+import React from 'react'
 import BaseBoard from './BaseBoardItem'
-type Props = {}
-type State = {
+
+interface State {
   boardList: IBaseBoard[]
   isLoading: boolean
 }
-export default class extends React.Component<Props, State> {
+export default class extends React.Component<null, State> {
   state: State = {
     boardList: [],
     isLoading: true,

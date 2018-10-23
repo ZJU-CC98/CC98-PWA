@@ -1,18 +1,17 @@
-import React from 'react'
 import { IBaseBoard, IBoard } from '@cc98/api'
-import { css } from 'emotion'
-import BoardItem from './BoardItem'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { withStyles } from '@material-ui/core/styles'
+import { css } from 'emotion'
+import React from 'react'
+import BoardItem from './BoardItem'
 
-type Props = {
+interface Props {
   data: IBaseBoard
 }
-type State = {}
 const root = css`
   border-bottom: #eaeaea solid thin;
 `
@@ -50,7 +49,7 @@ const styles = (theme: any) => ({
 })
 
 export default withStyles(styles)(
-  class extends React.Component<Props & { classes: any }, State> {
+  class extends React.Component<Props & { classes: any }> {
     render() {
       const { data, classes } = this.props
       return (

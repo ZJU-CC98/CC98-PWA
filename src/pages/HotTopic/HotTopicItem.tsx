@@ -4,7 +4,7 @@ import { ListItem, ListItemText } from '@material-ui/core'
 
 import { IHotTopic } from '@cc98/api'
 
-type Props = {
+interface Props {
   info: IHotTopic
   click?: (topicID: number) => void
 }

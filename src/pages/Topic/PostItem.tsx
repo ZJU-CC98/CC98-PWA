@@ -1,13 +1,13 @@
-import React from 'react'
 import { css, cx } from 'emotion'
+import React from 'react'
 
 import {
+  Avatar,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
-  CardActions,
   Collapse,
-  Avatar,
   IconButton,
   Typography,
 } from '@material-ui/core'
@@ -38,7 +38,7 @@ const expandOpen = css`
   transform: rotate(180deg);
 `
 
-type Props = {
+interface Props {
   /**
    * 帖子信息
    */
@@ -49,7 +49,7 @@ type Props = {
   userInfo: IUser | null
 }
 
-type State = {
+interface State {
   /**
    * 签名档是否展开
    */

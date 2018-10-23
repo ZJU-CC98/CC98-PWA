@@ -27,7 +27,7 @@ export function getLocalStorage(key: string): string | object | null {
   const expirationTime = localStorage.getItem(`${key}_expirationTime`)
 
   // 存储的值已经过期
-  if (expirationTime && Date.now() > parseInt(expirationTime)) {
+  if (expirationTime && Date.now() > parseInt(expirationTime, 10)) {
     localStorage.removeItem(key)
     return null
   }

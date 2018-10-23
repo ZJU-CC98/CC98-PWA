@@ -1,16 +1,16 @@
-import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
+import React from 'react'
 
-import { Drawer, List, ListItem, ListItemText, ListItemIcon, Divider } from '@material-ui/core'
+import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 
-import HomeIcon from '@material-ui/icons/Home'
-import Whatshot from '@material-ui/icons/Whatshot'
-import FiberNew from '@material-ui/icons/FiberNew'
 import AspectRatio from '@material-ui/icons/AspectRatio'
 import DashBoard from '@material-ui/icons/DashBoard'
-import Settings from '@material-ui/icons/Settings'
 import ExitToApp from '@material-ui/icons/ExitToApp'
+import FiberNew from '@material-ui/icons/FiberNew'
+import HomeIcon from '@material-ui/icons/Home'
+import Settings from '@material-ui/icons/Settings'
+import Whatshot from '@material-ui/icons/Whatshot'
 
 const list = css`
   width: 190px;
@@ -20,7 +20,7 @@ const jump = (link: string) => () => {
   navigate(link)
 }
 
-type ItemProps = {
+interface ItemProps {
   icon: React.ReactElement<any>
   text: string
   onClick: () => void
@@ -33,7 +33,7 @@ const Item: React.SFC<ItemProps> = ({ icon, text, onClick }) => (
   </ListItem>
 )
 
-type Props = {
+interface Props {
   isLogIn: boolean
   open: boolean
   onClose: () => void

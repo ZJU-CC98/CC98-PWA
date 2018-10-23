@@ -1,14 +1,14 @@
-import React from 'react'
 import { navigate } from '@reach/router'
+import React from 'react'
 
 import { GET } from '@/utils/fetch'
 import { IHotTopic } from '@cc98/api'
 
-import { List } from '@material-ui/core'
 import LoadingCircle from '@/components/LoadingCircle'
+import { List } from '@material-ui/core'
 import HotTopicItem from './HotTopicItem'
 
-type State = {
+interface State {
   hotTopics: IHotTopic[]
   isLoading: boolean
 }
@@ -24,9 +24,9 @@ class TopicList extends React.Component<{}, State> {
       isLoading: true,
     })
 
-    const hotTopics = await GET<IHotTopic[]>('topic/hot')
+    const res = await GET<IHotTopic[]>('topic/hot')
 
-    hotTopics.fail().succeed(hotTopics => {
+    res.fail().succeed(hotTopics => {
       this.setState({
         hotTopics,
         isLoading: false,
@@ -35,7 +35,7 @@ class TopicList extends React.Component<{}, State> {
   }
 
   jump2Post(topicID: number) {
-    navigate('/topic/' + topicID)
+    navigate(`/topic/${topicID}`)
   }
 
   render() {

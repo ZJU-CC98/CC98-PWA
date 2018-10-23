@@ -1,9 +1,9 @@
-import React from 'react'
 import { debounce } from 'lodash-es'
+import React from 'react'
 
 import LoadingCircle from '@/components/LoadingCircle'
 
-type Props = {
+interface Props {
   /**
    * 列表正在加载中，回调不会重复触发
    */

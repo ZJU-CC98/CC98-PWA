@@ -1,3 +1,4 @@
+/* tslint:disable */
 /**
  * Functor Try
  */
@@ -95,7 +96,7 @@ export class Try<S, F> {
   succeed(func: (x: S) => void) {
     // force handle error before get value
     if (!this._hasHandleErr) {
-      throw '[Try] You must use `fail` to handle error first.'
+      throw new Error('[Try] You must use `fail` to handle error first.')
     }
 
     if (this._value.constructor === Success) {

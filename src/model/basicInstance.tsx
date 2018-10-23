@@ -1,7 +1,7 @@
 import { Container } from '@cc98/state'
 
 import { GET, logIn } from '@/utils/fetch'
-import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/utils/storage'
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/utils/storage'
 import { IUser } from '@cc98/api'
 
 interface State {
@@ -28,40 +28,40 @@ class BasicContainer extends Container<State> {
 
   constructor() {
     super()
-    this.FreshInfo()
+    this.freshInfo()
   }
 
-  async FreshInfo() {
+  async freshInfo() {
     if (!this.state.isLogIn) return
 
     const myInfo = await GET<IUser>('me')
-    myInfo.fail().succeed(myInfo => {
+    myInfo.fail().succeed(info => {
       this.put(state => {
-        state.myInfo = myInfo
+        state.myInfo = info
       })
     })
   }
 
-  async LogIn(username: string, password: string) {
+  async logIn(username: string, password: string) {
     const token = await logIn(username, password)
 
-    token.fail().succeed(token => {
-      const access_token = `${token.token_type} ${token.access_token}`
-      setLocalStorage('access_token', access_token, token.expires_in)
+    token.fail().succeed(newToken => {
+      const access_token = `${newToken.token_type} ${newToken.access_token}`
+      setLocalStorage('access_token', access_token, newToken.expires_in)
       // refresh_token 有效期一个月
-      setLocalStorage('refresh_token', token.refresh_token, 2592000)
+      setLocalStorage('refresh_token', newToken.refresh_token, 2592000)
 
       this.put(state => {
         state.isLogIn = true
       })
     })
 
-    this.FreshInfo()
+    this.freshInfo()
 
     return token
   }
 
-  LogOut() {
+  logOut() {
     removeLocalStorage('access_token')
     removeLocalStorage('refresh_token')
 
@@ -70,13 +70,13 @@ class BasicContainer extends Container<State> {
     })
   }
 
-  OpenDrawer() {
+  openDrawer() {
     this.put(state => {
       state.isDrawerOpen = true
     })
   }
 
-  CloseDrawer() {
+  closeDrawer() {
     this.put(state => {
       state.isDrawerOpen = false
     })

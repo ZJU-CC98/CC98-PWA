@@ -1,6 +1,6 @@
-import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
+import React from 'react'
 
 import { Avatar, Typography } from '@material-ui/core'
 
@@ -36,7 +36,7 @@ const tologIn = () => {
   navigate('/logIn')
 }
 
-type Props = {
+interface Props {
   isLogIn: boolean
   info: IUser | null
 }
@@ -46,7 +46,7 @@ const UserInfo: React.SFC<Props> = ({ isLogIn, info }) => (
     <Avatar
       className={avatar}
       src={isLogIn ? info && info.portraitUrl : defaultAvatarImg}
-      onClick={isLogIn ? () => {} : tologIn}
+      onClick={isLogIn ? () => null : tologIn}
     />
     <Typography className={name} variant="body1">
       {isLogIn ? info && info.name : '笨蛋⑨'}

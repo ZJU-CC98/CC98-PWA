@@ -1,15 +1,15 @@
-import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
+import React from 'react'
 
 import {
-  Typography,
-  Input,
-  InputLabel,
-  FormControl,
-  FormHelperText,
   Button,
   CircularProgress,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputLabel,
+  Typography,
 } from '@material-ui/core'
 
 import basicInstance from '@/model/basicInstance'
@@ -44,12 +44,12 @@ const buttonProgress = css`
   margin-left: 15px;
 `
 
-type FormField = {
+interface FormField {
   username: string
   password: string
 }
 
-type State = {
+interface State {
   formField: FormField
   loading: boolean
   logInFail: boolean
@@ -85,7 +85,7 @@ class LogIn extends React.PureComponent<{}, State> {
       logInFail: false,
     })
 
-    const token = await basicInstance.LogIn(username, password)
+    const token = await basicInstance.logIn(username, password)
 
     token
       .fail(() => {
@@ -94,7 +94,7 @@ class LogIn extends React.PureComponent<{}, State> {
             loading: false,
             logInFail: true,
           })
-        }, 2000)
+        },         2000)
       })
       .succeed(_ => {
         setTimeout(() => navigate('/'), 1500)

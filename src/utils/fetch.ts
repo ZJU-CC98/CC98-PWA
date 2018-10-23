@@ -1,6 +1,7 @@
+/* tslint:disable */
 import { getLocalStorage } from './storage'
 
-import { Try, Success, Failure } from './fp/Try'
+import { Failure, Success, Try } from './fp/Try'
 
 import host from '@/model/apiHost'
 

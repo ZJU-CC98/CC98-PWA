@@ -1,24 +1,24 @@
-import React from 'react'
-// https://reach.tech/router/api/Router
-import { Router, RouteComponentProps } from '@reach/router'
-import { MuiThemeProvider } from '@material-ui/core/styles'
 import { Provider } from '@cc98/state'
+import { MuiThemeProvider } from '@material-ui/core/styles'
+// https://reach.tech/router/api/Router
+import { RouteComponentProps, Router } from '@reach/router'
+import React from 'react'
 
 import theme from './theme'
 
 import TopBar from './components/TopBar'
 
-import Home from './pages/Home'
-import HotTopic from './pages/HotTopic'
-import NewTopic from './pages/NewTopic'
 import BoardList from './pages/Board'
 import Board from './pages/Board/Board'
-import UserCenter from './pages/UserCenter'
-import Setting from './pages/Setting'
-import Topic from './pages/Topic'
-import LogIn from './pages/LogIn'
 import Page401 from './pages/Error/401'
 import Page404 from './pages/Error/404'
+import Home from './pages/Home'
+import HotTopic from './pages/HotTopic'
+import LogIn from './pages/LogIn'
+import NewTopic from './pages/NewTopic'
+import Setting from './pages/Setting'
+import Topic from './pages/Topic'
+import UserCenter from './pages/UserCenter'
 
 // TODO: cache
 const Route: React.SFC<

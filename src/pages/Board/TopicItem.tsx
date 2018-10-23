@@ -1,11 +1,11 @@
-import React from 'react'
+import { ITopic } from '@cc98/api'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { ITopic } from '@cc98/api'
-import { css } from 'emotion'
 import { navigate } from '@reach/router'
-type Props = {
+import { css } from 'emotion'
+import React from 'react'
+interface Props {
   data: ITopic
 }
 
@@ -53,10 +53,9 @@ export default class extends React.PureComponent<Props> {
           className={subText}
           secondary={
             <div className={text}>
-              <div>{'作者:' + data.userName ? data.userName : '匿名'}</div>
-              <div>{'回复:' + data.replyCount}</div>
-            </div>
-          }
+              <div>{`作者:${data.userName ? data.userName : '匿名'}`}</div>
+              <div>{`回复:${data.replyCount}`}</div>
+            </div>}
         />
       </ListItem>
     )

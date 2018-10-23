@@ -5,7 +5,7 @@ import { ListItem, ListItemText } from '@material-ui/core'
 
 import { ITopic } from '@cc98/api'
 
-type Props = {
+interface Props {
   info: ITopic
   click?: (topicID: number) => void
 }

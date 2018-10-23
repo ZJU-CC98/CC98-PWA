@@ -6,11 +6,11 @@ import PostItem from './PostItem'
 import { GET } from '@/utils/fetch'
 import { IPost, IUser } from '@cc98/api'
 
-type Props = {
+interface Props {
   topicID: number
 }
 
-type State = {
+interface State {
   postList: IPost[]
   userMap: {
     [id: string]: IUser
@@ -70,9 +70,9 @@ class TopicList extends React.Component<Props, State> {
 
     if (!query) return
 
-    const users = await GET<IUser[]>(`user?${query}`)
+    const res = await GET<IUser[]>(`user?${query}`)
 
-    users.fail().succeed(users => {
+    res.fail().succeed(users => {
       const newUsers: State['userMap'] = {}
       users.forEach(user => {
         newUsers[user.id] = user

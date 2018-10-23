@@ -1,29 +1,29 @@
-import React from 'react'
-import CardHeader from '@material-ui/core/CardHeader'
-import Avatar from '@material-ui/core/Avatar'
+import InfinitiList from '@/components/InfinitiList'
 import { GET } from '@/utils/fetch'
-import { IUser, ITopic } from '@cc98/api'
-import { css } from 'emotion'
-import { withStyles } from '@material-ui/core/styles'
+import getBoardNameById from '@/utils/getBoardName'
+import { ITopic, IUser } from '@cc98/api'
+import UBB from '@cc98/ubb-react'
+import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
+import CardHeader from '@material-ui/core/CardHeader'
+import Divider from '@material-ui/core/Divider'
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import Divider from '@material-ui/core/Divider'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import UBB from '@cc98/ubb-react'
-import InfinitiList from '@/components/InfinitiList'
-import getBoardNameById from '@/utils/getBoardName'
 import { navigate } from '@reach/router'
-type Props = {
+import { css } from 'emotion'
+import React from 'react'
+interface Props {
   info: IUser
   isUserCenter: boolean
 }
-type State = {
+interface State {
   recentTopics: ITopic[]
   isLoading: boolean
   isEnd: boolean
@@ -130,7 +130,7 @@ export default withStyles(styles)(
             const boardName = await getBoardNameById(topic.boardId)
             topic.boardName = boardName
           })
-          console.log(newRecentTopics)
+          // console.log(newRecentTopics)
           this.setState({
             recentTopics: recentTopics.concat(newRecentTopics),
             from: from + newRecentTopics.length,
@@ -143,7 +143,7 @@ export default withStyles(styles)(
     render() {
       const { classes, info, isUserCenter } = this.props
       const { isLoading, isEnd, recentTopics } = this.state
-      if (info)
+      if (info) {
         return (
           <div className={UserStyle}>
             <CardHeader
@@ -315,11 +315,12 @@ export default withStyles(styles)(
             </ExpansionPanel>
           </div>
         )
-      else return null
+      }
+      return null
     }
   }
 )
-type TopicProps = {
+interface TopicProps {
   data: ITopic
 }
 const TopicItemRootStyle = css`

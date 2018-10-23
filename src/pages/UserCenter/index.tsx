@@ -1,14 +1,14 @@
+import basicInstance, { BasicContainer } from '@/model/basicInstance'
+import { GET } from '@/utils/fetch'
+import { getLocalStorage, setLocalStorage } from '@/utils/storage'
+import { IUser } from '@cc98/api'
+import { Subscribe } from '@cc98/state'
 import React from 'react'
 import User from './User'
-import { getLocalStorage, setLocalStorage } from '@/utils/storage'
-import basicInstance, { BasicContainer } from '@/model/basicInstance'
-import { Subscribe } from '@cc98/state'
-import { IUser } from '@cc98/api'
-import { GET } from '@/utils/fetch'
-type Props = {
+interface Props {
   id: string | undefined
 }
-type State = {
+interface State {
   info: IUser | null
 }
 export default class extends React.Component<Props, State> {
@@ -25,13 +25,12 @@ export default class extends React.Component<Props, State> {
   render() {
     const { id } = this.props
     if (id) return this.state.info ? <User info={this.state.info} /> : null
-    else
-      return (
-        <Subscribe to={[basicInstance]}>
-          {(basic: BasicContainer) => {
-            return basic.state.myInfo ? <User info={basic.state.myInfo} /> : null
-          }}
-        </Subscribe>
-      )
+    return (
+      <Subscribe to={[basicInstance]}>
+        {(basic: BasicContainer) => {
+          return basic.state.myInfo ? <User info={basic.state.myInfo} /> : null
+        }}
+      </Subscribe>
+    )
   }
 }

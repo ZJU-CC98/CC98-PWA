@@ -1,13 +1,13 @@
-import React from 'react'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import { css } from 'emotion'
-import { ITopic } from '@cc98/api'
 import { POST } from '@/utils/fetch'
-type Props = {
+import { ITopic } from '@cc98/api'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import { css } from 'emotion'
+import React from 'react'
+interface Props {
   topic: ITopic
 }
-type State = {
+interface State {
   value: string
 }
 const row = css`

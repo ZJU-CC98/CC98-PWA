@@ -1,5 +1,5 @@
-import React from 'react'
 import { css } from 'emotion'
+import React from 'react'
 
 import bg9 from '@/assets/bg9.jpg'
 import LayoutCenter from '@/components/LayoutCenter'
@@ -39,7 +39,7 @@ const Home: React.SFC = () => (
         className={button}
         variant="outlined"
         disableRipple
-        onClick={() => basicInstance.OpenDrawer()}
+        onClick={() => basicInstance.openDrawer()}
       >
         <Typography className={text}>琪露诺 の CC98</Typography>
       </Button>

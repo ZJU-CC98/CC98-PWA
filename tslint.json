@@ -4,12 +4,23 @@
       "tslint:recommended",
       "tslint-config-airbnb",
       "tslint-react",
-      "eslint-plugin-emotion"
+      "tslint-eslint-rules",
+      "tslint-lines-between-class-members"
   ],
   "jsRules": {
       "import-name": false
   },
   "rules": {
+    "indent": [true, "spaces", 2],
+    "eofline": true,
+    "max-classes-per-file": [true, 1],
+    "max-file-line-count": [true, 300],
+    "arrow-return-shorthand": [true, "multiline"],
+    "newline-before-return": true,
+    "no-consecutive-blank-lines": [true],
+    "no-irregular-whitespace": true,
+    "no-trailing-whitespace": true,
+    "lines-between-class-members": true,
     "semicolon": false,
     "no-boolean-literal-compare": true,
     "object-literal-sort-keys": false,
@@ -34,7 +45,8 @@
     ],
     "jsx-no-multiline-js": false,
     "jsx-no-lambda": false,
-    "interface-name": false
+    "interface-name": false,
+    "no-any": true
   },
   "rulesDirectory": []
 }

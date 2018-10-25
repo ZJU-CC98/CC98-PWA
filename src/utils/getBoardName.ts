@@ -10,6 +10,7 @@ export default async function getBoardNameById(id: number) {
         if (id === childBoard.id) return childBoard.name
       }
     }
+
     return '版面不存在'
   }
 

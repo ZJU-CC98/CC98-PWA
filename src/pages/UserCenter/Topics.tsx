@@ -141,7 +141,7 @@ export default withStyles(styles)(
           <ExpansionPanelDetails classes={{ root: classes.expandDetailRoot }}>
             <InfinitiList isLoading={isLoading} isEnd={isEnd} callback={this.getRecentTopics}>
               {recentTopics.map(topic => (
-                <TopicItem data={topic} />
+                <TopicItem key={topic.id} data={topic} />
               ))}
             </InfinitiList>
           </ExpansionPanelDetails>

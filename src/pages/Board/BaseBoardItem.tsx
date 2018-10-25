@@ -65,7 +65,7 @@ export default withStyles(styles)(
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={ChildBoardStyle}>
             {data.boards.map(board => (
-              <BoardItem data={board} />
+              <BoardItem key={board.id} data={board} />
             ))}
           </ExpansionPanelDetails>
         </ExpansionPanel>

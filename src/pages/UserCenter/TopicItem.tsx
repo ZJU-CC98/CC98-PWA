@@ -2,6 +2,7 @@ import { ITopic } from '@cc98/api'
 import ListItem from '@material-ui/core/ListItem'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
+import React from 'react'
 
 interface TopicProps {
   data: ITopic
@@ -35,7 +36,7 @@ const TopicItemTitleStyle = css`
 `
 
 export default (props: TopicProps) => (
-  <ListItem>
+  <ListItem key={props.data.id}>
     <div className={TopicItemRootStyle}>
       <div className={TopicItemMetaStyle}>
         <div

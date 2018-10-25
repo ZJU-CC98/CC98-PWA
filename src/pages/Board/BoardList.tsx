@@ -34,7 +34,7 @@ export default class extends React.Component<{}, State> {
     return (
       <div>
         {boardList.map((data: IBaseBoard) => (
-          <BaseBoard data={data} />
+          <BaseBoard key={data.id} data={data} />
         ))}
       </div>
     )

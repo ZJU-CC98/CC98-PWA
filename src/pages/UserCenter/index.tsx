@@ -7,6 +7,7 @@ import React from 'react'
 import User from './User'
 interface Props {
   id: string | undefined
+  name: string | undefined
 }
 interface State {
   info: IUser | null
@@ -17,16 +18,20 @@ export default class extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    const { id } = this.props
+    const { id, name } = this.props
     if (id) {
       const userInfoData = await GET<IUser>(`/user/${id}`)
+      userInfoData.fail().succeed(userInfo => this.setState({ info: userInfo }))
+    }
+    if (name) {
+      const userInfoData = await GET<IUser>(`/user/name/${name}`)
       userInfoData.fail().succeed(userInfo => this.setState({ info: userInfo }))
     }
   }
 
   render() {
-    const { id } = this.props
-    if (id) return this.state.info ? <User info={this.state.info} isUserCenter={false} /> : null
+    const { id, name } = this.props
+    if (id || name) return this.state.info ? <User info={this.state.info} isUserCenter={false} /> : null
 
     return (
       <Subscribe to={[basicInstance]}>

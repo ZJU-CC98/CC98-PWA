@@ -17,6 +17,9 @@ interface Props {
 }
 const CardStyle = css`
   width: 100%;
+  position:sticky;
+  top:0px;
+  z-index:1105;
 `
 const TitleStyle = css`
   && {

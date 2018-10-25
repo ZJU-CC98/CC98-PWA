@@ -15,6 +15,7 @@ export default class extends React.Component<Props, State> {
   state: State = {
     info: null,
   }
+
   async componentDidMount() {
     const { id } = this.props
     if (id) {
@@ -22,14 +23,16 @@ export default class extends React.Component<Props, State> {
       userInfoData.fail().succeed(userInfo => this.setState({ info: userInfo }))
     }
   }
+
   render() {
     const { id } = this.props
-    if (id) return this.state.info ? <User info={this.state.info} /> : null
+    if (id) return this.state.info ? <User info={this.state.info} isUserCenter={false} /> : null
+
     return (
       <Subscribe to={[basicInstance]}>
-        {(basic: BasicContainer) => {
-          return basic.state.myInfo ? <User info={basic.state.myInfo} /> : null
-        }}
+        {(basic: BasicContainer) =>
+          basic.state.myInfo ? <User info={basic.state.myInfo} isUserCenter={true} /> : null
+        }
       </Subscribe>
     )
   }

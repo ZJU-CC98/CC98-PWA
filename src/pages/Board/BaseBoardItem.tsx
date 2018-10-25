@@ -2,7 +2,8 @@ import { IBaseBoard, IBoard } from '@cc98/api'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import { withStyles } from '@material-ui/core/styles'
+import { StyleRules, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { css } from 'emotion'
@@ -38,7 +39,7 @@ const BaseBoardContainerStyle = css`
     margin: 0 0 0 0;
   }
 `
-const styles = (theme: any) => ({
+const styles: StyleRules = {
   root: {
     width: '100%',
   },
@@ -46,12 +47,13 @@ const styles = (theme: any) => ({
     marginTop: '0.5rem',
     marginBottom: '0.5rem',
   },
-})
+}
 
 export default withStyles(styles)(
-  class extends React.Component<Props & { classes: any }> {
+  class extends React.Component<Props & { classes: ClassNameMap }> {
     render() {
       const { data, classes } = this.props
+
       return (
         <ExpansionPanel classes={{ expanded: classes.expanded }} defaultExpanded={true}>
           <ExpansionPanelSummary

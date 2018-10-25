@@ -7,14 +7,16 @@ interface State {
   boardList: IBaseBoard[]
   isLoading: boolean
 }
-export default class extends React.Component<null, State> {
+export default class extends React.Component<{}, State> {
   state: State = {
     boardList: [],
     isLoading: true,
   }
+
   async componentDidMount() {
     this.getBoardList()
   }
+
   getBoardList = async () => {
     this.setState({ isLoading: true })
     const baseBoardsData = await GET<IBaseBoard[]>('/board/all')
@@ -25,8 +27,10 @@ export default class extends React.Component<null, State> {
       })
     )
   }
+
   render() {
     const { boardList, isLoading } = this.state
+
     return (
       <div>
         {boardList.map((data: IBaseBoard) => (

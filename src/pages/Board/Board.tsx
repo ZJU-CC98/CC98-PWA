@@ -44,10 +44,12 @@ export default class extends React.Component<Props, State> {
     topics: [],
     size: 0,
   }
+
   async componentDidMount() {
     this.getBoard()
     this.getTopics()
   }
+
   getBoard = async () => {
     const { id } = this.props
     const boardData = await GET<IBoard>(`board/${id}`)
@@ -56,6 +58,7 @@ export default class extends React.Component<Props, State> {
       this.setState({ board, size })
     })
   }
+
   getTopics = async () => {
     const { id, page } = this.props
     let _page: number = 1
@@ -76,8 +79,10 @@ export default class extends React.Component<Props, State> {
     navigate(`/board/${this.props.id}/${current}`)
     this.getTopics()
   }
+
   render() {
     const { topics, board, size } = this.state
+
     return (
       <div className={BoardStyle}>
         <BoardHead data={board} />

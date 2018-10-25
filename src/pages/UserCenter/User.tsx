@@ -1,36 +1,24 @@
-import InfinitiList from '@/components/InfinitiList'
-import { GET } from '@/utils/fetch'
-import getBoardNameById from '@/utils/getBoardName'
 import { ITopic, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CardHeader from '@material-ui/core/CardHeader'
 import Divider from '@material-ui/core/Divider'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import { withStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { navigate } from '@reach/router'
+import { StyleRules, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import { css } from 'emotion'
 import React from 'react'
+import Topics from './Topics'
+
 interface Props {
   info: IUser
   isUserCenter: boolean
 }
-interface State {
-  recentTopics: ITopic[]
-  isLoading: boolean
-  isEnd: boolean
-  from: number
-  size: number
-}
-const styles = {
+
+const styles: StyleRules = {
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -64,20 +52,6 @@ const styles = {
   secondary: {
     color: 'rgba(0, 0, 0, 0.87)',
   },
-  expanded: {
-    marginTop: '0.5rem',
-    marginBottom: '0.5rem',
-  },
-  expandRoot: {
-    width: '100%',
-    margin: '0 0 0 0',
-  },
-  expandDetailRoot: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    padding: '0 0 0 0 ',
-  },
 }
 const UserNameStyle = css`
   && {
@@ -96,53 +70,11 @@ const OptionStyle = css`
     width: 100%;
   }
 `
-const ExpandPanelSummaryStyle = css`
-  && {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 1rem;
-    margin: 0 0 0 0;
-  }
-`
+
 export default withStyles(styles)(
-  class extends React.Component<Props & { classes: any }, State> {
-    state: State = {
-      recentTopics: [],
-      isLoading: false,
-      isEnd: false,
-      from: 0,
-      size: 10,
-    }
-    componentDidMount() {
-      this.getRecentTopics()
-    }
-    getRecentTopics = async () => {
-      const { info } = this.props
-      this.setState({ isLoading: true })
-      const { from, recentTopics, size } = this.state
-      if (info) {
-        const recentTopicsData = await GET<ITopic[]>(
-          `/user/${info.id}/recent-topic?from=${from}&size=10`
-        )
-        recentTopicsData.fail().succeed(async (newRecentTopics: ITopic[]) => {
-          newRecentTopics.forEach(async topic => {
-            const boardName = await getBoardNameById(topic.boardId)
-            topic.boardName = boardName
-          })
-          // console.log(newRecentTopics)
-          this.setState({
-            recentTopics: recentTopics.concat(newRecentTopics),
-            from: from + newRecentTopics.length,
-            isLoading: false,
-            isEnd: size !== newRecentTopics.length,
-          })
-        })
-      }
-    }
+  class extends React.Component<Props & { classes: ClassNameMap }, {}> {
     render() {
       const { classes, info, isUserCenter } = this.props
-      const { isLoading, isEnd, recentTopics } = this.state
       if (info) {
         return (
           <div className={UserStyle}>
@@ -294,80 +226,12 @@ export default withStyles(styles)(
               </ListItem>
               <Divider />
             </List>
-            <ExpansionPanel
-              classes={{ expanded: classes.expanded, root: classes.expandRoot }}
-              defaultExpanded={true}
-            >
-              <ExpansionPanelSummary
-                style={{ maxHeight: '30px', minHeight: '30px' }}
-                className={ExpandPanelSummaryStyle}
-                expandIcon={<ExpandMoreIcon />}
-              >
-                <Typography>发表主题</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails classes={{ root: classes.expandDetailRoot }}>
-                <InfinitiList isLoading={isLoading} isEnd={isEnd} callback={this.getRecentTopics}>
-                  {recentTopics.map(topic => (
-                    <TopicItem data={topic} />
-                  ))}
-                </InfinitiList>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
+            <Topics info={info} />
           </div>
         )
       }
+
       return null
     }
   }
 )
-interface TopicProps {
-  data: ITopic
-}
-const TopicItemRootStyle = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-`
-const TopicItemMetaStyle = css`
-  display: flex;
-  width: 100%;
-`
-const TopicItemTimeStyle = css`
-  font-size: 0.8rem;
-  margin-left: 2rem;
-  color: rgba(0, 0, 0, 0.54);
-`
-const TopicItemBoardStyle = css`
-  font-size: 0.8rem;
-  color: #35a7ff;
-  cursor: pointer;
-`
-const TopicItemTitleStyle = css`
-  && {
-    width: 100%;
-    cursor: pointer;
-  }
-`
-
-const TopicItem = (props: TopicProps) => {
-  return (
-    <ListItem>
-      <div className={TopicItemRootStyle}>
-        <div className={TopicItemMetaStyle}>
-          <div
-            onClick={() => navigate(`/board/${props.data.boardId}`)}
-            className={TopicItemBoardStyle}
-          >
-            {props.data.boardName}
-          </div>
-          <div className={TopicItemTimeStyle}>{new Date(props.data.time).toLocaleString()}</div>
-        </div>
-        <div className={TopicItemTitleStyle} onClick={() => navigate(`/topic/${props.data.id}`)}>
-          {props.data.title}
-        </div>
-      </div>
-    </ListItem>
-  )
-}

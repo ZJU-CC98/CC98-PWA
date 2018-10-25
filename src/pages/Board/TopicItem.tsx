@@ -42,6 +42,7 @@ export default class extends React.PureComponent<Props> {
     const { data } = this.props
     let title = data.title.substr(0, 10)
     if (title.length > 9) title += '...'
+
     return (
       <ListItem onClick={() => navigate(`/topic/${data.id}`)} className={root} button>
         <ListItemText
@@ -55,7 +56,8 @@ export default class extends React.PureComponent<Props> {
             <div className={text}>
               <div>{`作者:${data.userName ? data.userName : '匿名'}`}</div>
               <div>{`回复:${data.replyCount}`}</div>
-            </div>}
+            </div>
+          }
         />
       </ListItem>
     )

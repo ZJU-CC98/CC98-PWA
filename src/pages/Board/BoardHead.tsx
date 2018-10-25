@@ -58,6 +58,7 @@ export default class extends React.PureComponent<Props> {
         description: '',
       }
     }
+
     return (
       <Card className={CardStyle}>
         <CardActionArea>

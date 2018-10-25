@@ -1,5 +1,6 @@
 import React from 'react'
 import NewBoardList from './BoardList'
 
-const BoardList: React.SFC = () => <NewBoardList />
+const BoardList = <NewBoardList />
+
 export default BoardList

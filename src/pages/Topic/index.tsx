@@ -32,6 +32,7 @@ class Topic extends React.PureComponent<Props, State> {
 
     if (isNaN(topicID)) {
       navigate('/404')
+
       return null
     }
 
@@ -50,11 +51,12 @@ class Topic extends React.PureComponent<Props, State> {
     if (topicInfo === null) {
       return <LoadingCircle />
     }
+
     return (
       <div className={root}>
         <PostHead topicInfo={topicInfo} />
         <PostList topicID={topicInfo.id} />
-        <Editor />
+        <Editor topic={topicInfo} />
       </div>
     )
   }

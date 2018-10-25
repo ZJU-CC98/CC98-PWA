@@ -20,7 +20,7 @@ export default class extends React.Component<Props, State> {
     value: '',
   }
 
-  handleChange = (event: any) =>
+  handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     this.setState({
       value: event.target.value,
     })
@@ -36,6 +36,7 @@ export default class extends React.Component<Props, State> {
     const contentJson = JSON.stringify(content)
     const postData = await POST(`/topic/${topic.id}/post`, { params: contentJson })
   }
+
   render() {
     return (
       <div className={row}>

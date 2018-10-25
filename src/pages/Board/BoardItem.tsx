@@ -25,6 +25,7 @@ const CardStyle = css`
 export default class extends React.PureComponent<Props> {
   render() {
     const { data } = this.props
+
     return (
       <Button
         onClick={() => navigate(`/board/${data.id}`)}

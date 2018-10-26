@@ -11,14 +11,31 @@ import store, { MessageStore } from '@/model/message'
 
 import ListItem from './ListItem'
 
-export default () => (
-  <Subscribe to={[store]}>
-    {({ state: { recentList, recentListEnd, recentListLoading }, getRecentList }: MessageStore) => (
-      <List>
-        <InfinitiList isEnd={recentListEnd} isLoading={recentListLoading} callback={getRecentList}>
-          {recentList.map(item => <ListItem key={item.userId} message={item} />)}
-        </InfinitiList>
-      </List>
-    )}
-  </Subscribe>
-)
+export default class MessageList extends React.PureComponent {
+  componentDidMount() {
+    store.initRecentList()
+  }
+
+  render() {
+    return (
+      <Subscribe to={[store]}>
+        {({
+          state: { recentList, recentListEnd, recentListLoading },
+          getRecentList,
+        }: MessageStore) => (
+          <List>
+            <InfinitiList
+              isEnd={recentListEnd}
+              isLoading={recentListLoading}
+              callback={getRecentList}
+            >
+              {recentList.map(item => (
+                <ListItem key={item.userId} message={item} />
+              ))}
+            </InfinitiList>
+          </List>
+        )}
+      </Subscribe>
+    )
+  }
+}

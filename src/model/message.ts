@@ -6,6 +6,7 @@ import { GET } from '@/utils/fetch'
 import { IRecentMessage } from '@cc98/api'
 import { Container } from '@cc98/state'
 import user from './userInfo'
+import basic from './basicInstance'
 
 interface IMap<T> {
   [key: string]: T
@@ -24,14 +25,8 @@ export class MessageStore extends Container<State> {
     recentListLoading: true,
   }
 
-  constructor() {
-    super()
-
-    this.initRecentList()
-  }
-
   initRecentList = async () => {
-    this.put(state => state.recentListLoading = true)
+    this.put(state => (state.recentListLoading = true))
     const res = await GET<IRecentMessage[]>('/message/recent-contact-users?from=0&size=20')
     res.fail().succeed(data => {
       this.put(state => {
@@ -44,7 +39,7 @@ export class MessageStore extends Container<State> {
   }
 
   getRecentList = async () => {
-    this.put(state => state.recentListLoading = true)
+    this.put(state => (state.recentListLoading = true))
     const res = await GET<IRecentMessage[]>(
       `/message/recent-contact-users?from=${this.state.recentList.length}&size=20`
     )

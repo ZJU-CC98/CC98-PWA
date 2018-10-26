@@ -13,7 +13,7 @@ interface State {
 }
 
 export class UserInfoStore extends Container {
-  state: State = { }
+  state: State = {}
 
   /**
    * 获取用户信息，会优先返回store中的信息
@@ -39,7 +39,7 @@ export class UserInfoStore extends Container {
     const res = await GET<IUser>(`/user/${id}`)
 
     res.fail().succeed(info => {
-      this.put(state => state[info.id] = info)
+      this.put(state => (state[info.id] = info))
     })
   }
 
@@ -55,7 +55,7 @@ export class UserInfoStore extends Container {
     const res = await GET<IUser[]>(`/user?id=${voidIds.join('&id=')}`)
 
     res.fail().succeed(infos => {
-      this.put(state => infos.map(item => state[item.id] = item))
+      this.put(state => infos.map(item => (state[item.id] = item)))
     })
   }
 }

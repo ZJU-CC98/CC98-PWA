@@ -44,7 +44,6 @@ const App: React.SFC = () => (
       <Route path="/userCenter" component={UserCenter} />
       <Route path="/userCenter/edit" component={UserCenterEdit} />
       <Route path="/user/:id" component={UserCenter} />
-      <Route path="/user/name/:name" component={UserCenter} />
       <Route path="/setting" component={Setting} />
       <Route path="/messageList" component={MessageList} />
       <Route path="/messageDetail/:id" component={MessageDetail} />

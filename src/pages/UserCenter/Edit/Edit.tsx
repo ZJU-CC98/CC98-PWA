@@ -2,6 +2,9 @@ import { PUT } from '@/utils/fetch'
 import { IUser } from '@cc98/api';
 import { IconButton, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button'
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
 import { StyleRules, Theme, withStyles } from '@material-ui/core/styles';
 import { ClassNameMap, StyleRulesCallback } from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
@@ -71,7 +74,8 @@ export default withStyles(styles)(
       }
     }
 
-    handleChange = (name: keyof IUser) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    handleChange = (name: keyof IUser) =>
+    (e: React.ChangeEvent<HTMLTextAreaElement>|React.ChangeEvent<HTMLSelectElement>) => {
       const info: IUser = Object.assign({}, this.state.newInfo);
       info[name] = e.target.value;
       this.setState({
@@ -112,15 +116,21 @@ export default withStyles(styles)(
             </IconButton>
             <Typography variant="subtitle2">编辑个人信息</Typography>
           </div>
-          <TextField
-            id="outlined-name"
-            label="性别"
-            className={classes.textField}
-            value={newInfo.gender === 1 ? '男' : '女'}
-            onChange={this.handleChange('gender')}
-            margin="normal"
-            variant="outlined"
-          />
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-native-simple">Age</InputLabel>
+            <Select
+              native
+              value={newInfo.gender === 1 ? '男' : '女'}
+              onChange={this.handleChange('gender')}
+              inputProps={{
+                name: 'age',
+                id: 'age-native-simple',
+              }}
+            >
+              <option value="1">男</option>
+              <option value="0">女</option>
+            </Select>
+          </FormControl>
           <TextField
             id="outlined-name"
             label="签名档"

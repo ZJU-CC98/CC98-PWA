@@ -141,7 +141,6 @@ export default withStyles(styles)(
             {data.boardMasters.map(master => (
               <Button
                 key={master}
-                onClick={() => navigate(`/user/name/${master}`)}
                 size="small"
                 color="primary"
               >

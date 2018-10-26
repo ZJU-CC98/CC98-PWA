@@ -10,28 +10,11 @@ interface Props {
   name: string | undefined
 }
 
-<<<<<<< HEAD
-  async componentDidMount() {
-    const { id, name } = this.props
-    if (id) {
-      const userInfoData = await GET<IUser>(`/user/${id}`)
-      userInfoData.fail().succeed(userInfo => this.setState({ info: userInfo }))
-    }
-    if (name) {
-      const userInfoData = await GET<IUser>(`/user/name/${name}`)
-      userInfoData.fail().succeed(userInfo => this.setState({ info: userInfo }))
-    }
-  }
-
-  render() {
-    const { id, name } = this.props
-    if (id || name) {
-      return this.state.info ? <User info={this.state.info} isUserCenter={false} /> : null
-=======
 export default class extends React.Component<Props> {
   componentDidMount() {
-    const { id } = this.props
+    const { id, name } = this.props
     if (id) user.getInfo(id)
+    if (name) user.getInfo(name);
   }
 
   render() {
@@ -44,7 +27,6 @@ export default class extends React.Component<Props> {
           )}
         </Subscribe>
       )
->>>>>>> 4a227bc66edcc45c672d3528bcc042cbe1899e90
     }
 
     return (

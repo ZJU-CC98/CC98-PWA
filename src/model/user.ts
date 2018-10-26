@@ -36,7 +36,7 @@ export class UserInfoStore extends Container {
    * @memberof UserInfoStore
    */
   forceGetInfo = async (id: string) => {
-    const res = await GET<IUser>(`/user/${id}`)
+    const res = await GET<IUser>(`user/${id}`)
 
     res.fail().succeed(info => this.setInfo(info))
   }
@@ -50,7 +50,7 @@ export class UserInfoStore extends Container {
   getInfos = async (ids: string[]) => {
     const voidIds = difference(ids, Object.keys(this.state))
     if (!voidIds.length) return
-    const res = await GET<IUser[]>(`/user?id=${voidIds.join('&id=')}`)
+    const res = await GET<IUser[]>(`user?id=${voidIds.join('&id=')}`)
 
     res.fail().succeed(infos => {
       this.put(state => infos.map(item => (state[item.id] = item)))

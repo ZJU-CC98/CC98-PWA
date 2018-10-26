@@ -14,7 +14,7 @@ interface State {
   id: string
 }
 
-export class DetailMap extends Container<State> {
+export class Detail extends Container<State> {
   state: State = {
     messages: [],
     isEnd: false,
@@ -63,4 +63,4 @@ export class DetailMap extends Container<State> {
   }
 }
 
-export default new DetailMap()
+export default new Detail()

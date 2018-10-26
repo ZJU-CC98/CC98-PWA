@@ -22,25 +22,36 @@ interface Props {
   message: IMessageContent
 }
 
-const renderItem = (message: IMessageContent, username = '', userAvatar = avatar) => (
+// TODO: 消息气泡
+const renderItem = (
+  message: IMessageContent,
+  userAvatar = avatar,
+  isCurrSend: boolean
+) => !isCurrSend ? (
   <ListItem>
     <ListItemAvatar>
       <Avatar src={userAvatar} />
     </ListItemAvatar>
-    <ListItemText primary={username} secondary={message.content} />
-    <ListItemSecondaryAction>
-      <ListItemText secondary={new Date(message.time).toLocaleDateString()} />
-    </ListItemSecondaryAction>
+    <ListItemText primary={message.content} secondary={new Date(message.time).toLocaleString()} />
+    <ListItemText />
+  </ListItem>
+) : (
+  <ListItem>
+    <ListItemText />
+    <ListItemText primary={message.content} secondary={new Date(message.time).toLocaleString()} />
+    <ListItemAvatar>
+      <Avatar src={userAvatar} />
+    </ListItemAvatar>
   </ListItem>
 )
 
 export default ({ message }: Props) => (
   <Subscribe to={[user, basic]}>
-    {({ state }: UserInfoStore) =>
+    {({ state }: UserInfoStore, { state: { myInfo } }: BasicContainer) =>
       renderItem(
         message,
-        state[message.senderId] && state[message.senderId].name,
-        state[message.senderId] && state[message.senderId].portraitUrl
+        state[message.senderId] && state[message.senderId].portraitUrl,
+        !!myInfo && (myInfo.id === message.senderId)
       )
     }
   </Subscribe>

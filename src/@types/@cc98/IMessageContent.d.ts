@@ -4,9 +4,9 @@
  */
 declare module '@cc98/api' {
   export interface IMessageContent {
-    id: string
-    senderId: string
-    receiverId: boolean
+    id: number
+    senderId: number
+    receiverId: number
     time: string
     isRead: boolean
     content: string

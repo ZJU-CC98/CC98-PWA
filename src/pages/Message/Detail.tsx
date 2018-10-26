@@ -6,7 +6,7 @@ import { Subscribe } from '@cc98/state'
 import { List } from '@material-ui/core'
 import React from 'react'
 
-import store, { DetailMap } from '@/model/message/detail'
+import store, { Detail } from '@/model/message/detail'
 
 import DetailItem from './DetailItem'
 
@@ -24,7 +24,7 @@ export default class MessageList extends React.PureComponent<Props> {
       <Subscribe to={[store]}>
         {({
           state: { messages, isEnd, isLoading },
-        }: DetailMap) => (
+        }: Detail) => (
           <List>
             {messages.map(item => <DetailItem key={item.id} message={item} />)}
           </List>

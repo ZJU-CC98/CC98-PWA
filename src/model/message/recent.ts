@@ -22,7 +22,7 @@ export class MessageStore extends Container<State> {
 
   initRecentList = async () => {
     this.put(state => (state.recentListLoading = true))
-    const res = await GET<IRecentMessage[]>('/message/recent-contact-users?from=0&size=20')
+    const res = await GET<IRecentMessage[]>('message/recent-contact-users?from=0&size=20')
     res.fail().succeed(data => {
       this.put(state => {
         state.recentList = data
@@ -36,7 +36,7 @@ export class MessageStore extends Container<State> {
   getRecentList = async () => {
     this.put(state => (state.recentListLoading = true))
     const res = await GET<IRecentMessage[]>(
-      `/message/recent-contact-users?from=${this.state.recentList.length}&size=20`
+      `message/recent-contact-users?from=${this.state.recentList.length}&size=20`
     )
     res.fail().succeed(data => {
       this.saveRecentList(data)

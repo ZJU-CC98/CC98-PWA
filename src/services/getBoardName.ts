@@ -1,6 +1,8 @@
 import { IBaseBoard, IBoard } from '@cc98/api'
-import { GET } from './fetch'
-import { getLocalStorage, setLocalStorage } from './storage'
+
+import { GET } from '@/utils/fetch'
+import { getLocalStorage, setLocalStorage } from '@/utils/storage'
+
 export default async function getBoardNameById(id: number) {
   // 先找本地缓存
   const boardsInfoStorageOrNull = getLocalStorage('boardsInfo')

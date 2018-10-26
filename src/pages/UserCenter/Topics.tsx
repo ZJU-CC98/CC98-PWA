@@ -1,6 +1,6 @@
 import InfinitiList from '@/components/InfinitiList'
+import getBoardNameById from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
-import getBoardNameById from '@/utils/getBoardName'
 import { ITopic, IUser } from '@cc98/api'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'

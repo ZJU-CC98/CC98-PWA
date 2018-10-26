@@ -5,7 +5,7 @@ import { Failure, Success, Try } from './fp/Try'
 
 import host from '@/model/apiHost'
 
-interface FetchError {
+export interface FetchError {
   /**
    * http 状态码
    */

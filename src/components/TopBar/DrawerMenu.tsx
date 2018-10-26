@@ -10,6 +10,7 @@ import ExitToApp from '@material-ui/icons/ExitToApp'
 import FiberNew from '@material-ui/icons/FiberNew'
 import HomeIcon from '@material-ui/icons/Home'
 import Settings from '@material-ui/icons/Settings'
+import SpeakerNotes from '@material-ui/icons/SpeakerNotes'
 import Whatshot from '@material-ui/icons/Whatshot'
 
 const list = css`
@@ -53,6 +54,7 @@ const TopBar: React.SFC<Props> = ({ isLogIn, open, onClose, onLogout, children }
       {isLogIn && (
         <>
           <Item icon={<DashBoard />} text="个人中心" onClick={jump('/userCenter')} />
+          <Item icon={<SpeakerNotes />} text="私信" onClick={jump('/messageList')} />
           <Item icon={<ExitToApp />} text="登出" onClick={onLogout} />
         </>
       )}

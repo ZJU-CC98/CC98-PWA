@@ -4,6 +4,8 @@ import { GET, logIn } from '@/utils/fetch'
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/utils/storage'
 import { IUser } from '@cc98/api'
 
+import user from './user'
+
 interface State {
   /**
    * 侧边栏是否展开
@@ -39,6 +41,8 @@ class BasicContainer extends Container<State> {
       this.put(state => {
         state.myInfo = info
       })
+
+      user.setInfo(info)
     })
   }
 

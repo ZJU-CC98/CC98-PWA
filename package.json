@@ -24,7 +24,11 @@
     "rc-pagination": "^1.17.3",
     "rc-select": "^8.4.2",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "react-dom": "^16.5.2",
+    "tslint-config-airbnb": "^5.11.0",
+    "tslint-consistent-codestyle": "^1.13.3",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-microsoft-contrib": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -73,8 +77,6 @@
     ]
   },
   "husky": {
-    "hooks": {
-
-    }
+    "hooks": {}
   }
 }

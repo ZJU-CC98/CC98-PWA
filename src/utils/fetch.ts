@@ -38,8 +38,15 @@ async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, Fetc
       })
     )
   }
-
-  return Try.of<T, FetchError>(Success.of(await response.json()))
+  let data = null;
+  try {
+    data = await response.clone().json();
+  } catch (e) {
+    data = await response.text();
+  }
+  return Try.of<T, FetchError>(Success.of(
+    data
+  ))
 }
 
 interface GETOptions {
@@ -65,6 +72,25 @@ interface GETOptions {
 
 export async function GET<T = any>(url: string, options: GETOptions = {}) {
   const requestInit: RequestInit = {
+    headers: new Headers({
+      //  access_token
+      Authorization: options.noAuthorization ? '' : getAccessToken(),
+      ...options.headers,
+    }),
+    // credentials: "include",
+    ...options.requestInit,
+  }
+
+  const queryStr = options.params ? `?${encodeParams(options.params)}` : ''
+
+  return await cc98Fetch<T>(url + queryStr, requestInit)
+}
+
+type DELETEOptions = GETOptions
+
+export async function DELETE<T = any>(url: string, options: DELETEOptions = {}) {
+  const requestInit: RequestInit = {
+    method: "DELETE",
     headers: new Headers({
       //  access_token
       Authorization: options.noAuthorization ? '' : getAccessToken(),

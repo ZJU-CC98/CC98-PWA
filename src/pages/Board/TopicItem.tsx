@@ -56,8 +56,7 @@ export default class extends React.PureComponent<Props> {
             <div className={text}>
               <div>{`作者:${data.userName ? data.userName : '匿名'}`}</div>
               <div>{`回复:${data.replyCount}`}</div>
-            </div>
-          }
+            </div>}
         />
       </ListItem>
     )

@@ -19,11 +19,12 @@ import NewTopic from './pages/NewTopic'
 import Setting from './pages/Setting'
 import Topic from './pages/Topic'
 import UserCenter from './pages/UserCenter'
-
+import UserCenterEdit from './pages/UserCenter/Edit'
 // TODO: cache
 const Route: React.SFC<
   RouteComponentProps & {
     // @types/react 里 createElement 签名很混乱
+    // tslint:disable-next-line:no-any
     component: any
   }
 > = props => React.createElement(props.component, props)
@@ -39,6 +40,7 @@ const App: React.SFC = () => (
       <Route path="/boardList" component={BoardList} />
       <Route path="/board/:id" component={Board} />
       <Route path="/userCenter" component={UserCenter} />
+      <Route path="/userCenter/edit" component={UserCenterEdit} />
       <Route path="/user/:id" component={UserCenter} />
       <Route path="/user/name/:name" component={UserCenter} />
       <Route path="/setting" component={Setting} />

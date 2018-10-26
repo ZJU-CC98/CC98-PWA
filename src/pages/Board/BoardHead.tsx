@@ -7,15 +7,13 @@ import CardContent from '@material-ui/core/CardContent'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import { StyleRules, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 import React from 'react'
-import Divider from '@material-ui/core/Divider'
-import { StyleRules, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import shadows from '@material-ui/core/styles/shadows';
 
 interface Props {
   data: IBoard | null
@@ -26,17 +24,17 @@ interface State {
 const styles: StyleRules = {
   root: {
     width: '100%',
-    boxShadow:"0 0 0 0",
-    borderTop:'#eaeaea solid thin',
-    borderBottom:'#eaeaea solid thin'
+    boxShadow: '0 0 0 0',
+    borderTop: '#eaeaea solid thin',
+    borderBottom: '#eaeaea solid thin',
   },
   expanded: {
     marginTop: '0.5rem',
     marginBottom: '0.5rem',
   },
   summaryRoot: {
-    height: '0.8rem'
-  }
+    height: '0.8rem',
+  },
 }
 const BoardHeader = css`
   width: 100%;
@@ -82,60 +80,78 @@ const BoardMasters = css`
   border-bottom:#eaeaea solid thin;
 `
 
-export default withStyles(styles)(class extends React.Component<Props & { classes: ClassNameMap }, State> {
-  state: State = {
-    isFollowed: false
-  }
-
-  changeFollowStatus = async () => {
-
-  }
-  render() {
-    let { data, classes } = this.props
-    if (!data) {
-      data = {
-        id: 0,
-        todayCount: 0,
-        topicCount: 0,
-        postCount: 0,
-        name: '',
-        boardMasters: [],
-        description: '',
-      }
+export default withStyles(styles)(
+  class extends React.Component<Props & { classes: ClassNameMap }, State> {
+    state: State = {
+      isFollowed: false,
     }
-    const { isFollowed } = this.state;
-    return (
-      <div className={BoardHeader}>
 
-        <div className={BoardMessage}>
-          <Button color="primary" className={BoardTitle}>{data.name}</Button>
-          <div className={BoardTopicNumber}>{data.todayCount}/{data.topicCount}</div>
-          <Button className={FollowBtnStyle} onClick={this.changeFollowStatus} variant="outlined" >{isFollowed ? "取关" : "关注"}</Button>
+    changeFollowStatus = async () => {
+      const url = ''
+    }
 
-        </div>
+    render() {
+      let { data } = this.props
+      const { classes } = this.props;
+      if (!data) {
+        data = {
+          id: 0,
+          todayCount: 0,
+          topicCount: 0,
+          postCount: 0,
+          name: '',
+          boardMasters: [],
+          description: '',
+        }
+      }
+      const { isFollowed } = this.state;
 
-        <ExpansionPanel classes={{ root: classes.root, expanded: classes.expanded }}>
-          <ExpansionPanelSummary classes={{ root: classes.summaryRoot }} expandIcon={<ExpandMoreIcon />}>
-            <Typography>
-              <Button color="primary">版面公告</Button>
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>{data.description}</ExpansionPanelDetails>
-        </ExpansionPanel>
-        <div className={BoardMasters}>
+      return (
+        <div className={BoardHeader}>
 
-          <Button size="small" color="primary">
-            版主:
-          </Button>{' '}
-          {data.boardMasters.map(master => (
-            <Button key={master} onClick={() => navigate(`/user/name/${master}`)} size="small" color="primary">
-              {master}
+          <div className={BoardMessage}>
+            <Button color="primary" className={BoardTitle}>{data.name}</Button>
+            <div className={BoardTopicNumber}>{data.todayCount}/{data.topicCount}</div>
+            <Button
+              className={FollowBtnStyle}
+              onClick={this.changeFollowStatus}
+              variant="outlined"
+            >
+              {isFollowed ? '取关' : '关注'}
             </Button>
-          ))}
-        </div>
 
-      </div>
-    )
+          </div>
+
+          <ExpansionPanel classes={{ root: classes.root, expanded: classes.expanded }}>
+            <ExpansionPanelSummary
+              classes={{ root: classes.summaryRoot }}
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <Typography>
+                <Button color="primary">版面公告</Button>
+              </Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>{data.description}</ExpansionPanelDetails>
+          </ExpansionPanel>
+          <div className={BoardMasters}>
+
+            <Button size="small" color="primary">
+              版主:
+          </Button>{' '}
+            {data.boardMasters.map(master => (
+              <Button
+                key={master}
+                onClick={() => navigate(`/user/name/${master}`)}
+                size="small"
+                color="primary"
+              >
+                {master}
+              </Button>
+            ))}
+          </div>
+
+        </div>
+      )
+    }
   }
-}
 )

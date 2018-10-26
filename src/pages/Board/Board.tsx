@@ -1,3 +1,4 @@
+import InfinitiList from '@/components/InfinitiList';
 import { GET } from '@/utils/fetch'
 import { IBoard, ITopic } from '@cc98/api'
 import List from '@material-ui/core/List'
@@ -8,7 +9,6 @@ import 'rc-select/assets/index.css'
 import React from 'react'
 import BoardHead from './BoardHead'
 import TopicItem from './TopicItem'
-import InfinitiList from '@/components/InfinitiList';
 
 interface Props {
   id: string
@@ -18,7 +18,7 @@ interface State {
   topics: ITopic[]
   isLoading: boolean
   isEnd: boolean
-  from :number
+  from: number
 }
 const BoardStyle = css`
   && {
@@ -40,7 +40,7 @@ export default class extends React.Component<Props, State> {
     topics: [],
     isLoading: false,
     isEnd: false,
-    from:0
+    from: 0,
   }
 
   async componentDidMount() {
@@ -54,7 +54,7 @@ export default class extends React.Component<Props, State> {
     const topTopicsData = await GET<ITopic[]>(`/topic/toptopics?boardid=${id}`)
     topTopicsData.map(async topTopics => {
       this.setState({
-        topics: this.state.topics.concat(topTopics)
+        topics: this.state.topics.concat(topTopics),
       })
     })
   }

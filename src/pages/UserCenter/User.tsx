@@ -1,3 +1,4 @@
+import { DELETE, PUT } from '@/utils/fetch';
 import { ITopic, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
 import Avatar from '@material-ui/core/Avatar'
@@ -9,6 +10,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+import { navigate } from '@reach/router';
 import { css } from 'emotion'
 import React from 'react'
 import Topics from './Topics'
@@ -70,16 +72,87 @@ const OptionStyle = css`
     width: 100%;
   }
 `
-
+interface State {
+  buttonInfo: string
+  disabled: boolean
+  isFollowing: boolean
+}
+interface ClassNameProps {
+  classes: ClassNameMap
+}
 export default withStyles(styles)(
-  class extends React.Component<Props & { classes: ClassNameMap }, {}> {
+  class extends React.Component<Props & ClassNameProps, State> {
+    constructor(props: Props & ClassNameProps) {
+      super(props);
+      this.state = {
+        buttonInfo: props.info.isFollowing ? '取关' : '关注',
+        disabled: false,
+        isFollowing: props.info.isFollowing,
+      }
+    }
     changeFollowStatus = async () => {
-
+      const { info } = this.props;
+      const { isFollowing } = this.state;
+      this.setState({
+        buttonInfo: '...',
+        disabled: true,
+      })
+      const url = `/me/followee/${info.id}`;
+      if (isFollowing) {
+        const unfollowTry = await DELETE(url);
+        unfollowTry
+          .fail(
+            () => this.setState({
+              buttonInfo: '取关失败',
+              disabled: false,
+            })
+          )
+          .succeed(
+            () => this.setState({
+              buttonInfo: '关注',
+              disabled: false,
+              isFollowing: false,
+            })
+          )
+      } else {
+        const followTry = await PUT(url)
+        followTry
+          .fail(
+            () => this.setState({
+              buttonInfo: '关注失败',
+              disabled: false,
+            })
+          )
+          .succeed(
+            () => this.setState({
+              buttonInfo: '取关',
+              disabled: false,
+              isFollowing: true,
+            })
+          )
+      }
     }
     render() {
       const { classes, info, isUserCenter } = this.props;
-      const followBtn = <Button color="primary">{info.isFollowing ? "取关" : "关注"}</Button>;
-      const editBtn = <Button color="primary">编辑</Button>
+      const { buttonInfo, disabled } = this.state;
+      const followBtn = (
+        <Button
+          onClick={this.changeFollowStatus}
+          disabled={disabled}
+          variant="contained"
+          color="primary"
+        >{buttonInfo}
+        </Button>
+      );
+      const editBtn = (
+        <Button
+          onClick={() => { navigate('/userCenter/edit') }}
+          variant="contained"
+          color="primary"
+        >
+          编辑
+        </Button>
+      )
       if (info) {
         return (
           <div className={UserStyle}>
@@ -92,7 +165,7 @@ export default withStyles(styles)(
               action={
                 <div>
                   {isUserCenter ? editBtn : followBtn}
-                  {!isUserCenter ? <Button color="primary">私信</Button> : null}
+                  {!isUserCenter ? <Button variant="contained" color="primary">私信</Button> : null}
                 </div>
               }
             />

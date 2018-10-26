@@ -31,7 +31,9 @@ export default class extends React.Component<Props, State> {
 
   render() {
     const { id, name } = this.props
-    if (id || name) return this.state.info ? <User info={this.state.info} isUserCenter={false} /> : null
+    if (id || name) {
+      return this.state.info ? <User info={this.state.info} isUserCenter={false} /> : null
+    }
 
     return (
       <Subscribe to={[basicInstance]}>

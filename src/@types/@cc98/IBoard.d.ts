@@ -28,5 +28,9 @@ declare module '@cc98/api' {
      * 版主
      */
     boardMasters: string[]
+    /**
+     * 是否关注
+     */
+    isUserCustomBoard?: boolean
   }
 }

@@ -94,7 +94,7 @@ export default class extends React.Component<Props, State> {
         <BoardHead data={board} />
         <InfinitiList isLoading={isLoading} isEnd={isEnd} callback={this.getTopics}>
           {topics.map(topic => (
-            <TopicItem data={topic} />
+            <TopicItem key={topic.id} data={topic} />
           ))}
         </InfinitiList>
       </div>

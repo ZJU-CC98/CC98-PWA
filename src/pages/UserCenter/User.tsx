@@ -73,11 +73,17 @@ const OptionStyle = css`
 
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, {}> {
+    changeFollowStatus = async () => {
+
+    }
     render() {
-      const { classes, info, isUserCenter } = this.props
+      const { classes, info, isUserCenter } = this.props;
+      const followBtn = <Button color="primary">{info.isFollowing ? "取关" : "关注"}</Button>;
+      const editBtn = <Button color="primary">编辑</Button>
       if (info) {
         return (
           <div className={UserStyle}>
+
             <CardHeader
               className={classes.row}
               classes={{ action: classes.action }}
@@ -85,11 +91,12 @@ export default withStyles(styles)(
               title={<div className={UserNameStyle}>{info.name}</div>}
               action={
                 <div>
-                  <Button color="primary">{isUserCenter ? '编辑' : '关注'}</Button>
+                  {isUserCenter ? editBtn : followBtn}
                   {!isUserCenter ? <Button color="primary">私信</Button> : null}
                 </div>
               }
             />
+
             <List className={OptionStyle}>
               <Divider />
               <ListItem classes={{ root: classes.itemRoot }}>

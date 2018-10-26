@@ -12,33 +12,61 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 import React from 'react'
+import Divider from '@material-ui/core/Divider'
+import { StyleRules, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+import shadows from '@material-ui/core/styles/shadows';
+
 interface Props {
   data: IBoard | null
 }
-const CardStyle = css`
+interface State {
+  isFollowed: boolean
+}
+const styles: StyleRules = {
+  root: {
+    width: '100%',
+    boxShadow:"0 0 0 0",
+    borderTop:'#eaeaea solid thin',
+    borderBottom:'#eaeaea solid thin'
+  },
+  expanded: {
+    marginTop: '0.5rem',
+    marginBottom: '0.5rem',
+  },
+  summaryRoot: {
+    height: '0.8rem'
+  }
+}
+const BoardHeader = css`
   width: 100%;
   position:sticky;
   top:0px;
   z-index:1105;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background-color:#fff;
 `
-const TitleStyle = css`
+const BoardTitle = css`
   && {
-    width: 40%;
     text-align: center;
     font-size: 1.8rem;
+    flex-grow:2;
+    display:flex;
   }
 `
-const OptionStyle = css`
+const BoardMessage = css`
   display: flex;
-  flex-grow: 2;
   font-size: 1rem;
   align-items: center;
   justify-content: space-between;
+  width:100%;
 `
-const HeadStyle = css`
-  && {
-    display: flex;
-  }
+const BoardTopicNumber = css`
+  font-size:1rem;
+  margin-right:1rem;
 `
 const FollowBtnStyle = css`
   && {
@@ -47,9 +75,23 @@ const FollowBtnStyle = css`
     margin-right: 1rem;
   }
 `
-export default class extends React.PureComponent<Props> {
+const BoardMasters = css`
+  display:flex;
+  width:100%;
+  padding-left:1.5rem;
+  border-bottom:#eaeaea solid thin;
+`
+
+export default withStyles(styles)(class extends React.Component<Props & { classes: ClassNameMap }, State> {
+  state: State = {
+    isFollowed: false
+  }
+
+  changeFollowStatus = async () => {
+
+  }
   render() {
-    let data = this.props.data
+    let { data, classes } = this.props
     if (!data) {
       data = {
         id: 0,
@@ -61,48 +103,39 @@ export default class extends React.PureComponent<Props> {
         description: '',
       }
     }
-
+    const { isFollowed } = this.state;
     return (
-      <Card className={CardStyle}>
-        <CardActionArea>
-          <CardContent>
-            <Typography className={HeadStyle} gutterBottom variant="h5" component="h2">
-              <Button className={TitleStyle} color="primary">
-                {data.name}
-              </Button>
-              <div className={OptionStyle}>
-                <div>
-                  {' '}
-                  {data.todayCount}/{data.topicCount}
-                </div>
-                <Button className={FollowBtnStyle} variant="outlined">
-                  关注
-                </Button>
-              </div>
+      <div className={BoardHeader}>
+
+        <div className={BoardMessage}>
+          <Button color="primary" className={BoardTitle}>{data.name}</Button>
+          <div className={BoardTopicNumber}>{data.todayCount}/{data.topicCount}</div>
+          <Button className={FollowBtnStyle} onClick={this.changeFollowStatus} variant="outlined" >{isFollowed ? "取关" : "关注"}</Button>
+
+        </div>
+
+        <ExpansionPanel classes={{ root: classes.root, expanded: classes.expanded }}>
+          <ExpansionPanelSummary classes={{ root: classes.summaryRoot }} expandIcon={<ExpandMoreIcon />}>
+            <Typography>
+              <Button color="primary">版面公告</Button>
             </Typography>
-            <Typography component="p">
-              <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography>
-                    <Button color="primary">版面公告</Button>
-                  </Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>{data.description}</ExpansionPanelDetails>
-              </ExpansionPanel>
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>{data.description}</ExpansionPanelDetails>
+        </ExpansionPanel>
+        <div className={BoardMasters}>
+
           <Button size="small" color="primary">
             版主:
           </Button>{' '}
           {data.boardMasters.map(master => (
-            <Button onClick={() => navigate(`/user/name/${master}`)} size="small" color="primary">
+            <Button key={master} onClick={() => navigate(`/user/name/${master}`)} size="small" color="primary">
               {master}
             </Button>
           ))}
-        </CardActions>
-      </Card>
+        </div>
+
+      </div>
     )
   }
 }
+)

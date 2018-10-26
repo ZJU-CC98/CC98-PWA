@@ -3,7 +3,13 @@
  * @date 2018-10-26
  */
 import { Subscribe } from '@cc98/state'
-import { Avatar, ListItem, ListItemAvatar, ListItemText, Popover } from '@material-ui/core'
+import {
+  Avatar,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+} from '@material-ui/core'
 import { navigate } from '@reach/router'
 import React from 'react'
 
@@ -24,6 +30,9 @@ const renderItem = (message: IRecentMessage, username = '', userAvatar = avatar)
       <Avatar src={userAvatar} />
     </ListItemAvatar>
     <ListItemText primary={username} secondary={message.lastContent} />
+    <ListItemSecondaryAction>
+      <ListItemText secondary={new Date(message.time).toLocaleDateString()} />
+    </ListItemSecondaryAction>
   </ListItem>
 )
 

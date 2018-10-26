@@ -11,12 +11,9 @@ import store, { HostType, Store } from '@/model/apiHost'
 export default () => (
   <Subscribe to={[store]}>
     {({ state: { type }, useDefault, useProxy }: Store) => (
-      <ListItem>
+      <ListItem button onClick={type === HostType.Proxy ? useDefault : useProxy}>
         <ListItemText primary="使用代理" />
-        <Switch
-          onClick={type === HostType.Proxy ? useDefault : useProxy}
-          checked={type === HostType.Proxy}
-        />
+        <Switch checked={type === HostType.Proxy} />
       </ListItem>
     )}
   </Subscribe>

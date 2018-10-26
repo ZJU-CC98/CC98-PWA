@@ -1,5 +1,5 @@
 import basicInstance, { BasicContainer } from '@/model/basicInstance'
-import user, { UserInfoStore } from '@/model/userInfo'
+import user, { UserInfoStore } from '@/model/user'
 import { GET } from '@/utils/fetch'
 import { IUser } from '@cc98/api'
 import { Subscribe } from '@cc98/state'

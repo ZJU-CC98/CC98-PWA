@@ -7,7 +7,7 @@ import { List } from '@material-ui/core'
 import React from 'react'
 
 import InfinitiList from '@/components/InfinitiList'
-import store, { MessageStore } from '@/model/message'
+import store, { MessageStore } from '@/model/message/recent'
 
 import ListItem from './ListItem'
 

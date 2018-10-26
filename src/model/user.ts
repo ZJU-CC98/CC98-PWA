@@ -38,9 +38,7 @@ export class UserInfoStore extends Container {
   forceGetInfo = async (id: string) => {
     const res = await GET<IUser>(`/user/${id}`)
 
-    res.fail().succeed(info => {
-      this.put(state => (state[info.id] = info))
-    })
+    res.fail().succeed(info => this.setInfo(info))
   }
 
   /**
@@ -57,6 +55,10 @@ export class UserInfoStore extends Container {
     res.fail().succeed(infos => {
       this.put(state => infos.map(item => (state[item.id] = item)))
     })
+  }
+
+  setInfo = (data: IUser) => {
+    this.put(state => state[data.id] = data)
   }
 }
 

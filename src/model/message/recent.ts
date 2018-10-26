@@ -5,12 +5,7 @@
 import { GET } from '@/utils/fetch'
 import { IRecentMessage } from '@cc98/api'
 import { Container } from '@cc98/state'
-import user from './userInfo'
-import basic from './basicInstance'
-
-interface IMap<T> {
-  [key: string]: T
-}
+import user from '../user'
 
 interface State {
   recentList: IRecentMessage[]

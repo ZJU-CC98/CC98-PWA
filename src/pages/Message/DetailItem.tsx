@@ -10,26 +10,24 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@material-ui/core'
-import { navigate } from '@reach/router'
 import React from 'react'
 
-import store, { UserInfoStore } from '@/model/user'
-import { IRecentMessage, IUser } from '@cc98/api'
+import basic, { BasicContainer } from '@/model/basicInstance'
+import user, { UserInfoStore } from '@/model/user'
+import { IMessageContent, IUser } from '@cc98/api'
 
 import avatar from '@/assets/9.png'
 
 interface Props {
-  message: IRecentMessage
+  message: IMessageContent
 }
 
-const navigateToDetail = (userId: string) => navigate(`/messageDetail/${userId}`)
-
-const renderItem = (message: IRecentMessage, username = '', userAvatar = avatar) => (
-  <ListItem button onClick={() => navigateToDetail(message.userId)}>
+const renderItem = (message: IMessageContent, username = '', userAvatar = avatar) => (
+  <ListItem>
     <ListItemAvatar>
       <Avatar src={userAvatar} />
     </ListItemAvatar>
-    <ListItemText primary={username} secondary={message.lastContent} />
+    <ListItemText primary={username} secondary={message.content} />
     <ListItemSecondaryAction>
       <ListItemText secondary={new Date(message.time).toLocaleDateString()} />
     </ListItemSecondaryAction>
@@ -37,12 +35,12 @@ const renderItem = (message: IRecentMessage, username = '', userAvatar = avatar)
 )
 
 export default ({ message }: Props) => (
-  <Subscribe to={[store]}>
+  <Subscribe to={[user, basic]}>
     {({ state }: UserInfoStore) =>
       renderItem(
         message,
-        state[message.userId] && state[message.userId].name,
-        state[message.userId] && state[message.userId].portraitUrl
+        state[message.senderId] && state[message.senderId].name,
+        state[message.senderId] && state[message.senderId].portraitUrl
       )
     }
   </Subscribe>

@@ -1,6 +1,6 @@
 import basicInstance, { BasicContainer } from '@/model/basicInstance'
+import user, { UserInfoStore } from '@/model/userInfo'
 import { GET } from '@/utils/fetch'
-import { getLocalStorage, setLocalStorage } from '@/utils/storage'
 import { IUser } from '@cc98/api'
 import { Subscribe } from '@cc98/state'
 import React from 'react'
@@ -18,21 +18,26 @@ export default class extends React.Component<Props, State> {
 
   async componentDidMount() {
     const { id } = this.props
-    if (id) {
-      const userInfoData = await GET<IUser>(`/user/${id}`)
-      userInfoData.fail().succeed(userInfo => this.setState({ info: userInfo }))
-    }
+    if (id) user.getInfo(id)
   }
 
   render() {
     const { id } = this.props
-    if (id) return this.state.info ? <User info={this.state.info} isUserCenter={false} /> : null
+    if (id) {
+      return (
+        <Subscribe to={[user]}>
+          {({ state: userMap }: UserInfoStore) => (
+            userMap[id] ? <User info={userMap[id]} isUserCenter={false} /> : null
+          )}
+        </Subscribe>
+      )
+    }
 
     return (
       <Subscribe to={[basicInstance]}>
-        {(basic: BasicContainer) =>
+        {(basic: BasicContainer) => (
           basic.state.myInfo ? <User info={basic.state.myInfo} isUserCenter={true} /> : null
-        }
+        )}
       </Subscribe>
     )
   }

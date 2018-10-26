@@ -36,6 +36,8 @@ export class MessageStore extends Container<State> {
     res.fail().succeed(data => {
       this.put(state => {
         state.recentList = data
+        state.recentListLoading = false
+        if (data.length < 20) state.recentListEnd = true
       })
       user.getInfos(data.map(item => item.userId))
     })

@@ -15,6 +15,7 @@ import Page404 from './pages/Error/404'
 import Home from './pages/Home'
 import HotTopic from './pages/HotTopic'
 import LogIn from './pages/LogIn'
+import MessageList from './pages/Message/List'
 import NewTopic from './pages/NewTopic'
 import Setting from './pages/Setting'
 import Topic from './pages/Topic'
@@ -41,6 +42,7 @@ const App: React.SFC = () => (
       <Route path="/userCenter" component={UserCenter} />
       <Route path="/user/:id" component={UserCenter} />
       <Route path="/setting" component={Setting} />
+      <Route path="/messageList" component={MessageList} />
 
       <Route path="/logIn" component={LogIn} />
       <Route path="/error/401" component={Page401} />

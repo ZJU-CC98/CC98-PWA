@@ -38,7 +38,7 @@ export class UserInfoStore extends Container {
   forceGetInfo = async (id: string) => {
     const res = await GET<IUser>(`/user/${id}`)
 
-    res.succeed(info => {
+    res.fail().succeed(info => {
       this.put(state => state[info.id] = info)
     })
   }
@@ -54,7 +54,7 @@ export class UserInfoStore extends Container {
     if (!voidIds.length) return
     const res = await GET<IUser[]>(`/user?id=${voidIds.join('&id=')}`)
 
-    res.succeed(infos => {
+    res.fail().succeed(infos => {
       this.put(state => infos.map(item => state[item.id] = item))
     })
   }

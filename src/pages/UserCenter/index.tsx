@@ -8,15 +8,9 @@ import User from './User'
 interface Props {
   id: string | undefined
 }
-interface State {
-  info: IUser | null
-}
-export default class extends React.Component<Props, State> {
-  state: State = {
-    info: null,
-  }
 
-  async componentDidMount() {
+export default class extends React.Component<Props> {
+  componentDidMount() {
     const { id } = this.props
     if (id) user.getInfo(id)
   }

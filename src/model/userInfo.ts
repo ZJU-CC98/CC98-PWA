@@ -6,6 +6,7 @@ import { FetchError, GET } from '@/utils/fetch'
 import { Success, Try } from '@/utils/fp/Try'
 import { IUser } from '@cc98/api'
 import { Container } from '@cc98/state'
+import difference from 'lodash-es/difference'
 
 interface State {
   [id: string]: IUser
@@ -37,13 +38,25 @@ export class UserInfoStore extends Container {
   forceGetInfo = async (id: string) => {
     const res = await GET<IUser>(`/user/${id}`)
 
-    res
-      .fail()
-      .succeed(info => {
-        this.put(state => state[info.id] = info)
-      })
+    res.succeed(info => {
+      this.put(state => state[info.id] = info)
+    })
+  }
 
-    return res
+  /**
+   * 批量获取用户信息，store中存在的信息不会重新请求
+   * @param {string} id 用户id
+   * @return {Promise<Try<IUser, FetchError>>}
+   * @memberof UserInfoStore
+   */
+  getInfos = async (ids: string[]) => {
+    const voidIds = difference(ids, Object.keys(this.state))
+    if (!voidIds.length) return
+    const res = await GET<IUser[]>(`/user?id=${voidIds.join('&id=')}`)
+
+    res.succeed(infos => {
+      this.put(state => infos.map(item => state[item.id] = item))
+    })
   }
 }
 

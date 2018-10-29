@@ -1,16 +1,17 @@
-import InfinitiList from '@/components/InfinitiList';
+import InfinitiList from '@/components/InfinitiList'
 import getTagName from '@/services/getTagName'
 import { GET } from '@/utils/fetch'
 import { IBoard, ITag, ITopic } from '@cc98/api'
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import { Theme, withStyles } from '@material-ui/core/styles';
-import { ClassNameMap, StyleRulesCallback } from '@material-ui/core/styles/withStyles';
+import FormControl from '@material-ui/core/FormControl'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
+import { Theme, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap, StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { css } from 'emotion'
 import React from 'react'
 import BoardHead from './BoardHead'
 import TopicItem from './TopicItem'
+
 interface Tag {
   name: string
   id: number
@@ -41,6 +42,9 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,
   },
+  selectRoot: {
+    minWidth: '0px',
+  },
 });
 const BoardStyle = css`
   && {
@@ -51,11 +55,9 @@ const BoardStyle = css`
   }
 `
 
-const PaginationStyle = css`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`
+const SelectStyle = css`&&{
+  min-width:0;
+}`
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
     state: State = {
@@ -185,15 +187,16 @@ export default withStyles(styles)(
     render() {
       const { topics, board, isLoading, isEnd, tags, tag1, tag2 } = this.state
       const { classes } = this.props
-      console.log(topics);
+
       return (
         <div className={BoardStyle}>
           <BoardHead data={board} />
           <div>
-            {tag1 ? <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="age-native-simple">标签1</InputLabel>
+            {tag1 ? <FormControl
+              className={classes.formControl}
+              classes={{ root: classes.selectRoot }}
+            >
               <Select
-                native
                 value={tag1.id}
                 onChange={this.handleChange('tag1')}
                 inputProps={{
@@ -201,14 +204,17 @@ export default withStyles(styles)(
                   id: 'age-native-simple',
                 }}
               >
-                <option key={0} value={-1}>全部</option>
-                {tags[0].tags.map(tag => <option key={tag.id} value={tag.id}>{tag.name}</option>)}
+                <MenuItem key={0} value={-1}>全部</MenuItem>
+                {tags[0].tags.map(tag =>
+                  <MenuItem key={tag.id} value={tag.id}>{tag.name}</MenuItem>)}
               </Select>
             </FormControl> : null}
-            {tag2 ? <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="age-native-simple">标签2</InputLabel>
+            {tag2 ? <FormControl
+              className={classes.formControl}
+              classes={{ root: classes.selectRoot }}
+            >
               <Select
-                native
+                autoWidth
                 value={tag2.id}
                 onChange={this.handleChange('tag2')}
                 inputProps={{
@@ -216,8 +222,9 @@ export default withStyles(styles)(
                   id: 'age-native-simple',
                 }}
               >
-                <option key={0} value={-1}>全部</option>
-                {tags[1].tags.map(tag => <option key={tag.id} value={tag.id}>{tag.name}</option>)}
+                <MenuItem key={0} value={-1}>全部</MenuItem>
+                {tags[1].tags.map(tag =>
+                  <MenuItem key={tag.id} value={tag.id}>{tag.name}</MenuItem>)}
               </Select>
             </FormControl> : null}
           </div>

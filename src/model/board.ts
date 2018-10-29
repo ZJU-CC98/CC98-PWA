@@ -7,14 +7,16 @@ interface T {
   id: number
 }
 interface State {
-  tagData: T[],
+  tagData: T[]
   boardData: IBaseBoard[]
+  childBoardData: IBoard[]
 }
 
 export class BoardInfoStore extends Container<State> {
   state: State = {
     tagData: [],
     boardData: [],
+    childBoardData: [],
   }
 
   constructor() {
@@ -71,7 +73,11 @@ export class BoardInfoStore extends Container<State> {
     return res
   }
   setInfo = (data: IBaseBoard[]) => {
-    this.put(state => state.boardData = data)
+    let cd: IBoard[] = []
+    for (const baseBoard of data) {
+      cd = cd.concat(baseBoard.boards)
+    }
+    this.put(state => { state.boardData = data; state.childBoardData = cd })
   }
   setTagInfo = (data: T[]) => {
     this.put(state => state.tagData = data)

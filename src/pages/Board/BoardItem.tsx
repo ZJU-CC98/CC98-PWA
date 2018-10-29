@@ -1,8 +1,8 @@
 import { IBoard } from '@cc98/api'
 import Button from '@material-ui/core/Button'
 import { navigate } from '@reach/router'
-import { css } from 'emotion'
 import React from 'react'
+import { css } from 'react-emotion'
 interface Props {
   data: IBoard
 }

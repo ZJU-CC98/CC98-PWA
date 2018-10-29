@@ -1,18 +1,19 @@
+import basicInstance from '@/model/global'
 import { PUT } from '@/utils/fetch'
-import { IUser } from '@cc98/api';
-import { IconButton, Typography } from '@material-ui/core';
+import { IUser } from '@cc98/api'
+import { IconButton, Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import Select from '@material-ui/core/Select';
-import { StyleRules, Theme, withStyles } from '@material-ui/core/styles';
-import { ClassNameMap, StyleRulesCallback } from '@material-ui/core/styles/withStyles';
-import TextField from '@material-ui/core/TextField';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-import { navigate } from '@reach/router';
-import { css } from 'emotion';
-import React, { CSSProperties } from 'react';
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import OutlinedInput from '@material-ui/core/OutlinedInput'
+import Select from '@material-ui/core/Select'
+import { Theme, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap, StyleRulesCallback } from '@material-ui/core/styles/withStyles'
+import TextField from '@material-ui/core/TextField'
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
+import { navigate } from '@reach/router'
+import { css } from 'emotion'
+import React from 'react'
 const goback = () => window.history.back()
 interface Props {
   info: IUser

@@ -62,7 +62,7 @@ class Compose extends React.Component<{}, State> {
         />
         <Editor
           sendCallBack={(content: string, files?: string[]) => {
-           // console.log(files)
+            // console.log(files)
           }}
         />
       </>

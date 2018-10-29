@@ -61,6 +61,7 @@ const BoardMessage = css`
   align-items: center;
   justify-content: space-between;
   width:100%;
+  height:100px;
 `
 const BoardTopicNumber = css`
   font-size:1rem;
@@ -81,6 +82,10 @@ const BoardMasters = css`
 `
 const toolButton = css`
   margin-right: 1rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+  height:100%;
 `
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
@@ -114,7 +119,7 @@ export default withStyles(styles)(
             <Button color="primary" className={BoardTitle}>{data.name}</Button>
             <div className={BoardTopicNumber}>{data.todayCount}/{data.topicCount}</div>
             <div className = {toolButton}>
-                  <Button className={FollowBtnStyle} 
+                  <Button className={FollowBtnStyle}
                     variant="contained"
                     color="primary"
                     onClick = {()=>{

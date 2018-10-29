@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from 'emotion'
 import Icon from '@material-ui/core/Icon';
-import { TextField, 
+import { TextField,
          InputBase,
          FormHelperText,
          BottomNavigation,
@@ -9,6 +9,7 @@ import { TextField,
 } from '@material-ui/core'
 import Editor from '@/components/Editor'
 import { uploadFile } from '@/utils/fileHandle'
+import　{POST} from '@/utils/fetch'
 const labelStyle = {
   paddingLeft: '15px',
 }
@@ -23,6 +24,23 @@ class Compose extends React.Component<{}, State> {
     picList: null
   }
 
+  async post(boardId: string, title: string, content: string, tags?: string[]) {
+    const data = {
+      content: content,
+      contentType: 0,
+      title: title,
+      tag1: tags ? tags[0] : null,
+      tag2: tags ? tags[1] : null,
+      type: 0
+    };
+    const url = `/board/${boardId}/topic`;
+    const response = await POST(url,{params:data})
+    response
+    .fail()
+    .succeed(()=>{
+      return
+    })
+  }
   render(){
   return(
     <>
@@ -40,7 +58,7 @@ class Compose extends React.Component<{}, State> {
         fullWidth
         margin="normal"
       />
-      <Editor 
+      <Editor
         sendCallBack = {(content: string, files?: Array<string>) => {
           console.log(files)
         }}
@@ -49,4 +67,3 @@ class Compose extends React.Component<{}, State> {
   )}
 }
 export default Compose
-  

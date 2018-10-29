@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { css } from 'emotion'
 import React from 'react'
+import Editor from '@/components/Editor'
 interface Props {
   topic: ITopic
 }
@@ -36,26 +37,13 @@ export default class extends React.Component<Props, State> {
     const contentJson = JSON.stringify(content)
     const postData = await POST(`/topic/${topic.id}/post`, { params: contentJson })
   }
-
+  sendCallback = (content:string,filesUrl:string[])=>{
+    console.log(content);
+    console.log(filesUrl);
+  }
   render() {
     return (
-      <div className={row}>
-        <TextField
-          id="standard-full-width"
-          style={{ margin: 8, width: '90%' }}
-          placeholder="请输入您的回复内容"
-          multiline
-          value={this.state.value}
-          onChange={this.handleChange}
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <Button onClick={this.handleClick} variant="contained" color="primary">
-          回复
-        </Button>
-      </div>
+     <Editor sendCallBack={this.sendCallback}/>
     )
   }
 }

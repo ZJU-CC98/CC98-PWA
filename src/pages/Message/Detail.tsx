@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default class DetailList extends React.PureComponent<Props> {
-  list: HTMLUListElement
+  list = React.createRef<HTMLUListElement>()
 
   componentDidMount() {
     store
@@ -24,11 +24,7 @@ export default class DetailList extends React.PureComponent<Props> {
   }
 
   scrollToBottom = () => {
-    window.scrollTo(0, this.list.scrollHeight)
-  }
-
-  getRef = (it: HTMLUListElement) => {
-    this.list = it
+    if (this.list.current) window.scrollTo(0, this.list.current.scrollHeight)
   }
 
   render() {
@@ -37,7 +33,7 @@ export default class DetailList extends React.PureComponent<Props> {
         {({
           state: { messages, isEnd, isLoading },
         }: Detail) => (
-          <RootRef rootRef={this.getRef}>
+          <RootRef rootRef={this.list}>
             <List>
               {messages.map(item => <DetailItem key={item.id} message={item} />)}
             </List>

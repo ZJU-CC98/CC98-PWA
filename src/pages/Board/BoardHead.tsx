@@ -100,16 +100,16 @@ export default withStyles(styles)(
     render() {
       const { classes } = this.props;
       const data = this.props.data
-      ? this.props.data
-      :{
-        id: 0,
-        todayCount: 0,
-        topicCount: 0,
-        postCount: 0,
-        name: '',
-        boardMasters: [],
-        description: '',
-      }
+        ? this.props.data
+        : {
+          id: 0,
+          todayCount: 0,
+          topicCount: 0,
+          postCount: 0,
+          name: '',
+          boardMasters: [],
+          description: '',
+        }
       const { isFollowed } = this.state;
 
       return (
@@ -118,16 +118,17 @@ export default withStyles(styles)(
           <div className={BoardMessage}>
             <Button color="primary" className={BoardTitle}>{data.name}</Button>
             <div className={BoardTopicNumber}>{data.todayCount}/{data.topicCount}</div>
-            <div className = {toolButton}>
-                  <Button className={FollowBtnStyle}
-                    variant="contained"
-                    color="primary"
-                    onClick = {()=>{
-                      navigate(`/compose/${data.id}`)
-                    }}
-                  >
-                    发帖
-                  </Button>
+            <div className={toolButton}>
+              <Button
+                className={FollowBtnStyle}
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  navigate(`/compose/${data.id}`)
+                }}
+              >
+                发帖
+              </Button>
               <Button
                 className={FollowBtnStyle}
                 onClick={this.changeFollowStatus}

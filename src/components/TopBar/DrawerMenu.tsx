@@ -23,6 +23,7 @@ const jump = (link: string) => () => {
 }
 
 interface ItemProps {
+  // tslint:disable-next-line:no-any
   icon: React.ReactElement<any>
   text: string
   onClick: () => void

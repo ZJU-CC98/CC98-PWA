@@ -181,8 +181,12 @@ function encodeParams(params: { [key: string]: string }) {
     .join('&')
 }
 
-async function getTokenByRefreshToken(refreshToken: string) {
-
+/**
+ * 使用refresh_token获取token
+ * @param {string} refreshToken
+ * @return {Promise<Try<Token, FetchError>>}
+ */
+async function getTokenByRefreshToken(refreshToken: string): Promise<Try<Token, FetchError>> {
   const requestBody = {
     client_id: '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
     client_secret: '8b53f727-08e2-4509-8857-e34bf92b27f2',

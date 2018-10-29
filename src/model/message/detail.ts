@@ -2,10 +2,11 @@
  * @author dongyansong
  * @date 2018-10-26
  */
-import { GET } from '@/utils/fetch'
+import { GET, POST } from '@/utils/fetch'
 import { IMessageContent } from '@cc98/api'
 import { Container } from '@cc98/state'
 import reverse from 'lodash-es/reverse'
+import basic from '../basicInstance'
 import user from '../user'
 
 interface State {
@@ -14,6 +15,8 @@ interface State {
   isLoading: boolean
   id: string
 }
+
+let messageId = -1
 
 export class Detail extends Container<State> {
   state: State = {
@@ -59,6 +62,29 @@ export class Detail extends Container<State> {
         state.messages = [...reverse(data), ...state.messages]
         state.isLoading = false
         if (data.length < 20) state.isEnd = true
+      })
+    })
+  }
+
+  sendMessage = async (content: string) => {
+    const res = await POST('message', {
+      params: {
+        content,
+        receiverId: this.state.id,
+      },
+    })
+
+    res.fail().succeed(() => {
+      this.put(state => {
+        state.messages.push({
+          content,
+          id: messageId,
+          senderId: basic.state.myInfo!.id,
+          receiverId: parseInt(this.state.id, 10),
+          time: new Date(Date.now()).toUTCString(),
+          isRead: true,
+        })
+        messageId -= 1
       })
     })
   }

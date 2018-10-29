@@ -6,6 +6,7 @@ import { Subscribe } from '@cc98/state'
 import { List, RootRef } from '@material-ui/core'
 import React from 'react'
 
+import Editor from '@/components/Editor'
 import store, { Detail } from '@/model/message/detail'
 
 import DetailItem from './DetailItem'
@@ -33,11 +34,14 @@ export default class DetailList extends React.PureComponent<Props> {
         {({
           state: { messages, isEnd, isLoading },
         }: Detail) => (
-          <RootRef rootRef={this.list}>
-            <List>
-              {messages.map(item => <DetailItem key={item.id} message={item} />)}
-            </List>
-          </RootRef>
+          <>
+            <RootRef rootRef={this.list}>
+              <List>
+                {messages.map(item => <DetailItem key={item.id} message={item} />)}
+              </List>
+            </RootRef>
+            <Editor sendCallBack={store.sendMessage} />
+          </>
         )}
       </Subscribe>
     )

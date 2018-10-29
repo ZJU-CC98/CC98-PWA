@@ -1,4 +1,3 @@
-import basicInstance, { BasicContainer } from '@/model/basicInstance';
 import { PUT } from '@/utils/fetch'
 import { IUser } from '@cc98/api';
 import { IconButton, Typography } from '@material-ui/core';

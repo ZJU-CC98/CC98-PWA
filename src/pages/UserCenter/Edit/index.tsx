@@ -9,8 +9,8 @@ export default class extends React.Component<{}, {}> {
 
     return (
     <Subscribe to={[global]}>
-      {(global: GlobalContainer) =>
-        global.state.myInfo ? <EditContainer info={global.state.myInfo} /> : null
+      {(basic: GlobalContainer) =>
+        basic.state.myInfo ? <EditContainer info={basic.state.myInfo} /> : null
       }
     </Subscribe>);
   }

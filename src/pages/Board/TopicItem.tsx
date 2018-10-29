@@ -37,19 +37,39 @@ const subText = css`
     }
   }
 `
+const PrimaryText = css`
+  display:flex;
+  width:100%;
+  justify-content:space-between;
+  flex-wrap:nowrap;
+`
+const Title = css`
+  display:flex;
+  flex-grow:2;
+  overflow:hidden;
+`
+const TitleText = css`
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+`
+const Time = css`
+  color:rgba(0, 0, 0, 0.54);
+  font-size:0.875rem;
+  white-space:nowrap;
+`
 export default class extends React.PureComponent<Props> {
   render() {
     const { data } = this.props
-    let title = data.title.substr(0, 10)
-    if (title.length > 9) title += '...'
+    const title = data.title
 
     return (
       <ListItem onClick={() => navigate(`/topic/${data.id}`)} className={root} button>
-        <ListItemText
-          className={text}
-          primary={title}
-          secondary={new Date(data.lastPostTime).toLocaleString()}
-        />
+
+        <div className={PrimaryText}>
+          <div className={Title}><div className={TitleText}>{title}</div></div>
+          <div className={Time}>{new Date(data.lastPostTime).toLocaleString()}</div>
+        </div>
         <ListItemText
           className={subText}
           secondary={

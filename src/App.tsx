@@ -51,7 +51,7 @@ const App: React.SFC = () => (
       <Route path="/messageList" component={MessageList} />
       <Route path="/messageDetail/:id" component={MessageDetail} />
       <Route path="/compose/:boardId" component={Compose} />
-      <Route path="/myfollow" component={MyFollow} />
+      <Route path="/myFollow" component={MyFollow} />
 
       <Route path="/logIn" component={LogIn} />
       <Route path="/error/401" component={Page401} />

@@ -27,6 +27,7 @@
     "rc-select": "^8.4.2",
     "react": "16.6.0",
     "react-dom": "^16.5.2",
+    "react-emotion": "^9.2.12",
     "tslint-config-airbnb": "^5.11.0",
     "tslint-consistent-codestyle": "^1.13.3",
     "tslint-eslint-rules": "^5.4.0",

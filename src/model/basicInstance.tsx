@@ -24,7 +24,7 @@ interface State {
 class BasicContainer extends Container<State> {
   state: State = {
     isDrawerOpen: false,
-    isLogIn: !!getLocalStorage('access_token'),
+    isLogIn: !!getLocalStorage('refresh_token'),
     myInfo: null,
   }
 

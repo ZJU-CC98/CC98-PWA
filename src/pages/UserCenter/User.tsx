@@ -1,4 +1,4 @@
-import boardInstance, { BoardInfoStore } from '@/model/board';
+import boardInstance, { BoardInfoStore } from '@/model/board'
 import { DELETE, PUT } from '@/utils/fetch'
 import { ITopic, IUser } from '@cc98/api'
 import { Subscribe } from '@cc98/state'

@@ -8,7 +8,6 @@ import Tabs from '@material-ui/core/Tabs'
 import { css } from 'emotion'
 import React from 'react'
 import TopicItem from './TopicItem'
-import TopicList from '../NewTopic/TopicList';
 
 interface Props {
   boards: IBaseBoard[]

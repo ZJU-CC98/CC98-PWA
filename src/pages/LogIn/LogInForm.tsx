@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@material-ui/core'
 
-import basicInstance from '@/model/basicInstance'
+import global from '@/model/global'
 
 import snowball from '@/assets/snowball.png'
 
@@ -85,7 +85,7 @@ class LogIn extends React.PureComponent<{}, State> {
       logInFail: false,
     })
 
-    const token = await basicInstance.logIn(username, password)
+    const token = await global.logIn(username, password)
 
     token
       .fail(() => {

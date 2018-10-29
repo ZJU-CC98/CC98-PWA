@@ -3,7 +3,7 @@ import React from 'react'
 
 import bg9 from '@/assets/bg9.jpg'
 import LayoutCenter from '@/components/LayoutCenter'
-import basicInstance from '@/model/basicInstance'
+import global from '@/model/global'
 import { Button, Typography } from '@material-ui/core'
 
 const img = css`
@@ -39,7 +39,7 @@ const Home: React.SFC = () => (
         className={button}
         variant="outlined"
         disableRipple
-        onClick={() => basicInstance.openDrawer()}
+        onClick={() => global.openDrawer()}
       >
         <Typography className={text}>琪露诺 の CC98</Typography>
       </Button>

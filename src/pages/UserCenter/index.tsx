@@ -1,4 +1,4 @@
-import basicInstance, { BasicContainer } from '@/model/basicInstance'
+import global, { GlobalContainer } from '@/model/global'
 import user, { UserInfoStore } from '@/model/user'
 import { GET } from '@/utils/fetch'
 import { IUser } from '@cc98/api'
@@ -30,9 +30,9 @@ export default class extends React.Component<Props> {
     }
 
     return (
-      <Subscribe to={[basicInstance]}>
-        {(basic: BasicContainer) => (
-          basic.state.myInfo ? <User info={basic.state.myInfo} isUserCenter={true} /> : null
+      <Subscribe to={[global]}>
+        {(global: GlobalContainer) => (
+          global.state.myInfo ? <User info={global.state.myInfo} isUserCenter={true} /> : null
         )}
       </Subscribe>
     )

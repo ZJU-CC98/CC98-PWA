@@ -6,7 +6,7 @@ import { GET, POST } from '@/utils/fetch'
 import { IMessageContent } from '@cc98/api'
 import { Container } from '@cc98/state'
 import reverse from 'lodash-es/reverse'
-import basic from '../basicInstance'
+import global from '../global'
 import user from '../user'
 
 interface State {
@@ -79,7 +79,7 @@ export class Detail extends Container<State> {
         state.messages.push({
           content,
           id: messageId,
-          senderId: basic.state.myInfo!.id,
+          senderId: global.state.myInfo!.id,
           receiverId: parseInt(this.state.id, 10),
           time: new Date(Date.now()).toUTCString(),
           isRead: true,

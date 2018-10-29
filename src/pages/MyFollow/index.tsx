@@ -1,8 +1,9 @@
 import InfinitiList from '@/components/InfinitiList'
+import { GET } from '@/utils/fetch';
 import { ITopic } from '@cc98/api'
 import React from 'react'
 import TopicItem from './TopicItem'
-import { GET } from '@/utils/fetch';
+
 interface State {
   isLoading: boolean
   isEnd: boolean
@@ -15,6 +16,10 @@ export default class extends React.Component<{}, State> {
     isEnd: false,
     topics: [],
     from: 0,
+  }
+
+  componentDidMount() {
+    this.getFollowBoardTopics();
   }
 
   getFollowBoardTopics = async () => {
@@ -36,6 +41,7 @@ export default class extends React.Component<{}, State> {
       })
     })
   }
+
   render() {
     const { isLoading, isEnd, topics } = this.state;
 

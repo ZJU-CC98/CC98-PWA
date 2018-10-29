@@ -6,7 +6,7 @@ import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/co
 
 import MenuIcon from '@material-ui/icons/Menu'
 
-import basicInstance, { BasicContainer } from '@/model/basicInstance'
+import global, { GlobalContainer } from '@/model/global'
 import { Subscribe } from '@cc98/state'
 
 import DrawerMenu from './DrawerMenu'
@@ -63,17 +63,17 @@ const TopBar: React.SFC<{
 )
 
 const Wrapper: React.SFC = () => (
-  <Subscribe to={[basicInstance]}>
-    {(basic: BasicContainer) => (
+  <Subscribe to={[global]}>
+    {(global: GlobalContainer) => (
       <>
-        <TopBar onOpen={() => basicInstance.openDrawer()} />
+        <TopBar onOpen={() => global.openDrawer()} />
         <DrawerMenu
-          isLogIn={basic.state.isLogIn}
-          open={basic.state.isDrawerOpen}
-          onClose={() => basicInstance.closeDrawer()}
-          onLogout={() => basicInstance.logOut()}
+          isLogIn={global.state.isLogIn}
+          open={global.state.isDrawerOpen}
+          onClose={() => global.closeDrawer()}
+          onLogout={() => global.logOut()}
         >
-          <UserInfo isLogIn={basic.state.isLogIn} info={basic.state.myInfo} />
+          <UserInfo isLogIn={global.state.isLogIn} info={global.state.myInfo} />
         </DrawerMenu>
       </>
     )}

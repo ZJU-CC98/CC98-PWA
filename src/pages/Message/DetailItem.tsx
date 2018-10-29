@@ -13,7 +13,7 @@ import {
 import React from 'react'
 import styled, { css } from 'react-emotion'
 
-import basic, { BasicContainer } from '@/model/basicInstance'
+import global, { GlobalContainer } from '@/model/global'
 import user, { UserInfoStore } from '@/model/user'
 import { IMessageContent, IUser } from '@cc98/api'
 
@@ -109,8 +109,8 @@ const renderItem = (
 )
 
 export default ({ message }: Props) => (
-  <Subscribe to={[user, basic]}>
-    {({ state }: UserInfoStore, { state: { myInfo } }: BasicContainer) =>
+  <Subscribe to={[user, global]}>
+    {({ state }: UserInfoStore, { state: { myInfo } }: GlobalContainer) =>
       renderItem(
         message,
         state[message.senderId] && state[message.senderId].portraitUrl,

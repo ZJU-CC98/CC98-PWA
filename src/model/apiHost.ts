@@ -5,7 +5,7 @@
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/utils/storage'
 import { Container } from '@cc98/state'
 
-import basic from './basicInstance'
+import global from './global'
 
 export enum HostType {
   defaultHost,
@@ -43,7 +43,7 @@ export class Store extends Container<IHost> {
       Object.assign(state, defaultHost)
     })
     removeLocalStorage('proxy')
-    basic.logOut() // logout when change proxy
+    global.logOut() // logout when change proxy
   }
 
   useProxy() {
@@ -51,7 +51,7 @@ export class Store extends Container<IHost> {
       Object.assign(state, proxy)
     })
     setLocalStorage('proxy', 'proxy')
-    basic.logOut() // logout when change proxy
+    global.logOut() // logout when change proxy
   }
 }
 

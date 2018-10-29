@@ -12,11 +12,20 @@ import {
 } from '@material-ui/core'
 import { navigate } from '@reach/router'
 import React from 'react'
+import styled from 'react-emotion'
 
 import store, { UserInfoStore } from '@/model/user'
 import { IRecentMessage, IUser } from '@cc98/api'
 
 import avatar from '@/assets/9.png'
+
+const Text = styled.span`
+  display: block;
+  max-width: 80%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
 
 interface Props {
   message: IRecentMessage
@@ -29,7 +38,7 @@ const renderItem = (message: IRecentMessage, username = '', userAvatar = avatar)
     <ListItemAvatar>
       <Avatar src={userAvatar} />
     </ListItemAvatar>
-    <ListItemText primary={username} secondary={message.lastContent} />
+      <ListItemText primary={username} secondary={<Text>{message.lastContent}</Text>} />
     <ListItemSecondaryAction>
       <ListItemText secondary={new Date(message.time).toLocaleDateString()} />
     </ListItemSecondaryAction>

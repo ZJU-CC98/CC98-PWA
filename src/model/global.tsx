@@ -21,7 +21,7 @@ interface State {
   myInfo: IUser | null
 }
 
-class BasicContainer extends Container<State> {
+class GlobalContainer extends Container<State> {
   state: State = {
     isDrawerOpen: false,
     isLogIn: !!getLocalStorage('refresh_token'),
@@ -87,6 +87,6 @@ class BasicContainer extends Container<State> {
   }
 }
 
-const basicInstance = new BasicContainer()
+const global = new GlobalContainer()
 
-export { basicInstance as default, BasicContainer }
+export { global as default, GlobalContainer }

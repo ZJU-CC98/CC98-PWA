@@ -1,4 +1,4 @@
-import basicInstance, { BasicContainer } from '@/model/basicInstance';
+import global, { GlobalContainer } from '@/model/global';
 import { IUser } from '@cc98/api';
 import { Subscribe } from '@cc98/state';
 import React from 'react';
@@ -8,9 +8,9 @@ export default class extends React.Component<{}, {}> {
   render() {
 
     return (
-    <Subscribe to={[basicInstance]}>
-      {(basic: BasicContainer) =>
-        basic.state.myInfo ? <EditContainer info={basic.state.myInfo} /> : null
+    <Subscribe to={[global]}>
+      {(global: GlobalContainer) =>
+        global.state.myInfo ? <EditContainer info={global.state.myInfo} /> : null
       }
     </Subscribe>);
   }

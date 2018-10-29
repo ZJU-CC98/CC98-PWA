@@ -5,6 +5,7 @@
 import { GET } from '@/utils/fetch'
 import { IMessageContent } from '@cc98/api'
 import { Container } from '@cc98/state'
+import reverse from 'lodash-es/reverse'
 import user from '../user'
 
 interface State {
@@ -34,7 +35,7 @@ export class Detail extends Container<State> {
 
     res.fail().succeed(data => {
       this.put(state => {
-        state.messages = data
+        state.messages = reverse(data)
         state.isLoading = false
         state.id = id
         if (data.length < 20) state.isEnd = true
@@ -55,7 +56,7 @@ export class Detail extends Container<State> {
 
     res.fail().succeed(data => {
       this.put(state => {
-        state.messages.concat(data)
+        state.messages = [...reverse(data), ...state.messages]
         state.isLoading = false
         if (data.length < 20) state.isEnd = true
       })

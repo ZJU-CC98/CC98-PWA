@@ -1,5 +1,5 @@
 /* tslint:disable */
-import { getLocalStorage } from './storage'
+import { getLocalStorage, setLocalStorage } from './storage'
 
 import { Failure, Success, Try } from './fp/Try'
 
@@ -74,7 +74,7 @@ export async function GET<T = any>(url: string, options: GETOptions = {}) {
   const requestInit: RequestInit = {
     headers: new Headers({
       //  access_token
-      Authorization: options.noAuthorization ? '' : getAccessToken(),
+      Authorization: options.noAuthorization ? '' : await getAccessToken(),
       ...options.headers,
     }),
     // credentials: "include",
@@ -93,7 +93,7 @@ export async function DELETE<T = any>(url: string, options: DELETEOptions = {}) 
     method: "DELETE",
     headers: new Headers({
       //  access_token
-      Authorization: options.noAuthorization ? '' : getAccessToken(),
+      Authorization: options.noAuthorization ? '' : await getAccessToken(),
       ...options.headers,
     }),
     // credentials: "include",
@@ -132,7 +132,7 @@ export async function POST<T = any>(url: string, options: POSTOptions = {}) {
   let body : BodyInit = options.params && JSON.stringify(options.params)
   let headers = new Headers({
     //  access_token
-    Authorization: options.noAuthorization ? '' : getAccessToken(),
+    Authorization: options.noAuthorization ? '' : await getAccessToken(),
     'Content-Type': 'application/json',
     ...options.headers,
   })
@@ -140,7 +140,7 @@ export async function POST<T = any>(url: string, options: POSTOptions = {}) {
   if (options.body) {
     body = options.body
     headers = new Headers({
-      Authorization: options.noAuthorization ? '' : getAccessToken(),
+      Authorization: options.noAuthorization ? '' : await getAccessToken(),
       ...options.headers,
     })
   }
@@ -161,7 +161,7 @@ export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
     method: 'PUT',
     headers: new Headers({
       //  access_token
-      Authorization: options.noAuthorization ? '' : getAccessToken(),
+      Authorization: options.noAuthorization ? '' : await getAccessToken(),
       'Content-Type': 'application/json',
       ...options.headers,
     }),
@@ -181,12 +181,58 @@ function encodeParams(params: { [key: string]: string }) {
     .join('&')
 }
 
+async function getTokenByRefreshToken(refreshToken: string) {
+
+  const requestBody = {
+    client_id: '9a1fd200-8687-44b1-4c20-08d50a96e5cd',
+    client_secret: '8b53f727-08e2-4509-8857-e34bf92b27f2',
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+  }
+
+  const response = await fetch(host.state.oauth, {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }),
+    body: encodeParams(requestBody),
+  })
+
+  if (!(response.ok && response.status === 200)) {
+    return Try.of<Token, FetchError>(
+      Failure.of({
+        status: response.status,
+        msg: await response.text(),
+        response,
+      })
+    )
+  }
+
+  return Try.of<Token, FetchError>(Success.of(await response.json()))
+}
+
 /**
  * 从本地取得 access_token，如果过期尝试刷新
  */
-function getAccessToken(): string {
+async function getAccessToken(): Promise<string> {
   const accessToken = getLocalStorage('access_token')
-  // TODO: if need refresh access_token
+
+  if(!accessToken) {
+    const refreshToken = getLocalStorage('refresh_token') as string
+    if(!refreshToken) return ''
+    const token = await getTokenByRefreshToken(refreshToken)
+    return new Promise((resolve, reject) => {
+      token
+        .fail(error => reject(error)) // TODO: 添加refresh token过期的处理
+        .succeed(newToken => {
+          const access_token = `${newToken.token_type} ${newToken.access_token}`
+          setLocalStorage('access_token', access_token, newToken.expires_in)
+          // refresh_token 有效期一个月
+          setLocalStorage('refresh_token', newToken.refresh_token, 2592000)
+          resolve(access_token)
+        })
+    }) as Promise<string>
+  }
 
   return `${accessToken}`
 }

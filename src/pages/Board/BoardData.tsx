@@ -116,7 +116,6 @@ export default withStyles(styles)(
     }
 
     getTopics = async () => {
-      console.log("in")
       this.setState({
         isLoading: true,
       })

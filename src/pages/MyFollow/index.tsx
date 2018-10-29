@@ -4,7 +4,7 @@ import { GET } from '@/utils/fetch';
 import { ITopic } from '@cc98/api'
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import {css} from 'emotion'
+import { css } from 'emotion'
 import React from 'react'
 import TopicItem from './TopicItem'
 interface State {

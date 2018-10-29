@@ -72,6 +72,15 @@ const OptionStyle = css`
     width: 100%;
   }
 `
+const ActionStyle = css`
+  display:flex;
+  justify-content:flex-end;
+`
+const BtnStyle = css`&&{
+  margin-right:10px;
+  margin-left:10px;
+}
+`
 interface State {
   buttonInfo: string
   disabled: boolean
@@ -137,6 +146,7 @@ export default withStyles(styles)(
       const { buttonInfo, disabled } = this.state;
       const followBtn = (
         <Button
+          className={BtnStyle}
           onClick={this.changeFollowStatus}
           disabled={disabled}
           variant="contained"
@@ -146,6 +156,7 @@ export default withStyles(styles)(
       );
       const editBtn = (
         <Button
+          className={BtnStyle}
           onClick={() => { navigate('/userCenter/edit') }}
           variant="contained"
           color="primary"
@@ -163,11 +174,10 @@ export default withStyles(styles)(
               avatar={<Avatar className={classes.bigAvatar} src={info.portraitUrl} />}
               title={<div className={UserNameStyle}>{info.name}</div>}
               action={
-                <div>
+                <div className={ActionStyle}>
                   {isUserCenter ? editBtn : followBtn}
                   {!isUserCenter ? <Button variant="contained" color="primary">私信</Button> : null}
-                </div>
-              }
+                </div>}
             />
 
             <List className={OptionStyle}>

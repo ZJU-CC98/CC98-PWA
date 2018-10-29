@@ -4,6 +4,7 @@ import { IconButton, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Select from '@material-ui/core/Select';
 import { StyleRules, Theme, withStyles } from '@material-ui/core/styles';
 import { ClassNameMap, StyleRulesCallback } from '@material-ui/core/styles/withStyles';
@@ -60,6 +61,11 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   menu: {
     width: 200,
   },
+  genderRoot: {
+    width: '100%',
+    marginLeft: '8px',
+    marginRight: '8px',
+  },
 }
 )
 export default withStyles(styles)(
@@ -75,21 +81,23 @@ export default withStyles(styles)(
     }
 
     handleChange = (name: keyof IUser) =>
-    (e: React.ChangeEvent<HTMLTextAreaElement>|React.ChangeEvent<HTMLSelectElement>) => {
-      const info: IUser = Object.assign({}, this.state.newInfo);
-      info[name] = e.target.value;
-      this.setState({
-        newInfo: info,
-      })
-    }
+      (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>) => {
+        const info: IUser = Object.assign({}, this.state.newInfo);
+        info[name] = e.target.value;
+        this.setState({
+          newInfo: info,
+        })
+      }
 
     submit = async () => {
+      const { newInfo } = this.state;
       this.setState(
         {
           disabled: true,
           buttonInfo: '...',
         })
-      const submitTry = await PUT('/me');
+
+      const submitTry = await PUT('/me', { params: newInfo });
       submitTry
         .fail(
           () => {
@@ -116,19 +124,29 @@ export default withStyles(styles)(
             </IconButton>
             <Typography variant="subtitle2">编辑个人信息</Typography>
           </div>
-          <FormControl className={classes.formControl}>
+          <FormControl
+            className={classes.formControl}
+            classes={{ root: classes.genderRoot }}
+            variant="outlined"
+            margin="normal"
+          >
             <InputLabel htmlFor="age-native-simple">Age</InputLabel>
             <Select
               native
-              value={newInfo.gender === 1 ? '男' : '女'}
+              autoWidth
+              value={newInfo.gender}
               onChange={this.handleChange('gender')}
-              inputProps={{
-                name: 'age',
-                id: 'age-native-simple',
-              }}
+              input={
+                <OutlinedInput
+                  name="gender"
+                  labelWidth={10}
+                  id="outlined-age-native-simple"
+                />
+
+              }
             >
-              <option value="1">男</option>
-              <option value="0">女</option>
+              <option value={1}>男</option>
+              <option value={0}>女</option>
             </Select>
           </FormControl>
           <TextField

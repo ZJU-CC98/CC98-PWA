@@ -6,7 +6,6 @@ import dayjs from 'dayjs'
 import { css } from 'emotion'
 import React from 'react'
 
-
 // dayjs.extend(relativeTime)
 interface TopicProps {
   data: ITopic
@@ -45,6 +44,7 @@ const TopicItemTitleStyle = css`
 const TopicItemUserNameStyle = css`
   font-size:0.8rem;
   flex-grow:1;
+  color:rgba(0,0,0,0.54);
 `
 export default (props: TopicProps) =>
 
@@ -58,7 +58,12 @@ export default (props: TopicProps) =>
           >
             {props.data.boardName}
           </div>
-          <div className={TopicItemUserNameStyle}>{props.data.userName}</div>
+          <div
+            onClick={() => navigate(`/user/${props.data.userId}`)}
+            className={TopicItemUserNameStyle}
+          >
+            {props.data.userName}
+          </div>
           <div className={TopicItemTimeStyle}>
             {dayjs(props.data.lastPostTime).format()}
           </div>

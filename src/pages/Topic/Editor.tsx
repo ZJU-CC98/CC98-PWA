@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField'
 import { css } from 'emotion'
 import React from 'react'
 import Editor from '@/components/Editor'
+
 interface Props {
   topic: ITopic
 }

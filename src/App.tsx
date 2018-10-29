@@ -20,11 +20,11 @@ import MessageDetail from './pages/Message/Detail'
 import MessageList from './pages/Message/List'
 import MyFollow from './pages/MyFollow';
 import NewTopic from './pages/NewTopic'
+import Search from './pages/Search'
 import Setting from './pages/Setting'
 import Topic from './pages/Topic'
 import UserCenter from './pages/UserCenter'
 import UserCenterEdit from './pages/UserCenter/Edit'
-
 // TODO: cache
 const Route: React.SFC<
   RouteComponentProps & {
@@ -32,7 +32,7 @@ const Route: React.SFC<
     // tslint:disable-next-line:no-any
     component: any
   }
-> = props => React.createElement(props.component, props)
+  > = props => React.createElement(props.component, props)
 
 const App: React.SFC = () => (
   <>
@@ -52,6 +52,7 @@ const App: React.SFC = () => (
       <Route path="/messageDetail/:id" component={MessageDetail} />
       <Route path="/compose/:boardId" component={Compose} />
       <Route path="/myFollow" component={MyFollow} />
+      <Route path="/search" component={Search} />
 
       <Route path="/logIn" component={LogIn} />
       <Route path="/error/401" component={Page401} />

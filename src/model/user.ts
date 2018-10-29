@@ -21,7 +21,7 @@ export class UserInfoStore extends Container {
    * @return {Promise<Try<IUser, FetchError>>}
    * @memberof UserInfoStore
    */
-  getInfo = (id: string) => {
+  getInfo = (id: string): Promise<Try<IUser, FetchError>> => {
     if (this.state[id]) {
       return Promise.resolve(Try.of<IUser, FetchError>(Success.of(this.state[id])))
     }
@@ -35,19 +35,21 @@ export class UserInfoStore extends Container {
    * @return {Promise<Try<IUser, FetchError>>}
    * @memberof UserInfoStore
    */
-  forceGetInfo = async (id: string) => {
+  forceGetInfo = async (id: string): Promise<Try<IUser, FetchError>> => {
     const res = await GET<IUser>(`user/${id}`)
 
     res.fail().succeed(info => this.setInfo(info))
+
+    return res
   }
 
   /**
    * 批量获取用户信息，store中存在的信息不会重新请求
    * @param {string} id 用户id
-   * @return {Promise<Try<IUser, FetchError>>}
+   * @return {Promise<void>}
    * @memberof UserInfoStore
    */
-  getInfos = async (ids: string[]) => {
+  getInfos = async (ids: string[]): Promise<void> => {
     const voidIds = difference(ids, Object.keys(this.state))
     if (!voidIds.length) return
     const res = await GET<IUser[]>(`user?id=${voidIds.join('&id=')}`)

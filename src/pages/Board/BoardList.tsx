@@ -19,7 +19,7 @@ export default class extends React.Component<{}, State> {
 
   getBoardList = async () => {
     this.setState({ isLoading: true })
-    const baseBoardsData = await GET<IBaseBoard[]>('/board/all')
+    const baseBoardsData = await GET<IBaseBoard[]>('board/all')
     baseBoardsData.map(baseBoards =>
       this.setState({
         isLoading: false,

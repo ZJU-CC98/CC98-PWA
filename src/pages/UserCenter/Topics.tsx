@@ -1,7 +1,8 @@
 import InfinitiList from '@/components/InfinitiList'
+import BoardInstance from '@/model/board';
 import getBoardNameById from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
-import { ITopic, IUser } from '@cc98/api'
+import { IBaseBoard, ITopic, IUser } from '@cc98/api'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
@@ -74,7 +75,8 @@ const ExpandPanelSummaryStyle = css`
 `
 
 interface Props {
-  info: IUser
+  info: IUser,
+  boards: IBaseBoard[]
 }
 
 interface State {
@@ -99,19 +101,17 @@ export default withStyles(styles)(
     }
 
     getRecentTopics = async () => {
-      const { info } = this.props
+      const { info, boards } = this.props
       this.setState({ isLoading: true })
       const { from, recentTopics, size } = this.state
       if (info) {
         const recentTopicsData = await GET<ITopic[]>(
-          `/user/${info.id}/recent-topic?from=${from}&size=10`
+          `user/${info.id}/recent-topic?from=${from}&size=10`
         )
         recentTopicsData.fail().succeed(async (newRecentTopics: ITopic[]) => {
           newRecentTopics.forEach(async topic => {
-            const boardName = await getBoardNameById(topic.boardId)
-            topic.boardName = boardName
+            topic.boardName = getBoardNameById(boards, topic.boardId)
           })
-          // console.log(newRecentTopics)
           this.setState({
             recentTopics: recentTopics.concat(newRecentTopics),
             from: from + newRecentTopics.length,

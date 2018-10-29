@@ -1,8 +1,5 @@
 import { IBoard } from '@cc98/api'
 import Button from '@material-ui/core/Button'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 import React from 'react'

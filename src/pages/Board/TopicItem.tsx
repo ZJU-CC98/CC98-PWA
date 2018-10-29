@@ -1,6 +1,5 @@
 import { ITopic } from '@cc98/api'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'

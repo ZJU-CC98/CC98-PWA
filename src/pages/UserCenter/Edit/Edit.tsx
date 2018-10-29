@@ -1,3 +1,4 @@
+import basicInstance, { BasicContainer } from '@/model/basicInstance';
 import { PUT } from '@/utils/fetch'
 import { IUser } from '@cc98/api';
 import { IconButton, Typography } from '@material-ui/core';
@@ -68,6 +69,12 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   },
 }
 )
+const ButtonStyle = css`&&{
+  width:100%;
+  margin-left:10px;
+  margin-right:10px;
+  margin-top:10px;
+}`
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
 
@@ -97,7 +104,7 @@ export default withStyles(styles)(
           buttonInfo: '...',
         })
 
-      const submitTry = await PUT('/me', { params: newInfo });
+      const submitTry = await PUT('me', { params: newInfo });
       submitTry
         .fail(
           () => {
@@ -106,6 +113,7 @@ export default withStyles(styles)(
         )
         .succeed(
           () => {
+            basicInstance.freshInfo();
             this.setState({ disabled: false, buttonInfo: '修改' });
             navigate('/userCenter');
           }
@@ -185,7 +193,16 @@ export default withStyles(styles)(
             margin="normal"
             variant="outlined"
           />
-          <Button type="submit" disabled={disabled} onClick={this.submit}>{buttonInfo}</Button>
+          <Button
+            type="submit"
+            color="primary"
+            disabled={disabled}
+            onClick={this.submit}
+            variant="contained"
+            className={ButtonStyle}
+          >
+            {buttonInfo}
+          </Button>
         </form>
       )
     }

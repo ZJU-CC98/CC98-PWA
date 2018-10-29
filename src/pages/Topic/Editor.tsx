@@ -1,8 +1,6 @@
 import Editor from '@/components/Editor'
 import { POST } from '@/utils/fetch'
 import { ITopic } from '@cc98/api'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
 import { css } from 'emotion'
 import React from 'react'
 
@@ -36,7 +34,7 @@ export default class extends React.Component<Props, State> {
       title: '',
     }
     const contentJson = JSON.stringify(content)
-    const postData = await POST(`/topic/${topic.id}/post`, { params: contentJson })
+    const postData = await POST(`topic/${topic.id}/post`, { params: contentJson })
   }
   sendCallback = (content: string, filesUrl: string[]) => {
   }

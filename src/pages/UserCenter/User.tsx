@@ -1,6 +1,7 @@
-import { DELETE, PUT } from '@/utils/fetch';
+import boardInstance, { BoardInfoStore } from '@/model/board';
+import { DELETE, PUT } from '@/utils/fetch'
 import { ITopic, IUser } from '@cc98/api'
-import UBB from '@cc98/ubb-react'
+import { Subscribe } from '@cc98/state'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -10,11 +11,10 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import { navigate } from '@reach/router';
+import { navigate } from '@reach/router'
 import { css } from 'emotion'
 import React from 'react'
 import Topics from './Topics'
-
 interface Props {
   info: IUser
   isUserCenter: boolean
@@ -157,7 +157,7 @@ export default withStyles(styles)(
       const editBtn = (
         <Button
           className={BtnStyle}
-          onClick={() => { navigate('/userCenter/edit') }}
+          onClick={() => { navigate('userCenter/edit') }}
           variant="contained"
           color="primary"
         >
@@ -316,7 +316,13 @@ export default withStyles(styles)(
               </ListItem>
               <Divider />
             </List>
-            <Topics info={info} />
+            <Subscribe to={[boardInstance]}>
+              {
+                (store: BoardInfoStore) =>
+                  store.state.boardData.length !== 0 ?
+                  <Topics info={info} boards={store.state.boardData} /> : null
+              }
+            </Subscribe>
           </div>
         )
       }

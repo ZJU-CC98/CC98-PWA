@@ -70,7 +70,7 @@ const FollowBtnStyle = css`
   && {
     width: 1.5rem;
     height: 0.8rem;
-    margin-right: 1rem;
+    margin-right: 0.4rem;
   }
 `
 const BoardMasters = css`
@@ -79,7 +79,9 @@ const BoardMasters = css`
   padding-left:1.5rem;
   border-bottom:#eaeaea solid thin;
 `
-
+const toolButton = css`
+  margin-right: 1rem;
+`
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
     state: State = {
@@ -91,18 +93,17 @@ export default withStyles(styles)(
     }
 
     render() {
-      let { data } = this.props
       const { classes } = this.props;
-      if (!data) {
-        data = {
-          id: 0,
-          todayCount: 0,
-          topicCount: 0,
-          postCount: 0,
-          name: '',
-          boardMasters: [],
-          description: '',
-        }
+      const data = this.props.data
+      ? this.props.data
+      :{
+        id: 0,
+        todayCount: 0,
+        topicCount: 0,
+        postCount: 0,
+        name: '',
+        boardMasters: [],
+        description: '',
       }
       const { isFollowed } = this.state;
 
@@ -112,14 +113,24 @@ export default withStyles(styles)(
           <div className={BoardMessage}>
             <Button color="primary" className={BoardTitle}>{data.name}</Button>
             <div className={BoardTopicNumber}>{data.todayCount}/{data.topicCount}</div>
-            <Button
-              className={FollowBtnStyle}
-              onClick={this.changeFollowStatus}
-              variant="outlined"
-            >
-              {isFollowed ? '取关' : '关注'}
-            </Button>
-
+            <div className = {toolButton}>
+                  <Button className={FollowBtnStyle} 
+                    variant="contained"
+                    color="primary"
+                    onClick = {()=>{
+                      navigate(`/compose/${data.id}`)
+                    }}
+                  >
+                    发帖
+                  </Button>
+              <Button
+                className={FollowBtnStyle}
+                onClick={this.changeFollowStatus}
+                variant="outlined"
+              >
+                {isFollowed ? '取关' : '关注'}
+              </Button>
+            </div>
           </div>
 
           <ExpansionPanel classes={{ root: classes.root, expanded: classes.expanded }}>

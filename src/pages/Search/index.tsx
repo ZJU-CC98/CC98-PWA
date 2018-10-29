@@ -61,13 +61,13 @@ export default class extends React.Component<{}, State> {
         <SearchInput className="search-input" onChange={this.searchUpdated} />
         <Button color="primary" variant="outlined" onClick={() => { this.getTopics() }}>搜索</Button>
         <InfiniteList
-        initLoading={false}
-        isLoading={isLoading}
-        isEnd={isEnd}
-        callback={this.getTopics}
+          initLoading={false}
+          isLoading={isLoading}
+          isEnd={isEnd}
+          callback={this.getTopics}
         >
           {topics.map(info => (
-            <TopicItem data={info} />
+            <TopicItem key={info.id} data={info} />
           ))}
         </InfiniteList>
       </div>

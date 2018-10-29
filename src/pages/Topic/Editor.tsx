@@ -36,6 +36,7 @@ export default class extends React.Component<Props, State> {
     const contentJson = JSON.stringify(content)
     const postData = await POST(`topic/${topic.id}/post`, { params: contentJson })
   }
+  // tslint:disable-next-line:no-empty
   sendCallback = (content: string, filesUrl: string[]) => {
   }
 

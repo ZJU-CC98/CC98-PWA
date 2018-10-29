@@ -3,7 +3,7 @@
  * @date 2018-10-26
  */
 import { Subscribe } from '@cc98/state'
-import { List } from '@material-ui/core'
+import { List, RootRef } from '@material-ui/core'
 import React from 'react'
 
 import store, { Detail } from '@/model/message/detail'
@@ -14,9 +14,21 @@ interface Props {
   id: string
 }
 
-export default class MessageList extends React.PureComponent<Props> {
+export default class DetailList extends React.PureComponent<Props> {
+  list: HTMLUListElement
+
   componentDidMount() {
-    store.init(this.props.id)
+    store
+      .init(this.props.id)
+      .then(this.scrollToBottom)
+  }
+
+  scrollToBottom = () => {
+    window.scrollTo(0, this.list.scrollHeight)
+  }
+
+  getRef = (it: HTMLUListElement) => {
+    this.list = it
   }
 
   render() {
@@ -25,9 +37,11 @@ export default class MessageList extends React.PureComponent<Props> {
         {({
           state: { messages, isEnd, isLoading },
         }: Detail) => (
-          <List>
-            {messages.map(item => <DetailItem key={item.id} message={item} />)}
-          </List>
+          <RootRef rootRef={this.getRef}>
+            <List>
+              {messages.map(item => <DetailItem key={item.id} message={item} />)}
+            </List>
+          </RootRef>
         )}
       </Subscribe>
     )

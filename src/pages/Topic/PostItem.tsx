@@ -18,6 +18,9 @@ import { IPost, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
 import { navigate } from '@reach/router'
 
+import remark from 'remark';
+import reactRenderer from 'remark-react';
+
 const root = css`
   margin-top: 6px;
   background-color: #ccc;
@@ -75,6 +78,29 @@ class PostItem extends React.PureComponent<Props, State> {
     if (postInfo.isDeleted) {
       return null
     }
+    let text = UBB(postInfo.content)
+    if (postInfo.contentType === 1) {
+      let parseContent = postInfo.content
+        .replace(/\n>[\s\S]*?\n\n/g,
+                 v => v.replace(/\n[^\n](?!>)/g,
+                                v1 => v1.replace(/\n(?!>)/, '\n>')));
+
+      if (parseContent[0] === '>') {
+        const index = parseContent.indexOf('\n\n');
+        if (index === -1) {
+          parseContent = parseContent.replace(/\n[^\n](?!>)/g,
+                                              v1 => v1.replace(/\n(?!>)/, '\n>'));
+        } else {
+          const substr = parseContent.substr(0, index);
+          parseContent = substr.replace(/\n[^\n](?!>)/g,
+                                        v1 =>
+                                        v1.replace(/\n(?!>)/, '\n>')) +
+                                        parseContent.substr(index + 1, parseContent.length);
+        }
+      }
+      parseContent = parseContent.replace(/发言：\*\*\n/g, '发言：**\n\n');
+      text = remark().use(reactRenderer).processSync(parseContent).contents
+    }
 
     return (
       <Card square elevation={0} className={root}>
@@ -109,7 +135,7 @@ class PostItem extends React.PureComponent<Props, State> {
         />
 
         <CardContent>
-          <Typography component="div">{UBB(postInfo.content)}</Typography>
+          <Typography component="div">{text}</Typography>
         </CardContent>
 
         {/* <CardActions>

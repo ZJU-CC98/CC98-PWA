@@ -23,7 +23,8 @@ interface Props {
    * files是已经上传好的图片url列表
    */
   sendCallBack: (content: string, files?: string[]) => void,
-
+  maxHeight?: number,
+  replyMode?: boolean
 }
 interface SPL {
   base64: string,
@@ -49,11 +50,20 @@ const bottomButton = {
 }
 const baseInputStyle = {
   padding: '15px 15px 0px 15px',
+  backgroundColor: 'white',
+  marginTop:'5px',
 }
 
 const imgListStyle = {
   padding: '0px 15px 0px 15px',
   margin: '0px',
+  backgroundColor: 'white',
+}
+const replyImgListStyle = {
+  padding: '0px 15px 0px 15px',
+  margin: '0px',
+  backgroundColor: 'white',
+  maxHeight: '200px',
 }
 const picStyle = {
 
@@ -61,7 +71,11 @@ const picStyle = {
 
 const styles: StyleRules = {
   inputMultiline: {
-    minHeight: '300px',
+    minHeight: '200px',
+  },
+  replyInputMultiline: {
+    minHeight: '200px',
+    maxHeight: '200px',
   },
   tileBarRoot: {
     backgroundColor: 'rgba(0,0,0,0)',
@@ -69,10 +83,10 @@ const styles: StyleRules = {
   actionIcon: {
     borderRadius: '100%',
     backgroundColor: '#13121266',
-  }
+  },
 }
 
-function _randomString(l: number) {
+function randomString(l: number) {
   const len = l || 32;
   const $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
   /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
@@ -92,6 +106,7 @@ export default withStyles(styles)(
       sendLoading: false,
     }
     clickUpload = () => {
+      // @ts-ignore
       this.refs.uploadfile.click()
     }
     uploadPic = (files: FileList | null) => {
@@ -100,14 +115,15 @@ export default withStyles(styles)(
         for (const file of files) {
           const reader = new FileReader()
           reader.readAsDataURL(file)
-          reader.onload = (e: React.ChangeEvent<HTMLInputElement>) => {
+          reader.onload = (e: ProgressEvent) => {
             const showPiclist = this.state.showPicList
             if (e.target) {
               showPiclist.push({
                 file,
+                // @ts-ignore
                 base64: e.target.result,
                 name: file.name,
-                id: _randomString(10),
+                id: randomString(10),
               })
             }
 
@@ -152,19 +168,21 @@ export default withStyles(styles)(
     }
     render() {
       const imglist = this.state.showPicList
-      const { classes, sendCallBack } = this.props
+      const { classes, sendCallBack, replyMode } = this.props
       const sendIcon = this.state.sendLoading
         ? <CircularProgress size={30} />
         : <Send />
 
       return (
-        <div>
+        <>
           <InputBase
             fullWidth={true}
             placeholder="说些什么呢...."
             multiline
             style={baseInputStyle}
-            classes={{ inputMultiline: classes.inputMultiline }}
+            classes={replyMode ?
+                      { inputMultiline: classes.replyInputMultiline }
+                    : { inputMultiline: classes.inputMultiline }}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               this.bindText(e)
             }}
@@ -183,15 +201,12 @@ export default withStyles(styles)(
             cellHeight={160}
             cols={3}
             spacing={4}
-            style={imgListStyle}
+            style={replyMode ? replyImgListStyle : imgListStyle}
           >
             {
               imglist.map(e =>
                 (
                   <GridListTile
-                    onClick={() => {
-                      // TODO: delete pic
-                    }}
                     key={e.id}
                   >
 
@@ -235,7 +250,7 @@ export default withStyles(styles)(
               }}
             />
           </BottomNavigation>
-        </div>
+        </>
       )
     }
   }

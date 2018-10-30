@@ -16,7 +16,7 @@ interface IStore {
 }
 
 export class Store extends Container<IStore> {
-  private connection: SignalR.HubConnection
+  connection: SignalR.HubConnection
   state: IStore = {
     isConnect: false,
     shouldUseSignalr: !!getLocalStorage('signalr'),
@@ -46,15 +46,11 @@ export class Store extends Container<IStore> {
       })
       .build();
 
-    this.connection.on('NotifyMessageReceive', this.handleMessageReceive)
     this.put(state => {
       state.isConnect = true
     })
 
     return this.connection.start()
-  }
-
-  handleMessageReceive = () => {
   }
 
   stop = async () => {

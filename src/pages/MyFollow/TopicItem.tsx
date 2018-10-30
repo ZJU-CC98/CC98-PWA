@@ -5,7 +5,6 @@ import dayjs from 'dayjs'
 import { css } from 'emotion'
 import React from 'react'
 
-
 interface TopicProps {
   data: ITopic
 }

@@ -31,7 +31,7 @@ export default class extends React.Component<Props> {
 
     return (
       <Subscribe to={[global]}>
-        {(global: GlobalContainer) => (
+        {() => (
           global.state.myInfo ? <User info={global.state.myInfo} isUserCenter={true} /> : null
         )}
       </Subscribe>

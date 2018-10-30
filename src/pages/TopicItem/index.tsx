@@ -22,6 +22,7 @@ const styles: StyleRules = {
   primary: {
     fontSize: '0.875rem',
     color: 'rgba(0, 0, 0, 0.54)',
+    textAlign: 'right',
   },
   secondary: {
     textAlign: 'right',

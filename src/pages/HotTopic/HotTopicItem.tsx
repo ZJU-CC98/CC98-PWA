@@ -15,7 +15,11 @@ const LineStyle = css`
   width:100%;
 `
 const TopicItem: React.SFC<Props> = ({ info, click }) => (
-  <ListItem button onClick={() => click && click(info.id)}>
+  <ListItem
+    divider
+    button
+    onClick={() => click && click(info.id)}
+  >
     <ListItemText
       primary={
         <div className={LineStyle}>

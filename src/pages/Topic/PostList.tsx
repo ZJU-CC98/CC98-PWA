@@ -109,6 +109,10 @@ export default class extends React.PureComponent<Props> {
     await postInstance.fetchPosts()
   }
 
+  componentWillUnmount() {
+    postInstance.reset()
+  }
+
   render() {
 
     return (

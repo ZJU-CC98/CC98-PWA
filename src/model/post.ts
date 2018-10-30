@@ -14,6 +14,8 @@ interface State {
   }
   from: number
   topicId: number
+  // tslint:disable-next-line:no-any
+  [index: string]: any
 }
 
 class PostInfoStore extends Container<State> {
@@ -88,6 +90,25 @@ class PostInfoStore extends Container<State> {
           state.isLoading = false
       })
     })
+  }
+
+  reset = () => {
+    const initState: State = {
+      isLoading: false,
+      isEnd: false,
+      posts: [],
+      userMap: {},
+      from: 0,
+      topicId: -1,
+    }
+
+    this.put(
+      state => {
+        for (const key of Object.keys(state)) {
+          state[key] = initState[key]
+        }
+      }
+    )
   }
 }
 

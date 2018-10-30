@@ -3,7 +3,7 @@ import React from 'react'
 
 import InfiniteList from '@/components/InfiniteList'
 import { List } from '@material-ui/core'
-import TpoicItem from './TopicItem'
+import TopicItem from '../TopicItem'
 
 import { GET } from '@/utils/fetch'
 import { ITopic } from '@cc98/api'
@@ -63,7 +63,7 @@ class TopicList extends React.Component<{}, State> {
       <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.fetchTopics}>
         <List>
           {topicList.map(info => (
-            <TpoicItem key={info.id} info={info} click={this.jump2Post} />
+            <TopicItem key={info.id} data={info} place={'newtopic'} />
           ))}
         </List>
       </InfiniteList>

@@ -2,10 +2,11 @@ import InfiniteList from '@/components/InfiniteList'
 import { GET } from '@/utils/fetch'
 import { ITopic, IUser } from '@cc98/api'
 import Button from '@material-ui/core/Button'
+import List from '@material-ui/core/List'
 import React from 'react'
 import { css } from 'react-emotion'
 import SearchInput from 'react-search-input'
-import TopicItem from '../Board/TopicItem'
+import TopicItem from '../TopicItem'
 interface State {
   searchTerm: string
   topics: ITopic[]
@@ -66,9 +67,11 @@ export default class extends React.Component<{}, State> {
           isEnd={isEnd}
           callback={this.getTopics}
         >
-          {topics.map(info => (
-            <TopicItem key={info.id} data={info} />
-          ))}
+          <List>
+            {topics.map(info => (
+              <TopicItem key={info.id} data={info} place={'search'} />
+            ))}
+          </List>
         </InfiniteList>
       </div>
 

@@ -6,14 +6,14 @@ import { IBaseBoard, ITopic, IUser } from '@cc98/api'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import List from '@material-ui/core/List'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { css } from 'emotion'
 import React from 'react'
-import TopicItem from './TopicItem'
-
+import TopicItem from '../TopicItem'
 const styles: StyleRules = {
   root: {
     display: 'flex',
@@ -140,9 +140,11 @@ export default withStyles(styles)(
           </ExpansionPanelSummary>
           <ExpansionPanelDetails classes={{ root: classes.expandDetailRoot }}>
             <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.getRecentTopics}>
-              {recentTopics.map(topic => (
-                <TopicItem key={topic.id} data={topic} />
-              ))}
+              <List>
+                {recentTopics.map(topic => (
+                  <TopicItem key={topic.id} data={topic} place={'usercenter'} />
+                ))}
+              </List>
             </InfiniteList>
           </ExpansionPanelDetails>
         </ExpansionPanel>

@@ -3,12 +3,12 @@ import getBoardName from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
 import { IBaseBoard, ITopic } from '@cc98/api'
 import { Subscribe } from '@cc98/state'
+import List from '@material-ui/core/List'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import { css } from 'emotion'
 import React from 'react'
-import TopicItem from './TopicItem'
-
+import TopicItem from '../TopicItem'
 interface Props {
   boards: IBaseBoard[]
 }
@@ -117,9 +117,11 @@ export default class extends React.Component<Props, State> {
           isEnd={isEnd}
           callback={current === 'board' ? this.getFollowBoardTopics : this.getFolloweeTopics}
         >
-          {topics.map(topic => (
-            <TopicItem key={topic.id} data={topic} />
-          ))}
+          <List>
+            {topics.map(topic => (
+              <TopicItem key={topic.id} data={topic} place={'follow'} />
+            ))}
+          </List>
         </InfiniteList>
       </div>
     )

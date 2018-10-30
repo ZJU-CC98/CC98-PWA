@@ -2,6 +2,7 @@ import InfiniteList from '@/components/InfiniteList'
 import getTagName from '@/services/getTagName'
 import { GET } from '@/utils/fetch'
 import { IBoard, ITag, ITopic } from '@cc98/api'
+import { List } from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
@@ -9,9 +10,8 @@ import { Theme, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap, StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { css } from 'emotion'
 import React from 'react'
+import TopicItem from '../TopicItem'
 import BoardHead from './BoardHead'
-import TopicItem from './TopicItem'
-
 interface Tag {
   name: string
   id: number
@@ -228,11 +228,13 @@ export default withStyles(styles)(
               </Select>
             </FormControl> : null}
           </div>
-          <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.getTopics}>
-            {topics.map(topic => (
-              <TopicItem key={topic.id} data={topic} />
-            ))}
-          </InfiniteList>
+          <List style={{ width: '100%' }}>
+            <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.getTopics}>
+              {topics.map(topic => (
+                <TopicItem key={topic.id} data={topic} place={'inboard'} />
+              ))}
+            </InfiniteList>
+          </List>
         </div>
       )
     }

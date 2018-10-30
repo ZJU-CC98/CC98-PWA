@@ -14,6 +14,7 @@
     "lint:ts-fix": "tslint -c tslint.json --project tsconfig.json 'src/**/*.{ts,tsx}' --fix"
   },
   "dependencies": {
+    "@aspnet/signalr": "^1.0.4",
     "@cc98/state": "^1.0.0",
     "@cc98/ubb-react": "^1.0.0",
     "@material-ui/core": "^3.2.2",

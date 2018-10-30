@@ -4,6 +4,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 
+import dayjs from 'dayjs'
+// @ts-ignore
+import zh from 'dayjs/locale/zh-cn'
+
+// @ts-ignore
+dayjs.locale(zh, null, false)
+
 injectGlobal`
 
   * {

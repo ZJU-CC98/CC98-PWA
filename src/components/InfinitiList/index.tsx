@@ -57,7 +57,9 @@ class InfinieList extends React.PureComponent<Props> {
   }
 
   render() {
-    const { isEnd, children, initLoading } = this.props
+    const { isEnd, children } = this.props
+    let { initLoading } = this.props
+    if (initLoading === undefined) initLoading = true
 
     return (
       <>

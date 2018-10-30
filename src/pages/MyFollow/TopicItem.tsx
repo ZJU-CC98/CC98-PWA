@@ -2,11 +2,10 @@ import { ITopic } from '@cc98/api'
 import ListItem from '@material-ui/core/ListItem'
 import { navigate } from '@reach/router'
 import dayjs from 'dayjs'
-
 import { css } from 'emotion'
 import React from 'react'
 
-// dayjs.extend(relativeTime)
+
 interface TopicProps {
   data: ITopic
 }
@@ -24,15 +23,15 @@ const TopicItemMetaStyle = css`
 `
 const TopicItemTimeStyle = css`
   font-size: 0.8rem;
-  margin-left: 2rem;
   color: rgba(0, 0, 0, 0.54);
-  flex-grow:2;
+  width:40%;
+  text-align:right;
 `
 const TopicItemBoardStyle = css`
   font-size: 0.8rem;
   color: #35a7ff;
   cursor: pointer;
-  flex-grow:1;
+  width:30%;
 `
 const TopicItemTitleStyle = css`
   && {
@@ -43,8 +42,9 @@ const TopicItemTitleStyle = css`
 `
 const TopicItemUserNameStyle = css`
   font-size:0.8rem;
-  flex-grow:1;
+  width:30%;
   color:rgba(0,0,0,0.54);
+  text-align:left
 `
 export default (props: TopicProps) =>
 
@@ -65,7 +65,7 @@ export default (props: TopicProps) =>
             {props.data.userName}
           </div>
           <div className={TopicItemTimeStyle}>
-            {dayjs(props.data.lastPostTime).format()}
+            {dayjs(props.data.lastPostTime).fromNow()}
           </div>
         </div>
         <div className={TopicItemTitleStyle} onClick={() => navigate(`/topic/${props.data.id}`)}>

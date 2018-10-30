@@ -3,14 +3,14 @@ import { injectGlobal } from 'emotion'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-
+import relativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from 'dayjs'
 // @ts-ignore
 import zh from 'dayjs/locale/zh-cn'
 
 // @ts-ignore
 dayjs.locale(zh, null, false)
-
+dayjs.extend(relativeTime)
 injectGlobal`
 
   * {

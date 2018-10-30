@@ -218,7 +218,7 @@ async function getTokenByRefreshToken(refreshToken: string): Promise<Try<Token, 
 /**
  * 从本地取得 access_token，如果过期尝试刷新
  */
-async function getAccessToken(): Promise<string> {
+export async function getAccessToken(): Promise<string> {
   const accessToken = getLocalStorage('access_token')
 
   if(!accessToken) {

@@ -7,18 +7,14 @@ import { List } from '@material-ui/core'
 import React from 'react'
 
 import InfiniteList from '@/components/InfiniteList'
-import store, { MessageStore } from '@/model/message/recent'
+import MessageStore from '@/model/message/recent'
 
 import ListItem from './ListItem'
 
 export default class MessageList extends React.PureComponent {
-  componentDidMount() {
-    store.initRecentList()
-  }
-
   render() {
     return (
-      <Subscribe to={[store]}>
+      <Subscribe to={[MessageStore]}>
         {({
           state: { recentList, recentListEnd, recentListLoading },
           getRecentList,

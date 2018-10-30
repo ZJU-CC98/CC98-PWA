@@ -1,4 +1,4 @@
-import InfiniteList from '@/components/InfinitiList'
+import InfiniteList from '@/components/InfiniteList'
 import { GET } from '@/utils/fetch'
 import { ITopic, IUser } from '@cc98/api'
 import Button from '@material-ui/core/Button'

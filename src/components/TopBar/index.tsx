@@ -63,17 +63,17 @@ const TopBar: React.SFC<{
 )
 
 const Wrapper: React.SFC = () => (
-  <Subscribe to={[global]}>
-    {(global: GlobalContainer) => (
+  <Subscribe to={[GlobalContainer]}>
+    {(g: GlobalContainer) => (
       <>
-        <TopBar onOpen={() => global.openDrawer()} />
+        <TopBar onOpen={() => g.openDrawer()} />
         <DrawerMenu
-          isLogIn={global.state.isLogIn}
-          open={global.state.isDrawerOpen}
-          onClose={() => global.closeDrawer()}
-          onLogout={() => global.logOut()}
+          isLogIn={g.state.isLogIn}
+          open={g.state.isDrawerOpen}
+          onClose={() => g.closeDrawer()}
+          onLogout={() => g.logOut()}
         >
-          <UserInfo isLogIn={global.state.isLogIn} info={global.state.myInfo} />
+          <UserInfo isLogIn={g.state.isLogIn} info={g.state.myInfo} />
         </DrawerMenu>
       </>
     )}

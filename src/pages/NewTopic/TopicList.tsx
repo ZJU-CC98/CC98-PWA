@@ -1,7 +1,7 @@
 import { navigate } from '@reach/router'
 import React from 'react'
 
-import InfinitiList from '@/components/InfinitiList'
+import InfiniteList from '@/components/InfiniteList'
 import { List } from '@material-ui/core'
 import TpoicItem from './TopicItem'
 
@@ -60,13 +60,13 @@ class TopicList extends React.Component<{}, State> {
     const { topicList, isLoading, isEnd } = this.state
 
     return (
-      <InfinitiList isLoading={isLoading} isEnd={isEnd} callback={this.fetchTopics}>
+      <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.fetchTopics}>
         <List>
           {topicList.map(info => (
             <TpoicItem key={info.id} info={info} click={this.jump2Post} />
           ))}
         </List>
-      </InfinitiList>
+      </InfiniteList>
     )
   }
 }

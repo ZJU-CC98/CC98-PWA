@@ -1,4 +1,4 @@
-import InfinitiList from '@/components/InfinitiList'
+import InfiniteList from '@/components/InfiniteList'
 import getTagName from '@/services/getTagName'
 import { GET } from '@/utils/fetch'
 import { IBoard, ITag, ITopic } from '@cc98/api'
@@ -228,11 +228,11 @@ export default withStyles(styles)(
               </Select>
             </FormControl> : null}
           </div>
-          <InfinitiList isLoading={isLoading} isEnd={isEnd} callback={this.getTopics}>
+          <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.getTopics}>
             {topics.map(topic => (
               <TopicItem key={topic.id} data={topic} />
             ))}
-          </InfinitiList>
+          </InfiniteList>
         </div>
       )
     }

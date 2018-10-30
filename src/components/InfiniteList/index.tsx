@@ -23,7 +23,7 @@ interface Props {
   callback: (...args: any[]) => any
 }
 
-class InfinieList extends React.PureComponent<Props> {
+class InfiniteList extends React.PureComponent<Props> {
   /**
    * 存储 debounce 之后的函数
    */
@@ -74,4 +74,4 @@ class InfinieList extends React.PureComponent<Props> {
   }
 }
 
-export default InfinieList
+export default InfiniteList

@@ -71,7 +71,7 @@ const MessageContentRight = styled(MessageContent)`
   }
 `
 
-const MessageDate = styled.span<{right?: boolean}>`
+const MessageDate = styled.span<{ right?: boolean }>`
   color: #666;
   font-size: 0.7em;
   align-self: ${props => props.right ? 'flex-end' : ''};
@@ -97,17 +97,17 @@ const renderItem = (
     </MessageRoot>
   </ListItem>
 ) : (
-  <ListItem>
-    <ListItemText />
-    <MessageRoot>
-      <MessageContentRight>{message.content}</MessageContentRight>
-      <MessageDate>{new Date(message.time).toLocaleString()}</MessageDate>
-    </MessageRoot>
-    <ListItemAvatar className={AvatarClass}>
-      <Avatar src={userAvatar} />
-    </ListItemAvatar>
-  </ListItem>
-)
+      <ListItem>
+        <ListItemText />
+        <MessageRoot>
+          <MessageContentRight>{message.content}</MessageContentRight>
+          <MessageDate>{new Date(message.time).toLocaleString()}</MessageDate>
+        </MessageRoot>
+        <ListItemAvatar className={AvatarClass}>
+          <Avatar src={userAvatar} />
+        </ListItemAvatar>
+      </ListItem>
+    )
 
 export default ({ message }: Props) => (
   <Subscribe to={[user, global]}>
@@ -116,7 +116,6 @@ export default ({ message }: Props) => (
         message,
         state[message.senderId] && state[message.senderId].portraitUrl,
         !!myInfo && (myInfo.id === message.senderId)
-      )
-    }
+      )}
   </Subscribe>
 )

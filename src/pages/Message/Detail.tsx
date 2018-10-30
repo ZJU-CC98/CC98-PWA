@@ -7,7 +7,7 @@ import { List, RootRef } from '@material-ui/core'
 import React from 'react'
 
 import Editor from '@/components/Editor'
-import Load from '@/components/InfinitiList/reverse'
+import Load from '@/components/InfiniteList/reverse'
 import store, { Detail } from '@/model/message/detail'
 
 import DetailItem from './DetailItem'

@@ -1,4 +1,4 @@
-import InfinitiList from '@/components/InfinitiList'
+import InfiniteList from '@/components/InfiniteList'
 import getBoardName from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
 import { IBaseBoard, ITopic } from '@cc98/api'
@@ -112,7 +112,7 @@ export default class extends React.Component<Props, State> {
           <Tab value="board" label="关注版面" />
           <Tab value="user" label="关注用户" />
         </Tabs>
-        <InfinitiList
+        <InfiniteList
           isLoading={isLoading}
           isEnd={isEnd}
           callback={current === 'board' ? this.getFollowBoardTopics : this.getFolloweeTopics}
@@ -120,7 +120,7 @@ export default class extends React.Component<Props, State> {
           {topics.map(topic => (
             <TopicItem key={topic.id} data={topic} />
           ))}
-        </InfinitiList>
+        </InfiniteList>
       </div>
     )
   }

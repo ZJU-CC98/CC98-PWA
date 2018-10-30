@@ -1,6 +1,6 @@
 import React from 'react'
 
-import InfinitiList from '@/components/InfinitiList'
+import InfiniteList from '@/components/InfiniteList'
 import PostItem from './PostItem'
 
 import { GET } from '@/utils/fetch'
@@ -88,11 +88,11 @@ class TopicList extends React.Component<Props, State> {
     const { postList, userMap, isLoading, isEnd } = this.state
 
     return (
-      <InfinitiList isLoading={isLoading} isEnd={isEnd} callback={this.fetchPosts}>
+      <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.fetchPosts}>
         {postList.map(info => (
           <PostItem key={info.id} postInfo={info} userInfo={userMap[info.userId]} />
         ))}
-      </InfinitiList>
+      </InfiniteList>
     )
   }
 }

@@ -1,4 +1,4 @@
-import InfinitiList from '@/components/InfinitiList'
+import InfiniteList from '@/components/InfiniteList'
 import BoardInstance from '@/model/board';
 import getBoardNameById from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
@@ -139,11 +139,11 @@ export default withStyles(styles)(
             <Typography>发表主题</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails classes={{ root: classes.expandDetailRoot }}>
-            <InfinitiList isLoading={isLoading} isEnd={isEnd} callback={this.getRecentTopics}>
+            <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.getRecentTopics}>
               {recentTopics.map(topic => (
                 <TopicItem key={topic.id} data={topic} />
               ))}
-            </InfinitiList>
+            </InfiniteList>
           </ExpansionPanelDetails>
         </ExpansionPanel>
       )

@@ -6,7 +6,7 @@ import { Subscribe } from '@cc98/state'
 import { List } from '@material-ui/core'
 import React from 'react'
 
-import InfinitiList from '@/components/InfinitiList'
+import InfiniteList from '@/components/InfiniteList'
 import store, { MessageStore } from '@/model/message/recent'
 
 import ListItem from './ListItem'
@@ -24,7 +24,7 @@ export default class MessageList extends React.PureComponent {
           getRecentList,
         }: MessageStore) => (
           <List>
-            <InfinitiList
+            <InfiniteList
               isEnd={recentListEnd}
               isLoading={recentListLoading}
               callback={getRecentList}
@@ -32,7 +32,7 @@ export default class MessageList extends React.PureComponent {
               {recentList.map(item => (
                 <ListItem key={item.userId} message={item} />
               ))}
-            </InfinitiList>
+            </InfiniteList>
           </List>
         )}
       </Subscribe>

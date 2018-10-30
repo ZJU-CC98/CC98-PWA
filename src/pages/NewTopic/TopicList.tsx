@@ -5,9 +5,12 @@ import InfiniteList from '@/components/InfiniteList'
 import { List } from '@material-ui/core'
 import TopicItem from '../TopicItem'
 
+import getBoardName from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
-import { ITopic } from '@cc98/api'
-
+import { IBaseBoard, ITopic } from '@cc98/api'
+interface Props {
+  boards: IBaseBoard[]
+}
 interface State {
   topicList: ITopic[]
 
@@ -18,7 +21,7 @@ interface State {
   isEnd: boolean
 }
 
-class TopicList extends React.Component<{}, State> {
+class TopicList extends React.Component<Props, State> {
   state: State = {
     topicList: [],
     from: 0,
@@ -42,6 +45,10 @@ class TopicList extends React.Component<{}, State> {
     const posts = await GET<ITopic[]>(`topic/new?from=${from}&size=${size}`)
 
     posts.map(topicList => {
+      topicList.map(
+        topic =>
+          topic.boardName = getBoardName(this.props.boards, topic.boardId)
+      )
       this.setState({
         topicList: this.state.topicList.concat(topicList),
         from: from + topicList.length,

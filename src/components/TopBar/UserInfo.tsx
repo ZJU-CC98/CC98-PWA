@@ -46,7 +46,7 @@ const UserInfo: React.SFC<Props> = ({ isLogIn, info }) => (
     <Avatar
       className={avatar}
       src={isLogIn ? info && info.portraitUrl : defaultAvatarImg}
-      onClick={isLogIn ? () => null : tologIn}
+      onClick={isLogIn ? () => navigate('/userCenter') : tologIn}
     />
     <Typography className={name} variant="body1">
       {isLogIn ? info && info.name : '笨蛋⑨'}

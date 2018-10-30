@@ -8,11 +8,8 @@ interface Props {
 export default (props: Props) => (
   <Subscribe to={[boardInstance]}>
     {
-      (store: BoardInfoStore) =>{
-        console.log(store.state)
-        return (store.state.tagData.length !== 0 ?
-          <Component tags={store.state.tagData} id={props.id} /> : null)
-      }
+      (store: BoardInfoStore) => store.state.tagData.length !== 0 ?
+        <Component tags={store.state.tagData} id={props.id} /> : null
     }
   </Subscribe>
 )

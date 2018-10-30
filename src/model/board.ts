@@ -55,7 +55,6 @@ export class BoardInfoStore extends Container<State> {
     }
 
     if (getLocalStorage('tagsInfo')) {
-      console.log("==")
       this.put(state => state.tagData = getLocalStorage('tagsInfo') as T[])
     } else {
       return this.forceGetTagInfo()

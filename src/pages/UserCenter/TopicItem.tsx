@@ -19,6 +19,8 @@ const TopicItemMetaStyle = css`
   width: 100%;
 `
 const TopicItemTimeStyle = css`
+  flex-grow:2;
+  text-align:right;
   font-size: 0.8rem;
   margin-left: 2rem;
   color: rgba(0, 0, 0, 0.54);

@@ -6,11 +6,16 @@ import { GET, POST } from '@/utils/fetch'
 import { IMessageContent } from '@cc98/api'
 import { Container } from '@cc98/state'
 import reverse from 'lodash-es/reverse'
+import uniqBy from 'lodash-es/uniqBy'
 import global from '../global'
 import user from '../user'
 
+interface IMap<T> {
+  [key: string]: T
+}
+
 interface State {
-  messages: IMessageContent[]
+  messages: IMap<IMessageContent[]>
   isEnd: boolean
   isLoading: boolean
   id: string
@@ -20,13 +25,14 @@ let messageId = -1
 
 export class Detail extends Container<State> {
   state: State = {
-    messages: [],
+    messages: {},
     isEnd: false,
     isLoading: true,
     id: '',
   }
 
   init = async (id: string) => {
+    if (this.state.messages[id]) return
     this.put(state => (state.isLoading = true))
 
     const res = await GET<IMessageContent[]>(`message/user/${id}`, {
@@ -38,7 +44,7 @@ export class Detail extends Container<State> {
 
     res.fail().succeed(data => {
       this.put(state => {
-        state.messages = reverse(data)
+        state.messages[id] = reverse(data)
         state.isLoading = false
         state.id = id
         if (data.length < 20) state.isEnd = true
@@ -52,16 +58,35 @@ export class Detail extends Container<State> {
 
     const res = await GET<IMessageContent[]>(`message/user/${this.state.id}`, {
       params: {
-        from: `${this.state.messages.length}`,
+        from: `${this.state.messages[this.state.id].length}`,
         size: '20',
       },
     })
 
     res.fail().succeed(data => {
       this.put(state => {
-        state.messages = [...reverse(data), ...state.messages]
+        state.messages[this.state.id] = [...reverse(data), ...state.messages[this.state.id]]
         state.isLoading = false
         if (data.length < 20) state.isEnd = true
+      })
+    })
+  }
+
+  getNewMessage = async () => {
+    this.put(state => state.isLoading = true)
+
+    const res = await GET<IMessageContent[]>(`message/user/${this.state.id}`, {
+      params: {
+        from: '0',
+        size: '1',
+      },
+    })
+
+    res.fail().succeed(messages => {
+      this.put(state => {
+        if (messages[0] && this.state.messages[this.state.id]) {
+          state.messages[this.state.id].push(messages[0])
+        }
       })
     })
   }
@@ -76,7 +101,7 @@ export class Detail extends Container<State> {
 
     res.fail().succeed(() => {
       this.put(state => {
-        state.messages.push({
+        state.messages[this.state.id].push({
           content,
           id: messageId,
           senderId: global.state.myInfo!.id,

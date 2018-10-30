@@ -30,6 +30,8 @@ export default class DetailList extends React.PureComponent<Props> {
   }
 
   render() {
+    const { id } = this.props
+
     return (
       <Subscribe to={[store]}>
         {({
@@ -39,7 +41,9 @@ export default class DetailList extends React.PureComponent<Props> {
             <RootRef rootRef={this.list}>
               <List>
                 <Load isEnd={isEnd} isLoading={isLoading} callback={store.getList}>
-                  {messages.map(item => <DetailItem key={item.id} message={item} />)}
+                  {messages[id] &&
+                    messages[id].map(item => <DetailItem key={item.id} message={item} />
+                  )}
                 </Load>
               </List>
             </RootRef>

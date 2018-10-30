@@ -22,9 +22,11 @@ import MyFollow from './pages/MyFollow';
 import NewTopic from './pages/NewTopic'
 import Search from './pages/Search'
 import Setting from './pages/Setting'
+import SignIn from './pages/SignIn';
 import Topic from './pages/Topic'
 import UserCenter from './pages/UserCenter'
 import UserCenterEdit from './pages/UserCenter/Edit'
+
 // TODO: cache
 const Route: React.SFC<
   RouteComponentProps & {
@@ -53,6 +55,7 @@ const App: React.SFC = () => (
       <Route path="/compose/:boardId" component={Compose} />
       <Route path="/myFollow" component={MyFollow} />
       <Route path="/search" component={Search} />
+      <Route path="/signin" component={SignIn} />
 
       <Route path="/logIn" component={LogIn} />
       <Route path="/error/401" component={Page401} />

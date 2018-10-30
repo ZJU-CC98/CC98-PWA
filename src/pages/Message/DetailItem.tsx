@@ -10,6 +10,7 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@material-ui/core'
+import dayjs from 'dayjs'
 import React from 'react'
 import styled, { css } from 'react-emotion'
 
@@ -92,7 +93,7 @@ const renderItem = (
     </ListItemAvatar>
     <MessageRoot>
       <MessageContentLeft>{message.content}</MessageContentLeft>
-      <MessageDate right>{new Date(message.time).toLocaleString()}</MessageDate>
+      <MessageDate right>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
     </MessageRoot>
   </ListItem>
 ) : (

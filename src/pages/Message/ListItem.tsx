@@ -11,6 +11,7 @@ import {
   ListItemText,
 } from '@material-ui/core'
 import { navigate } from '@reach/router'
+import dayjs from 'dayjs'
 import React from 'react'
 import styled from 'react-emotion'
 
@@ -40,7 +41,7 @@ const renderItem = (message: IRecentMessage, username = '', userAvatar = avatar)
     </ListItemAvatar>
       <ListItemText primary={username} secondary={<Text>{message.lastContent}</Text>} />
     <ListItemSecondaryAction>
-      <ListItemText secondary={new Date(message.time).toLocaleDateString()} />
+      <ListItemText secondary={dayjs(message.time).format('YYYY-MM-DD')} />
     </ListItemSecondaryAction>
   </ListItem>
 )

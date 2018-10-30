@@ -10,7 +10,7 @@ export default (props: Props) => (
     {
       (store: BoardInfoStore) =>
         store.state.childBoardData.length !== 0 ?
-          <Component boards={store.state.childBoardData} /> : null
+          <Component boardList={store.state.boardData} boards={store.state.childBoardData} /> : null
     }
   </Subscribe>
 )

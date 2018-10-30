@@ -2,8 +2,10 @@ import { ITopic } from '@cc98/api'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import { navigate } from '@reach/router'
+import dayjs from 'dayjs'
 import { css } from 'emotion'
 import React from 'react'
+
 interface Props {
   data: ITopic
 }
@@ -67,13 +69,13 @@ export default class extends React.PureComponent<Props> {
 
         <div className={PrimaryText}>
           <div className={Title}><div className={TitleText}>{title}</div></div>
-          <div className={Time}>{new Date(data.lastPostTime).toLocaleString()}</div>
+          <div className={Time}>{dayjs(data.lastPostTime).fromNow()}</div>
         </div>
         <ListItemText
           className={subText}
           secondary={
             <div className={text}>
-              <div>{`作者:${data.userName ? data.userName : '匿名'}`}</div>
+              <div>{`${data.userName ? data.userName : '匿名'}`}</div>
               <div>{`回复:${data.replyCount}`}</div>
             </div>}
         />

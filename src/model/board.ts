@@ -1,7 +1,9 @@
 import { FetchError, GET } from '@/utils/fetch'
 import { Success, Try } from '@/utils/fp/Try'
+import { getLocalStorage, setLocalStorage } from '@/utils/storage'
 import { IBaseBoard, IBoard, ITag } from '@cc98/api'
 import { Container } from '@cc98/state'
+
 interface T {
   name: string
   id: number
@@ -29,24 +31,35 @@ export class BoardInfoStore extends Container<State> {
    * @return {Promise<Try<IUser, FetchError>>}
    * @memberof BoardInfoStore
    */
-  getInfo = (): Promise<Try<IBaseBoard[], FetchError>> => {
+  getInfo = (): Promise<Try<IBaseBoard[], FetchError>> | undefined => {
     if (this.state.boardData.length !== 0) {
       return Promise.resolve(Try.of<IBaseBoard[], FetchError>(Success.of(this.state.boardData)))
     }
-
-    return this.forceGetInfo()
+    if (getLocalStorage('boardsInfo')) {
+      this.put(state => {
+        state.boardData = getLocalStorage('boardsInfo') as IBaseBoard[]
+        state.childBoardData = getLocalStorage('childBoardsInfo') as IBoard[]
+      })
+    } else {
+      return this.forceGetInfo()
+    }
   }
   /**
    * 获取标签信息
    * @return {Promise<Try<IUser, FetchError>>}
    * @memberof BoardInfoStore
    */
-  getTagInfo = (): Promise<Try<T[], FetchError>> => {
-    if (this.state.boardData.length !== 0) {
+  getTagInfo = (): Promise<Try<T[], FetchError>> | undefined => {
+    if (this.state.tagData.length !== 0) {
       return Promise.resolve(Try.of<T[], FetchError>(Success.of(this.state.tagData)))
     }
 
-    return this.forceGetTagInfo()
+    if (getLocalStorage('tagsInfo')) {
+      console.log("==")
+      this.put(state => state.tagData = getLocalStorage('tagsInfo') as T[])
+    } else {
+      return this.forceGetTagInfo()
+    }
   }
   /**
    * 强制从服务器获取全部信息
@@ -55,7 +68,6 @@ export class BoardInfoStore extends Container<State> {
    */
   forceGetInfo = async (): Promise<Try<IBaseBoard[], FetchError>> => {
     const res = await GET<IBaseBoard[]>('board/all')
-
     res.fail().succeed(info => this.setInfo(info))
 
     return res
@@ -74,12 +86,16 @@ export class BoardInfoStore extends Container<State> {
   }
   setInfo = (data: IBaseBoard[]) => {
     let cd: IBoard[] = []
+    setLocalStorage('boardsInfo', data, 3600 * 24 * 7)
     for (const baseBoard of data) {
       cd = cd.concat(baseBoard.boards)
     }
+    setLocalStorage('childBoardsInfo', cd, 3600 * 24 * 7)
     this.put(state => { state.boardData = data; state.childBoardData = cd })
   }
+
   setTagInfo = (data: T[]) => {
+    setLocalStorage('tagsInfo', data, 3600 * 24 * 7)
     this.put(state => state.tagData = data)
   }
 }

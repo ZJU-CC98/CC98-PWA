@@ -7,15 +7,16 @@ import BoardItem from './BoardItem'
 const KEYS_TO_FILTERS = ['name']
 interface Props {
   boards: IBoard[]
+  boardList: IBaseBoard[]
 }
 interface State {
-  boardList: IBaseBoard[]
+  // boardList: IBaseBoard[]
   isLoading: boolean
   searchTerm: string
 }
 export default class extends React.Component<Props, State> {
   state: State = {
-    boardList: [],
+   // boardList: [],
     isLoading: true,
     searchTerm: '',
   }
@@ -23,23 +24,23 @@ export default class extends React.Component<Props, State> {
     this.setState({ searchTerm: term })
 
   async componentDidMount() {
-    this.getBoardList()
+   // this.getBoardList()
   }
 
-  getBoardList = async () => {
-    this.setState({ isLoading: true })
-    const baseBoardsData = await GET<IBaseBoard[]>('board/all')
-    baseBoardsData.map(baseBoards =>
-      this.setState({
-        isLoading: false,
-        boardList: baseBoards,
-      })
-    )
-  }
+  // getBoardList = async () => {
+  //   this.setState({ isLoading: true })
+  //   const baseBoardsData = await GET<IBaseBoard[]>('board/all')
+  //   baseBoardsData.map(baseBoards =>
+  //     this.setState({
+  //       isLoading: false,
+  //       boardList: baseBoards,
+  //     })
+  //   )
+  // }
 
   render() {
-    const { boardList, isLoading, searchTerm } = this.state
-    const { boards } = this.props
+    const { isLoading, searchTerm } = this.state
+    const { boardList,  boards } = this.props
     const filteredBoards = boards.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
 
     return (

@@ -105,7 +105,7 @@ export default class extends React.Component<Props, State> {
   render() {
     const { isLoading, isEnd, b_topics, u_topics, current } = this.state;
     const topics = current === 'board' ? b_topics : u_topics;
-    console.log(isLoading);console.log(isEnd)
+
     return (
       <div>
         <Tabs fullWidth value={current} onChange={this.changeFocus}>

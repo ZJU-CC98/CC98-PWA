@@ -7,9 +7,12 @@ import Editor from './Editor'
 import PostHead from './PostHead'
 import PostList from './PostList'
 
+import InfiniteList from '@/components/InfiniteList'
+import postInstance from '@/model/post'
 import { GET } from '@/utils/fetch'
-import { ITopic } from '@cc98/api'
-
+import { IPost, ITopic } from '@cc98/api'
+import { Subscribe } from '@cc98/state'
+import PostItem from './PostItem'
 const root = css`
   background-color: #eee;
 `
@@ -23,6 +26,12 @@ interface State {
 }
 
 class Topic extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props)
+    // tslint:disable-next-line:radix
+    postInstance.init(parseInt(props.topicID))
+  }
+
   state: State = {
     topicInfo: null,
   }
@@ -37,12 +46,16 @@ class Topic extends React.PureComponent<Props, State> {
     }
 
     const topic = await GET<ITopic>(`/topic/${topicID}`)
-
+    await postInstance.fetchPosts()
     topic.fail().succeed(topicInfo => {
       this.setState({
         topicInfo,
       })
     })
+  }
+
+  componentWillUnmount() {
+    postInstance.reset()
   }
 
   render() {
@@ -55,8 +68,22 @@ class Topic extends React.PureComponent<Props, State> {
     return (
       <div className={root}>
         <PostHead topicInfo={topicInfo} />
-        <PostList topicID={topicInfo.id} />
+
+       <Subscribe to={[postInstance]}>
+        {() => {
+          const { isLoading, isEnd, posts, userMap } = postInstance.state
+
+          return (
+            <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={postInstance.fetchPosts}>
+              {posts.map((info: IPost) => (
+                <PostItem key={info.id} postInfo={info} userInfo={userMap[info.userId]} />
+              ))}
+            </InfiniteList>
+          )
+        }}
+      </Subscribe>
         <Editor topic={topicInfo} />
+
       </div>
     )
   }

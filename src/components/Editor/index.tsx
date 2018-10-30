@@ -1,21 +1,21 @@
 import { uploadFile } from '@/utils/fileHandle'
 import {
-  BottomNavigation,
-  BottomNavigationAction,
   GridList,
   GridListTile,
   GridListTileBar,
-  InputBase
 } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import IconButton from '@material-ui/core/IconButton'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import Close from '@material-ui/icons/Close'
-import Photo from '@material-ui/icons/Photo'
 import Send from '@material-ui/icons/Send'
 import { css } from 'emotion'
 import React from 'react'
+import ImageList from './ImageList'
+import TextBase from './TextField'
+import ToolBar from './ToolBar'
+import { SPL } from './type'
 interface Props {
   /**
    * 按下发送后的回调函数
@@ -26,32 +26,11 @@ interface Props {
   maxHeight?: number,
   replyMode?: boolean
 }
-interface SPL {
-  base64: string,
-  name: string,
-  id: string,
-  file: File,
-}
 
 interface State {
   showPicList: SPL[],
   content: string,
   sendLoading: boolean
-}
-
-const bottomBar: React.CSSProperties = {
-  position: 'fixed',
-  bottom: '0px',
-  width: '100%',
-  justifyContent: 'space-between',
-}
-const bottomButton = {
-  maxWidth: '100px',
-}
-const baseInputStyle = {
-  padding: '15px 15px 0px 15px',
-  backgroundColor: 'white',
-  marginTop:'5px',
 }
 
 const imgListStyle = {
@@ -65,18 +44,8 @@ const replyImgListStyle = {
   backgroundColor: 'white',
   maxHeight: '200px',
 }
-const picStyle = {
-
-}
 
 const styles: StyleRules = {
-  inputMultiline: {
-    minHeight: '200px',
-  },
-  replyInputMultiline: {
-    minHeight: '200px',
-    maxHeight: '200px',
-  },
   tileBarRoot: {
     backgroundColor: 'rgba(0,0,0,0)',
   },
@@ -105,12 +74,9 @@ export default withStyles(styles)(
       content: '',
       sendLoading: false,
     }
-    clickUpload = () => {
-      // @ts-ignore
-      this.refs.uploadfile.click()
-    }
-    uploadPic = (files: FileList | null) => {
 
+    uploadPic = (event: EventTarget & HTMLInputElement) => {
+      const files = event.files
       if (files) {
         for (const file of files) {
           const reader = new FileReader()
@@ -126,7 +92,6 @@ export default withStyles(styles)(
                 id: randomString(10),
               })
             }
-
             this.setState({
               showPicList: showPiclist,
             })
@@ -148,6 +113,12 @@ export default withStyles(styles)(
       })
     }
 
+    onPost = async() => {
+      const { sendCallBack } = this.props
+      const urlList = await this.postPicAndCall()
+      sendCallBack(this.state.content, urlList)
+    }
+
     postPicAndCall = async () => {
       this.setState({
         sendLoading: true,
@@ -166,90 +137,27 @@ export default withStyles(styles)(
 
       return urlList
     }
+
     render() {
-      const imglist = this.state.showPicList
-      const { classes, sendCallBack, replyMode } = this.props
-      const sendIcon = this.state.sendLoading
-        ? <CircularProgress size={30} />
-        : <Send />
+      const { replyMode } = this.props
+      const { showPicList } = this.state
 
       return (
         <>
-          <InputBase
-            fullWidth={true}
-            placeholder="说些什么呢...."
-            multiline
-            style={baseInputStyle}
-            classes={replyMode ?
-                      { inputMultiline: classes.replyInputMultiline }
-                    : { inputMultiline: classes.inputMultiline }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              this.bindText(e)
-            }}
+          <TextBase
+            onChange={this.bindText}
+            replyMode={replyMode}
           />
-          <input
-            type="file"
-            name="file"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.uploadPic(e.target.files)}
-            style={{ display: 'none' }}
-            // tslint:disable-next-line:jsx-no-string-ref
-            ref="uploadfile"
-            multiple
-            accept="image/*"
+          <ImageList
+            replyMode={replyMode}
+            imgList={showPicList}
+            deletePic={this.deletePic}
           />
-          <GridList
-            cellHeight={160}
-            cols={3}
-            spacing={4}
-            style={replyMode ? replyImgListStyle : imgListStyle}
-          >
-            {
-              imglist.map(e =>
-                (
-                  <GridListTile
-                    key={e.id}
-                  >
-
-                    <img src={e.base64} alt={e.name} />
-                    <GridListTileBar
-                      classes={{
-                        root: classes.tileBarRoot,
-                        actionIcon: classes.actionIcon,
-                      }}
-                      titlePosition="top"
-                      actionIcon={
-                        <IconButton
-                          onClick={() =>
-                            this.deletePic(e.id)
-                          }
-                        >
-                          <Close />
-                        </IconButton>
-                      }
-                      actionPosition="right"
-                    />
-                  </GridListTile>
-                )
-              )
-            }
-          </GridList>
-          <BottomNavigation
-            style={bottomBar}
-          >
-            <BottomNavigationAction
-              icon={<Photo />}
-              style={bottomButton}
-              onClick={this.clickUpload}
-            />
-            <BottomNavigationAction
-              icon={sendIcon}
-              style={bottomButton}
-              onClick={async () => {
-                const urlList = await this.postPicAndCall()
-                sendCallBack(this.state.content, urlList)
-              }}
-            />
-          </BottomNavigation>
+          <ToolBar
+            sendLoading={this.state.sendLoading}
+            handlePic={this.uploadPic}
+            onPost={this.onPost}
+          />
         </>
       )
     }

@@ -41,7 +41,7 @@ const renderItem = (message: IRecentMessage, username = '', userAvatar = avatar)
     </ListItemAvatar>
       <ListItemText primary={username} secondary={<Text>{message.lastContent}</Text>} />
     <ListItemSecondaryAction>
-      <ListItemText secondary={dayjs(message.time).format('YYYY-MM-DD')} />
+      {/* <ListItemText secondary={dayjs(message.time).fromNow()} /> */}
     </ListItemSecondaryAction>
   </ListItem>
 )
@@ -53,7 +53,6 @@ export default ({ message }: Props) => (
         message,
         state[message.userId] && state[message.userId].name,
         state[message.userId] && state[message.userId].portraitUrl
-      )
-    }
+      )}
   </Subscribe>
 )

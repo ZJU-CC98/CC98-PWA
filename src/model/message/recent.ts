@@ -13,11 +13,17 @@ interface State {
   recentListLoading: boolean
 }
 
-export class MessageStore extends Container<State> {
+export default class MessageStore extends Container<State> {
   state: State = {
     recentList: [],
     recentListEnd: false,
     recentListLoading: true,
+  }
+
+  constructor() {
+    super()
+
+    this.initRecentList()
   }
 
   initRecentList = async () => {
@@ -52,5 +58,3 @@ export class MessageStore extends Container<State> {
     })
   }
 }
-
-export default new MessageStore()

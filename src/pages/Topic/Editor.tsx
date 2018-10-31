@@ -34,8 +34,12 @@ const decorEditor = css`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  background-color: white;
+  height: 40px;
 `
-
+const blankBlock = css`
+  height: 45px;
+`
 const inputBox = css`
   margin-left: 15px;
   width: 100%;
@@ -87,6 +91,9 @@ class ReplyEditor extends React.PureComponent<Props, State> {
         />
         </div>
       </div>
+      <div
+        className={blankBlock}
+      />
       <div
         className={decorEditor}
         onClick={e => {

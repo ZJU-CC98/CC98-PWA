@@ -2,7 +2,7 @@ import { FetchError, GET, PUT } from '@/utils/fetch'
 import { Try } from '@/utils/fp/Try'
 
 import { ILike } from '@cc98/api'
-type PostUtilType = ILike & {}
+type PostUtilType = ILike | null
 interface PostUtil {
   like: (id: number) => Promise<ILike>,
 }
@@ -13,7 +13,7 @@ const retSucceedData = <T extends PostUtilType>(Fn: Try<T, FetchError>): T => {
     ret = data
   })
 
-  // @ts-ignore TODO: 这里我不会定义鸭
+  // @ts-ignore TODO: 这里怎么定义呢。。。
   return ret
 }
 export class PostUtils implements PostUtil {

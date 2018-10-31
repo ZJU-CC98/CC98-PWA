@@ -3,6 +3,7 @@ import React from 'react'
 import Utils from './PostUtils'
 
 import resolveMarkdown from '@/services/resolveMarkdown'
+import toast from '@/utils/Toast/index'
 import { IPost, IPostUtil, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
 import {
@@ -205,11 +206,18 @@ export default withStyles(styles)(
           </CardContent>
 
           <CardActions classes={{ root: classes.actionsRoot }}>
-            <IconButton classes={{ root: classes.action }}>
+            <IconButton
+              classes={{ root: classes.action }}
+              onClick={() => {
+                toast.error({ content: postInfo.userId.toString(), duration: 2000 })
+              }}
+            >
               <Quote fontSize="small" />
             </IconButton >
             <Divider classes={{ root: classes.hr }} />
-            <IconButton classes={{ root: classes.action }}>
+            <IconButton
+              classes={{ root: classes.action }}
+            >
               <GradeIcon fontSize="small" />
             </IconButton>
             <Divider classes={{ root: classes.hr }} />

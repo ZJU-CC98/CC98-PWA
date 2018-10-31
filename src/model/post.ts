@@ -74,6 +74,19 @@ class PostInfoStore extends Container<State> {
     })
   }
 
+  updateSinglePosts = async<T extends Partial<IPost>>(postId: number, postUpdate: T) => {
+    const dlist = this.state.posts.map(e => {
+      if (e.id === postId) {
+        return Object.assign({}, e, postUpdate)
+      }
+
+      return e
+    })
+    this.put(state => {
+      state.posts = dlist
+    })
+  }
+
   freshLatestPosts = async () => {
     const { topicId, from, posts } = this.state
 
@@ -102,18 +115,6 @@ class PostInfoStore extends Container<State> {
       topicId: -1,
     }
 
-    updateSinglePosts = async<T extends Partial<IPost>>(postId: number, postUpdate: T) => {
-      const dlist = this.state.posts.map(e => {
-        if (e.id === postId) {
-          return Object.assign({}, e, postUpdate)
-        }
-
-        return e
-      })
-      this.put(state => {
-        state.posts = dlist
-      })
-    }
     this.put(
       state => {
         for (const key of Object.keys(state)) {

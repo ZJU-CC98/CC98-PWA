@@ -1,5 +1,6 @@
 import { css, cx } from 'emotion'
 import React from 'react'
+import Utils from './PostUtils'
 
 import resolveMarkdown from '@/services/resolveMarkdown'
 import { IPost, IPostUtil, IUser } from '@cc98/api'
@@ -59,7 +60,7 @@ interface Props {
   /**
    * 方法
    */
-  util?: IPostUtil
+  refreshItem: <T extends Partial<IPost>>(postId: number, postUpdate: T) => Promise<void>
 }
 
 interface State {
@@ -119,7 +120,7 @@ export default withStyles(styles)(
       this.setState({ anchorEl: null });
     }
     render() {
-      const { postInfo, userInfo, classes, util } = this.props
+      const { postInfo, userInfo, classes, refreshItem } = this.props
       const { anchorEl } = this.state
       const open = Boolean(anchorEl);
 
@@ -212,7 +213,13 @@ export default withStyles(styles)(
               <GradeIcon fontSize="small" />
             </IconButton>
             <Divider classes={{ root: classes.hr }} />
-            <IconButton classes={{ root: classes.action }}>
+            <IconButton
+              classes={{ root: classes.action }}
+              onClick={async() => {
+                const res = await Utils.like(postInfo.id)
+                refreshItem(postInfo.id, res)
+              }}
+            >
               <LikeIcon fontSize="small" />
               <span
                 style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}
@@ -220,7 +227,13 @@ export default withStyles(styles)(
               </span>
             </IconButton>
             <Divider classes={{ root: classes.hr }} />
-            <IconButton classes={{ root: classes.action }}>
+            <IconButton
+              classes={{ root: classes.action }}
+              onClick={async() => {
+                const res = await Utils.dislike(postInfo.id)
+                refreshItem(postInfo.id, res)
+              }}
+            >
               <DislikeIcon fontSize="small" />
               <span
                 style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}

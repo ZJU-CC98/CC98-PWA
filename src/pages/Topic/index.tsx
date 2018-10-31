@@ -79,6 +79,7 @@ class Topic extends React.PureComponent<Props, State> {
                     key={info.id}
                     postInfo={info}
                     userInfo={userMap[info.userId]}
+                    refreshItem={postInstance.updateSinglePosts}
                   />
                 ))}
               </InfiniteList>

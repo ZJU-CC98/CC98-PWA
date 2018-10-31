@@ -5,12 +5,11 @@ import React from 'react'
 import LoadingCircle from '@/components/LoadingCircle'
 import Editor from './Editor'
 import PostHead from './PostHead'
-import PostList from './PostList'
 
 import InfiniteList from '@/components/InfiniteList'
 import postInstance from '@/model/post'
 import { GET } from '@/utils/fetch'
-import { IPost, ITopic } from '@cc98/api'
+import { IPost, IPostUtil, ITopic } from '@cc98/api'
 import { Subscribe } from '@cc98/state'
 import PostItem from './PostItem'
 const root = css`
@@ -69,19 +68,23 @@ class Topic extends React.PureComponent<Props, State> {
       <div className={root}>
         <PostHead topicInfo={topicInfo} />
 
-       <Subscribe to={[postInstance]}>
-        {() => {
-          const { isLoading, isEnd, posts, userMap } = postInstance.state
+        <Subscribe to={[postInstance]}>
+          {() => {
+            const { isLoading, isEnd, posts, userMap } = postInstance.state
 
-          return (
-            <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={postInstance.fetchPosts}>
-              {posts.map((info: IPost) => (
-                <PostItem key={info.id} postInfo={info} userInfo={userMap[info.userId]} />
-              ))}
-            </InfiniteList>
-          )
-        }}
-      </Subscribe>
+            return (
+              <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={postInstance.fetchPosts}>
+                {posts.map((info: IPost) => (
+                  <PostItem
+                    key={info.id}
+                    postInfo={info}
+                    userInfo={userMap[info.userId]}
+                  />
+                ))}
+              </InfiniteList>
+            )
+          }}
+        </Subscribe>
         <Editor topic={topicInfo} />
 
       </div>

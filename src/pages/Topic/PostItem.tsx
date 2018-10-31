@@ -1,7 +1,8 @@
 import { css, cx } from 'emotion'
 import React from 'react'
 
-import { IPost, IUser } from '@cc98/api'
+import resolveMarkdown from '@/services/resolveMarkdown'
+import { IPost, IPostUtil, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
 import {
   Avatar,
@@ -14,15 +15,17 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import EditIcon from '@material-ui/icons/bordercolor'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import GradeIcon from '@material-ui/icons/grade'
 import Quote from '@material-ui/icons/rotateleft'
+import DislikeIcon from '@material-ui/icons/thumbdown'
+import LikeIcon from '@material-ui/icons/thumbup'
 import { navigate } from '@reach/router'
-import remark from 'remark';
-import reactRenderer from 'remark-react';
 
 const root = css`
   margin-top: 6px;
@@ -53,6 +56,10 @@ interface Props {
    * 用户信息
    */
   userInfo: IUser | null
+  /**
+   * 方法
+   */
+  util?: IPostUtil
 }
 
 interface State {
@@ -60,6 +67,8 @@ interface State {
    * 签名档是否展开
    */
   expanded: boolean
+  // tslint:disable-next-line:no-any
+  anchorEl: any
 }
 const CursorStyle = css`
   cursor: pointer;
@@ -78,11 +87,22 @@ const styles: StyleRules = {
     border: '#555 solid thin',
     height: '1rem',
   },
+  headerAction: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  iconRoot: {
+    padding: '5px',
+  },
+  menuItemRoot: {
+    width: '3rem',
+  },
 }
 export default withStyles(styles)(
   class extends React.PureComponent<Props & { classes: ClassNameMap }, State> {
     state: State = {
       expanded: false,
+      anchorEl: null,
     }
 
     onExpandClick = () => {
@@ -91,39 +111,30 @@ export default withStyles(styles)(
       })
     }
 
+    // tslint:disable-next-line:no-any
+    handleClick = (event: any) => {
+      this.setState({ anchorEl: event.currentTarget });
+    }
+    handleClose = () => {
+      this.setState({ anchorEl: null });
+    }
     render() {
-      const { postInfo, userInfo, classes } = this.props
+      const { postInfo, userInfo, classes, util } = this.props
+      const { anchorEl } = this.state
+      const open = Boolean(anchorEl);
 
       if (postInfo.isDeleted) {
         return null
       }
       let text = UBB(postInfo.content)
       if (postInfo.contentType === 1) {
-        let parseContent = postInfo.content
-          .replace(/\n>[\s\S]*?\n\n/g,
-            // tslint:disable-next-line:align
-            v => v.replace(/\n[^\n](?!>)/g, v1 => v1.replace(/\n(?!>)/, '\n>')));
-
-        if (parseContent[0] === '>') {
-          const index = parseContent.indexOf('\n\n');
-          if (index === -1) {
-            parseContent = parseContent.replace(/\n[^\n](?!>)/g,
-              // tslint:disable-next-line:align
-              v1 => v1.replace(/\n(?!>)/, '\n>'));
-          } else {
-            const substr = parseContent.substr(0, index);
-            parseContent = substr.replace(/\n[^\n](?!>)/g, v1 =>
-              v1.replace(/\n(?!>)/, '\n>')) +
-              parseContent.substr(index + 1, parseContent.length);
-          }
-        }
-        parseContent = parseContent.replace(/发言：\*\*\n/g, '发言：**\n\n');
-        text = remark().use(reactRenderer).processSync(parseContent).contents
+        text = resolveMarkdown(postInfo.content)
       }
 
       return (
         <Card square elevation={0} className={root}>
           <CardHeader
+            classes={{ action: classes.headerAction }}
             avatar={
               <Avatar
                 className={CursorStyle}
@@ -147,10 +158,45 @@ export default withStyles(styles)(
             }
             subheader={new Date(postInfo.time).toLocaleString()}
             action={
-              <IconButton>
+              [<IconButton key="floor" classes={{ root: classes.iconRoot }}>
                 <span className={floor}>{`${postInfo.floor} L`}</span>
-              </IconButton>
-            }
+              </IconButton>,
+              // tslint:disable-next-line:ter-indent
+              <div key="options">
+                <IconButton
+                  key="option"
+                  classes={{ root: classes.iconRoot }}
+                  aria-label="More"
+                  aria-owns={open ? 'long-menu' : undefined}
+                  aria-haspopup="true"
+                  onClick={this.handleClick}
+                >
+                  <ExpandMoreIcon fontSize="small" />
+                </IconButton>
+                <Menu
+                  id="long-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={this.handleClose}
+                  PaperProps={{
+                    style: {
+                      maxHeight: 48 * 4.5,
+                      width: '5rem',
+                    },
+                  }}
+                >
+                  {['追踪', '编辑'].map(option => (
+                    <MenuItem
+                      key={option}
+                      onClick={this.handleClose}
+                      classes={{ root: classes.menuItemRoot }}
+                    >
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Menu>
+
+              </div>]}
           />
 
           <CardContent>
@@ -163,14 +209,22 @@ export default withStyles(styles)(
             </IconButton >
             <Divider classes={{ root: classes.hr }} />
             <IconButton classes={{ root: classes.action }}>
-              <EditIcon fontSize="small" />
+              <GradeIcon fontSize="small" />
             </IconButton>
             <Divider classes={{ root: classes.hr }} />
             <IconButton classes={{ root: classes.action }}>
-              <FavoriteIcon fontSize="small" />
+              <LikeIcon fontSize="small" />
               <span
                 style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}
               >{postInfo.likeCount}
+              </span>
+            </IconButton>
+            <Divider classes={{ root: classes.hr }} />
+            <IconButton classes={{ root: classes.action }}>
+              <DislikeIcon fontSize="small" />
+              <span
+                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}
+              >{postInfo.dislikeCount}
               </span>
             </IconButton>
           </CardActions>

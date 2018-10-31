@@ -19,7 +19,6 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import EditIcon from '@material-ui/icons/bordercolor'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import GradeIcon from '@material-ui/icons/grade'
 import Quote from '@material-ui/icons/rotateleft'
@@ -59,7 +58,7 @@ interface Props {
   /**
    * 方法
    */
-  util?: IPostUtil
+  trace: ()=>void
 }
 
 interface State {
@@ -103,6 +102,13 @@ export default withStyles(styles)(
     state: State = {
       expanded: false,
       anchorEl: null,
+    }
+
+    /**
+     * 追踪
+     */
+    trace = () => {
+      this.props.trace(this.props.postInfo.topicId,this.props.postInfo.userId)
     }
 
     onExpandClick = () => {

@@ -92,6 +92,31 @@ class PostInfoStore extends Container<State> {
     })
   }
 
+  trace = async (topicId: number, userId: number) => {
+    const { from, posts } = this.state
+    const topicsTry = await GET<IPost[]>('post/topic/user', {
+      params: {
+        topicId: `${topicId}`,
+        userId: `${userId}`,
+        from: `${from}`,
+        size: '10',
+      },
+    })
+
+    topicsTry.fail()
+      .succeed(
+        postList => {
+          this.fetchUsers(postList)
+
+          this.put(state => {
+            state.from = from + postList.length,
+              state.posts = posts.concat(postList),
+              state.isEnd = postList.length !== 10,
+              state.isLoading = false
+          })
+        })
+  }
+
   reset = () => {
     const initState: State = {
       isLoading: false,

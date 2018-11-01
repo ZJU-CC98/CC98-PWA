@@ -89,16 +89,18 @@ class Topic extends React.PureComponent<Props, State> {
                 isEnd={isEnd}
                 callback={postInstance.fetchPosts}
               >
-                {posts.map((info: IPost) => (
-                  <PostItem
-                    key={info.id}
-                    postInfo={info}
-                    userInfo={userMap[info.userId]}
-                    isTrace={isTrace}
-                    trace={postInstance.trace}
-                    refreshItem={postInstance.updateSinglePosts}
-                  />
-                ))}
+                {posts.map((info: IPost) => {
+                  return (
+                    <PostItem
+                      key={info.isHot ? `hot-${info.id}` : info.id}
+                      postInfo={info}
+                      userInfo={userMap[info.userId]}
+                      isTrace={isTrace}
+                      trace={postInstance.trace}
+                      refreshItem={postInstance.updateSinglePosts}
+                    />
+                  )
+                })}
               </InfiniteList>
             )
           }}

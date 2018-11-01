@@ -42,9 +42,7 @@ class InfiniteList extends React.PureComponent<Props> {
       const distance =
         this.loadingDom.current &&
         window.innerHeight - this.loadingDom.current.getBoundingClientRect().top
-
       if (distance === null || distance < 0) return
-
       callback()
     }
 

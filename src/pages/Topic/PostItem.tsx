@@ -107,6 +107,18 @@ const styles: StyleRules = {
   typographyRoot: {
     wordBreak: 'break-all',
   },
+  floor: {
+    width: '30px',
+    height: '30px',
+    fontSize: '0.8rem',
+    backgroundColor: '#79b8ca',
+  },
+  hotFloor: {
+    width: '30px',
+    height: '30px',
+    fontSize: '0.8rem',
+    backgroundColor: 'red',
+  },
 }
 
 const ContentRoot = css`&&{
@@ -114,6 +126,10 @@ const ContentRoot = css`&&{
       max-width: 100%;
     },
 }`
+const PostOptionStyle = css`
+  display:flex;
+  justify-content:center;
+`
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
     state: State = {
@@ -175,10 +191,14 @@ export default withStyles(styles)(
             subheader={new Date(postInfo.time).toLocaleString()}
             action={
               [<IconButton key="floor" classes={{ root: classes.iconRoot }}>
-                <span className={floor}>{`${postInfo.floor} L`}</span>
+                <Avatar
+                  classes={{ root: postInfo.isHot ? classes.hotFloor : classes.floor }}
+                >
+                  {postInfo.isHot ? '热' : `${postInfo.floor} L`}
+                </Avatar>
               </IconButton>,
               // tslint:disable-next-line:ter-indent
-              <div key="options">
+              <div key="options" className={PostOptionStyle}>
                 <IconButton
                   key="option"
                   classes={{ root: classes.iconRoot }}

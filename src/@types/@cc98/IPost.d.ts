@@ -87,5 +87,9 @@ declare module '@cc98/api' {
      * 用户名
      */
     userName: string
+    /**
+     * 是否热帖
+     */
+    isHot?: boolean
   }
 }

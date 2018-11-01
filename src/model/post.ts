@@ -46,20 +46,60 @@ class PostInfoStore extends Container<State> {
 
   fetchPosts = async () => {
     const { topicId, from, posts, isLoading, isEnd, request } = this.state
+    const isFirstGlance = from === 0
     this.put(state => state.isLoading = true)
     const postTry = await request()
-    postTry.fail().succeed((postList: IPost[]) => {
+    postTry.fail().succeed(async (postList: IPost[]) => {
       this.fetchUsers(postList)
-
-      this.put(state => {
-        state.from = from + postList.length,
-          state.posts = posts.concat(postList),
-          state.isEnd = postList.length !== 10,
-          state.isLoading = false
-      })
+      postList.map(post => post.isHot = false)
+      if (isFirstGlance) {
+        const hotPostTry = await GET<IPost[]>(`topic/${this.state.topicId}/hot-post`)
+        hotPostTry.fail()
+          .succeed(
+            hotPostList => {
+              hotPostList.map(post => post.isHot = true)
+              let newPostList: IPost[] = []
+              newPostList.push(postList[0])
+              newPostList = newPostList.concat(hotPostList)
+              newPostList = newPostList.concat(postList.slice(1, postList.length))
+              this.put(
+                state => {
+                  state.posts = newPostList,
+                  state.from = from + postList.length,
+                  state.isEnd = postList.length !== 10,
+                  state.isLoading = false
+                }
+              )
+            })
+      } else {
+        this.put(state => {
+          state.from = from + postList.length,
+            state.posts = posts.concat(postList),
+            state.isEnd = postList.length !== 10,
+            state.isLoading = false
+        })
+      }
     })
   }
 
+  fetchHotPosts = async () => {
+    const { topicId, posts, isLoading, isEnd, request } = this.state
+    this.put(state => state.isLoading = true)
+    const postTry = await GET<IPost[]>(`topic/${this.state.topicId}/hot-post`)
+    postTry.fail()
+      .succeed(
+        postList => {
+          postList.map(post => post.isHot = true)
+          let newPostList: IPost[] = []
+          newPostList.push(posts[0])
+          newPostList = newPostList.concat(postList)
+          newPostList = newPostList.concat(posts.slice(1, posts.length))
+          this.put(
+            state => state.posts = newPostList
+          )
+        }
+      )
+  }
   fetchUsers = async (postList: IPost[]) => {
     const query = postList
       .map(p => p.userId)

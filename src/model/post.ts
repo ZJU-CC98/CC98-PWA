@@ -41,7 +41,6 @@ class PostInfoStore extends Container<State> {
           size: '10',
         },
       })
-
     })
   }
 
@@ -105,29 +104,19 @@ class PostInfoStore extends Container<State> {
     })
   }
 
-  trace = async (topicId: number, userId: number) => {
-    const { from, posts } = this.state
-    const topicsTry = await GET<IPost[]>('post/topic/user', {
-      params: {
-        topicId: `${topicId}`,
-        userId: `${userId}`,
-        from: `${from}`,
-        size: '10',
-      },
+  trace = async (topicId: number, identifyId: number, isAnonymous: boolean = false) => {
+    this.put(state => {
+      state.from = 0,
+        state.request = async () => await GET<IPost[]>('post/topic/user', {
+          params: {
+            topicId: `${topicId}`,
+            userId: `${identifyId}`,
+            from: `${this.state.from}`,
+            size: '10',
+          },
+        }),
+        state.userMap = {}
     })
-
-    topicsTry.fail()
-      .succeed(
-        postList => {
-          this.fetchUsers(postList)
-
-          this.put(state => {
-            state.from = from + postList.length,
-              state.posts = posts.concat(postList),
-              state.isEnd = postList.length !== 10,
-              state.isLoading = false
-          })
-        })
   }
 
   reset = () => {
@@ -139,6 +128,7 @@ class PostInfoStore extends Container<State> {
       from: 0,
       topicId: -1,
       requestUrl: '',
+      request: null,
     }
 
     this.put(

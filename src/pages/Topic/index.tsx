@@ -73,19 +73,25 @@ class Topic extends React.PureComponent<Props, State> {
             const { isLoading, isEnd, posts, userMap } = postInstance.state
 
             return (
-              <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={postInstance.fetchPosts}>
+              <InfiniteList
+                isLoading={isLoading}
+                isEnd={isEnd}
+                callback={postInstance.fetchPosts}
+              >
                 {posts.map((info: IPost) => (
                   <PostItem
                     key={info.id}
                     postInfo={info}
                     userInfo={userMap[info.userId]}
                     trace={postInstance.trace}
+                    refreshItem={postInstance.updateSinglePosts}
                   />
                 ))}
               </InfiniteList>
             )
           }}
         </Subscribe>
+
         <Editor topic={topicInfo} />
 
       </div>

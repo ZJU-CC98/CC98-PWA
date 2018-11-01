@@ -58,7 +58,7 @@ interface Props {
   /**
    * 方法
    */
-  trace: ()=>void
+  trace: (topicId: number, userId: number) => Promise<void>
 }
 
 interface State {
@@ -108,7 +108,7 @@ export default withStyles(styles)(
      * 追踪
      */
     trace = () => {
-      this.props.trace(this.props.postInfo.topicId,this.props.postInfo.userId)
+      this.props.trace(this.props.postInfo.topicId, this.props.postInfo.userId)
     }
 
     onExpandClick = () => {
@@ -125,7 +125,7 @@ export default withStyles(styles)(
       this.setState({ anchorEl: null });
     }
     render() {
-      const { postInfo, userInfo, classes, util } = this.props
+      const { postInfo, userInfo, classes, trace } = this.props
       const { anchorEl } = this.state
       const open = Boolean(anchorEl);
 
@@ -191,15 +191,24 @@ export default withStyles(styles)(
                     },
                   }}
                 >
-                  {['追踪', '编辑'].map(option => (
-                    <MenuItem
-                      key={option}
-                      onClick={this.handleClose}
-                      classes={{ root: classes.menuItemRoot }}
-                    >
-                      {option}
-                    </MenuItem>
-                  ))}
+
+                  <MenuItem
+                    key={'trace'}
+                    onClick={() => {
+                      this.props.trace(this.props.postInfo.topicId, this.props.postInfo.userId)
+                    }}
+                    classes={{ root: classes.menuItemRoot }}
+                  >
+                    追踪
+                  </MenuItem>
+                  <MenuItem
+                    key={'edit'}
+                    onClick={this.handleClose}
+                    classes={{ root: classes.menuItemRoot }}
+                  >
+                    编辑
+                  </MenuItem>
+
                 </Menu>
 
               </div>]}

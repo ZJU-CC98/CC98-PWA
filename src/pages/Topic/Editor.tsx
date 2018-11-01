@@ -54,7 +54,7 @@ const post = async (value: string, topic: ITopic, self: ReplyEditor) => {
   }
   const postData = await POST(`/topic/${topic.id}/post`, { params: content })
   postData.fail().succeed(e => {
-     location.reload()
+    location.reload()
     // self.props.callback()
   })
 }

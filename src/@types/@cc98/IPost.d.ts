@@ -4,7 +4,7 @@ declare module '@cc98/api' {
 
     awardInfo: any
 
-    awards: any[]
+    awards: IAward[]
     /**
      * 帖子内容
      */

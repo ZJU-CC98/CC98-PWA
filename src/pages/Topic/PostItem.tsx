@@ -4,10 +4,11 @@ import Utils from './PostUtils'
 
 import resolveMarkdown from '@/services/resolveMarkdown'
 import toast from '@/utils/Toast/index'
-import { IPost, IPostUtil, IUser } from '@cc98/api'
+import { IPost, IPostUtil, IUser, IBasicUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
 import {
   Avatar,
+  Button,
   Card,
   CardActions,
   CardContent,
@@ -61,6 +62,12 @@ interface Props {
    * 是否是追踪模式
    */
   isTrace: boolean
+  /**
+   * 评分用户信息映射
+   */
+  awardUserMap: {
+    [name: string]: IBasicUser
+  }
   /**
    * 方法
    */
@@ -121,6 +128,26 @@ const styles: StyleRules = {
     fontSize: '0.8rem',
     backgroundColor: 'red',
   },
+  awardAvatar: {
+    width: '25px',
+    height: '25px',
+  },
+  awardContentRoot: {
+    paddingBottom: '0px',
+    paddingTop: '8px',
+  },
+  awardAction: {
+    height: '30px',
+    fontSize: '0.8rem',
+    color: 'rgba(0, 0, 0, 0.54)',
+    borderTop:'#aaaaaa solid thin',
+    marginLeft:'16px',
+    marginRight:'16px',
+  },
+  expandButton: {
+    width: '80%',
+    height: '30px',
+  },
 }
 
 const ContentRoot = css`&&{
@@ -153,7 +180,7 @@ export default withStyles(styles)(
       this.setState({ anchorEl: null });
     }
     render() {
-      const { postInfo, userInfo, classes, trace, refreshItem, isTrace } = this.props
+      const { postInfo, userInfo, classes, trace, refreshItem, isTrace, awardUserMap } = this.props
       const { anchorEl } = this.state
       const open = Boolean(anchorEl);
       if (postInfo.isDeleted) {
@@ -308,24 +335,102 @@ export default withStyles(styles)(
               </span>
             </IconButton>
           </CardActions>
-          {/* <CardActions>
-          {userInfo && userInfo.signatureCode && <IconButton
-            className={cx(expand, {
-              [expandOpen]: this.state.expanded,
-            })}
-            onClick={this.onExpandClick}
-          >
-            <ExpandMoreIcon />
-          </IconButton>}
-        </CardActions>
+          {postInfo.awards.length > 5 &&
+            Object.keys(awardUserMap).length !== 0 &&
+            <CardActions classes={{ root: classes.awardAction }}>
+              <Button
+                classes={{ root: classes.expandButton }}
+                onClick={this.onExpandClick}
+              >
+                （{postInfo.awards.length}个评分）
+              </Button>
+              <IconButton
+                className={cx(expand, {
+                  [expandOpen]: this.state.expanded,
+                })}
+                style={{ width: '20%' }}
+                onClick={this.onExpandClick}
+              >
+                <ExpandMoreIcon
+                />
+              </IconButton>
+            </CardActions>}
+          {postInfo.awards.length > 0 &&
+            postInfo.awards.length <= 5 &&
+            Object.keys(awardUserMap).length !== 0 &&
+            <Collapse
+              in={true}
+              timeout="auto"
+              unmountOnExit
+            >
+              {postInfo.awards.length !== 0 &&
+                Object.keys(awardUserMap).length !== 0 &&
+                postInfo.awards.map(award => (
+                  <CardContent key={award.id} classes={{ root: classes.awardContentRoot }}>
+                    <div className={Row}>
+                      <div className={Left}>
+                        <Avatar
+                          src={awardUserMap[award.operatorName].portraitUrl}
+                          classes={{ root: classes.awardAvatar }}
+                        />
+                        <div style={{ marginLeft: '1rem' }}>{award.operatorName}</div>
+                      </div>
 
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography> {userInfo && UBB(userInfo.signatureCode)} </Typography>
-          </CardContent>
-        </Collapse> */}
+                      <div className={Middle}>{award.content}</div>
+                      <div className={Right}>{award.reason}</div>
+                    </div>
+                  </CardContent>))}
+
+            </Collapse>}
+          {postInfo.awards.length > 5 &&
+            Object.keys(awardUserMap).length !== 0 &&
+            <Collapse
+              in={this.state.expanded}
+              timeout="auto"
+              unmountOnExit
+            >
+              {postInfo.awards.length !== 0 &&
+                Object.keys(awardUserMap).length !== 0 &&
+                postInfo.awards.map(award => (
+                  <CardContent key={award.id} classes={{ root: classes.awardContentRoot }}>
+                    <div className={Row}>
+                      <div className={Left}>
+                        <Avatar
+                          src={awardUserMap[award.operatorName].portraitUrl}
+                          classes={{ root: classes.awardAvatar }}
+                        />
+                        <div style={{ marginLeft: '1rem' }}>{award.operatorName}</div>
+                      </div>
+
+                      <div className={Middle}>{award.content}</div>
+                      <div className={Right}>{award.reason}</div>
+                    </div>
+                  </CardContent>))}
+
+            </Collapse>}
         </Card>
       )
     }
   }
 )
+
+const Row = css`
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  width:100%;
+  font-size:0.8rem;
+  color:rgba(0, 0, 0, 0.54);
+`
+
+const Left = css`
+  display:flex;
+  min-width:8rem;
+  align-items:center;
+`
+const Middle = css`
+  min-width:5rem;
+`
+const Right = css`
+  flex-grow:2;
+`

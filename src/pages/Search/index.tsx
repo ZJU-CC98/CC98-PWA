@@ -43,7 +43,7 @@ export default class extends React.Component<{}, State> {
       u_from: 0,
       topics: [],
       users: [],
-    }, () => { this.getTopics() })
+    },            () => { this.getTopics() })
 
   }
 

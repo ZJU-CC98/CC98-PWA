@@ -100,7 +100,7 @@ class Topic extends React.PureComponent<Props, State> {
         />
         <Subscribe to={[postInstance]}>
           {() => {
-            const { isLoading, isEnd, posts, userMap } = postInstance.state
+            const { isLoading, isEnd, posts, userMap, awardsUserMap } = postInstance.state
 
             return (
               <InfiniteList
@@ -118,6 +118,7 @@ class Topic extends React.PureComponent<Props, State> {
                     refreshItem={postInstance.updateSinglePosts}
                     openDialog={this.handleClickOpen}
                     closeDialog={this.handleDialogClose}
+                    awardUserMap={awardsUserMap}
                   />
                 )
                 )}

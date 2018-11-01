@@ -40,7 +40,8 @@ export default class extends React.PureComponent<Props> {
           name="file"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePic(e.target)}
           style={{ display: 'none' }}
-          // tslint:disable-next-line:jsx-no-string-ref
+
+          // FIXME:
           ref="uploadfile"
           multiple
           accept="image/*"

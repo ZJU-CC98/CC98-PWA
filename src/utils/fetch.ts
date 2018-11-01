@@ -38,15 +38,17 @@ async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, Fetc
       })
     )
   }
-  let data = null;
+
+  // FIXME: 修正 api
+  let data = null
+
   try {
-    data = await response.clone().json();
-  } catch (e) {
-    data = await response.text();
+    data = await response.clone().json()
+  } catch {
+    data = await response.text()
   }
-  return Try.of<T, FetchError>(Success.of(
-    data
-  ))
+
+  return Try.of<T, FetchError>(Success.of(data))
 }
 
 interface GETOptions {
@@ -130,8 +132,9 @@ export async function POST<T = any>(url: string, options: POSTOptions = {}) {
     headers: new Headers({
       //  access_token
       Authorization: options.noAuthorization ? '' : await getAccessToken(),
-      'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers || {
+        'Content-Type': 'application/json',
+      }),
     }),
     body: options.params && JSON.stringify(options.params),
     ...options.requestInit,
@@ -148,8 +151,9 @@ export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
     headers: new Headers({
       //  access_token
       Authorization: options.noAuthorization ? '' : await getAccessToken(),
-      'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers || {
+        'Content-Type': 'application/json',
+      }),
     }),
     body: options.params && JSON.stringify(options.params),
     ...options.requestInit,
@@ -205,23 +209,28 @@ async function getTokenByRefreshToken(refreshToken: string): Promise<Try<Token, 
  * 从本地取得 access_token，如果过期尝试刷新
  */
 export async function getAccessToken(): Promise<string> {
-  const accessToken = getLocalStorage('access_token')
+  let accessToken = getLocalStorage('access_token')
 
   if(!accessToken) {
-    const refreshToken = getLocalStorage('refresh_token') as string
-    if(!refreshToken) return ''
+    const refreshToken = <string>getLocalStorage('refresh_token')
+
+    if(!refreshToken)
+      return ''
+
     const token = await getTokenByRefreshToken(refreshToken)
-    return new Promise((resolve, reject) => {
-      token
-        .fail(error => reject(error)) // TODO: 添加refresh token过期的处理
-        .succeed(newToken => {
-          const access_token = `${newToken.token_type} ${newToken.access_token}`
-          setLocalStorage('access_token', access_token, newToken.expires_in)
-          // refresh_token 有效期一个月
-          setLocalStorage('refresh_token', newToken.refresh_token, 2592000)
-          resolve(access_token)
-        })
-    }) as Promise<string>
+
+    token
+      .fail(
+        // TODO: 添加 refresh token 过期的处理
+      )
+      .succeed(newToken => {
+        const access_token = `${newToken.token_type} ${newToken.access_token}`
+        setLocalStorage('access_token', access_token, newToken.expires_in)
+        // refresh_token 有效期一个月
+        setLocalStorage('refresh_token', newToken.refresh_token, 2592000)
+
+        accessToken = access_token
+      })
   }
 
   return `${accessToken}`

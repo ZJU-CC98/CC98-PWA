@@ -2,6 +2,7 @@ import { debounce } from 'lodash-es'
 import React from 'react'
 
 import LoadingCircle from '@/components/LoadingCircle'
+import { loadavg } from 'os';
 
 interface Props {
   /**
@@ -17,6 +18,11 @@ interface Props {
    */
   // tslint:disable-next-line:no-any
   callback: (...args: any[]) => any
+  /**
+   * loadingCircle 的位置
+   */
+
+  loadingPosition?: 'top' | 'bottom'
 }
 
 class InfiniteList extends React.PureComponent<Props> {
@@ -51,12 +57,19 @@ class InfiniteList extends React.PureComponent<Props> {
   }
 
   render() {
-    const { isEnd, children } = this.props
+    const { isEnd, loadingPosition = 'bottom', children } = this.props
 
     return (
       <>
+        {loadingPosition === 'top' && !isEnd && (
+          <div ref={this.loadingDom}>
+            <LoadingCircle />
+          </div>
+        )}
+
         {children}
-        {!isEnd && (
+
+        {loadingPosition === 'bottom' && !isEnd && (
           <div ref={this.loadingDom}>
             <LoadingCircle />
           </div>

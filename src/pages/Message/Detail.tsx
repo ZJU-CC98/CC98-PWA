@@ -7,7 +7,7 @@ import { List, RootRef } from '@material-ui/core'
 import React from 'react'
 
 import Editor from '@/components/Editor'
-import Load from '@/components/InfiniteList/reverse'
+import InfiniteList from '@/components/InfiniteList'
 import store, { Detail } from '@/model/message/detail'
 
 import DetailItem from './DetailItem'
@@ -40,11 +40,16 @@ export default class DetailList extends React.PureComponent<Props> {
           <>
             <RootRef rootRef={this.list}>
               <List>
-                <Load isEnd={isEnd} isLoading={isLoading} callback={store.getList}>
+                <InfiniteList
+                  loadingPosition="top"
+                  isEnd={isEnd}
+                  isLoading={isLoading}
+                  callback={store.getList}
+                >
                   {messages[id] &&
                     messages[id].map(item => <DetailItem key={item.id} message={item} />
                   )}
-                </Load>
+                </InfiniteList>
               </List>
             </RootRef>
             <Editor sendCallBack={store.sendMessage} />

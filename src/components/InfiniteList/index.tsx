@@ -5,10 +5,6 @@ import LoadingCircle from '@/components/LoadingCircle'
 
 interface Props {
   /**
-   * 初始化是否显示加载圈
-   */
-  initLoading?: boolean
-  /**
    * 列表正在加载中，回调不会重复触发
    */
   isLoading: boolean
@@ -56,13 +52,11 @@ class InfiniteList extends React.PureComponent<Props> {
 
   render() {
     const { isEnd, children } = this.props
-    let { initLoading } = this.props
-    if (initLoading === undefined) initLoading = true
 
     return (
       <>
         {children}
-        {initLoading && !isEnd && (
+        {!isEnd && (
           <div ref={this.loadingDom}>
             <LoadingCircle />
           </div>

@@ -15,7 +15,7 @@ interface State {
   isEnd: boolean
   t_from: number
   u_from: number
-  initLoading: boolean
+  view: boolean
 }
 const Root = css`
   display:flex;
@@ -31,7 +31,7 @@ export default class extends React.Component<{}, State> {
     u_from: 0,
     topics: [],
     users: [],
-    initLoading: false,
+    view: false,
   }
 
   searchUpdated = (term: string) => {
@@ -43,13 +43,11 @@ export default class extends React.Component<{}, State> {
       u_from: 0,
       topics: [],
       users: [],
-      initLoading: false,
-    },            () => { this.getTopics() })
+    }, () => { this.getTopics() })
 
   }
 
   getTopics = async () => {
-    console.log('callback')
     this.setState({
       isLoading: true,
     })
@@ -64,20 +62,19 @@ export default class extends React.Component<{}, State> {
           t_from: t_from + topicsData.length,
           isLoading: false,
           isEnd: topicsData.length !== 20,
-          initLoading: true,
+          view: true,
         })
       )
   }
 
   render() {
-    const { topics, users, isLoading, searchTerm, isEnd, initLoading } = this.state
+    const { topics, users, isLoading, searchTerm, isEnd, view } = this.state
 
     return (
       <div className={Root}>
         <SearchInput className="search-input" onChange={this.searchUpdated} />
         <Button color="primary" variant="outlined" onClick={() => { this.initTopics() }}>搜索</Button>
-        <InfiniteList
-          initLoading={initLoading}
+        {view && <InfiniteList
           isLoading={isLoading}
           isEnd={isEnd}
           callback={this.getTopics}
@@ -87,7 +84,7 @@ export default class extends React.Component<{}, State> {
               <TopicItem key={info.id} data={info} place={'search'} />
             ))}
           </List>
-        </InfiniteList>
+        </InfiniteList>}
       </div>
 
     )

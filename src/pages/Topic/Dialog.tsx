@@ -60,6 +60,8 @@ export default withStyles(styles)(
           reason: this.state.text,
         },
       })
+      request.fail()
+        .succeed(() => this.props.onClose)
     }
 
     render() {

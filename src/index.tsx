@@ -15,8 +15,8 @@ declare module 'dayjs' {
 // @ts-ignore
 dayjs.locale(zh, null, false)
 dayjs.extend(relativeTime)
-injectGlobal`
 
+injectGlobal`
   * {
     box-sizing: border-box;
   }
@@ -43,6 +43,8 @@ injectGlobal`
   div {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
+
+  /* FIXME: remove to another place */
   .search-input {
     padding: 10px 10px;
     height: 52px;
@@ -78,12 +80,12 @@ injectGlobal`
 
 ReactDOM.render(<App />, document.getElementById('root'))
 
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', () => {
-//     navigator.serviceWorker.register('/service-worker.js').then(registration => {
-//       console.log('SW registered: ', registration)
-//     }).catch(registrationError => {
-//       console.log('SW registration failed: ', registrationError)
-//     })
-//   })
-// }
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').then(registration => {
+      console.log('SW registered: ', registration)
+    }).catch(registrationError => {
+      console.log('SW registration failed: ', registrationError)
+    })
+  })
+}

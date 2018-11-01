@@ -240,9 +240,8 @@ export async function getAccessToken(): Promise<string> {
   if (!accessToken) {
     const refreshToken = getLocalStorage('refresh_token')
 
-    if (!refreshToken) {
-      accessToken = ''
-    }
+    if (!refreshToken)
+      return ''
 
     const token = await getTokenByRefreshToken(<string>refreshToken)
 

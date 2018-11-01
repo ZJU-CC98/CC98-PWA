@@ -37,7 +37,7 @@ const Route: React.SFC<
 > = props => {
   const { path, component, ...otherProps } = props
 
-  return React.createElement(props.component, otherProps)
+  return React.createElement(component, otherProps)
 }
 
 const App: React.SFC = () => (

@@ -63,7 +63,7 @@ const TopBar: React.SFC<{
 )
 
 const Wrapper: React.SFC = () => (
-  <Subscribe to={[GlobalContainer]}>
+  <Subscribe to={[global]}>
     {(g: GlobalContainer) => (
       <>
         <TopBar onOpen={() => g.openDrawer()} />

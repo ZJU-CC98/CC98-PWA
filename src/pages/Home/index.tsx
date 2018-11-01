@@ -1,9 +1,9 @@
-import React from 'react'
 import { css } from 'emotion'
+import React from 'react'
 
 import bg9 from '@/assets/bg9.jpg'
 import LayoutCenter from '@/components/LayoutCenter'
-import basicInstance from '@/model/basicInstance'
+import global from '@/model/global'
 import { Button, Typography } from '@material-ui/core'
 
 const img = css`
@@ -31,19 +31,17 @@ const text = css`
   }
 `
 
-
 const Home: React.SFC = () => (
   <>
     <div className={img} />
     <LayoutCenter>
-      <Button className={button}
+      <Button
+        className={button}
         variant="outlined"
         disableRipple
-        onClick={() => basicInstance.OpenDrawer()}
+        onClick={() => global.openDrawer()}
       >
-        <Typography className={text}>
-          琪露诺 の CC98
-        </Typography>
+        <Typography className={text}>琪露诺 の CC98</Typography>
       </Button>
     </LayoutCenter>
   </>

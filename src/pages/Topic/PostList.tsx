@@ -1,118 +1,134 @@
-import React from 'react'
+// import React from 'react'
 
-import InfinitiList from '@/components/InfinitiList'
-import PostItem from './PostItem'
+// import InfiniteList from '@/components/InfiniteList'
+// import postInstance from '@/model/post'
+// import { IPost, IUser } from '@cc98/api'
+// import { Subscribe } from '@cc98/state'
+// import PostItem from './PostItem'
 
-import { GET } from '@/utils/fetch'
-import { IPost, IUser } from '@cc98/api'
+// interface Props {
+//   topicID: number
+// }
 
+// // interface State {
+// //   postList: IPost[]
+// //   userMap: {
+// //     [id: string]: IUser
+// //   }
 
-type Props = {
-  topicID: number
-}
+// //   from: number
+// //   size: number
 
-type State = {
-  postList: IPost[]
-  userMap: {
-    [id: string]: IUser
-  }
+// //   isLoading: boolean
+// //   isEnd: boolean
+// // }
 
-  from: number
-  size: number
+// // class TopicList extends React.Component<Props, State> {
+// //   state: State = {
+// //     postList: [],
+// //     userMap: {},
+// //     from: 0,
+// //     size: 10,
 
-  isLoading: boolean
-  isEnd: boolean
-}
+// //     isLoading: false,
+// //     isEnd: false,
+// //   }
 
-class TopicList extends React.Component<Props, State> {
-  state: State = {
-    postList: [],
-    userMap: {},
-    from: 0,
-    size: 10,
+// //   async componentDidMount() {
+// //     this.fetchPosts()
+// //   }
 
-    isLoading: false,
-    isEnd: false,
-  }
+// //   fetchPosts = async () => {
+// //     const { topicID } = this.props
+// //     const { from, size } = this.state
 
-  async componentDidMount() {
-    this.fetchPosts()
-  }
+// //     this.setState({
+// //       isLoading: true,
+// //     })
 
-  fetchPosts = async () => {
-    const { topicID } = this.props
-    const { from, size } = this.state
+// //     const posts = await GET<IPost[]>(`topic/${topicID}/post?from=${from}&size=${size}`)
 
-    this.setState({
-      isLoading: true,
-    })
+// //     posts.fail().succeed(postList => {
+// //       this.fetchUsers(postList)
 
-    const posts = await GET<IPost[]>(`topic/${topicID}/post?from=${from}&size=${size}`)
+// //       this.setState({
+// //         postList: this.state.postList.concat(postList),
+// //         from: from + postList.length,
 
-    posts
-      .fail()
-      .succeed(postList => {
-        this.fetchUsers(postList)
+// //         isLoading: false,
+// //         isEnd: postList.length !== size,
+// //       })
+// //     })
+// //   }
 
-        this.setState({
-          postList: this.state.postList.concat(postList),
-          from: from + postList.length,
+// //   fetchUsers = async (postList: IPost[]) => {
+// //     const query = postList
+// //       .map(p => p.userId)
+// //       .filter(u => u)
+// //       .map(u => `id=${u}`)
+// //       .join('&')
 
-          isLoading: false,
-          isEnd: postList.length !== size,
-        })
-      })
-  }
+// //     if (!query) return
 
-  fetchUsers = async (postList: IPost[]) => {
-    const query = postList
-      .map(p => p.userId)
-      .filter( u => u )
-      .map( u => `id=${u}`)
-      .join('&')
+// //     const res = await GET<IUser[]>(`user?${query}`)
 
-    if (!query)
-      return
+// //     res.fail().succeed(users => {
+// //       const newUsers: State['userMap'] = {}
+// //       users.forEach(user => {
+// //         newUsers[user.id] = user
+// //       })
 
-    const users = await GET<IUser[]>(`user?${query}`)
+// //       this.setState({
+// //         userMap: Object.assign({}, this.state.userMap, newUsers),
+// //       })
+// //     })
+// //   }
 
-    users
-      .fail()
-      .succeed(users => {
+// //   render() {
+// //     const { postList, userMap, isLoading, isEnd } = this.state
 
-        const newUsers: State["userMap"] = {}
-        users.forEach(user => {
-          newUsers[user.id] = user
-        })
+// //     return (
+// //       <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.fetchPosts}>
+// //         {postList.map(info => (
+// //           <PostItem key={info.id} postInfo={info} userInfo={userMap[info.userId]} />
+// //         ))}
+// //       </InfiniteList>
+// //     )
+// //   }
+// // }
 
-        this.setState({
-          userMap: Object.assign(
-            {}, this.state.userMap, newUsers,
-          )
-        })
-      })
-  }
+// // export default TopicList
 
-  render() {
-    const { postList, userMap, isLoading, isEnd } = this.state
+// export default class extends React.PureComponent<Props> {
+//   constructor(props: Props) {
+//     super(props)
+//     postInstance.init(this.props.topicID)
+//   }
 
-    return (
-      <InfinitiList
-        isLoading={isLoading}
-        isEnd={isEnd}
-        callback={this.fetchPosts}
-      >
-        {postList.map((info) => (
-            <PostItem
-              key={info.id}
-              postInfo={info}
-              userInfo={userMap[info.userId]}
-            />
-          ))
-        }
-      </InfinitiList>
-    )
-  }
-}
+//   async componentDidMount() {
+//     await postInstance.fetchPosts()
+//   }
 
-export default TopicList
+//   componentWillUnmount() {
+//     postInstance.reset()
+//   }
+
+//   render() {
+
+//     return (
+//       <Subscribe to={[postInstance]}>
+//         {() => {
+//           const { isLoading, isEnd, posts, userMap } = postInstance.state
+
+//           return (
+//             <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={postInstance.fetchPosts}>
+//               {posts.map((info: IPost) => (
+//                 <PostItem key={info.id} postInfo={info} userInfo={userMap[info.userId]} />
+//               ))}
+//             </InfiniteList>
+//           )
+//         }}
+//       </Subscribe>
+//     )
+//   }
+// }

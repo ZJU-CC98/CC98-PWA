@@ -1,15 +1,17 @@
-import React from 'react'
 import { navigate } from '@reach/router'
+import React from 'react'
 
-import InfinitiList from '@/components/InfinitiList'
+import InfiniteList from '@/components/InfiniteList'
 import { List } from '@material-ui/core'
-import TpoicItem from './TopicItem'
+import TopicItem from '../TopicItem'
 
+import getBoardName from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
-import { ITopic } from '@cc98/api'
-
-
-type State = {
+import { IBaseBoard, ITopic } from '@cc98/api'
+interface Props {
+  boards: IBaseBoard[]
+}
+interface State {
   topicList: ITopic[]
 
   from: number
@@ -19,7 +21,7 @@ type State = {
   isEnd: boolean
 }
 
-class TopicList extends React.Component<{}, State> {
+class TopicList extends React.Component<Props, State> {
   state: State = {
     topicList: [],
     from: 0,
@@ -42,43 +44,36 @@ class TopicList extends React.Component<{}, State> {
 
     const posts = await GET<ITopic[]>(`topic/new?from=${from}&size=${size}`)
 
-    posts
-      .map(topicList => {
-        this.setState({
-          topicList: this.state.topicList.concat(topicList),
-          from: from + topicList.length,
+    posts.map(topicList => {
+      topicList.map(
+        topic =>
+          topic.boardName = getBoardName(this.props.boards, topic.boardId)
+      )
+      this.setState({
+        topicList: this.state.topicList.concat(topicList),
+        from: from + topicList.length,
 
-          isLoading: false,
-          isEnd: topicList.length !== size,
-        })
+        isLoading: false,
+        isEnd: topicList.length !== size,
       })
+    })
   }
 
   jump2Post(topicID: number) {
-    navigate('/topic/' + topicID)
+    navigate(`/topic/${topicID}`)
   }
 
   render() {
     const { topicList, isLoading, isEnd } = this.state
 
     return (
-      <InfinitiList
-        isLoading={isLoading}
-        isEnd={isEnd}
-        callback={this.fetchTopics}
-      >
+      <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.fetchTopics}>
         <List>
-          {
-            topicList.map(info => (
-              <TpoicItem
-                key={info.id}
-                info={info}
-                click={this.jump2Post}
-              />
-            ))
-          }
+          {topicList.map(info => (
+            <TopicItem key={info.id} data={info} place={'newtopic'} />
+          ))}
         </List>
-      </InfinitiList>
+      </InfiniteList>
     )
   }
 }

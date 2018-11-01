@@ -1,92 +1,95 @@
 declare module '@cc98/api' {
   export interface IPost {
+    allowedViewers: any
 
-    allowedViewers: any,
+    awardInfo: any
 
-    awardInfo: any,
-
-    awards: any[],
+    awards: IAward[]
     /**
      * 帖子内容
      */
-    content: string,
+    content: string
 
-    contentType: number,
+    contentType: number
     /**
      * 楼层数
      */
-    floor: number,
+    floor: number
     /**
      * 用户 ID
      */
-    id: number,
+    id: number
     /**
      * IP
      */
-    ip: string,
+    ip: string
 
-    isAllowedOnly: boolean,
+    isAllowedOnly: boolean
     /**
      * 是否匿名
      */
-    isAnonymous: boolean,
+    isAnonymous: boolean
 
-    isBest: boolean,
+    isBest: boolean
     /**
      * 是否被删除
      */
-    isDeleted: boolean,
+    isDeleted: boolean
     /**
      * 是否是楼主（LZ）
      */
-    isLZ: boolean,
+    isLZ: boolean
 
-    lastUpdateAuthor: any,
+    lastUpdateAuthor: any
     /**
      * 最后更新时间
      */
-    lastUpdateTime: any,
+    lastUpdateTime: any
     /**
      * 赞同数
      */
-    likeCount: number,
+    likeCount: number
     /**
      * 反对数量
      */
-    dislikeCount: number,
+    dislikeCount: number
 
-    likeState: number,
+    likeState: number
     /**
      * 总楼层数
      */
-    length: number,
+    length: number
 
-    parentId: number,
+    parentId: number
 
-    state: number,
+    state: number
     /**
      * 回复时间
      */
-    time: string,
+    time: string
     /**
      * 帖子标题
      */
-    title: string,
+    title: string
     /**
      * 帖子的 ID
      */
-    topicId: number,
+    topicId: number
     /**
      * 版面 ID
      */
-    boardId: number,
+    boardId: number
     /**
      * 用户 ID
      */
-    userId: number,
+    userId: number
     /**
      * 用户名
      */
-    userName: string,
+    userName: string
+    /**
+     * 是否热帖
+     */
+    isHot?: boolean
   }
 }

@@ -1,24 +1,35 @@
 import React from 'react'
 
-import {
-  ListItem, ListItemText,
-} from '@material-ui/core'
+import { ListItem, ListItemText } from '@material-ui/core'
 
 import { IHotTopic } from '@cc98/api'
 
-type Props = {
-  info: IHotTopic,
+import { css } from 'emotion';
+interface Props {
+  info: IHotTopic
   click?: (topicID: number) => void
 }
-
-const TopicItem: React.SFC<Props> = ({info, click}) => (
+const LineStyle = css`
+  display:flex;
+  justify-content:space-between;
+  width:100%;
+`
+const TopicItem: React.SFC<Props> = ({ info, click }) => (
   <ListItem
+    divider
     button
     onClick={() => click && click(info.id)}
   >
     <ListItemText
-      primary={info.boardName}
-      secondary={info.title}
+      primary={
+        <div className={LineStyle}>
+          <div>{info.boardName}</div>
+          <div>{info.authorName ? info.authorName : '匿名'}</div>
+        </div>}
+      secondary={ <div className={LineStyle}>
+      <div>{info.title}</div>
+      <div>{`回复:${info.replyCount}`}</div>
+    </div>}
     />
   </ListItem>
 )

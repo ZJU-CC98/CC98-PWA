@@ -1,5 +1,5 @@
-import React from 'react'
 import { css } from 'emotion'
+import React from 'react'
 
 const root = css`
   position: absolute;
@@ -12,10 +12,6 @@ const root = css`
   align-items: center;
 `
 
-const LayoutCenter: React.SFC = ({children}) => (
-  <div className={root}>
-    {children}
-  </div>
-)
+const LayoutCenter: React.SFC = ({ children }) => <div className={root}>{children}</div>
 
 export default LayoutCenter

@@ -1,21 +1,16 @@
-import React from 'react'
-import { css } from 'emotion'
 import version from '@/version'
+import { css } from 'emotion'
+import React from 'react'
 
-import {
-  AppBar, Toolbar,
-  Typography,
-  Button, IconButton,
-} from '@material-ui/core'
+import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core'
 
 import MenuIcon from '@material-ui/icons/Menu'
 
+import global, { GlobalContainer } from '@/model/global'
 import { Subscribe } from '@cc98/state'
-import basicInstance, { BasicContainer } from '@/model/basicInstance'
 
 import DrawerMenu from './DrawerMenu'
 import UserInfo from './UserInfo'
-
 
 const placeholder = css`
   height: 56px;
@@ -44,47 +39,41 @@ const login = css`
 
 const TopBar: React.SFC<{
   onOpen: () => void
-}> = ({onOpen}) => (
+}> = ({ onOpen }) => (
   <>
     <AppBar position="fixed">
       <Toolbar>
-        <IconButton className={icon} color="inherit"
-          onClick={onOpen}
-        >
+        <IconButton className={icon} color="inherit" onClick={onOpen}>
           <MenuIcon />
         </IconButton>
 
-        <Typography
-          className={grow} color="inherit"
-        > CC98
+        <Typography className={grow} color="inherit">
+          {' '}
+          CC98
         </Typography>
 
-        <Button
-          className={login}
-          color="inherit" size="small"
-        > {version}
-          </Button>
+        <Button className={login} color="inherit" size="small">
+          {' '}
+          {version}
+        </Button>
       </Toolbar>
     </AppBar>
-    <div className={placeholder}></div>
+    <div className={placeholder} />
   </>
 )
 
 const Wrapper: React.SFC = () => (
-  <Subscribe to={[basicInstance]}>
-    {(basic: BasicContainer) => (
+  <Subscribe to={[GlobalContainer]}>
+    {(g: GlobalContainer) => (
       <>
-        <TopBar onOpen={() => basicInstance.OpenDrawer()}/>
+        <TopBar onOpen={() => g.openDrawer()} />
         <DrawerMenu
-          isLogIn={basic.state.isLogIn}
-          open={basic.state.isDrawerOpen}
-          onClose={() => basicInstance.CloseDrawer()}
-          onLogout={() => basicInstance.LogOut()}
+          isLogIn={g.state.isLogIn}
+          open={g.state.isDrawerOpen}
+          onClose={() => g.closeDrawer()}
+          onLogout={() => g.logOut()}
         >
-          <UserInfo
-            isLogIn={basic.state.isLogIn}
-            info={basic.state.myInfo}
-          />
+          <UserInfo isLogIn={g.state.isLogIn} info={g.state.myInfo} />
         </DrawerMenu>
       </>
     )}

@@ -1,10 +1,10 @@
-import React from 'react'
 import { debounce } from 'lodash-es'
+import React from 'react'
 
 import LoadingCircle from '@/components/LoadingCircle'
+import { loadavg } from 'os';
 
-
-type Props = {
+interface Props {
   /**
    * 列表正在加载中，回调不会重复触发
    */
@@ -16,11 +16,16 @@ type Props = {
   /**
    * 列表底部 loading 出现的回调
    */
+  // tslint:disable-next-line:no-any
   callback: (...args: any[]) => any
+  /**
+   * loadingCircle 的位置
+   */
+
+  loadingPosition?: 'top' | 'bottom'
 }
 
-
-class InfinieList extends React.PureComponent<Props> {
+class InfiniteList extends React.PureComponent<Props> {
   /**
    * 存储 debounce 之后的函数
    */
@@ -33,16 +38,13 @@ class InfinieList extends React.PureComponent<Props> {
   componentDidMount() {
     const func = () => {
       const { isLoading, isEnd, callback } = this.props
-      if (isLoading || isEnd)
-        return
+      if (isLoading || isEnd) return
 
       // loadingDom 出现在可视区域
-      const distance = this.loadingDom.current
-        && (window.innerHeight - this.loadingDom.current.getBoundingClientRect().top)
-
-      if (distance === null || distance < 0)
-        return
-
+      const distance =
+        this.loadingDom.current &&
+        window.innerHeight - this.loadingDom.current.getBoundingClientRect().top
+      if (distance === null || distance < 0) return
       callback()
     }
 
@@ -55,18 +57,26 @@ class InfinieList extends React.PureComponent<Props> {
   }
 
   render() {
-    const { isEnd, children } = this.props
+    const { isEnd, loadingPosition = 'bottom', children } = this.props
 
     return (
       <>
-        {children}
-        {!isEnd && <div ref={this.loadingDom}>
+        {loadingPosition === 'top' && !isEnd && (
+          <div ref={this.loadingDom}>
             <LoadingCircle />
           </div>
-        }
+        )}
+
+        {children}
+
+        {loadingPosition === 'bottom' && !isEnd && (
+          <div ref={this.loadingDom}>
+            <LoadingCircle />
+          </div>
+        )}
       </>
     )
   }
 }
 
-export default InfinieList
+export default InfiniteList

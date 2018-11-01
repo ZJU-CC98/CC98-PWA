@@ -1,16 +1,18 @@
-import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
+import React from 'react'
 
 import {
-  Typography,
-  Input, InputLabel,
-  FormControl, FormHelperText,
   Button,
   CircularProgress,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputLabel,
+  Typography,
 } from '@material-ui/core'
 
-import basicInstance from '@/model/basicInstance'
+import global from '@/model/global'
 
 import snowball from '@/assets/snowball.png'
 
@@ -42,19 +44,18 @@ const buttonProgress = css`
   margin-left: 15px;
 `
 
-type FormField = {
+interface FormField {
   username: string
   password: string
 }
 
-type State = {
+interface State {
   formField: FormField
   loading: boolean
   logInFail: boolean
 }
 
 class LogIn extends React.PureComponent<{}, State> {
-
   state: State = {
     formField: {
       username: '',
@@ -69,43 +70,35 @@ class LogIn extends React.PureComponent<{}, State> {
     this.setState({
       formField: {
         ...this.state.formField,
-        [field]: event.target.value
-      }
+        [field]: event.target.value,
+      },
     })
   }
 
   logIn = async () => {
-    const { formField: { username, password } } = this.state
+    const {
+      formField: { username, password },
+    } = this.state
 
     this.setState({
       loading: true,
       logInFail: false,
     })
 
-    const token = await basicInstance.LogIn(username, password)
+    const token = await global.logIn(username, password)
 
     token
-      .fail(
-        () => {
-          setTimeout(
-            () => {
-              this.setState({
-                loading: false,
-                logInFail: true,
-              })
-            },
-            2000
-          )
-        }
-      )
-      .succeed(
-        _ => {
-          setTimeout(
-            () => navigate('/'),
-            1500
-          )
-        }
-      )
+      .fail(() => {
+        setTimeout(() => {
+          this.setState({
+            loading: false,
+            logInFail: true,
+          })
+        },         2000)
+      })
+      .succeed(_ => {
+        setTimeout(() => navigate('/'), 1500)
+      })
   }
 
   render() {
@@ -115,21 +108,21 @@ class LogIn extends React.PureComponent<{}, State> {
       <div className={root}>
         <img src={snowball} className={snowBallImg} />
 
-        <Typography variant="h6">
-          登录
-        </Typography>
+        <Typography variant="h6">登录</Typography>
 
         <div className={form}>
           <FormControl fullWidth>
             <InputLabel htmlFor="component-simple">Username</InputLabel>
-            <Input id="component-simple"
+            <Input
+              id="component-simple"
               value={formField.username}
               onChange={this.handleChange('username')}
             />
           </FormControl>
           <FormControl fullWidth>
             <InputLabel htmlFor="password">Password</InputLabel>
-            <Input id="password"
+            <Input
+              id="password"
               type="password"
               value={formField.password}
               onChange={this.handleChange('password')}
@@ -138,16 +131,9 @@ class LogIn extends React.PureComponent<{}, State> {
         </div>
 
         <div className={button}>
-          <Button variant="contained"
-            color="primary"
-            disabled={loading}
-            onClick={this.logIn}
-          >
+          <Button variant="contained" color="primary" disabled={loading} onClick={this.logIn}>
             {logInFail ? 'Retry' : 'LogIn'}
-            {loading && <CircularProgress
-              size={20} color="secondary"
-              className={buttonProgress}
-            />}
+            {loading && <CircularProgress size={20} color="secondary" className={buttonProgress} />}
           </Button>
         </div>
       </div>

@@ -11,6 +11,7 @@ import postInstance from '@/model/post'
 import { GET } from '@/utils/fetch'
 import { IPost, IPostUtil, ITopic } from '@cc98/api'
 import { Subscribe } from '@cc98/state'
+import Dialog from './Dialog'
 import PostItem from './PostItem'
 const root = css`
   background-color: #eee;
@@ -24,6 +25,8 @@ interface Props {
 
 interface State {
   topicInfo: ITopic | null
+  open: boolean
+  currentPost: IPost | null
 }
 
 class Topic extends React.PureComponent<Props, State> {
@@ -35,6 +38,8 @@ class Topic extends React.PureComponent<Props, State> {
 
   state: State = {
     topicInfo: null,
+    open: false,
+    currentPost: null,
   }
 
   async componentDidMount() {
@@ -65,9 +70,19 @@ class Topic extends React.PureComponent<Props, State> {
   componentWillUnmount() {
     postInstance.reset()
   }
+  handleClickOpen = (info: IPost) => {
+    this.setState({
+      open: true,
+      currentPost: info,
+    });
+  };
+
+  handleDialogClose = () => {
+    this.setState({ open: false });
+  }
 
   render() {
-    const { topicInfo } = this.state
+    const { topicInfo, currentPost } = this.state
     const { postId, userId } = this.props
     const isTrace = Boolean(postId) || Boolean(userId)
 
@@ -78,7 +93,11 @@ class Topic extends React.PureComponent<Props, State> {
     return (
       <div className={root}>
         <PostHead topicInfo={topicInfo} />
-
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleDialogClose}
+          currentPost={currentPost}
+        />
         <Subscribe to={[postInstance]}>
           {() => {
             const { isLoading, isEnd, posts, userMap } = postInstance.state
@@ -89,18 +108,19 @@ class Topic extends React.PureComponent<Props, State> {
                 isEnd={isEnd}
                 callback={postInstance.fetchPosts}
               >
-                {posts.map((info: IPost) => {
-                  return (
-                    <PostItem
-                      key={info.isHot ? `hot-${info.id}` : info.id}
-                      postInfo={info}
-                      userInfo={userMap[info.userId]}
-                      isTrace={isTrace}
-                      trace={postInstance.trace}
-                      refreshItem={postInstance.updateSinglePosts}
-                    />
-                  )
-                })}
+                {posts.map((info: IPost) => (
+                  <PostItem
+                    key={info.isHot ? `hot-${info.id}` : info.id}
+                    postInfo={info}
+                    userInfo={userMap[info.userId]}
+                    isTrace={isTrace}
+                    trace={postInstance.trace}
+                    refreshItem={postInstance.updateSinglePosts}
+                    openDialog={this.handleClickOpen}
+                    closeDialog={this.handleDialogClose}
+                  />
+                )
+                )}
               </InfiniteList>
             )
           }}

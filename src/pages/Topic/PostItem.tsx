@@ -64,6 +64,8 @@ interface Props {
   /**
    * 方法
    */
+  openDialog: (info: IPost) => void
+  closeDialog: () => void
   trace: (topicId: number, userId: number, traceOrNot: boolean, isAnonymous?: boolean)
     => Promise<void>
   refreshItem: <T extends Partial<IPost>>(postId: number, postUpdate: T) => Promise<void>
@@ -154,7 +156,6 @@ export default withStyles(styles)(
       const { postInfo, userInfo, classes, trace, refreshItem, isTrace } = this.props
       const { anchorEl } = this.state
       const open = Boolean(anchorEl);
-
       if (postInfo.isDeleted) {
         return null
       }
@@ -270,6 +271,9 @@ export default withStyles(styles)(
             <Divider classes={{ root: classes.hr }} />
             <IconButton
               classes={{ root: classes.action }}
+              onClick={() => {
+                this.props.openDialog(postInfo)
+              }}
             >
               <GradeIcon fontSize="small" />
             </IconButton>

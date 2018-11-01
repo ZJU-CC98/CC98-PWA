@@ -26,7 +26,10 @@ const TopicItem: React.SFC<Props> = ({ info, click }) => (
           <div>{info.boardName}</div>
           <div>{info.authorName ? info.authorName : '匿名'}</div>
         </div>}
-      secondary={info.title}
+      secondary={ <div className={LineStyle}>
+      <div>{info.title}</div>
+      <div>{`回复:${info.replyCount}`}</div>
+    </div>}
     />
   </ListItem>
 )

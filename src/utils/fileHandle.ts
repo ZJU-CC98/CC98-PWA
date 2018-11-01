@@ -6,11 +6,10 @@ export async function uploadFile(file: File): Promise<string> {
   const formData = new FormData()
 
   formData.append('files', file, file.name)
-  formData.append('contentType', 'multipart/form-data')
 
   const res = await POST<imgList>('file', {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      // Content-Type 置空
     },
     requestInit: {
       body: formData,

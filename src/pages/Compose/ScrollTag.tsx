@@ -1,6 +1,7 @@
 import {
   Chip,
-  SnackbarContent } from '@material-ui/core'
+  SnackbarContent,
+} from '@material-ui/core'
 import { css } from 'emotion'
 import React from 'react'
 
@@ -79,13 +80,13 @@ class ScrollTag extends React.Component<Props, State> {
   render() {
     const { tags } = this.props
     if (!tags) {
-      return <></>
+      return null
     }
 
     return(
-        <>
+      <>
         <div className={taglistbox} style={{ flex: 1, flexDirection: 'column' }}>
-        <div className={scrollbox}>
+          <div className={scrollbox}>
             <div className={insidebox}>
               { tags.map(tag => (
                 <Chip
@@ -95,13 +96,14 @@ class ScrollTag extends React.Component<Props, State> {
                     this.handleClick(tag)
                   }}
                   color={
-                    this.didChose(tag) ? 'primary' : 'default'}
+                    this.didChose(tag) ? 'primary' : 'default'
+                  }
                 />
               ))}
             </div>
+          </div>
         </div>
-        </div>
-        </>
+      </>
     )
   }
 }

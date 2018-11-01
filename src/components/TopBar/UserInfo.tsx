@@ -49,7 +49,7 @@ const UserInfo: React.SFC<Props> = ({ isLogIn, info }) => (
       onClick={isLogIn ? () => navigate('/userCenter') : tologIn}
     />
     <Typography className={name} variant="body1">
-      {isLogIn ? info && info.name : '笨蛋⑨'}
+      {isLogIn ? info && info.name : '未登录'}
     </Typography>
   </div>
 )

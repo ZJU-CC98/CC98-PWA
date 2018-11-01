@@ -23,7 +23,6 @@ const bottomButton = {
 export default class extends React.PureComponent<Props> {
 
   clickUpload = () => {
-    // @ts-ignore
     this.refs.uploadfile.click()
   }
 

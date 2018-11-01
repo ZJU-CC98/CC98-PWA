@@ -2,7 +2,6 @@ import { debounce } from 'lodash-es'
 import React from 'react'
 
 import LoadingCircle from '@/components/LoadingCircle'
-import { loadavg } from 'os';
 
 interface Props {
   /**
@@ -21,7 +20,6 @@ interface Props {
   /**
    * loadingCircle 的位置
    */
-
   loadingPosition?: 'top' | 'bottom'
 }
 

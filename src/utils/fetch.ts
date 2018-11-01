@@ -1,10 +1,8 @@
 /* tslint:disable */
 import { getLocalStorage, setLocalStorage } from './storage'
-
 import { Failure, Success, Try } from './fp/Try'
 
 import host from '@/model/apiHost'
-import { access } from 'fs';
 
 export interface FetchError {
   /**
@@ -13,6 +11,7 @@ export interface FetchError {
   status: number
   /**
    * 错误信息，取自 response.text()
+   * TODO: 重新设计统一错误处理
    */
   msg: string
   /**
@@ -76,7 +75,7 @@ interface GETOptions {
 export async function GET<T = any>(url: string, options: GETOptions = {}) {
   const headers: Record<string, string> = {}
 
-  if (options.noAuthorization) {
+  if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
     if (accessToken)
       headers.Authorization = accessToken
@@ -118,7 +117,7 @@ interface POSTOptions {
 export async function POST<T = any>(url: string, options: POSTOptions = {}) {
   const headers: Record<string, string> = {}
 
-  if (options.noAuthorization) {
+  if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
     if (accessToken)
       headers.Authorization = accessToken
@@ -144,7 +143,7 @@ type PUTOptions = POSTOptions
 export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
   const headers: Record<string, string> = {}
 
-  if (options.noAuthorization) {
+  if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
     if (accessToken)
       headers.Authorization = accessToken
@@ -170,7 +169,7 @@ type DELETEOptions = GETOptions
 export async function DELETE<T = any>(url: string, options: DELETEOptions = {}) {
   const headers: Record<string, string> = {}
 
-  if (options.noAuthorization) {
+  if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
     if (accessToken)
       headers.Authorization = accessToken

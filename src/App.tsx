@@ -34,7 +34,11 @@ const Route: React.SFC<
     // tslint:disable-next-line:no-any
     component: any
   }
-  > = props => React.createElement(props.component, props)
+> = props => {
+  const { path, component, ...otherProps } = props
+
+  return React.createElement(props.component, otherProps)
+}
 
 const App: React.SFC = () => (
   <>

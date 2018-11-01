@@ -1,16 +1,27 @@
-import { GET, POST } from './fetch'
+import { POST } from './fetch'
+
 type imgList = string[]
+
 export async function uploadFile(file: File): Promise<string> {
-  const url = 'file'
+  const formData = new FormData()
+
+  formData.append('files', file, file.name)
+  formData.append('contentType', 'multipart/form-data')
+
+  const res = await POST<imgList>('file', {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    requestInit: {
+      body: formData,
+    },
+  })
+
   let returl = ''
-  const formdata = new FormData()
-  formdata.append('files', file, file.name)
-  formdata.append('contentType', 'multipart/form-data')
-  const res = await POST<imgList>(url, { body: formdata })
-  const ress = res
+
+  res
     .fail()
     .succeed(picurl => {
-
       returl = picurl[0]
     })
 

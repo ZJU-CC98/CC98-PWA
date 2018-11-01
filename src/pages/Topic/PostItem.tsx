@@ -1,7 +1,9 @@
 import { css, cx } from 'emotion'
 import React from 'react'
+import Utils from './PostUtils'
 
 import resolveMarkdown from '@/services/resolveMarkdown'
+import toast from '@/utils/Toast/index'
 import { IPost, IPostUtil, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
 import {
@@ -126,7 +128,7 @@ export default withStyles(styles)(
       this.setState({ anchorEl: null });
     }
     render() {
-      const { postInfo, userInfo, classes, trace } = this.props
+      const { postInfo, userInfo, classes, trace, refreshItem } = this.props
       const { anchorEl } = this.state
       const open = Boolean(anchorEl);
 
@@ -192,26 +194,16 @@ export default withStyles(styles)(
                     },
                   }}
                 >
-
-                  <MenuItem
-                    key={'trace'}
-                    onClick={() => {
-                      this.props.trace(this.props.postInfo.topicId, this.props.postInfo.userId)
-                    }}
-                    classes={{ root: classes.menuItemRoot }}
-                  >
-                    追踪
-                  </MenuItem>
-                  <MenuItem
-                    key={'edit'}
-                    onClick={this.handleClose}
-                    classes={{ root: classes.menuItemRoot }}
-                  >
-                    编辑
-                  </MenuItem>
-
+                  {['追踪', '编辑'].map(option => (
+                    <MenuItem
+                      key={option}
+                      onClick={this.handleClose}
+                      classes={{ root: classes.menuItemRoot }}
+                    >
+                      {option}
+                    </MenuItem>
+                  ))}
                 </Menu>
-
               </div>]}
           />
 
@@ -220,15 +212,28 @@ export default withStyles(styles)(
           </CardContent>
 
           <CardActions classes={{ root: classes.actionsRoot }}>
-            <IconButton classes={{ root: classes.action }}>
+            <IconButton
+              classes={{ root: classes.action }}
+              onClick={() => {
+                toast.error({ content: postInfo.userId.toString(), duration: 2000 })
+              }}
+            >
               <Quote fontSize="small" />
             </IconButton >
             <Divider classes={{ root: classes.hr }} />
-            <IconButton classes={{ root: classes.action }}>
+            <IconButton
+              classes={{ root: classes.action }}
+            >
               <GradeIcon fontSize="small" />
             </IconButton>
             <Divider classes={{ root: classes.hr }} />
-            <IconButton classes={{ root: classes.action }}>
+            <IconButton
+              classes={{ root: classes.action }}
+              onClick={async () => {
+                const res = await Utils.like(postInfo.id)
+                refreshItem(postInfo.id, res)
+              }}
+            >
               <LikeIcon fontSize="small" />
               <span
                 style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}
@@ -236,7 +241,13 @@ export default withStyles(styles)(
               </span>
             </IconButton>
             <Divider classes={{ root: classes.hr }} />
-            <IconButton classes={{ root: classes.action }}>
+            <IconButton
+              classes={{ root: classes.action }}
+              onClick={async () => {
+                const res = await Utils.dislike(postInfo.id)
+                refreshItem(postInfo.id, res)
+              }}
+            >
               <DislikeIcon fontSize="small" />
               <span
                 style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}

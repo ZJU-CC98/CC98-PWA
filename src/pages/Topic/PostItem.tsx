@@ -108,6 +108,12 @@ const styles: StyleRules = {
     wordBreak: 'break-all',
   },
 }
+
+const ContentRoot = css`&&{
+     img {
+      max-width: 100%;
+    },
+}`
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
     state: State = {
@@ -226,6 +232,7 @@ export default withStyles(styles)(
           <CardContent>
             <Typography
               classes={{ root: classes.typographyRoot }}
+              className={ContentRoot}
               component="div"
             >{text}
             </Typography>

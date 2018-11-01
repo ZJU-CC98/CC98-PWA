@@ -46,11 +46,8 @@ class PostInfoStore extends Container<State> {
 
   fetchPosts = async () => {
     const { topicId, from, posts, isLoading, isEnd, request } = this.state
-
     this.put(state => state.isLoading = true)
-
     const postTry = await request()
-
     postTry.fail().succeed((postList: IPost[]) => {
       this.fetchUsers(postList)
 

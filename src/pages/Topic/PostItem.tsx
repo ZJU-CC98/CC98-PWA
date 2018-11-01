@@ -104,9 +104,12 @@ const styles: StyleRules = {
   menuItemRoot: {
     width: '3rem',
   },
+  typographyRoot: {
+    wordBreak: 'break-all',
+  },
 }
 export default withStyles(styles)(
-  class extends React.PureComponent<Props & { classes: ClassNameMap }, State> {
+  class extends React.Component<Props & { classes: ClassNameMap }, State> {
     state: State = {
       expanded: false,
       anchorEl: null,
@@ -221,7 +224,11 @@ export default withStyles(styles)(
           />
 
           <CardContent>
-            <Typography component="div">{text}</Typography>
+            <Typography
+              classes={{ root: classes.typographyRoot }}
+              component="div"
+            >{text}
+            </Typography>
           </CardContent>
 
           <CardActions classes={{ root: classes.actionsRoot }}>

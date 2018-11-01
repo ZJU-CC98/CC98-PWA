@@ -104,7 +104,7 @@ class Topic extends React.PureComponent<Props, State> {
           }}
         </Subscribe>
 
-        <Editor topic={topicInfo} />
+        <Editor topic={topicInfo} callback={postInstance.fetchPosts} />
 
       </div>
     )

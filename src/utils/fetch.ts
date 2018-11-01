@@ -122,32 +122,18 @@ interface POSTOptions {
    * 参数，默认转为 json
    */
   params?: any
-  /**
-   * body
-   */
-  body?: BodyInit
 }
 
 export async function POST<T = any>(url: string, options: POSTOptions = {}) {
-  let body : BodyInit = options.params && JSON.stringify(options.params)
-  let headers = new Headers({
-    //  access_token
-    Authorization: options.noAuthorization ? '' : await getAccessToken(),
-    'Content-Type': 'application/json',
-    ...options.headers,
-  })
-
-  if (options.body) {
-    body = options.body
-    headers = new Headers({
-      Authorization: options.noAuthorization ? '' : await getAccessToken(),
-      ...options.headers,
-    })
-  }
   const requestInit: RequestInit = {
     method: 'POST',
-    headers: headers,
-    body: body,
+    headers: new Headers({
+      //  access_token
+      Authorization: options.noAuthorization ? '' : await getAccessToken(),
+      'Content-Type': 'application/json',
+      ...options.headers,
+    }),
+    body: options.params && JSON.stringify(options.params),
     ...options.requestInit,
   }
 

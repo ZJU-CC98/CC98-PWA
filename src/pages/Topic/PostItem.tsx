@@ -59,6 +59,7 @@ interface Props {
    * 方法
    */
   trace: (topicId: number, userId: number) => Promise<void>
+  refreshItem: <T extends Partial<IPost>>(postId: number, postUpdate: T) => Promise<void>
 }
 
 interface State {

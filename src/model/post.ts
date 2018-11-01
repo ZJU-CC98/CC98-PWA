@@ -15,6 +15,8 @@ interface State {
   from: number
   topicId: number
   // tslint:disable-next-line:no-any
+  request: any
+  // tslint:disable-next-line:no-any
   [index: string]: any
 }
 
@@ -26,20 +28,31 @@ class PostInfoStore extends Container<State> {
     userMap: {},
     from: 0,
     topicId: -1,
+    // tslint:disable-next-line:no-empty
+    request: null,
   }
 
   init = (id: number) => {
-    this.put(state => state.topicId = id)
+    this.put(state => {
+      state.topicId = id
+      state.request = async () => await GET<IPost[]>(`topic/${this.state.topicId}/post`, {
+        params: {
+          from: `${this.state.from}`,
+          size: '10',
+        },
+      })
+
+    })
   }
 
   fetchPosts = async () => {
-    const { topicId, from, posts, isLoading, isEnd } = this.state
+    const { topicId, from, posts, isLoading, isEnd, request } = this.state
 
     this.put(state => state.isLoading = true)
 
-    const postTry = await GET<IPost[]>(`topic/${topicId}/post?from=${from}&size=10`)
+    const postTry = await request()
 
-    postTry.fail().succeed(postList => {
+    postTry.fail().succeed((postList: IPost[]) => {
       this.fetchUsers(postList)
 
       this.put(state => {
@@ -125,6 +138,7 @@ class PostInfoStore extends Container<State> {
       userMap: {},
       from: 0,
       topicId: -1,
+      requestUrl: '',
     }
 
     this.put(

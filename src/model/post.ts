@@ -116,19 +116,54 @@ class PostInfoStore extends Container<State> {
     })
   }
 
-  trace = async (topicId: number, identifyId: number, isAnonymous: boolean = false) => {
-    this.put(state => {
-      state.from = 0,
-        state.request = async () => await GET<IPost[]>('post/topic/user', {
-          params: {
-            topicId: `${topicId}`,
-            userId: `${identifyId}`,
-            from: `${this.state.from}`,
-            size: '10',
-          },
-        }),
-        state.userMap = {}
-    })
+  trace = async (topicId: number, identifyId: number,
+    // tslint:disable-next-line:align
+    traceOrNot: boolean, isAnonymous: boolean = false) => {
+    if (traceOrNot) {
+      if (!isAnonymous) {
+        this.put(state => {
+          state.from = 0,
+            state.request = async () => await GET<IPost[]>('post/topic/user', {
+              params: {
+                topicId: `${topicId}`,
+                userId: `${identifyId}`,
+                from: `${this.state.from}`,
+                size: '10',
+              },
+            }),
+            state.userMap = {},
+            state.posts = []
+        })
+      } else {
+        this.put(state => {
+          state.from = 0,
+            state.request = async () => await GET<IPost[]>('post/topic/anonymous/user', {
+              params: {
+                topicId: `${topicId}`,
+                postId: `${identifyId}`,
+                from: `${this.state.from}`,
+                size: '10',
+              },
+            }),
+            state.userMap = {},
+            state.posts = []
+        })
+      }
+    } else {
+      this.put(state => {
+        state.from = 0,
+          state.request = async () => await GET<IPost[]>(`topic/${this.state.topicId}/post`, {
+            params: {
+              from: `${this.state.from}`,
+              size: '10',
+            },
+          }),
+          state.userMap = {},
+          state.posts = []
+      })
+    }
+
+    this.fetchPosts()
   }
 
   reset = () => {

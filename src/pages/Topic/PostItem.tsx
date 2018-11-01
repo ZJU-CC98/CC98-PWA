@@ -58,9 +58,14 @@ interface Props {
    */
   userInfo: IUser | null
   /**
+   * 是否是追踪模式
+   */
+  isTrace: boolean
+  /**
    * 方法
    */
-  trace: (topicId: number, userId: number) => Promise<void>
+  trace: (topicId: number, userId: number, traceOrNot: boolean, isAnonymous?: boolean)
+    => Promise<void>
   refreshItem: <T extends Partial<IPost>>(postId: number, postUpdate: T) => Promise<void>
 }
 
@@ -107,13 +112,6 @@ export default withStyles(styles)(
       anchorEl: null,
     }
 
-    /**
-     * 追踪
-     */
-    trace = () => {
-      this.props.trace(this.props.postInfo.topicId, this.props.postInfo.userId)
-    }
-
     onExpandClick = () => {
       this.setState({
         expanded: !this.state.expanded,
@@ -128,7 +126,7 @@ export default withStyles(styles)(
       this.setState({ anchorEl: null });
     }
     render() {
-      const { postInfo, userInfo, classes, trace, refreshItem } = this.props
+      const { postInfo, userInfo, classes, trace, refreshItem, isTrace } = this.props
       const { anchorEl } = this.state
       const open = Boolean(anchorEl);
 
@@ -194,10 +192,25 @@ export default withStyles(styles)(
                     },
                   }}
                 >
-                  {['追踪', '编辑'].map(option => (
+                  {[isTrace ? '返回' : '追踪', '编辑'].map(option => (
                     <MenuItem
                       key={option}
-                      onClick={this.handleClose}
+                      onClick={() => {
+                        if (option === '追踪') {
+                          if (!postInfo.isAnonymous) {
+                            trace(postInfo.topicId, postInfo.userId, true)
+                            navigate(`/topic/${postInfo.topicId}/trace/${postInfo.userId}`)
+                          } else {
+                            trace(postInfo.topicId, postInfo.id, true, true)
+                            navigate(`/topic/${postInfo.topicId}/anonymous/trace/${postInfo.id}`)
+                          }
+                        } else if (option === '返回') {
+                          trace(postInfo.topicId, postInfo.userId, false)
+                          navigate(`/topic/${postInfo.topicId}`)
+                        }
+                        this.handleClose()
+                      }
+                      }
                       classes={{ root: classes.menuItemRoot }}
                     >
                       {option}
@@ -236,6 +249,7 @@ export default withStyles(styles)(
             >
               <LikeIcon fontSize="small" />
               <span
+                key="likeIcon"
                 style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}
               >{postInfo.likeCount}
               </span>
@@ -250,6 +264,7 @@ export default withStyles(styles)(
             >
               <DislikeIcon fontSize="small" />
               <span
+                key="dislikeIcon"
                 style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}
               >{postInfo.dislikeCount}
               </span>

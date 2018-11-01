@@ -43,7 +43,9 @@ const App: React.SFC = () => (
       <Route path="/" component={Home} />
       <Route path="/hotTopic" component={HotTopic} />
       <Route path="/newTopic" component={NewTopic} />
-      <Route path="/topic/:topicID" component={Topic} />
+      <Route path="/topic/:topicId" component={Topic} />
+      <Route path="/topic/:topicId/anonymous/trace/:postId" component={Topic} />
+      <Route path="/topic/:topicId/trace/:userId" component={Topic} />
       <Route path="/boardList" component={BoardList} />
       <Route path="/board/:id" component={Board} />
       <Route path="/userCenter" component={UserCenter} />

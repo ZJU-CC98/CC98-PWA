@@ -17,7 +17,9 @@ const root = css`
 `
 
 interface Props {
-  topicID: string
+  topicId: string
+  postId: string
+  userId: string
 }
 
 interface State {
@@ -28,7 +30,7 @@ class Topic extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props)
     // tslint:disable-next-line:radix
-    postInstance.init(parseInt(props.topicID))
+    postInstance.init(parseInt(props.topicId))
   }
 
   state: State = {
@@ -36,17 +38,24 @@ class Topic extends React.PureComponent<Props, State> {
   }
 
   async componentDidMount() {
-    const topicID = parseInt(this.props.topicID, 10)
-
-    if (isNaN(topicID)) {
+    const topicId = parseInt(this.props.topicId, 10)
+    if (isNaN(topicId)) {
       navigate('/404')
 
       return null
     }
 
-    const topic = await GET<ITopic>(`/topic/${topicID}`)
-    await postInstance.fetchPosts()
+    const topic = await GET<ITopic>(`/topic/${topicId}`)
     topic.fail().succeed(topicInfo => {
+      if (this.props.userId) {
+        const userId = parseInt(this.props.userId, 10)
+        postInstance.trace(topicId, userId, true)
+      } else if (this.props.postId) {
+        const postId = parseInt(this.props.postId, 10)
+        postInstance.trace(topicId, postId, true, true)
+      } else {
+        postInstance.fetchPosts()
+      }
       this.setState({
         topicInfo,
       })
@@ -59,6 +68,8 @@ class Topic extends React.PureComponent<Props, State> {
 
   render() {
     const { topicInfo } = this.state
+    const { postId, userId } = this.props
+    const isTrace = Boolean(postId) || Boolean(userId)
 
     if (topicInfo === null) {
       return <LoadingCircle />
@@ -83,6 +94,7 @@ class Topic extends React.PureComponent<Props, State> {
                     key={info.id}
                     postInfo={info}
                     userInfo={userMap[info.userId]}
+                    isTrace={isTrace}
                     trace={postInstance.trace}
                     refreshItem={postInstance.updateSinglePosts}
                   />

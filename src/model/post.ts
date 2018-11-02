@@ -23,7 +23,7 @@ interface State {
   initEditorContent?: string
 }
 
-class PostInfoStore extends Container<State> {
+export class PostInfoStore extends Container<State> {
   state: State = {
     isLoading: false,
     isEnd: false,

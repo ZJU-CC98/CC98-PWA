@@ -1,7 +1,7 @@
 import { FetchError, GET, PUT } from '@/utils/fetch'
 import { Try } from '@/utils/fp/Try'
 
-import { ILike } from '@cc98/api'
+import { ILike, IPost } from '@cc98/api'
 type PostUtilType = ILike | null
 interface PostUtil {
   like: (id: number) => Promise<ILike>,
@@ -31,6 +31,18 @@ export class PostUtils implements PostUtil {
     const resPost = await GET<ILike>(`/post/${id}/like`)
 
     return retSucceedData(resPost)
+  }
+
+  quote = async(post: IPost) => {
+    const content = post.content
+    const time = new Date(post.time).toLocaleString()
+    const realcontent =
+    `[quote][b]以下是引用${post.floor}楼：${post.userName}在${time}的发言：[color=blue]\
+    [url=/topic/${post.topicId}/#${post.floor}]>>查看原帖<<[/url][/color][/b]\
+    ${[post.content]}[/quote]\
+    `
+
+    return realcontent
   }
 }
 

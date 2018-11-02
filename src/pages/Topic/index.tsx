@@ -119,16 +119,25 @@ class Topic extends React.PureComponent<Props, State> {
                     openDialog={this.handleClickOpen}
                     closeDialog={this.handleDialogClose}
                     awardUserMap={awardsUserMap}
+                    initEditor={postInstance.wakeUpEditor}
                   />
                 )
                 )}
               </InfiniteList>
             )
           }}
+
         </Subscribe>
-
-        <Editor topic={topicInfo} callback={postInstance.fetchPosts} />
-
+        <Subscribe to={[postInstance]}>
+        {() => (
+          <Editor
+            topic={topicInfo}
+            initContent={postInstance.state.initEditorContent}
+            resetInitContent={postInstance.resetInitContent}
+            callback={postInstance.fetchPosts}
+          />
+        )}
+        </Subscribe>
       </div>
     )
   }

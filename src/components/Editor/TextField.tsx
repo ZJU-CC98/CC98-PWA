@@ -5,6 +5,7 @@ import React from 'react'
 interface Props {
   replyMode?: boolean | null,
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  content?: string,
 }
 
 const styles: StyleRules = {
@@ -24,21 +25,21 @@ const baseInputStyle = {
 
 export default withStyles(styles)(
 class extends React.PureComponent<Props & { classes: ClassNameMap }> {
+
   render() {
     const { replyMode, classes, onChange } = this.props
 
     return(
       <InputBase
         fullWidth={true}
+        value={this.props.content}
         placeholder="说些什么呢...."
         multiline
         style={baseInputStyle}
         classes={replyMode ?
                 { inputMultiline: classes.replyInputMultiline }
                 : { inputMultiline: classes.inputMultiline }}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          onChange(e)
-        }}
+        onChange={onChange}
       />
     )
   }

@@ -16,7 +16,9 @@ interface Props {
    */
   sendCallBack: (content: string, files?: string[]) => void,
   maxHeight?: number,
-  replyMode?: boolean
+  replyMode?: boolean,
+  defaultContent?: string,
+  resetInitContent: () => void
 }
 
 interface State {
@@ -67,6 +69,16 @@ export default withStyles(styles)(
       sendLoading: false,
     }
 
+    static getDerivedStateFromProps(props: Props, state: State) {
+      if (props.defaultContent) {
+        return {
+          content: props.defaultContent,
+        }
+      }
+
+      return null
+    }
+
     uploadPic = (event: EventTarget & HTMLInputElement) => {
       const files = event.files
       if (files) {
@@ -100,6 +112,7 @@ export default withStyles(styles)(
     }
 
     bindText = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      this.props.resetInitContent()
       this.setState({
         content: event.target.value,
       })
@@ -109,6 +122,7 @@ export default withStyles(styles)(
       const { sendCallBack } = this.props
       const urlList = await this.postPicAndCall()
       sendCallBack(this.state.content, urlList)
+      this.setState({ content: '' })
     }
 
     postPicAndCall = async () => {
@@ -133,12 +147,14 @@ export default withStyles(styles)(
     render() {
       const { replyMode } = this.props
       const { showPicList } = this.state
+      this.props.resetInitContent()
 
       return (
         <>
           <TextBase
             onChange={this.bindText}
             replyMode={replyMode}
+            content={this.state.content}
           />
           <ImageList
             replyMode={replyMode}

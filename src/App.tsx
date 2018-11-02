@@ -45,7 +45,7 @@ const App: React.SFC = () => (
     <TopBar />
     <Router>
       <Route path="/" component={Home} />
-      <Route path="/hotTopic" component={HotTopic} />
+      <Route path="/hotTopics" component={HotTopic} />
       <Route path="/newTopics" component={NewTopic} />
       <Route path="/topic/:topicId" component={Topic} />
       <Route path="/topic/:topicId/anonymous/trace/:postId" component={Topic} />

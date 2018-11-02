@@ -1,8 +1,8 @@
 import { css } from 'emotion'
 import React from 'react'
 
-import bg9 from '@/assets/bg9.jpg'
 import LayoutCenter from '@/components/LayoutCenter'
+import { Background } from '@/config'
 import global from '@/model/global'
 import { Button, Typography } from '@material-ui/core'
 
@@ -10,7 +10,7 @@ const img = css`
   position: fixed;
   width: 100%;
   height: 100%;
-  background-image: url(${bg9});
+  background-image: url(${Background});
   background-size: cover;
   opacity: 0.85;
 `

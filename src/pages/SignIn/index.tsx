@@ -1,9 +1,9 @@
 import { css } from 'emotion'
 import React from 'react'
 
+import { Background } from '@/config'
 import { GET, POST } from '@/utils/fetch'
 
-import megumi from '@/assets/megumi.jpg'
 import LayoutCenter from '@/components/LayoutCenter'
 import global from '@/model/global'
 import { Button, Typography } from '@material-ui/core'
@@ -12,7 +12,7 @@ const img = css`
   position: fixed;
   width: 100%;
   height: 100%;
-  background-image: url(${megumi});
+  background-image: url(${Background});
   background-size: cover;
   opacity: 0.85;
 `
@@ -79,6 +79,7 @@ class SignIn extends React.Component<{}, State> {
   }
 
   render() {
+
     const buttonContent = this.state.hasSignedInToday ?
       (
         <Button

@@ -225,6 +225,7 @@ class PostInfoStore extends Container<State> {
       topicId: -1,
       requestUrl: '',
       request: null,
+      awardsUserMap:{},
     }
 
     this.put(

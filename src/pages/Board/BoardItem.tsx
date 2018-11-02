@@ -29,7 +29,6 @@ export default class extends React.PureComponent<Props> {
         className={CardStyle}
         variant="outlined"
       >
-        {' '}
         {data.name}
       </Button>
     )

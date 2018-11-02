@@ -2,10 +2,8 @@ import boardInstance, { BoardInfoStore } from '@/model/board'
 import { Subscribe } from '@cc98/state'
 import React from 'react'
 import Component from './BoardList'
-interface Props {
-  id: string
-}
-export default (props: Props) => (
+
+export default () => (
   <Subscribe to={[boardInstance]}>
     {
       (store: BoardInfoStore) =>

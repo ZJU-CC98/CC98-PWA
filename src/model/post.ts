@@ -165,6 +165,24 @@ class PostInfoStore extends Container<State> {
     })
   }
 
+  updatePostAward = (data: { id: number, content: string, reason: string }, name: string) => {
+    const newPosts: IPost[] = JSON.parse(JSON.stringify(this.state.posts))
+
+    newPosts.forEach(post => {
+      if (post.id === data.id) {
+        post.awards.push({
+          id: 0,
+          content: data.content,
+          reason: data.reason,
+          operatorName: name,
+          time: new Date(),
+          type: 1,
+        })
+      }
+    })
+
+    this.put(state => state.posts = newPosts)
+  }
   trace = async (topicId: number, identifyId: number,
     // tslint:disable-next-line:align
     traceOrNot: boolean, isAnonymous: boolean = false) => {
@@ -225,7 +243,7 @@ class PostInfoStore extends Container<State> {
       topicId: -1,
       requestUrl: '',
       request: null,
-      awardsUserMap:{},
+      awardsUserMap: {},
     }
 
     this.put(

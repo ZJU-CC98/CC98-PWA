@@ -71,6 +71,8 @@ export default withStyles(styles)(
 
     static getDerivedStateFromProps(props: Props, state: State) {
       if (props.defaultContent) {
+        props.resetInitContent()
+
         return {
           content: props.defaultContent,
         }
@@ -147,7 +149,6 @@ export default withStyles(styles)(
     render() {
       const { replyMode } = this.props
       const { showPicList } = this.state
-      this.props.resetInitContent()
 
       return (
         <>
@@ -160,6 +161,9 @@ export default withStyles(styles)(
             replyMode={replyMode}
             imgList={showPicList}
             deletePic={this.deletePic}
+          />
+          <div
+            style={{ height: '55px', width:'100%' }}
           />
           <ToolBar
             sendLoading={this.state.sendLoading}

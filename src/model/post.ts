@@ -15,7 +15,8 @@ interface State {
   from: number
   topicId: number
   // tslint:disable-next-line:no-any
-  [index: string]: any
+  [index: string]: any,
+  initEditorContent?: string
 }
 
 class PostInfoStore extends Container<State> {
@@ -87,6 +88,11 @@ class PostInfoStore extends Container<State> {
     })
   }
 
+  wakeUpEditor = (a: string) => {
+    this.put(state => {
+      state.initEditorContent = a
+    })
+  }
   freshLatestPosts = async () => {
     const { topicId, from, posts } = this.state
 

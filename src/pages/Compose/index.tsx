@@ -1,5 +1,6 @@
 import Editor from '@/components/Editor'
 import { GET, POST } from '@/utils/fetch'
+import toast from '@/utils/Toast/index'
 import {
   FormControl,
   InputLabel,
@@ -13,7 +14,6 @@ import { css } from 'emotion'
 import React from 'react'
 import ScrollTag from './ScrollTag'
 import TypeSelect from './TypeSelect'
-
 interface TagType {
   id: number,
   name: string,
@@ -110,6 +110,12 @@ class Compose extends React.Component<Props, State> {
 
   sendCallBack = (content: string, files?: string[]) => {
     // console.log(files)
+    if (this.state.title === '') {
+      toast.error({ content: '请填写标题～(￣▽￣～)(～￣▽￣)～ ' })
+
+      return
+    }
+
     let realContent: string
     if (files) {
       const imgString = files.map(e => (` \n [img]${e}[/img]`)).join(' ')

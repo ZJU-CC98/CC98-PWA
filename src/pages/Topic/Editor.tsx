@@ -7,7 +7,8 @@ import TextField from '@material-ui/core/TextField'
 import { css } from 'emotion'
 import React from 'react'
 interface Props {
-  topic: ITopic
+  topic: ITopic,
+  initContent?: string,
 }
 interface State {
   editing: boolean,
@@ -39,6 +40,7 @@ const decorEditor = css`
 `
 const blankBlock = css`
   height: 45px;
+  background-color:white;
 `
 const inputBox = css`
   margin-left: 15px;
@@ -57,9 +59,15 @@ const post = async (value: string, topic: ITopic) => {
   })
 }
 
-class ReplyEditor extends React.PureComponent<Props, State> {
+class ReplyEditor extends React.Component<Props, State> {
   state: State = {
     editing: false,
+  }
+
+  getDerivedStateFromProps(props: Props, state: State) {
+    console.log('update')
+
+    return null
   }
 
   render() {

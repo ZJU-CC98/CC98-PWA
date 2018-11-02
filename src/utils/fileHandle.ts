@@ -5,7 +5,6 @@ export async function uploadFile(file: File): Promise<string> {
   let returl = ''
   const formdata = new FormData()
   formdata.append('files', file, file.name)
-  formdata.append('contentType', 'multipart/form-data')
   const res = await POST<imgList>(url, { body: formdata })
   const ress = res
     .fail()

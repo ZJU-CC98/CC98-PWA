@@ -84,15 +84,22 @@ class Topic extends React.PureComponent<Props, State> {
                     postInfo={info}
                     userInfo={userMap[info.userId]}
                     refreshItem={postInstance.updateSinglePosts}
+                    initEditor={postInstance.wakeUpEditor}
                   />
                 ))}
               </InfiniteList>
             )
           }}
+
         </Subscribe>
-
-        <Editor topic={topicInfo} />
-
+        <Subscribe to={[postInstance]}>
+        {() => (
+          <Editor
+            topic={topicInfo}
+            initContent={postInstance.state.initEditorContent}
+          />
+        )}
+        </Subscribe>
       </div>
     )
   }

@@ -23,11 +23,11 @@ const TopicItem: React.SFC<Props> = ({ info, click }) => (
     <ListItemText
       primary={
         <div className={LineStyle}>
-          <div>{info.boardName}</div>
+          <div>{info.title}</div>
           <div>{info.authorName ? info.authorName : '匿名'}</div>
         </div>}
       secondary={ <div className={LineStyle}>
-      <div>{info.title}</div>
+      <div>{info.boardName}</div>
       <div>{`回复:${info.replyCount}`}</div>
     </div>}
     />

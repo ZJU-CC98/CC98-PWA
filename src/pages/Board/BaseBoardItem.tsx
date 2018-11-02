@@ -1,3 +1,4 @@
+import { notExpandedBoards } from '@/config'
 import { IBaseBoard, IBoard } from '@cc98/api'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
@@ -64,13 +65,13 @@ export default withStyles(styles)(
     render() {
       const { data, classes } = this.props
       const { isExpanded } = this.state
+      let defaultExpanded = true
+      if (notExpandedBoards.indexOf(data.id) > -1) {
+        defaultExpanded = false
+      }
 
       return (
-        <ExpansionPanel
-          classes={{ expanded: classes.expanded }}
-          onChange={this.handleChange}
-          defaultExpanded={false}
-        >
+        <ExpansionPanel classes={{ expanded: classes.expanded }} defaultExpanded={defaultExpanded}>
           <ExpansionPanelSummary
             style={{ minHeight: '2.5rem' }}
             className={BaseBoardContainerStyle}
@@ -78,7 +79,7 @@ export default withStyles(styles)(
           >
             <Typography className={BaseBoardStyle}>{data.name}</Typography>
           </ExpansionPanelSummary>
-          {isExpanded ? <ExpansionPanelDetails className={ChildBoardStyle}>
+          {!isExpanded ? <ExpansionPanelDetails className={ChildBoardStyle}>
             {data.boards.map(board => (
               <BoardItem key={board.id} data={board} />
             ))}

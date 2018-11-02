@@ -140,9 +140,9 @@ const styles: StyleRules = {
     height: '30px',
     fontSize: '0.8rem',
     color: 'rgba(0, 0, 0, 0.54)',
-    borderTop:'#aaaaaa solid thin',
-    marginLeft:'16px',
-    marginRight:'16px',
+    borderTop: '#aaaaaa solid thin',
+    marginLeft: '16px',
+    marginRight: '16px',
   },
   expandButton: {
     width: '80%',
@@ -213,7 +213,7 @@ export default withStyles(styles)(
                   navigate(`/user/${postInfo.userId}`)
                 }}
               >
-                {postInfo.userName}
+                {postInfo.isAnonymous ? `匿名${postInfo.userName.toUpperCase()}` : postInfo.userName}
               </div>
             }
             subheader={new Date(postInfo.time).toLocaleString()}

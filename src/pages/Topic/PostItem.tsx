@@ -118,6 +118,9 @@ const styles: StyleRules = {
   },
   action: {
     flexGrow: 1,
+    '&:hover':{
+      backgroundColor:'#fff',
+    },
   },
   hr: {
     border: '#555 solid thin',
@@ -331,6 +334,7 @@ export default withStyles(styles)(
             <IconButton
               classes={{ root: classes.action }}
               disableRipple={true}
+              disableTouchRipple={true}
               onClick={async () => {
                 const res = await Utils.like(postInfo.id)
                 refreshItem(postInfo.id, res)

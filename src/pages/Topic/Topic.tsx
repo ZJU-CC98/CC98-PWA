@@ -93,7 +93,7 @@ class Topic extends React.Component<Props, State> {
     if (topicInfo === null) {
       return <LoadingCircle />
     }
-    const info = global.state.myInfo as IUser
+    const myInfo = global.state.myInfo as IUser
 
     return (
       <div className={root}>
@@ -103,7 +103,7 @@ class Topic extends React.Component<Props, State> {
           onClose={this.handleDialogClose}
           currentPost={currentPost}
           refreshItem={(data: { id: number, content: string, reason: string }) => {
-            postInstance.updatePostAward(data, info.name)
+            postInstance.updatePostAward(data, myInfo.name)
           }}
         />
 
@@ -123,6 +123,7 @@ class Topic extends React.Component<Props, State> {
               openDialog={this.handleClickOpen}
               closeDialog={this.handleDialogClose}
               awardUserMap={awardsUserMap}
+              initEditor={postInstance.wakeUpEditor}
             />
           )
           )}

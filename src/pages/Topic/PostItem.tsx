@@ -118,8 +118,8 @@ const styles: StyleRules = {
   },
   action: {
     flexGrow: 1,
-    '&:hover':{
-      backgroundColor:'#fff',
+    '&:hover': {
+      backgroundColor: '#fff',
     },
   },
   hr: {
@@ -272,7 +272,7 @@ export default withStyles(styles)(
                     },
                   }}
                 >
-                  {[isTrace ? '返回' : '追踪', '编辑'].map(option => (
+                  {['评分', isTrace ? '返回' : '追踪', '编辑'].map(option => (
                     <MenuItem
                       key={option}
                       onClick={() => {
@@ -287,6 +287,10 @@ export default withStyles(styles)(
                         } else if (option === '返回') {
                           trace(postInfo.topicId, postInfo.userId, false)
                           navigate(`/topic/${postInfo.topicId}`)
+                        } else if (option === '编辑') {
+                          // to do
+                        } else if (option === '评分') {
+                          this.props.openDialog(postInfo)
                         }
                         this.handleClose()
                       }
@@ -313,48 +317,6 @@ export default withStyles(styles)(
             <IconButton
               classes={{ root: classes.action }}
               disableRipple={true}
-              onClick={async() => {
-                const content = await Utils.quote(this.props.postInfo)
-                this.props.initEditor(content)
-              }}
-            >
-              <Quote fontSize="small" />
-            </IconButton >
-            <Divider classes={{ root: classes.hr }} />
-            <IconButton
-              classes={{ root: classes.action }}
-              disableRipple={true}
-              onClick={() => {
-                this.props.openDialog(postInfo)
-              }}
-            >
-              <GradeIcon fontSize="small" />
-            </IconButton>
-            <Divider classes={{ root: classes.hr }} />
-            <IconButton
-              classes={{ root: classes.action }}
-              disableRipple={true}
-              disableTouchRipple={true}
-              onClick={async () => {
-                const res = await Utils.like(postInfo.id)
-                refreshItem(postInfo.id, res)
-              }}
-            >
-              <LikeIcon
-                fontSize="small"
-                className={likeButton[likeStateMap[postInfo.likeState]
-                            === 'like' ? 'clicked' : 'unclicked']}
-              />
-              <span
-                key="likeIcon"
-                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}
-              >{postInfo.likeCount}
-              </span>
-            </IconButton>
-            <Divider classes={{ root: classes.hr }} />
-            <IconButton
-              classes={{ root: classes.action }}
-              disableRipple={true}
               onClick={async () => {
                 const res = await Utils.dislike(postInfo.id)
                 refreshItem(postInfo.id, res)
@@ -371,6 +333,41 @@ export default withStyles(styles)(
               >{postInfo.dislikeCount}
               </span>
             </IconButton>
+            <Divider classes={{ root: classes.hr }} />
+            <IconButton
+              classes={{ root: classes.action }}
+              disableRipple={true}
+              onClick={async () => {
+                const content = await Utils.quote(this.props.postInfo)
+                this.props.initEditor(content)
+              }}
+            >
+              <Quote fontSize="small" />
+            </IconButton >
+            <Divider classes={{ root: classes.hr }} />
+
+            <IconButton
+              classes={{ root: classes.action }}
+              disableRipple={true}
+              disableTouchRipple={true}
+              onClick={async () => {
+                const res = await Utils.like(postInfo.id)
+                refreshItem(postInfo.id, res)
+              }}
+            >
+              <LikeIcon
+                fontSize="small"
+                className={likeButton[likeStateMap[postInfo.likeState]
+                  === 'like' ? 'clicked' : 'unclicked']}
+              />
+              <span
+                key="likeIcon"
+                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}
+              >{postInfo.likeCount}
+              </span>
+            </IconButton>
+
+
           </CardActions>
           {postInfo.awards.length > 5 &&
             Object.keys(awardUserMap).length !== 0 &&

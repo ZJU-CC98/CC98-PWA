@@ -10,9 +10,9 @@ import InfiniteList from '@/components/InfiniteList'
 import { GlobalContainer } from '@/model/global'
 import { PostInfoStore } from '@/model/post'
 import { GET } from '@/utils/fetch'
-import { IPost, IPostUtil, ITopic } from '@cc98/api'
+import { IPost, IPostUtil, ITopic, IUser } from '@cc98/api'
 import { Subscribe } from '@cc98/state'
-import Dialog from './Dialog'
+import MyDialog from './Dialog'
 import PostItem from './PostItem'
 const root = css`
   background-color: #eee;
@@ -93,16 +93,17 @@ class Topic extends React.Component<Props, State> {
     if (topicInfo === null) {
       return <LoadingCircle />
     }
+    const info = global.state.myInfo as IUser
 
     return (
       <div className={root}>
         <PostHead topicInfo={topicInfo} />
-        <Dialog
+        <MyDialog
           open={this.state.open}
           onClose={this.handleDialogClose}
           currentPost={currentPost}
           refreshItem={(data: { id: number, content: string, reason: string }) => {
-            postInstance.updatePostAward(data, global.state.myInfo.name)
+            postInstance.updatePostAward(data, info.name)
           }}
         />
 

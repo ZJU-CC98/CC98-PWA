@@ -16,14 +16,17 @@ export default class extends React.PureComponent<Props> {
     return (
       <Subscribe to={[global, PostInfoStore]}>
         {
-          (g: GlobalContainer, postInstance: PostInfoStore) => (
-            <Topic
+          (g: GlobalContainer, postInstance: PostInfoStore) => {
+            const isRender = g.state.myInfo
+
+            return isRender ? < Topic
               topicId={topicId}
               postId={postId}
               userId={userId}
               global={g}
               postInstance={postInstance}
-            />)
+            /> : null
+          }
         }
       </Subscribe>
     )

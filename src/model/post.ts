@@ -16,6 +16,7 @@ interface State {
   }
   from: number
   topicId: number
+  isTrace: boolean
   // tslint:disable-next-line:no-any
   request: any
   // tslint:disable-next-line:no-any
@@ -34,6 +35,7 @@ export class PostInfoStore extends Container<State> {
     topicId: -1,
     // tslint:disable-next-line:no-empty
     request: null,
+    isTrace: false,
   }
 
   init = (id: number) => {
@@ -49,14 +51,15 @@ export class PostInfoStore extends Container<State> {
   }
 
   fetchPosts = async () => {
-    const { topicId, from, posts, isLoading, isEnd, request } = this.state
+    const { topicId, from, posts, isLoading, isEnd, request, isTrace } = this.state
     const isFirstGlance = from === 0
     this.put(state => state.isLoading = true)
     const postTry = await request()
+    console.log(isTrace)
     postTry.fail().succeed(async (postList: IPost[]) => {
       this.fetchUsers(postList)
       postList.map(post => post.isHot = false)
-      if (isFirstGlance) {
+      if (isFirstGlance && !isTrace) {
         const hotPostTry = await GET<IPost[]>(`topic/${this.state.topicId}/hot-post`)
         hotPostTry.fail()
           .succeed(
@@ -205,7 +208,8 @@ export class PostInfoStore extends Container<State> {
               },
             }),
             state.userMap = {},
-            state.posts = []
+            state.posts = [],
+            state.isTrace = true
         })
       } else {
         this.put(state => {
@@ -219,7 +223,8 @@ export class PostInfoStore extends Container<State> {
               },
             }),
             state.userMap = {},
-            state.posts = []
+            state.posts = [],
+            state.isTrace = true
         })
       }
     } else {
@@ -232,7 +237,8 @@ export class PostInfoStore extends Container<State> {
             },
           }),
           state.userMap = {},
-          state.posts = []
+          state.posts = [],
+          state.isTrace = false
       })
     }
 

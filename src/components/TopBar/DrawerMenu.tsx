@@ -45,11 +45,18 @@ interface Props {
   onLogout: () => void
 }
 
+const DividerStyle = css`&&{
+  margin-left:16px;
+  margin-right:16px;
+  margin-top:-6px;
+  height:1.5px;
+}`
+
 const TopBar: React.SFC<Props> = ({ isLogIn, open, onClose, onLogout, children }) => (
   <Drawer open={open} onClose={onClose}>
     <List className={list} onClick={onClose}>
       {children}
-      <Divider />
+      <Divider className={DividerStyle} />
       <Item icon={<HomeIcon />} text="主页" onClick={jump('/')} />
       <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopics')} />
       <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopics')} />

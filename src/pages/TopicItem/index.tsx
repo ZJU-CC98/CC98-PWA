@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import { css } from 'emotion'
 import React from 'react'
 import styled from 'react-emotion'
+import { create } from 'domain';
 
 interface Props {
   data: ITopic
@@ -43,6 +44,7 @@ export default withStyles(styles)(
       const title = data.title
       const userName = `${data.userName ? data.userName : '匿名'}`
       const time = dayjs(data.lastPostTime).fromNow()
+      const createTime = dayjs(data.time).fromNow()
       const reply = `回复:${data.replyCount}`
       const boardName = data.boardName as string
       let text1 = userName
@@ -78,7 +80,7 @@ export default withStyles(styles)(
           <ListItemSecondaryAction>
             <ListItemText
               classes={{ primary: classes.primary, secondary: classes.secondary }}
-              primary={time}
+              primary={place === 'newtopic' ? createTime : time}
               secondary={text2}
             />
           </ListItemSecondaryAction>

@@ -2,7 +2,7 @@ import { css } from 'emotion'
 import React from 'react'
 
 import LayoutCenter from '@/components/LayoutCenter'
-import { Background } from '@/config'
+import { Background, HomeText } from '@/config'
 import global from '@/model/global'
 import { Button, Typography } from '@material-ui/core'
 
@@ -41,7 +41,7 @@ const Home: React.SFC = () => (
         disableRipple
         onClick={() => global.openDrawer()}
       >
-        <Typography className={text}>琪露诺 の CC98</Typography>
+        <Typography className={text}>{HomeText}</Typography>
       </Button>
     </LayoutCenter>
   </>

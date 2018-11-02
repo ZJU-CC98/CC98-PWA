@@ -9,6 +9,7 @@ import React from 'react'
 interface Props {
   topic: ITopic,
   initContent?: string,
+  resetInitContent: () => void
 }
 interface State {
   editing: boolean,
@@ -64,8 +65,12 @@ class ReplyEditor extends React.Component<Props, State> {
     editing: false,
   }
 
-  getDerivedStateFromProps(props: Props, state: State) {
-    console.log('update')
+  static getDerivedStateFromProps(props: Props, state: State) {
+    if (props.initContent) {
+      return {
+        editing: true,
+      }
+    }
 
     return null
   }
@@ -85,6 +90,8 @@ class ReplyEditor extends React.Component<Props, State> {
         <div className={editing}>
         <Editor
           replyMode
+          defaultContent={this.props.initContent}
+          resetInitContent={this.props.resetInitContent}
           sendCallBack={(content: string, files: string[]) => {
             let realContent: string
             if (files) {

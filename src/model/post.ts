@@ -111,6 +111,11 @@ class PostInfoStore extends Container<State> {
     })
   }
 
+  resetInitContent = () => {
+    this.put(state => {
+      state.initEditorContent = undefined
+    })
+  }
   reset = () => {
     const initState: State = {
       isLoading: false,

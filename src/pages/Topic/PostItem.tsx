@@ -228,8 +228,9 @@ export default withStyles(styles)(
           <CardActions classes={{ root: classes.actionsRoot }}>
             <IconButton
               classes={{ root: classes.action }}
-              onClick={() => {
-                this.props.initEditor(this.props.postInfo.id.toString())
+              onClick={async() => {
+                const content = await Utils.quote(this.props.postInfo)
+                this.props.initEditor(content)
               }}
             >
               <Quote fontSize="small" />

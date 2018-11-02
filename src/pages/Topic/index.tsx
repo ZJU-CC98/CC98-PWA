@@ -97,6 +97,7 @@ class Topic extends React.PureComponent<Props, State> {
           <Editor
             topic={topicInfo}
             initContent={postInstance.state.initEditorContent}
+            resetInitContent={postInstance.resetInitContent}
           />
         )}
         </Subscribe>

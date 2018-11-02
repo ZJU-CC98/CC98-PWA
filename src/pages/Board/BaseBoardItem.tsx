@@ -53,7 +53,7 @@ const styles: StyleRules = {
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, { isExpanded: boolean }> {
     state = {
-      isExpanded: false,
+      isExpanded: notExpandedBoards.indexOf(this.props.data.id) === -1,
     }
 
     handleChange = (_: never, status: boolean) => {
@@ -65,13 +65,13 @@ export default withStyles(styles)(
     render() {
       const { data, classes } = this.props
       const { isExpanded } = this.state
-      let defaultExpanded = true
-      if (notExpandedBoards.indexOf(data.id) > -1) {
-        defaultExpanded = false
-      }
 
       return (
-        <ExpansionPanel classes={{ expanded: classes.expanded }} defaultExpanded={defaultExpanded}>
+        <ExpansionPanel
+          classes={{ expanded: classes.expanded }}
+          expanded={isExpanded}
+          onChange={this.handleChange}
+        >
           <ExpansionPanelSummary
             style={{ minHeight: '2.5rem' }}
             className={BaseBoardContainerStyle}
@@ -79,7 +79,7 @@ export default withStyles(styles)(
           >
             <Typography className={BaseBoardStyle}>{data.name}</Typography>
           </ExpansionPanelSummary>
-          {!isExpanded ? <ExpansionPanelDetails className={ChildBoardStyle}>
+          {isExpanded ? <ExpansionPanelDetails className={ChildBoardStyle}>
             {data.boards.map(board => (
               <BoardItem key={board.id} data={board} />
             ))}

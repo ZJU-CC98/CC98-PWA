@@ -1,5 +1,5 @@
 import { PUT } from '@/utils/fetch'
-import { IPost } from '@cc98/api'
+import { IAward, IPost } from '@cc98/api'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';
@@ -27,6 +27,7 @@ interface Props {
   onClose: () => void
   open: boolean
   currentPost: IPost
+  refreshItem: (data: { id: number, content: string, reason: string }) => void
 }
 interface State {
   value: number
@@ -36,7 +37,7 @@ interface State {
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
     state: State = {
-      value: 0,
+      value: 1,
       text: '',
     }
     handleClose = () => {
@@ -61,7 +62,14 @@ export default withStyles(styles)(
         },
       })
       request.fail()
-        .succeed(() => this.props.onClose)
+        .succeed(() => {
+          this.props.onClose()
+          this.props.refreshItem({
+            id: this.props.currentPost.id,
+            reason: this.state.text,
+            content: this.state.value === 1 ? '风评值+1' : '风评值-1',
+          })
+        })
     }
 
     render() {

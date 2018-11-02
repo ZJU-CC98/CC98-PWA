@@ -7,6 +7,7 @@ import Editor from './Editor'
 import PostHead from './PostHead'
 
 import InfiniteList from '@/components/InfiniteList'
+import global from '@/model/global'
 import postInstance from '@/model/post'
 import { GET } from '@/utils/fetch'
 import { IPost, IPostUtil, ITopic } from '@cc98/api'
@@ -91,54 +92,63 @@ class Topic extends React.PureComponent<Props, State> {
     }
 
     return (
-      <div className={root}>
-        <PostHead topicInfo={topicInfo} />
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleDialogClose}
-          currentPost={currentPost}
-        />
-        <Subscribe to={[postInstance]}>
-          {() => {
-            const { isLoading, isEnd, posts, userMap, awardsUserMap } = postInstance.state
+      <Subscribe to={[global]}>
+        {
+          () => global.state.myInfo ?
+            <div className={root}>
+              <PostHead topicInfo={topicInfo} />
+              <Dialog
+                open={this.state.open}
+                onClose={this.handleDialogClose}
+                currentPost={currentPost}
+                refreshItem={(data: { id: number, content: string, reason: string }) => {
+                  postInstance.updatePostAward(data, global.state.myInfo.name)
+                }}
+              />
+              <Subscribe to={[postInstance]}>
+                {() => {
+                  const { isLoading, isEnd, posts, userMap, awardsUserMap } = postInstance.state
 
-            return (
-              <InfiniteList
-                isLoading={isLoading}
-                isEnd={isEnd}
-                callback={postInstance.fetchPosts}
-              >
-                {posts.map((info: IPost) => (
-                  <PostItem
-                    key={info.isHot ? `hot-${info.id}` : info.id}
-                    postInfo={info}
-                    userInfo={userMap[info.userId]}
-                    isTrace={isTrace}
-                    trace={postInstance.trace}
-                    refreshItem={postInstance.updateSinglePosts}
-                    openDialog={this.handleClickOpen}
-                    closeDialog={this.handleDialogClose}
-                    awardUserMap={awardsUserMap}
-                    initEditor={postInstance.wakeUpEditor}
-                  />
-                )
-                )}
-              </InfiniteList>
-            )
-          }}
+                  return (
+                    <InfiniteList
+                      isLoading={isLoading}
+                      isEnd={isEnd}
+                      callback={postInstance.fetchPosts}
+                    >
+                      {posts.map((info: IPost) => (
+                        <PostItem
+                          key={info.isHot ? `hot-${info.id}` : info.id}
+                          postInfo={info}
+                          userInfo={userMap[info.userId]}
+                          isTrace={isTrace}
+                          trace={postInstance.trace}
+                          refreshItem={postInstance.updateSinglePosts}
+                          openDialog={this.handleClickOpen}
+                          closeDialog={this.handleDialogClose}
+                          awardUserMap={awardsUserMap}
+                          initEditor={postInstance.wakeUpEditor}
+                        />
+                      )
+                      )}
+                    </InfiniteList>
+                  )
+                }}
+              </Subscribe>
 
-        </Subscribe>
-        <Subscribe to={[postInstance]}>
-        {() => (
-          <Editor
-            topic={topicInfo}
-            initContent={postInstance.state.initEditorContent}
-            resetInitContent={postInstance.resetInitContent}
-            callback={postInstance.fetchPosts}
-          />
-        )}
-        </Subscribe>
-      </div>
+              <Subscribe to={[postInstance]}>
+              {() => (
+                <Editor
+                  topic={topicInfo}
+                  initContent={postInstance.state.initEditorContent}
+                  resetInitContent={postInstance.resetInitContent}
+                  callback={postInstance.fetchPosts}
+                />
+              )}
+              </Subscribe>
+            </div>
+            : null
+        }
+      </Subscribe>
     )
   }
 }

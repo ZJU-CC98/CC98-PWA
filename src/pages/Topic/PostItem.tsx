@@ -4,7 +4,7 @@ import Utils from './PostUtils'
 
 import resolveMarkdown from '@/services/resolveMarkdown'
 import toast from '@/utils/Toast/index'
-import { IPost, IPostUtil, IUser, IBasicUser } from '@cc98/api'
+import { IBasicUser, IPost, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
 import {
   Avatar,
@@ -23,10 +23,10 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import GradeIcon from '@material-ui/icons/grade'
-import Quote from '@material-ui/icons/rotateleft'
-import DislikeIcon from '@material-ui/icons/thumbdown'
-import LikeIcon from '@material-ui/icons/thumbup'
+import GradeIcon from '@material-ui/icons/Grade'
+import Quote from '@material-ui/icons/RotateLeft'
+import DislikeIcon from '@material-ui/icons/ThumbDown'
+import LikeIcon from '@material-ui/icons/ThumbUp'
 import { navigate } from '@reach/router'
 
 const root = css`

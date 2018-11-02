@@ -6,7 +6,6 @@ import { GET, POST } from '@/utils/fetch'
 import { IMessageContent } from '@cc98/api'
 import { Container } from '@cc98/state'
 import reverse from 'lodash-es/reverse'
-import uniqBy from 'lodash-es/uniqBy'
 import global from '../global'
 import user from '../user'
 
@@ -15,7 +14,7 @@ interface IMap<T> {
 }
 
 interface State {
-  messages: IMap<IMessageContent[]>
+  messages: IMap<IMessageContent[] | undefined>
   isEnd: boolean
   isLoading: boolean
   id: string
@@ -58,14 +57,14 @@ export class Detail extends Container<State> {
 
     const res = await GET<IMessageContent[]>(`message/user/${this.state.id}`, {
       params: {
-        from: `${this.state.messages[this.state.id].length}`,
+        from: `${(this.state.messages[this.state.id] || []).length}`,
         size: '20',
       },
     })
 
     res.fail().succeed(data => {
       this.put(state => {
-        state.messages[this.state.id] = [...reverse(data), ...state.messages[this.state.id]]
+        state.messages[this.state.id] = [...reverse(data), ...(state.messages[this.state.id] || [])]
         state.isLoading = false
         if (data.length < 20) state.isEnd = true
       })
@@ -73,7 +72,7 @@ export class Detail extends Container<State> {
   }
 
   getNewMessage = async () => {
-    this.put(state => state.isLoading = true)
+    this.put(state => (state.isLoading = true))
 
     const res = await GET<IMessageContent[]>(`message/user/${this.state.id}`, {
       params: {
@@ -85,7 +84,9 @@ export class Detail extends Container<State> {
     res.fail().succeed(messages => {
       this.put(state => {
         if (messages[0] && this.state.messages[this.state.id]) {
-          state.messages[this.state.id].push(messages[0])
+          state.messages[this.state.id]!.push(messages[0])
+        } else {
+          state.messages[this.state.id] = messages
         }
       })
     })
@@ -101,14 +102,19 @@ export class Detail extends Container<State> {
 
     res.fail().succeed(() => {
       this.put(state => {
-        state.messages[this.state.id].push({
+        const newMessage = {
           content,
           id: messageId,
           senderId: global.state.myInfo!.id,
           receiverId: parseInt(this.state.id, 10),
           time: new Date(Date.now()).toUTCString(),
           isRead: true,
-        })
+        }
+        if (this.state.messages[this.state.id]) {
+          state.messages[this.state.id]!.push(newMessage)
+        } else {
+          state.messages[this.state.id] = [newMessage]
+        }
         messageId -= 1
       })
     })

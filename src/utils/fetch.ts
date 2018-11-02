@@ -1,6 +1,5 @@
 /* tslint:disable */
 import { getLocalStorage, setLocalStorage } from './storage'
-
 import { Failure, Success, Try } from './fp/Try'
 
 import host from '@/model/apiHost'
@@ -12,6 +11,7 @@ export interface FetchError {
   status: number
   /**
    * 错误信息，取自 response.text()
+   * TODO: 重新设计统一错误处理
    */
   msg: string
   /**
@@ -73,29 +73,17 @@ interface GETOptions {
 }
 
 export async function GET<T = any>(url: string, options: GETOptions = {}) {
-  const requestInit: RequestInit = {
-    headers: new Headers({
-      //  access_token
-      Authorization: options.noAuthorization ? '' : await getAccessToken(),
-      ...options.headers,
-    }),
-    // credentials: "include",
-    ...options.requestInit,
+  const headers: Record<string, string> = {}
+
+  if (!options.noAuthorization) {
+    const accessToken = await getAccessToken()
+    if (accessToken)
+      headers.Authorization = accessToken
   }
 
-  const queryStr = options.params ? `?${encodeParams(options.params)}` : ''
-
-  return await cc98Fetch<T>(url + queryStr, requestInit)
-}
-
-type DELETEOptions = GETOptions
-
-export async function DELETE<T = any>(url: string, options: DELETEOptions = {}) {
   const requestInit: RequestInit = {
-    method: "DELETE",
     headers: new Headers({
-      //  access_token
-      Authorization: options.noAuthorization ? '' : await getAccessToken(),
+      ...headers,
       ...options.headers,
     }),
     // credentials: "include",
@@ -127,11 +115,18 @@ interface POSTOptions {
 }
 
 export async function POST<T = any>(url: string, options: POSTOptions = {}) {
+  const headers: Record<string, string> = {}
+
+  if (!options.noAuthorization) {
+    const accessToken = await getAccessToken()
+    if (accessToken)
+      headers.Authorization = accessToken
+  }
+
   const requestInit: RequestInit = {
     method: 'POST',
     headers: new Headers({
-      //  access_token
-      Authorization: options.noAuthorization ? '' : await getAccessToken(),
+      ...headers,
       ...(options.headers || {
         'Content-Type': 'application/json',
       }),
@@ -146,11 +141,18 @@ export async function POST<T = any>(url: string, options: POSTOptions = {}) {
 type PUTOptions = POSTOptions
 
 export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
+  const headers: Record<string, string> = {}
+
+  if (!options.noAuthorization) {
+    const accessToken = await getAccessToken()
+    if (accessToken)
+      headers.Authorization = accessToken
+  }
+
   const requestInit: RequestInit = {
     method: 'PUT',
     headers: new Headers({
-      //  access_token
-      Authorization: options.noAuthorization ? '' : await getAccessToken(),
+      ...headers,
       ...(options.headers || {
         'Content-Type': 'application/json',
       }),
@@ -161,6 +163,30 @@ export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
 
   return await cc98Fetch<T>(url, requestInit)
 }
+
+type DELETEOptions = GETOptions
+
+export async function DELETE<T = any>(url: string, options: DELETEOptions = {}) {
+  const headers: Record<string, string> = {}
+
+  if (!options.noAuthorization) {
+    const accessToken = await getAccessToken()
+    if (accessToken)
+      headers.Authorization = accessToken
+  }
+
+  const requestInit: RequestInit = {
+    method: "DELETE",
+    headers: new Headers({
+      ...headers,
+      ...options.headers,
+    }),
+    ...options.requestInit,
+  }
+
+  return await cc98Fetch<T>(url, requestInit)
+}
+
 
 /**
  * just like $.param
@@ -211,13 +237,13 @@ async function getTokenByRefreshToken(refreshToken: string): Promise<Try<Token, 
 export async function getAccessToken(): Promise<string> {
   let accessToken = getLocalStorage('access_token')
 
-  if(!accessToken) {
-    const refreshToken = <string>getLocalStorage('refresh_token')
+  if (!accessToken) {
+    const refreshToken = getLocalStorage('refresh_token')
 
-    if(!refreshToken)
+    if (!refreshToken)
       return ''
 
-    const token = await getTokenByRefreshToken(refreshToken)
+    const token = await getTokenByRefreshToken(<string>refreshToken)
 
     token
       .fail(
@@ -233,7 +259,7 @@ export async function getAccessToken(): Promise<string> {
       })
   }
 
-  return `${accessToken}`
+  return <string>accessToken
 }
 
 interface Token {

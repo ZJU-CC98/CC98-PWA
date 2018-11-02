@@ -89,12 +89,17 @@ class LogIn extends React.PureComponent<{}, State> {
 
     token
       .fail(() => {
-        setTimeout(() => {
-          this.setState({
-            loading: false,
-            logInFail: true,
-          })
-        },         2000)
+        setTimeout(
+          () => {
+            this.setState({
+              loading: false,
+              logInFail: true,
+            })
+          },
+          2000
+        )
+
+        // TODO: 错误提示
       })
       .succeed(_ => {
         setTimeout(() => navigate('/'), 1500)

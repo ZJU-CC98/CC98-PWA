@@ -7,7 +7,7 @@ import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@ma
 import AspectRatio from '@material-ui/icons/AspectRatio'
 import Book from '@material-ui/icons/Book'
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
-import DashBoard from '@material-ui/icons/DashBoard'
+import Dashboard from '@material-ui/icons/Dashboard'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import FiberNew from '@material-ui/icons/FiberNew'
 import HomeIcon from '@material-ui/icons/Home'
@@ -58,7 +58,7 @@ const TopBar: React.SFC<Props> = ({ isLogIn, open, onClose, onLogout, children }
       {isLogIn && (
         <>
           <Item icon={<Book />} text="我的关注" onClick={jump('/myFollow')} />
-          <Item icon={<DashBoard />} text="个人中心" onClick={jump('/userCenter')} />
+          <Item icon={<Dashboard />} text="个人中心" onClick={jump('/userCenter')} />
           <Item icon={<SpeakerNotes />} text="私信" onClick={jump('/messageList')} />
           <Item icon={<Search />} text="搜索" onClick={jump('/search')} />
           <Item icon={<CheckCircleOutline />} text="签到" onClick={jump('/signin')} />

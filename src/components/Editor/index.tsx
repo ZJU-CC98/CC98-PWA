@@ -1,16 +1,8 @@
 import { uploadFile } from '@/utils/fileHandle'
-import {
-  GridList,
-  GridListTile,
-  GridListTileBar,
-} from '@material-ui/core'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import IconButton from '@material-ui/core/IconButton'
+
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import Close from '@material-ui/icons/Close'
-import Send from '@material-ui/icons/Send'
-import { css } from 'emotion'
+
 import React from 'react'
 import ImageList from './ImageList'
 import TextBase from './TextField'

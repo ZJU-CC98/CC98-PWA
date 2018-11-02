@@ -17,7 +17,8 @@ interface State {
   u_from: number
   view: boolean
 }
-const Root = css`
+
+const root = css`
   display:flex;
   flex-direction:column;
   width:100%;
@@ -71,7 +72,7 @@ export default class extends React.Component<{}, State> {
     const { topics, users, isLoading, searchTerm, isEnd, view } = this.state
 
     return (
-      <div className={Root}>
+      <div className={root}>
         <SearchInput className="search-input" onChange={this.searchUpdated} />
         <Button color="primary" variant="outlined" onClick={() => { this.initTopics() }}>搜索</Button>
         {view && <InfiniteList

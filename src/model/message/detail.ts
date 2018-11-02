@@ -85,8 +85,8 @@ export class Detail extends Container<State> {
       this.put(state => {
         if (messages[0] && this.state.messages[this.state.id]) {
           state.messages[this.state.id]!.push(messages[0])
-        } else if (messages[0]) {
-          state.messages[this.state.id]
+        } else {
+          state.messages[this.state.id] = messages
         }
       })
     })

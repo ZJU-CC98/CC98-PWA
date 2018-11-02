@@ -1,5 +1,5 @@
 import { PUT } from '@/utils/fetch'
-import { IPost, IAward } from '@cc98/api'
+import { IAward, IPost } from '@cc98/api'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import blue from '@material-ui/core/colors/blue';

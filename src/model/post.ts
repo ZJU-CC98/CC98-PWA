@@ -20,6 +20,7 @@ interface State {
   request: any
   // tslint:disable-next-line:no-any
   [index: string]: any
+  initEditorContent?: string
 }
 
 class PostInfoStore extends Container<State> {
@@ -147,6 +148,11 @@ class PostInfoStore extends Container<State> {
     })
   }
 
+  wakeUpEditor = (a: string) => {
+    this.put(state => {
+      state.initEditorContent = a
+    })
+  }
   freshLatestPosts = async () => {
     const { topicId, from, posts } = this.state
 
@@ -233,6 +239,11 @@ class PostInfoStore extends Container<State> {
     this.fetchPosts()
   }
 
+  resetInitContent = () => {
+    this.put(state => {
+      state.initEditorContent = undefined
+    })
+  }
   reset = () => {
     const initState: State = {
       isLoading: false,

@@ -1,10 +1,10 @@
+import toast from '@/utils/Toast'
 import {
   Chip,
   SnackbarContent,
 } from '@material-ui/core'
 import { css } from 'emotion'
 import React from 'react'
-
 interface TagType {
   id: number,
   name: string,
@@ -68,7 +68,7 @@ class ScrollTag extends React.Component<Props, State> {
       this.setState({ clickTag: stateTag })
     } else { // 选中标签
       if (clickTag.length > maxTag - 1) {
-        alert(`最多只能选择${maxTag}个标签`)
+        toast.info({ content: `最多只能选择${maxTag}个标签` })
       } else {
         const stateTag = clickTag.concat([tag])
         tagChange(stateTag)

@@ -1,8 +1,8 @@
 /**
- * info()
- * success()
- * loading()
- * error()
+ * info({})
+ * success({})
+ * loading({})
+ * error({})
  * 一共导出四个toast函数
  */
 import React, { Component } from 'react'
@@ -26,8 +26,6 @@ function createNotification() {
   return {
     addNotice(toastNotice: NotifFnData) {
       if (toastNotification) {
-        console.log(toastNotification)
-        console.log(toastNotice)
         toastNotification.addNotice(toastNotice)
       }
     },
@@ -38,10 +36,11 @@ function createNotification() {
   }
 }
 
-let notification: typeof ConsecutiveSnackbars | null = null
+let notification: {
+  addNotice(toastNotice: NotifFnData): void,
+  destroy(): void } | null = null
 const notice: NotifFn = (type, content, duration = 2000, onClose) => {
   if (!notification) notification = createNotification()
-
   notification.addNotice({ type, content, duration, onClose })
 }
 

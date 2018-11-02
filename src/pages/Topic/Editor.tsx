@@ -9,6 +9,8 @@ import React from 'react'
 interface Props {
   topic: ITopic
   callback: () => void
+  initContent?: string
+  resetInitContent: () => void
 }
 interface State {
   editing: boolean,
@@ -40,6 +42,7 @@ const decorEditor = css`
 `
 const blankBlock = css`
   height: 45px;
+  background-color:white;
 `
 const inputBox = css`
   margin-left: 15px;
@@ -60,9 +63,19 @@ const post = async (value: string, topic: ITopic, self: ReplyEditor) => {
   })
 }
 
-class ReplyEditor extends React.PureComponent<Props, State> {
+class ReplyEditor extends React.Component<Props, State> {
   state: State = {
     editing: false,
+  }
+
+  static getDerivedStateFromProps(props: Props, state: State) {
+    if (props.initContent) {
+      return {
+        editing: true,
+      }
+    }
+
+    return null
   }
 
   render() {
@@ -80,6 +93,8 @@ class ReplyEditor extends React.PureComponent<Props, State> {
           <div className={editing}>
             <Editor
               replyMode
+              defaultContent={this.props.initContent}
+              resetInitContent={this.props.resetInitContent}
               sendCallBack={(content: string, files: string[]) => {
                 let realContent: string
                 if (files) {
@@ -89,7 +104,6 @@ class ReplyEditor extends React.PureComponent<Props, State> {
                   realContent = content
                 }
                 post(realContent, this.props.topic, this)
-
               }}
             />
           </div>

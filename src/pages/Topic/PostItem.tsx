@@ -76,6 +76,10 @@ interface Props {
   trace: (topicId: number, userId: number, traceOrNot: boolean, isAnonymous?: boolean)
     => Promise<void>
   refreshItem: <T extends Partial<IPost>>(postId: number, postUpdate: T) => Promise<void>
+  /**
+   * 引用几楼
+   */
+  initEditor: (a: string) => void
 }
 
 interface State {
@@ -84,12 +88,28 @@ interface State {
    */
   expanded: boolean
   // tslint:disable-next-line:no-any
-  anchorEl: any
+  anchorEl: any,
 }
 const CursorStyle = css`
   cursor: pointer;
 `
-
+const likeStateMap = ['none', 'like', 'dislike']
+const likeButton = {
+  clicked: css`
+    color: #dd5e5c;
+  `,
+  unclicked: css`
+    color: inherit;
+  `,
+}
+const dislikeButton = {
+  clicked: css`
+    color: #6464ff;
+  `,
+  unclicked: css`
+    color: inherit;
+  `,
+}
 const styles: StyleRules = {
   actionsRoot: {
     display: 'flex',
@@ -290,8 +310,9 @@ export default withStyles(styles)(
             <IconButton
               classes={{ root: classes.action }}
               disableRipple={true}
-              onClick={() => {
-                toast.error({ content: postInfo.userId.toString(), duration: 2000 })
+              onClick={async() => {
+                const content = await Utils.quote(this.props.postInfo)
+                this.props.initEditor(content)
               }}
             >
               <Quote fontSize="small" />
@@ -315,7 +336,11 @@ export default withStyles(styles)(
                 refreshItem(postInfo.id, res)
               }}
             >
-              <LikeIcon fontSize="small" />
+              <LikeIcon
+                fontSize="small"
+                className={likeButton[likeStateMap[postInfo.likeState]
+                            === 'like' ? 'clicked' : 'unclicked']}
+              />
               <span
                 key="likeIcon"
                 style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}
@@ -331,7 +356,11 @@ export default withStyles(styles)(
                 refreshItem(postInfo.id, res)
               }}
             >
-              <DislikeIcon fontSize="small" />
+              <DislikeIcon
+                fontSize="small"
+                className={dislikeButton[likeStateMap[postInfo.likeState]
+                  === 'dislike' ? 'clicked' : 'unclicked']}
+              />
               <span
                 key="dislikeIcon"
                 style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}

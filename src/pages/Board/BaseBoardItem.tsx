@@ -79,7 +79,7 @@ export default withStyles(styles)(
           >
             <Typography className={BaseBoardStyle}>{data.name}</Typography>
           </ExpansionPanelSummary>
-          {isExpanded ? <ExpansionPanelDetails className={ChildBoardStyle}>
+          {!isExpanded ? <ExpansionPanelDetails className={ChildBoardStyle}>
             {data.boards.map(board => (
               <BoardItem key={board.id} data={board} />
             ))}

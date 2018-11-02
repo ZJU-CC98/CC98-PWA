@@ -289,6 +289,7 @@ export default withStyles(styles)(
           <CardActions classes={{ root: classes.actionsRoot }}>
             <IconButton
               classes={{ root: classes.action }}
+              disableRipple={true}
               onClick={() => {
                 toast.error({ content: postInfo.userId.toString(), duration: 2000 })
               }}
@@ -298,6 +299,7 @@ export default withStyles(styles)(
             <Divider classes={{ root: classes.hr }} />
             <IconButton
               classes={{ root: classes.action }}
+              disableRipple={true}
               onClick={() => {
                 this.props.openDialog(postInfo)
               }}
@@ -307,6 +309,7 @@ export default withStyles(styles)(
             <Divider classes={{ root: classes.hr }} />
             <IconButton
               classes={{ root: classes.action }}
+              disableRipple={true}
               onClick={async () => {
                 const res = await Utils.like(postInfo.id)
                 refreshItem(postInfo.id, res)
@@ -322,6 +325,7 @@ export default withStyles(styles)(
             <Divider classes={{ root: classes.hr }} />
             <IconButton
               classes={{ root: classes.action }}
+              disableRipple={true}
               onClick={async () => {
                 const res = await Utils.dislike(postInfo.id)
                 refreshItem(postInfo.id, res)

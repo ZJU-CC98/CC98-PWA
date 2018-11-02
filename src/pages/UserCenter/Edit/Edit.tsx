@@ -75,6 +75,7 @@ const ButtonStyle = css`&&{
   margin-right:10px;
   margin-top:10px;
 }`
+
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
 

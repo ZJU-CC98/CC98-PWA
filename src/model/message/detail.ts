@@ -64,7 +64,7 @@ export class Detail extends Container<State> {
 
     res.fail().succeed(data => {
       this.put(state => {
-        state.messages[this.state.id] = [...reverse(data), ...state.messages[this.state.id] || []]
+        state.messages[this.state.id] = [...reverse(data), ...(state.messages[this.state.id] || [])]
         state.isLoading = false
         if (data.length < 20) state.isEnd = true
       })
@@ -72,7 +72,7 @@ export class Detail extends Container<State> {
   }
 
   getNewMessage = async () => {
-    this.put(state => state.isLoading = true)
+    this.put(state => (state.isLoading = true))
 
     const res = await GET<IMessageContent[]>(`message/user/${this.state.id}`, {
       params: {

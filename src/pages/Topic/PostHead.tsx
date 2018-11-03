@@ -6,7 +6,7 @@ import { IconButton, Typography } from '@material-ui/core'
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 
 import { ITopic } from '@cc98/api'
-import Paper from '@material-ui/core/paper'
+import Paper from '@material-ui/core/Paper'
 // FIXME: if history stack is empty ?
 const goback = () => window.history.back()
 

@@ -6,7 +6,7 @@ import { IHotTopic } from '@cc98/api'
 
 import LoadingCircle from '@/components/LoadingCircle'
 import { List } from '@material-ui/core'
-import Paper from '@material-ui/core/paper'
+import Paper from '@material-ui/core/Paper'
 import HotTopicItem from './HotTopicItem'
 interface State {
   hotTopics: IHotTopic[]

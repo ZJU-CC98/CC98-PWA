@@ -20,7 +20,7 @@ import {
 } from '@material-ui/core'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import Paper from '@material-ui/core/paper'
+import Paper from '@material-ui/core/Paper'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'

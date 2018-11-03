@@ -8,7 +8,7 @@ import TopicItem from '../TopicItem'
 import getBoardName from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
 import { IBaseBoard, ITopic } from '@cc98/api'
-import Paper from '@material-ui/core/paper'
+import Paper from '@material-ui/core/Paper'
 interface Props {
   boards: IBaseBoard[]
 }

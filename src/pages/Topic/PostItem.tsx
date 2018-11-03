@@ -245,7 +245,7 @@ export default withStyles(styles)(
                 <Avatar
                   classes={{ root: postInfo.isHot ? classes.hotFloor : classes.floor }}
                 >
-                  {postInfo.isHot ? '热' : `${postInfo.floor} L`}
+                  {postInfo.isHot ? '热' : `${postInfo.floor}`}
                 </Avatar>
               </IconButton>,
               // tslint:disable-next-line:ter-indent

@@ -32,7 +32,13 @@ const gobackIcon = css`
     margin-right: 5px;
   }
 `
-
+const BoardNameStyle = css`&&{
+  color:rgba(0, 0, 0, 0.54);
+  white-space:nowrap
+}`
+const TitleStyle = css`&&{
+  flex-grow:2;
+}`
 interface Props {
   topicInfo: ITopic
 }
@@ -42,7 +48,8 @@ const PostHead: React.SFC<Props> = ({ topicInfo }) => (
     <IconButton className={gobackIcon} onClick={goback}>
       <KeyboardBackspaceIcon />
     </IconButton>
-    <Typography variant="subtitle2">{topicInfo.title}</Typography>
+    <Typography className={TitleStyle} variant="subtitle2">{topicInfo.title}</Typography>
+    <Typography className={BoardNameStyle}>{topicInfo.boardName}</Typography>
   </div>
 )
 

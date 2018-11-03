@@ -44,9 +44,11 @@ const blankBlock = css`
   height: 45px;
   background-color:white;
 `
-const inputBox = css`
+const inputBox = css`&&{
   margin-left: 15px;
   width: 100%;
+  color:rgba(0, 0, 0, 0.54);
+}
 `
 const post = async (value: string, topic: ITopic, self: ReplyEditor) => {
   const url = `/post/topic/${topic.id}`

@@ -7,8 +7,10 @@ import Editor from './Editor'
 import PostHead from './PostHead'
 
 import InfiniteList from '@/components/InfiniteList'
+import { BoardInfoStore } from '@/model/board'
 import { GlobalContainer } from '@/model/global'
 import { PostInfoStore } from '@/model/post'
+import getBoardName from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
 import { IPost, IPostUtil, ITopic, IUser } from '@cc98/api'
 import { Subscribe } from '@cc98/state'
@@ -24,6 +26,7 @@ interface Props {
   userId: string
   postInstance: PostInfoStore
   global: GlobalContainer
+  boardInstance: BoardInfoStore
 }
 
 interface State {
@@ -52,9 +55,11 @@ class Topic extends React.Component<Props, State> {
       return null
     }
 
-    const { postInstance } = this.props
+    const { postInstance, boardInstance } = this.props
     const topic = await GET<ITopic>(`/topic/${topicId}`)
     topic.fail().succeed(topicInfo => {
+      const boardName = getBoardName(boardInstance.state.boardData, topicInfo.boardId)
+      topicInfo.boardName = boardName
       if (this.props.userId) {
         const userId = parseInt(this.props.userId, 10)
         postInstance.trace(topicId, userId, true)

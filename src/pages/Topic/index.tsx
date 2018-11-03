@@ -1,3 +1,4 @@
+import { BoardInfoStore } from '@/model/board'
 import global, { GlobalContainer } from '@/model/global'
 import { PostInfoStore } from '@/model/post'
 import { Subscribe } from '@cc98/state'
@@ -14,9 +15,9 @@ export default class extends React.PureComponent<Props> {
     const { postId, userId, topicId } = this.props
 
     return (
-      <Subscribe to={[global, PostInfoStore]}>
+      <Subscribe to={[global, PostInfoStore, BoardInfoStore]}>
         {
-          (g: GlobalContainer, postInstance: PostInfoStore) => {
+          (g: GlobalContainer, postInstance: PostInfoStore, boardInstance: BoardInfoStore) => {
             const isRender = g.state.myInfo
 
             return isRender ? < Topic
@@ -25,6 +26,7 @@ export default class extends React.PureComponent<Props> {
               userId={userId}
               global={g}
               postInstance={postInstance}
+              boardInstance = {boardInstance}
             /> : null
           }
         }

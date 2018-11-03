@@ -30,7 +30,7 @@ const avatar = css`
 const styles: StyleRules = {
   root: {
     marginTop: '6px',
-    color: 'rgba(0, 0, 0, 0.6)',
+    opacity: 0.6,
     fontWeight: 'bolder',
     marginLeft: '16px',
     marginRight: '16px',
@@ -39,7 +39,7 @@ const styles: StyleRules = {
 const name = css`
   && {
     margin-top: 6px;
-    color:rgba(0, 0, 0, 0.6);
+    opacity:0.6;
     font-weight:bolder;
     margin-left:16px;
     margin-right:16px;
@@ -64,8 +64,8 @@ export default withStyles(styles)(
         onClick={isLogIn ? () => navigate('/userCenter') : tologIn}
       />
       <Typography classes={{ body1: classes.root }} variant="body1">
-      {isLogIn ? info && info.name : '未登录'}
-    </Typography>
-  </div >
-)
+        {isLogIn ? info && info.name : '未登录'}
+      </Typography>
+    </div >
+  )
 )

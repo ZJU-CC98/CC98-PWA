@@ -19,6 +19,10 @@ interface State {
    * 个人账户信息
    */
   myInfo: IUser | null
+  /**
+   * 主题
+   */
+  theme: string
 }
 
 class GlobalContainer extends Container<State> {
@@ -26,6 +30,7 @@ class GlobalContainer extends Container<State> {
     isDrawerOpen: false,
     isLogIn: !!getLocalStorage('refresh_token'),
     myInfo: null,
+    theme: 'light',
   }
 
   constructor() {
@@ -72,6 +77,14 @@ class GlobalContainer extends Container<State> {
     this.put(state => {
       state.isLogIn = false
     })
+  }
+
+  changeTheme() {
+    if (this.state.theme === 'light') {
+      this.put(state => state.theme = 'dark')
+    } else {
+      this.put(state => state.theme = 'light')
+    }
   }
 
   openDrawer() {

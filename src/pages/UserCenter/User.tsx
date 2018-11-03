@@ -9,6 +9,7 @@ import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import Paper from '@material-ui/core/paper'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import { navigate } from '@reach/router'
@@ -48,11 +49,11 @@ const styles: StyleRules = {
   primary: {
     width: '5rem',
     marginRight: '2rem',
-    color: 'rgba(0, 0, 0, 0.54)',
+    opacity:0.54,
     fontSize: '0.8rem',
   },
   secondary: {
-    color: 'rgba(0, 0, 0, 0.87)',
+    opacity:0.54,
   },
 }
 const UserNameStyle = css`
@@ -166,7 +167,7 @@ export default withStyles(styles)(
       )
       if (info) {
         return (
-          <div className={UserStyle}>
+          <Paper className={UserStyle}>
 
             <CardHeader
               className={classes.row}
@@ -323,7 +324,7 @@ export default withStyles(styles)(
                   <Topics info={info} boards={store.state.boardData} /> : null
               }
             </Subscribe>
-          </div>
+          </Paper>
         )
       }
 

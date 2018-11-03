@@ -6,8 +6,8 @@ import { IHotTopic } from '@cc98/api'
 
 import LoadingCircle from '@/components/LoadingCircle'
 import { List } from '@material-ui/core'
+import Paper from '@material-ui/core/paper'
 import HotTopicItem from './HotTopicItem'
-
 interface State {
   hotTopics: IHotTopic[]
   isLoading: boolean
@@ -45,11 +45,13 @@ class TopicList extends React.Component<{}, State> {
     }
 
     return (
+      <Paper>
       <List>
         {hotTopics.map(info => (
           <HotTopicItem key={info.id} info={info} click={this.jump2Post} />
         ))}
       </List>
+      </Paper>
     )
   }
 }

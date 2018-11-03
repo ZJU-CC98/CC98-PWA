@@ -3,10 +3,12 @@ import { GET } from '@/utils/fetch'
 import { ITopic, IUser } from '@cc98/api'
 import Button from '@material-ui/core/Button'
 import List from '@material-ui/core/List'
+import Paper from '@material-ui/core/paper'
 import React from 'react'
 import { css } from 'react-emotion'
 import SearchInput from 'react-search-input'
 import TopicItem from '../TopicItem'
+
 interface State {
   searchTerm: string
   topics: ITopic[]
@@ -44,7 +46,7 @@ export default class extends React.Component<{}, State> {
       u_from: 0,
       topics: [],
       users: [],
-    },            () => { this.getTopics() })
+    }, () => { this.getTopics() })
 
   }
 
@@ -75,7 +77,7 @@ export default class extends React.Component<{}, State> {
       <div className={root}>
         <SearchInput className="search-input" onChange={this.searchUpdated} />
         <Button color="primary" variant="outlined" onClick={() => { this.initTopics() }}>搜索</Button>
-        {view && <InfiniteList
+        {view && <Paper><InfiniteList
           isLoading={isLoading}
           isEnd={isEnd}
           callback={this.getTopics}
@@ -85,7 +87,7 @@ export default class extends React.Component<{}, State> {
               <TopicItem key={info.id} data={info} place={'search'} />
             ))}
           </List>
-        </InfiniteList>}
+        </InfiniteList></Paper>}
       </div>
 
     )

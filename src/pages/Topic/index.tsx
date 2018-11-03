@@ -26,7 +26,7 @@ export default class extends React.PureComponent<Props> {
               userId={userId}
               global={g}
               postInstance={postInstance}
-              boardInstance = {boardInstance}
+              boardInstance={boardInstance}
             /> : null
           }
         }

@@ -47,7 +47,7 @@ const blankBlock = css`
 const inputBox = css`&&{
   margin-left: 15px;
   width: 100%;
-  color:rgba(0, 0, 0, 0.54);
+  opacity:0.54;
 }
 `
 const post = async (value: string, topic: ITopic, self: ReplyEditor) => {

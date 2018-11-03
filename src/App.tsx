@@ -1,13 +1,13 @@
-import { Provider } from '@cc98/state'
+import { Provider, Subscribe } from '@cc98/state'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 // https://reach.tech/router/api/Router
 import { RouteComponentProps, Router } from '@reach/router'
 import React from 'react'
 
-import theme from './theme'
+import { dark, light } from './theme'
 
+import global from '@/model/global'
 import TopBar from './components/TopBar'
-
 import BoardList from './pages/Board'
 import Board from './pages/Board/Board'
 import Compose from './pages/Compose'
@@ -34,11 +34,11 @@ const Route: React.SFC<
     // tslint:disable-next-line:no-any
     component: any
   }
-> = props => {
-  const { path, component, ...otherProps } = props
+  > = props => {
+    const { path, component, ...otherProps } = props
 
-  return React.createElement(component, otherProps)
-}
+    return React.createElement(component, otherProps)
+  }
 
 const App: React.SFC = () => (
   <>
@@ -73,9 +73,12 @@ const App: React.SFC = () => (
 
 const Wrapper: React.SFC = () => (
   <Provider>
-    <MuiThemeProvider theme={theme}>
-      <App />
-    </MuiThemeProvider>
+    <Subscribe to={[global]}>
+    {
+      () => <MuiThemeProvider theme={global.state.theme === 'light' ? light : dark}>
+        <App />
+      </MuiThemeProvider>}
+    </Subscribe>
   </Provider>
 )
 

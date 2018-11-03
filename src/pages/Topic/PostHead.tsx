@@ -6,7 +6,7 @@ import { IconButton, Typography } from '@material-ui/core'
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 
 import { ITopic } from '@cc98/api'
-
+import Paper from '@material-ui/core/paper'
 // FIXME: if history stack is empty ?
 const goback = () => window.history.back()
 
@@ -33,8 +33,8 @@ const gobackIcon = css`
   }
 `
 const BoardNameStyle = css`&&{
-  color:rgba(0, 0, 0, 0.54);
-  white-space:nowrap
+  opacity:0.54;
+  white-space: nowrap;
 }`
 const TitleStyle = css`&&{
   flex-grow:2;
@@ -44,13 +44,13 @@ interface Props {
 }
 
 const PostHead: React.SFC<Props> = ({ topicInfo }) => (
-  <div className={root}>
+  <Paper className={root}>
     <IconButton className={gobackIcon} onClick={goback}>
       <KeyboardBackspaceIcon />
     </IconButton>
     <Typography className={TitleStyle} variant="subtitle2">{topicInfo.title}</Typography>
     <Typography className={BoardNameStyle}>{topicInfo.boardName}</Typography>
-  </div>
+  </Paper>
 )
 
 export default PostHead

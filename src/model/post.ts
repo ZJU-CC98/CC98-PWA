@@ -55,7 +55,7 @@ export class PostInfoStore extends Container<State> {
     const isFirstGlance = from === 0
     this.put(state => state.isLoading = true)
     const postTry = await request()
-    console.log(isTrace)
+
     postTry.fail().succeed(async (postList: IPost[]) => {
       this.fetchUsers(postList)
       postList.map(post => post.isHot = false)
@@ -261,6 +261,7 @@ export class PostInfoStore extends Container<State> {
       requestUrl: '',
       request: null,
       awardsUserMap: {},
+      isTrace:false,
     }
 
     this.put(

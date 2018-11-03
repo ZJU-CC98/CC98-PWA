@@ -5,12 +5,18 @@
 import { List } from '@material-ui/core'
 import React from 'react'
 
+import Paper from '@material-ui/core/paper'
+import { css } from 'emotion'
 import Proxy from './Proxy'
 import Signalr from './Signalr'
-
+const IndexStyle = css`&&{
+  height:90vh;
+}`
 export default () => (
-  <List>
-    <Proxy />
-    <Signalr />
-  </List>
+  <Paper className={IndexStyle}>
+    <List>
+      <Proxy />
+      <Signalr />
+    </List>
+  </Paper>
 )

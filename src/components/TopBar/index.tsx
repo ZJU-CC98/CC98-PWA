@@ -72,6 +72,8 @@ const Wrapper: React.SFC = () => (
           open={g.state.isDrawerOpen}
           onClose={() => g.closeDrawer()}
           onLogout={() => g.logOut()}
+          changeTheme={() => g.changeTheme()}
+          theme={g.state.theme}
         >
           <UserInfo isLogIn={g.state.isLogIn} info={g.state.myInfo} />
         </DrawerMenu>

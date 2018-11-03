@@ -9,7 +9,6 @@ import dayjs from 'dayjs'
 import { css } from 'emotion'
 import React from 'react'
 import styled from 'react-emotion'
-import { create } from 'domain';
 
 interface Props {
   data: ITopic
@@ -22,7 +21,7 @@ const styles: StyleRules = {
   },
   primary: {
     fontSize: '0.875rem',
-    color: 'rgba(0, 0, 0, 0.54)',
+    opacity:0.54,
     textAlign: 'right',
   },
   secondary: {

@@ -9,8 +9,8 @@ import React from 'react'
 import InfiniteList from '@/components/InfiniteList'
 import MessageStore from '@/model/message/recent'
 
+import Paper from '@material-ui/core/paper'
 import ListItem from './ListItem'
-
 export default class MessageList extends React.PureComponent {
   render() {
     return (
@@ -19,18 +19,20 @@ export default class MessageList extends React.PureComponent {
           state: { recentList, recentListEnd, recentListLoading },
           getRecentList,
         }: MessageStore) => (
-          <List>
-            <InfiniteList
-              isEnd={recentListEnd}
-              isLoading={recentListLoading}
-              callback={getRecentList}
-            >
-              {recentList.map(item => (
-                <ListItem key={item.userId} message={item} />
-              ))}
-            </InfiniteList>
-          </List>
-        )}
+          <Paper>
+            <List>
+              <InfiniteList
+                isEnd={recentListEnd}
+                isLoading={recentListLoading}
+                callback={getRecentList}
+              >
+                {recentList.map(item => (
+                  <ListItem key={item.userId} message={item} />
+                ))}
+              </InfiniteList>
+            </List>
+            </Paper>
+          )}
       </Subscribe>
     )
   }

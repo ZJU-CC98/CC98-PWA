@@ -8,6 +8,7 @@ import TopicItem from '../TopicItem'
 import getBoardName from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
 import { IBaseBoard, ITopic } from '@cc98/api'
+import Paper from '@material-ui/core/paper'
 interface Props {
   boards: IBaseBoard[]
 }
@@ -67,6 +68,7 @@ class TopicList extends React.Component<Props, State> {
     const { topicList, isLoading, isEnd } = this.state
 
     return (
+      <Paper>
       <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.fetchTopics}>
         <List>
           {topicList.map(info => (
@@ -74,6 +76,7 @@ class TopicList extends React.Component<Props, State> {
           ))}
         </List>
       </InfiniteList>
+      </Paper>
     )
   }
 }

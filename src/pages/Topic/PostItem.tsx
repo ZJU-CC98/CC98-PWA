@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import Paper from '@material-ui/core/paper'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -28,7 +29,6 @@ import Quote from '@material-ui/icons/RotateLeft'
 import DislikeIcon from '@material-ui/icons/ThumbDown'
 import LikeIcon from '@material-ui/icons/ThumbUp'
 import { navigate } from '@reach/router'
-
 const root = css`
   margin-top: 6px;
   background-color: #ccc;
@@ -162,7 +162,7 @@ const styles: StyleRules = {
   awardAction: {
     height: '30px',
     fontSize: '0.8rem',
-    color: 'rgba(0, 0, 0, 0.54)',
+    opacity:0.54,
     borderTop: '#aaaaaa solid thin',
     marginLeft: '16px',
     marginRight: '16px',
@@ -329,7 +329,7 @@ export default withStyles(styles)(
               />
               <span
                 key="dislikeIcon"
-                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}
+                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity:0.54 }}
               >{postInfo.dislikeCount}
               </span>
             </IconButton>
@@ -362,7 +362,7 @@ export default withStyles(styles)(
               />
               <span
                 key="likeIcon"
-                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', color: 'rgba(0, 0, 0, 0.54)' }}
+                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity:0.54  }}
               >{postInfo.likeCount}
               </span>
             </IconButton>
@@ -407,11 +407,13 @@ export default withStyles(styles)(
                           src={awardUserMap[award.operatorName].portraitUrl}
                           classes={{ root: classes.awardAvatar }}
                         />
-                        <div style={{ marginLeft: '1rem' }}>{award.operatorName}</div>
+                        <Typography  style={{ marginLeft: '1rem' }}>
+                        {award.operatorName}
+                        </Typography >
                       </div>
 
-                      <div className={Middle}>{award.content}</div>
-                      <div className={Right}>{award.reason}</div>
+                      <Typography className={Middle}>{award.content}</Typography >
+                      <Typography className={Right}>{award.reason}</Typography >
                     </div>
                   </CardContent>))}
 
@@ -426,6 +428,7 @@ export default withStyles(styles)(
               {postInfo.awards.length !== 0 &&
                 Object.keys(awardUserMap).length !== 0 &&
                 postInfo.awards.map(award => (
+                  <Paper>
                   <CardContent key={award.id} classes={{ root: classes.awardContentRoot }}>
                     <div className={Row}>
                       <div className={Left}>
@@ -439,7 +442,7 @@ export default withStyles(styles)(
                       <div className={Middle}>{award.content}</div>
                       <div className={Right}>{award.reason}</div>
                     </div>
-                  </CardContent>))}
+                  </CardContent></Paper>))}
 
             </Collapse>}
         </Card>
@@ -454,7 +457,7 @@ const Row = css`
   align-items:center;
   width:100%;
   font-size:0.8rem;
-  color:rgba(0, 0, 0, 0.54);
+  opacity:0.54;
 `
 
 const Left = css`

@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import Paper from '@material-ui/core/Paper';
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
@@ -10,7 +11,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 import React from 'react'
-
 interface Props {
   data: IBoard | null
 }
@@ -109,7 +109,7 @@ export default withStyles(styles)(
       const { isFollowed } = this.state;
 
       return (
-        <div className={BoardHeader}>
+        <Paper className={BoardHeader}>
 
           <div className={BoardMessage}>
             <Button color="primary" className={BoardTitle}>{data.name}</Button>
@@ -162,7 +162,7 @@ export default withStyles(styles)(
             ))}
           </div>
 
-        </div>
+        </Paper>
       )
     }
   }

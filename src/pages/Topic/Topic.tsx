@@ -33,6 +33,7 @@ interface State {
   topicInfo: ITopic | null
   open: boolean
   currentPost: IPost | null
+  editing: boolean
 }
 
 class Topic extends React.Component<Props, State> {
@@ -45,6 +46,7 @@ class Topic extends React.Component<Props, State> {
     topicInfo: null,
     open: false,
     currentPost: null,
+    editing: false,
   }
 
   async componentDidMount() {
@@ -90,7 +92,7 @@ class Topic extends React.Component<Props, State> {
   }
 
   render() {
-    const { topicInfo, currentPost } = this.state
+    const { topicInfo, currentPost, editing } = this.state
     const { postId, userId, global, postInstance } = this.props
     const { isLoading, isEnd, posts, userMap, awardsUserMap } = postInstance.state
 
@@ -139,6 +141,7 @@ class Topic extends React.Component<Props, State> {
           initContent={postInstance.state.initEditorContent}
           resetInitContent={postInstance.resetInitContent}
           callback={postInstance.fetchPosts}
+          theme={global.state.theme}
         />
       </div>
     )

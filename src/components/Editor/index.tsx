@@ -1,5 +1,6 @@
+import global, { GlobalContainer } from '@/model/global'
 import { uploadFile } from '@/utils/fileHandle'
-
+import { Subscribe } from '@cc98/state'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
@@ -18,13 +19,14 @@ interface Props {
   maxHeight?: number,
   replyMode?: boolean,
   defaultContent?: string,
-  resetInitContent: () => void
+  content?: string,
 }
 
 interface State {
   showPicList: SPL[],
+  sendLoading: boolean,
   content: string,
-  sendLoading: boolean
+  lastDefaultContent?: string | null
 }
 
 const imgListStyle = {
@@ -67,14 +69,15 @@ export default withStyles(styles)(
       showPicList: [],
       content: '',
       sendLoading: false,
+      lastDefaultContent: null,
     }
 
     static getDerivedStateFromProps(props: Props, state: State) {
-      if (props.defaultContent) {
-        props.resetInitContent()
+      if (props.defaultContent !== state.lastDefaultContent) {
 
         return {
           content: props.defaultContent,
+          lastDefaultContent: props.defaultContent,
         }
       }
 
@@ -114,7 +117,6 @@ export default withStyles(styles)(
     }
 
     bindText = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      this.props.resetInitContent()
       this.setState({
         content: event.target.value,
       })
@@ -151,16 +153,20 @@ export default withStyles(styles)(
       const { showPicList } = this.state
 
       return (
+        <Subscribe to={[global]}>
+        {(g: GlobalContainer) => (
         <>
           <TextBase
             onChange={this.bindText}
             replyMode={replyMode}
             content={this.state.content}
+            theme={g.state.theme}
           />
           <ImageList
             replyMode={replyMode}
             imgList={showPicList}
             deletePic={this.deletePic}
+            theme={g.state.theme}
           />
           <div
             style={{ height: '55px', width:'100%' }}
@@ -171,6 +177,8 @@ export default withStyles(styles)(
             onPost={this.onPost}
           />
         </>
+        )}
+        </Subscribe>
       )
     }
   }

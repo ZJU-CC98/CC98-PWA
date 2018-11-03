@@ -11,6 +11,7 @@ interface Props {
   callback: () => void
   initContent?: string
   resetInitContent: () => void
+  theme: string
 }
 interface State {
   editing: boolean,
@@ -40,6 +41,14 @@ const decorEditor = css`
   background-color: white;
   height: 40px;
 `
+const darkStyle = css`&&{
+  background-color: #424242;
+}
+`
+const lightStyle = css`&&{
+  background-color: white;
+}
+`
 const blankBlock = css`
   height: 45px;
   background-color:white;
@@ -62,7 +71,9 @@ const post = async (value: string, topic: ITopic, self: ReplyEditor) => {
     // location.reload()
     self.props.callback()
     self.setState({ editing: false })
+    self.props.resetInitContent()
   })
+
 }
 
 class ReplyEditor extends React.Component<Props, State> {
@@ -81,7 +92,9 @@ class ReplyEditor extends React.Component<Props, State> {
   }
 
   render() {
+    const { theme } = this.props
     const editMode = this.state.editing
+    const resetInitContent = this.props.resetInitContent
 
     return (
       <>
@@ -90,13 +103,13 @@ class ReplyEditor extends React.Component<Props, State> {
             className={blackWrap}
             onClick={e => {
               this.setState({ editing: false })
+              this.props.resetInitContent()
             }}
           />
           <div className={editing}>
             <Editor
               replyMode
               defaultContent={this.props.initContent}
-              resetInitContent={this.props.resetInitContent}
               sendCallBack={(content: string, files: string[]) => {
                 let realContent: string
                 if (files) {
@@ -106,6 +119,8 @@ class ReplyEditor extends React.Component<Props, State> {
                   realContent = content
                 }
                 post(realContent, this.props.topic, this)
+                this.setState({ editing: false })
+                resetInitContent()
               }}
             />
           </div>
@@ -114,7 +129,7 @@ class ReplyEditor extends React.Component<Props, State> {
           className={blankBlock}
         />
         <div
-          className={decorEditor}
+          className={`${decorEditor} ${theme === 'light' ? lightStyle : darkStyle}`}
           onClick={e => {
             this.setState({ editing: true })
           }}

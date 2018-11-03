@@ -12,6 +12,7 @@ interface Props {
   replyMode?: boolean | null,
   imgList: SPL[],
   deletePic: (id: string) => void,
+  theme: string,
 }
 const styles: StyleRules = {
   tileBarRoot: {
@@ -25,7 +26,7 @@ const styles: StyleRules = {
 const imgListStyle = {
   padding: '0px 15px 0px 15px',
   margin: '0px',
-  backgroundColor: 'white',
+  // backgroundColor: 'white',
 }
 const replyImgListStyle = {
   padding: '0px 15px 0px 15px',
@@ -37,14 +38,18 @@ export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }> {
 
     render() {
-      const { replyMode, imgList, classes, deletePic } = this.props
+      const { replyMode, imgList, classes, deletePic, theme } = this.props
+      const wrapStyle = Object
+        .assign({},
+                replyMode ? replyImgListStyle : imgListStyle,
+                theme === 'light' ? { backgroundColor: 'white' } : { backgroundColor:'#424242' })
 
       return(
       <GridList
         cellHeight={160}
         cols={3}
         spacing={4}
-        style={replyMode ? replyImgListStyle : imgListStyle}
+        style={wrapStyle}
       >
       {
         imgList.map(e => (

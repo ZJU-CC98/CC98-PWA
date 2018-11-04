@@ -1,19 +1,28 @@
-import InfiniteList from '@/components/InfiniteList'
+import React from 'react'
+import { css } from 'emotion'
+import { Subscribe } from '@cc98/state'
+
 import boardInstance from '@/model/board'
 import topicInstance from '@/model/topic'
-import { IBoard, ITag, ITopic } from '@cc98/api'
-import { Subscribe } from '@cc98/state'
+
+import InfiniteList from '@/components/InfiniteList'
+import TopicItem from '@/components/TopicItem'
+
 import { List } from '@material-ui/core'
-import FormControl from '@material-ui/core/FormControl'
-import MenuItem from '@material-ui/core/MenuItem'
-import Paper from '@material-ui/core/Paper';
-import Select from '@material-ui/core/Select'
+import {
+  FormControl,
+  MenuItem,
+  Paper,
+  Select,
+} from '@material-ui/core'
+
 import { Theme, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap, StyleRulesCallback } from '@material-ui/core/styles/withStyles'
-import { css } from 'emotion'
-import React from 'react'
-import TopicItem from '../TopicItem'
+
+import { IBoard, ITag, ITopic } from '@cc98/api'
+
 import BoardHead from './BoardHead'
+
 interface Tag {
   name: string
   id: number
@@ -32,6 +41,7 @@ interface State {
   tag2: Tag | null
   tags: ITag[]
 }
+
 const styles: StyleRulesCallback = (theme: Theme) => ({
   root: {
     display: 'flex',
@@ -45,9 +55,10 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     marginTop: theme.spacing.unit * 2,
   },
   selectRoot: {
-    minWidth: '0px',
+    minWidth: 0,
   },
-});
+})
+
 const BoardStyle = css`
   && {
     display: flex;

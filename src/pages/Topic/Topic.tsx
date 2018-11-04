@@ -1,6 +1,6 @@
+import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
-import React from 'react'
 
 import LoadingCircle from '@/components/LoadingCircle'
 import Editor from './Editor'
@@ -13,9 +13,9 @@ import { PostInfoStore } from '@/model/post'
 import getBoardName from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
 import { IPost, IPostUtil, ITopic, IUser } from '@cc98/api'
-import { Subscribe } from '@cc98/state'
 import MyDialog from './Dialog'
 import PostItem from './PostItem'
+
 const root = css`
   background-color: #eee;
 `

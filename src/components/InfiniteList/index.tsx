@@ -15,8 +15,8 @@ interface Props {
   /**
    * 列表底部 loading 出现的回调
    */
-  // tslint:disable-next-line:no-any
-  callback: (...args: any[]) => any
+  // tslint:disable-next-line
+  callback: Function
   /**
    * loadingCircle 的位置
    */

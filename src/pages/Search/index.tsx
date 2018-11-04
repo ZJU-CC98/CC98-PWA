@@ -1,13 +1,19 @@
-import InfiniteList from '@/components/InfiniteList'
-import { GET } from '@/utils/fetch'
-import { ITopic, IUser } from '@cc98/api'
-import Button from '@material-ui/core/Button'
-import List from '@material-ui/core/List'
-import Paper from '@material-ui/core/Paper'
 import React from 'react'
 import { css } from 'react-emotion'
+
+import {
+  Button,
+  List,
+  Paper,
+} from '@material-ui/core'
+
 import SearchInput from 'react-search-input'
-import TopicItem from '../TopicItem'
+
+import InfiniteList from '@/components/InfiniteList'
+import TopicItem from '@/components/TopicItem'
+
+import { GET } from '@/utils/fetch'
+import { ITopic, IUser } from '@cc98/api'
 
 interface State {
   searchTerm: string
@@ -41,13 +47,15 @@ export default class extends React.Component<{}, State> {
     this.setState({ searchTerm: term })
   }
   initTopics = async () => {
-    this.setState({
-      t_from: 0,
-      u_from: 0,
-      topics: [],
-      users: [],
-    }, () => { this.getTopics() })
-
+    this.setState(
+      {
+        t_from: 0,
+        u_from: 0,
+        topics: [],
+        users: [],
+      },
+      () => { this.getTopics() }
+    )
   }
 
   getTopics = async () => {

@@ -46,11 +46,11 @@ class TopicList extends React.Component<{}, State> {
 
     return (
       <Paper>
-      <List>
-        {hotTopics.map(info => (
-          <HotTopicItem key={info.id} info={info} click={this.jump2Post} />
-        ))}
-      </List>
+        <List>
+          {hotTopics.map(info => (
+            <HotTopicItem key={info.id} info={info} click={this.jump2Post} />
+          ))}
+        </List>
       </Paper>
     )
   }

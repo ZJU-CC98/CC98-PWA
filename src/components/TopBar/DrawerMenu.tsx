@@ -64,10 +64,10 @@ const TopBar: React.SFC<Props> = (
         <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopics')} />
         <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopics')} />
         <Item icon={<AspectRatio />} text="版面" onClick={jump('/boardList')} />
-        <Item icon={<Settings />} text="个性化" onClick={jump('/setting')} />
+        <Item icon={<Settings />} text="设置" onClick={jump('/setting')} />
         {isLogIn && (
           <>
-            <Item icon={<Book />} text="我的关注" onClick={jump('/myFollow')} />
+            <Item icon={<Book />} text="关注" onClick={jump('/myFollow')} />
             <Item icon={<SpeakerNotes />} text="私信" onClick={jump('/messageList')} />
             <Item icon={<Search />} text="搜索" onClick={jump('/search')} />
             <Item icon={<CheckCircleOutline />} text="签到" onClick={jump('/signin')} />

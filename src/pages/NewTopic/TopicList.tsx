@@ -1,14 +1,19 @@
-import { navigate } from '@reach/router'
 import React from 'react'
+import { navigate } from '@reach/router'
 
 import InfiniteList from '@/components/InfiniteList'
-import { List } from '@material-ui/core'
-import TopicItem from '../TopicItem'
 
-import getBoardName from '@/services/getBoardName'
+import {
+  List,
+  Paper,
+} from '@material-ui/core'
+
+import TopicItem from '@/components/TopicItem'
+
 import { GET } from '@/utils/fetch'
 import { IBaseBoard, ITopic } from '@cc98/api'
-import Paper from '@material-ui/core/Paper'
+import getBoardName from '@/services/getBoardName'
+
 interface Props {
   boards: IBaseBoard[]
 }

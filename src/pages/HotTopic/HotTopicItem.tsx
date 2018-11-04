@@ -25,6 +25,7 @@ const styles: StyleRules = {
     textAlign: 'right',
   },
 }
+
 const Text = styled.span`
   display: block;
   max-width: 80%;
@@ -32,6 +33,7 @@ const Text = styled.span`
   white-space: nowrap;
   text-overflow: ellipsis;
 `
+
 export default withStyles(styles)(({ info, click, classes }: Props & { classes: ClassNameMap }) => (
   <ListItem
     divider
@@ -51,5 +53,4 @@ export default withStyles(styles)(({ info, click, classes }: Props & { classes: 
       />
     </ListItemSecondaryAction>
   </ListItem>
-)
-)
+))

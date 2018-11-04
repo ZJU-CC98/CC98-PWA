@@ -1,18 +1,24 @@
-import { ITopic } from '@cc98/api'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
+import React from 'react'
+// import { css } from 'emotion'
+import styled from 'react-emotion'
+import { navigate } from '@reach/router'
+
+import dayjs from 'dayjs'
+
+import {
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+} from '@material-ui/core'
+
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import { navigate } from '@reach/router'
-import dayjs from 'dayjs'
-import { css } from 'emotion'
-import React from 'react'
-import styled from 'react-emotion'
+
+import { ITopic } from '@cc98/api'
 
 interface Props {
   data: ITopic
-  place: string
+  place: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
 }
 
 const styles: StyleRules = {
@@ -51,15 +57,11 @@ export default withStyles(styles)(
       switch (place) {
         case 'inboard':
           break;
-        case 'newtopic':
-          text2 = boardName
-          break;
         case 'usercenter':
           text1 = boardName
           break;
+        case 'newtopic':
         case 'follow':
-          text2 = boardName
-          break;
         case 'search':
           text2 = boardName
           break;

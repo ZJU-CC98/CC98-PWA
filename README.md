@@ -80,8 +80,8 @@ module.exports = {
         <img width="150" height="150" src="https://github.com/Dearkano.png?s=150">
         <br>
         <a href="https://github.com/Dearkano">Dearkano</a>
-        <p>前端开发</p>
-        <p>飞鸟</p>
+        <p>苦力</p>
+        <p>斋藤飞鸟♂朋友</p>
       </td>
       <td align="center" valign="top">
         <img width="150" height="150" src="https://github.com/AsukaSong.png?s=150">

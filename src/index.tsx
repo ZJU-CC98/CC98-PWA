@@ -4,6 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import relativeTime from 'dayjs/plugin/relativeTime'
+
 import dayjs from 'dayjs'
 // @ts-ignore
 import zh from 'dayjs/locale/zh-cn'
@@ -25,7 +26,6 @@ injectGlobal`
     /* 禁止 Safari 的双击放大 */
     touch-action: manipulation;
   }
-
   /* https://stackoverflow.com/questions/2781549/removing-input-background-colour-for-chrome-autocomplete */
   @keyframes autofill {
     to {
@@ -43,6 +43,10 @@ injectGlobal`
   div {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
+  #root {
+    min-height: 100%;
+  }
+
 
   /* FIXME: remove to another place */
   .search-input {

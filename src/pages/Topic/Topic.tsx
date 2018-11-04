@@ -12,13 +12,9 @@ import { GlobalContainer } from '@/model/global'
 import { PostInfoStore } from '@/model/post'
 import getBoardName from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
-import { IPost, IPostUtil, ITopic, IUser } from '@cc98/api'
+import { IPost, ITopic, IUser } from '@cc98/api'
 import MyDialog from './Dialog'
 import PostItem from './PostItem'
-
-const root = css`
-  background-color: #eee;
-`
 
 interface Props {
   topicId: string
@@ -103,7 +99,7 @@ class Topic extends React.Component<Props, State> {
     const myInfo = global.state.myInfo as IUser
 
     return (
-      <div className={root}>
+      <>
         <PostHead topicInfo={topicInfo} />
         <MyDialog
           open={this.state.open}
@@ -143,7 +139,7 @@ class Topic extends React.Component<Props, State> {
           callback={postInstance.fetchPosts}
           theme={global.state.theme}
         />
-      </div>
+      </>
     )
   }
 }

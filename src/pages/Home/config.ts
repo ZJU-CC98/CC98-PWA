@@ -2,8 +2,6 @@ import asuka from '@/assets/asuka.jpg'
 import bg9 from '@/assets/bg9.jpg'
 import megumi from '@/assets/megumi.jpg'
 
-export const notExpandedBoards = [2, 29, 33, 35, 37, 604]
-
 const Time = parseInt(Date.now().toString(), 10)
 export let Background = ''
 export let HomeText = ''

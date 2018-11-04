@@ -1,22 +1,26 @@
-import { notExpandedBoards } from '@/config'
-import { IBaseBoard, IBoard } from '@cc98/api'
+import React from 'react'
+import { css } from 'emotion'
+
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import Typography from '@material-ui/core/Typography'
+
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import Typography from '@material-ui/core/Typography'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { css } from 'emotion'
-import React from 'react'
+
 import BoardItem from './BoardItem'
+
+import { IBaseBoard } from '@cc98/api'
+
+const notExpandedBoards = [2, 29, 33, 35, 37, 604]
 
 interface Props {
   data: IBaseBoard
 }
-const root = css`
-  border-bottom: #eaeaea solid thin;
-`
+
 const BaseBoardStyle = css`
   display: flex;
   justify-content: space-between;

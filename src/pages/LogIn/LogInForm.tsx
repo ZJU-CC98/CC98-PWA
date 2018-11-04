@@ -6,7 +6,7 @@ import {
   Button,
   CircularProgress,
   FormControl,
-  FormHelperText,
+  // FormHelperText,
   Input,
   InputLabel,
   Typography,
@@ -55,7 +55,7 @@ interface State {
   logInFail: boolean
 }
 
-class LogIn extends React.PureComponent<{}, State> {
+class LogIn extends React.Component<{}, State> {
   state: State = {
     formField: {
       username: '',
@@ -85,7 +85,7 @@ class LogIn extends React.PureComponent<{}, State> {
       logInFail: false,
     })
 
-    const token = await global.logIn(username, password)
+    const token = await global.LOG_IN(username, password)
 
     token
       .fail(() => {

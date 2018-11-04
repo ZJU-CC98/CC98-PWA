@@ -51,7 +51,7 @@ const lightStyle = css`&&{
 `
 const blankBlock = css`
   height: 45px;
-  background-color:white;
+  /* background-color:white; */
 `
 const inputBox = css`&&{
   margin-left: 15px;

@@ -16,29 +16,22 @@ import ListItem from './components/ListItem'
  * @description 私信 联系人列表
  * @author dongyansong
  */
-export default class MessageList extends React.PureComponent {
-  render() {
-    return (
-      <Subscribe to={[MessageStore]}>
-        {({
-          state: { recentList, recentListEnd, recentListLoading },
-          getRecentList,
-        }: MessageStore) => (
-          <Paper>
-            <List>
-              <InfiniteList
-                isEnd={recentListEnd}
-                isLoading={recentListLoading}
-                callback={getRecentList}
-              >
-                {recentList.map(item => (
-                  <ListItem key={item.userId} message={item} />
-                ))}
-              </InfiniteList>
-            </List>
-          </Paper>
-        )}
-      </Subscribe>
-    )
-  }
-}
+export default () => (
+  <Subscribe to={[MessageStore]}>
+    {({ state: { recentList, recentListEnd, recentListLoading }, getRecentList }: MessageStore) => (
+      <Paper>
+        <List>
+          <InfiniteList
+            isEnd={recentListEnd}
+            isLoading={recentListLoading}
+            callback={getRecentList}
+          >
+            {recentList.map(item => (
+              <ListItem key={item.userId} message={item} />
+            ))}
+          </InfiniteList>
+        </List>
+      </Paper>
+    )}
+  </Subscribe>
+)

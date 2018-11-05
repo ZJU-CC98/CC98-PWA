@@ -50,8 +50,8 @@ export class UserInfoStore extends Container {
    * @return {Promise<void>}
    * @memberof UserInfoStore
    */
-  getInfos = async (ids: string[]): Promise<void> => {
-    const voidIds = difference(ids, Object.keys(this.state))
+  getInfos = async (ids: number[]): Promise<void> => {
+    const voidIds = difference(ids, Object.keys(this.state).map(item => parseInt(item, 10)))
     if (!voidIds.length) return
     const res = await GET<IUser[]>(`user?id=${voidIds.join('&id=')}`)
 

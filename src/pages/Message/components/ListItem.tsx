@@ -33,7 +33,7 @@ interface Props {
   message: IRecentMessage
 }
 
-const navigateToDetail = (userId: string) => navigate(`/messageDetail/${userId}`)
+const navigateToDetail = (userId: number) => navigate(`/messageDetail/${userId}`)
 
 const renderItem = (message: IRecentMessage, username = '', userAvatar = avatar) => (
   <ListItem button onClick={() => navigateToDetail(message.userId)}>

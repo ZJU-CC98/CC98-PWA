@@ -19,7 +19,7 @@ interface State {
   messages: IMap<IMessageContent[] | undefined>
   isEnd: boolean
   isLoading: boolean
-  id: string
+  id: number
 }
 
 let messageId = -1
@@ -29,11 +29,18 @@ export class Detail extends Container<State> {
     messages: {},
     isEnd: false,
     isLoading: true,
-    id: '',
+    id: -1,
   }
 
-  init = async (id: string) => {
-    if (this.state.messages[id]) return
+  init = async (id: number) => {
+    if (this.state.messages[id]) {
+      this.put(state => {
+        state.id = id
+        state.isEnd = false
+      })
+
+      return
+    }
     this.put(state => (state.isLoading = true))
 
     const res = await GET<IMessageContent[]>(`message/user/${id}`, {
@@ -48,7 +55,7 @@ export class Detail extends Container<State> {
         state.messages[id] = reverse(data)
         state.isLoading = false
         state.id = id
-        if (data.length < 20) state.isEnd = true
+        state.isEnd = data.length < 20
       })
       user.getInfo(id)
     })
@@ -68,7 +75,7 @@ export class Detail extends Container<State> {
       this.put(state => {
         state.messages[this.state.id] = [...reverse(data), ...(state.messages[this.state.id] || [])]
         state.isLoading = false
-        if (data.length < 20) state.isEnd = true
+        state.isEnd = data.length < 20
       })
     })
   }
@@ -108,7 +115,7 @@ export class Detail extends Container<State> {
           content,
           id: messageId,
           senderId: global.state.myInfo!.id,
-          receiverId: parseInt(this.state.id, 10),
+          receiverId: this.state.id,
           time: new Date(Date.now()).toUTCString(),
           isRead: true,
         }

@@ -7,7 +7,7 @@ import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/utils/st
 import * as SignalR from '@aspnet/signalr'
 import { Container } from '@cc98/state'
 
-import apiHost, { HostType } from './apiHost';
+import apiHost, { HostType } from '@/config/host'
 import global from './global'
 
 interface IStore {
@@ -29,11 +29,8 @@ export class Store extends Container<IStore> {
   }
 
   start = async () => {
-    const shouldUseSignalr = (
-      global.state.isLogIn &&
-      this.state.shouldUseSignalr &&
-      apiHost.state.type === HostType.defaultHost
-    )
+    const shouldUseSignalr =
+      global.state.isLogIn && this.state.shouldUseSignalr && apiHost.state.type === HostType.Default
     if (!shouldUseSignalr) return
     let token = await getAccessToken()
     // remove "Bearer "
@@ -41,10 +38,10 @@ export class Store extends Container<IStore> {
 
     this.connection = new SignalR.HubConnectionBuilder()
       .withUrl(`${apiHost.state.api}/signalr/notification`, {
-        accessTokenFactory:  () => token,
+        accessTokenFactory: () => token,
         transport: SignalR.HttpTransportType.WebSockets,
       })
-      .build();
+      .build()
 
     this.put(state => {
       state.isConnect = true

@@ -7,7 +7,6 @@ import {
   Avatar,
   ListItem,
   ListItemAvatar,
-  ListItemSecondaryAction,
   ListItemText,
 } from '@material-ui/core'
 import dayjs from 'dayjs'
@@ -16,7 +15,7 @@ import styled, { css } from 'react-emotion'
 
 import global, { GlobalContainer } from '@/model/global'
 import user, { UserInfoStore } from '@/model/user'
-import { IMessageContent, IUser } from '@cc98/api'
+import { IMessageContent } from '@cc98/api'
 
 import avatar from '@/assets/9.png'
 

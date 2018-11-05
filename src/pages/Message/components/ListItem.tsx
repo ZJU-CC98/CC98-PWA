@@ -16,7 +16,7 @@ import React from 'react'
 import styled from 'react-emotion'
 
 import store, { UserInfoStore } from '@/model/user'
-import { IRecentMessage, IUser } from '@cc98/api'
+import { IRecentMessage } from '@cc98/api'
 
 import avatar from '@/assets/9.png'
 

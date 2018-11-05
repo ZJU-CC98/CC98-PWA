@@ -7,9 +7,10 @@ import { Success, Try } from '@/utils/fp/Try'
 import { IUser } from '@cc98/api'
 import { Container } from '@cc98/state'
 import difference from 'lodash-es/difference'
+import { getUserInfoById } from '@/services/user'
 
 interface State {
-  [id: string]: IUser
+  [id: number]: IUser
 }
 
 export class UserInfoStore extends Container {
@@ -21,7 +22,7 @@ export class UserInfoStore extends Container {
    * @return {Promise<Try<IUser, FetchError>>}
    * @memberof UserInfoStore
    */
-  getInfo = (id: string): Promise<Try<IUser, FetchError>> => {
+  getInfo = (id: number): Promise<Try<IUser, FetchError>> => {
     if (this.state[id]) {
       return Promise.resolve(Try.of<IUser, FetchError>(Success.of(this.state[id])))
     }
@@ -35,8 +36,8 @@ export class UserInfoStore extends Container {
    * @return {Promise<Try<IUser, FetchError>>}
    * @memberof UserInfoStore
    */
-  forceGetInfo = async (id: string): Promise<Try<IUser, FetchError>> => {
-    const res = await GET<IUser>(`user/${id}`)
+  forceGetInfo = async (id: number): Promise<Try<IUser, FetchError>> => {
+    const res = await getUserInfoById(id)
 
     res.fail().succeed(info => this.setInfo(info))
 
@@ -60,7 +61,7 @@ export class UserInfoStore extends Container {
   }
 
   setInfo = (data: IUser) => {
-    this.put(state => state[data.id] = data)
+    this.put(state => (state[data.id] = data))
   }
 }
 

@@ -52,11 +52,12 @@ export class Store extends Container<IStore> {
 
   stop = async () => {
     if (this.state.isConnect) {
-      this.connection.stop()
       this.put(state => {
         state.isConnect = false
       })
     }
+
+    return this.connection.stop()
   }
 
   setShouldUseSignalr = (status: boolean) => {

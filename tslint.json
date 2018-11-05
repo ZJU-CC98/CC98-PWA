@@ -11,6 +11,7 @@
     "import-name": false
   },
   "rules": {
+    "align": [true, "elements", "members", "parameters", "statements"],
     "prefer-object-spread": true,
     "array-type": [true, "array"],
     "no-unused-variable": true,

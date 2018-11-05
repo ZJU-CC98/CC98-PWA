@@ -1,7 +1,7 @@
 import { css, cx } from 'emotion'
 import React from 'react'
 import Utils from './PostUtils'
-
+import { PostInfoStore } from '@/model/post'
 import resolveMarkdown from '@/services/resolveMarkdown'
 import { IBasicUser, IPost, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
@@ -27,7 +27,6 @@ import Quote from '@material-ui/icons/RotateLeft'
 import DislikeIcon from '@material-ui/icons/ThumbDown'
 import LikeIcon from '@material-ui/icons/ThumbUp'
 import { navigate } from '@reach/router'
-import { PostInfoStore } from '@/model/post'
 const root = css`
   margin-top: 6px;
   background-color: #ccc;
@@ -193,7 +192,7 @@ export default withStyles(styles)(
     }
     render() {
       const { postInfo, userInfo, classes, isTrace, awardUserMap, postInstance } = this.props
-      const { trace, updateSinglePosts } = postInstance
+      const { trace, updateSinglePosts, wakeUpEditor } = postInstance
       const { anchorEl } = this.state
       const open = Boolean(anchorEl)
       if (postInfo.isDeleted) {
@@ -318,8 +317,7 @@ export default withStyles(styles)(
                 className={
                   // tslint:disable-next-line:ter-computed-property-spacing
                   dislikeButton[
-                    likeStateMap[postInfo.likeState] === 'dislike' ? 'clicked' : 'unclicked'
-]
+                  likeStateMap[postInfo.likeState] === 'dislike' ? 'clicked' : 'unclicked']
                 }
               />
               <span
@@ -335,7 +333,7 @@ export default withStyles(styles)(
               disableRipple={true}
               onClick={async () => {
                 const content = await Utils.quote(this.props.postInfo)
-                postInstance.wakeUpEditor(content)
+                wakeUpEditor(content)
               }}
             >
               <Quote fontSize="small" />

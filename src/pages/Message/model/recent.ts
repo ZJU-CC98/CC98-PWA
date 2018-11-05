@@ -5,7 +5,7 @@
 import { GET } from '@/utils/fetch'
 import { IRecentMessage } from '@cc98/api'
 import { Container } from '@cc98/state'
-import user from '../user'
+import user from '@/model/user'
 
 interface State {
   recentList: IRecentMessage[]

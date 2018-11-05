@@ -1,14 +1,16 @@
-import { navigate } from '@reach/router'
 import React from 'react'
+import { navigate } from '@reach/router'
 
 import InfiniteList from '@/components/InfiniteList'
-import { List } from '@material-ui/core'
-import TopicItem from '../TopicItem'
 
-import getBoardName from '@/services/getBoardName'
+import { List, Paper } from '@material-ui/core'
+
+import TopicItem from '@/components/TopicItem'
+
 import { GET } from '@/utils/fetch'
 import { IBaseBoard, ITopic } from '@cc98/api'
-import Paper from '@material-ui/core/Paper'
+import getBoardName from '@/services/getBoardName'
+
 interface Props {
   boards: IBaseBoard[]
 }
@@ -46,10 +48,7 @@ class TopicList extends React.Component<Props, State> {
     const posts = await GET<ITopic[]>(`topic/new?from=${from}&size=${size}`)
 
     posts.map(topicList => {
-      topicList.map(
-        topic =>
-          topic.boardName = getBoardName(this.props.boards, topic.boardId)
-      )
+      topicList.map(topic => (topic.boardName = getBoardName(this.props.boards, topic.boardId)))
       this.setState({
         topicList: this.state.topicList.concat(topicList),
         from: from + topicList.length,
@@ -69,13 +68,13 @@ class TopicList extends React.Component<Props, State> {
 
     return (
       <Paper>
-      <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.fetchTopics}>
-        <List>
-          {topicList.map(info => (
-            <TopicItem key={info.id} data={info} place={'newtopic'} />
-          ))}
-        </List>
-      </InfiniteList>
+        <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.fetchTopics}>
+          <List>
+            {topicList.map(info => (
+              <TopicItem key={info.id} data={info} place={'newtopic'} />
+            ))}
+          </List>
+        </InfiniteList>
       </Paper>
     )
   }

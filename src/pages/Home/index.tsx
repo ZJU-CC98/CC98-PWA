@@ -1,10 +1,13 @@
-import { css } from 'emotion'
 import React from 'react'
+import { css } from 'emotion'
+
+import global from '@/model/global'
+
+import { Button, Typography } from '@material-ui/core'
 
 import LayoutCenter from '@/components/LayoutCenter'
-import { Background, HomeText } from '@/config'
-import global from '@/model/global'
-import { Button, Typography } from '@material-ui/core'
+
+import { Background, HomeText } from './config'
 
 const img = css`
   position: fixed;
@@ -39,7 +42,7 @@ const Home: React.SFC = () => (
         className={button}
         variant="outlined"
         disableRipple
-        onClick={() => global.openDrawer()}
+        onClick={() => global.OPEN_DRAWER()}
       >
         <Typography className={text}>{HomeText}</Typography>
       </Button>

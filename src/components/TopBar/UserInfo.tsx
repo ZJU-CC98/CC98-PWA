@@ -1,13 +1,12 @@
+import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
-import React from 'react'
 
 import { Avatar, Typography } from '@material-ui/core'
 
 import defaultAvatarImg from '@/assets/9.png'
 import { IUser } from '@cc98/api'
-import { StyleRules, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+
 const root = css`
   display: flex;
   flex-direction: column;
@@ -27,45 +26,31 @@ const avatar = css`
   }
 `
 
-const styles: StyleRules = {
-  root: {
-    marginTop: '6px',
-    opacity: 0.6,
-    fontWeight: 'bolder',
-    marginLeft: '16px',
-    marginRight: '16px',
-  },
-}
-const name = css`
+const username = css`
   && {
-    margin-top: 6px;
-    opacity:0.6;
-    font-weight:bolder;
-    margin-left:16px;
-    margin-right:16px;
+    margin-top: 8px;
+    margin-bottom: -8px;
+    font-weight: bolder;
+    opacity: 0.6;
   }
 `
-
-const tologIn = () => {
-  navigate('/logIn')
-}
 
 interface Props {
   isLogIn: boolean
   info: IUser | null
 }
 
-export default withStyles(styles)(
-  ({ isLogIn, info, classes }: Props & { classes: ClassNameMap }) => (
-    <div className={root}>
-      <Avatar
-        className={avatar}
-        src={isLogIn ? info && info.portraitUrl : defaultAvatarImg}
-        onClick={isLogIn ? () => navigate('/userCenter') : tologIn}
-      />
-      <Typography classes={{ body1: classes.root }} variant="body1">
-        {isLogIn ? info && info.name : '未登录'}
-      </Typography>
-    </div >
-  )
+const UserInfo: React.SFC<Props> = ({ isLogIn, info }) => (
+  <div className={root}>
+    <Avatar
+      className={avatar}
+      src={isLogIn ? info && info.portraitUrl : defaultAvatarImg}
+      onClick={isLogIn ? () => navigate('/userCenter') : () => navigate('/logIn')}
+    />
+    <Typography className={username} variant="body1">
+      {isLogIn ? info && info.name : '未登录'}
+    </Typography>
+  </div>
 )
+
+export default UserInfo

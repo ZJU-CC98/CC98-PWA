@@ -1,13 +1,15 @@
-import InfiniteList from '@/components/InfiniteList'
-import { GET } from '@/utils/fetch'
-import { ITopic, IUser } from '@cc98/api'
-import Button from '@material-ui/core/Button'
-import List from '@material-ui/core/List'
-import Paper from '@material-ui/core/Paper'
 import React from 'react'
 import { css } from 'react-emotion'
+
+import { Button, List, Paper } from '@material-ui/core'
+
 import SearchInput from 'react-search-input'
-import TopicItem from '../TopicItem'
+
+import InfiniteList from '@/components/InfiniteList'
+import TopicItem from '@/components/TopicItem'
+
+import { GET } from '@/utils/fetch'
+import { ITopic } from '@cc98/api'
 
 interface State {
   searchTerm: string
@@ -19,9 +21,9 @@ interface State {
 }
 
 const root = css`
-  display:flex;
-  flex-direction:column;
-  width:100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `
 export default class extends React.Component<{}, State> {
   state: State = {
@@ -37,11 +39,15 @@ export default class extends React.Component<{}, State> {
     this.setState({ searchTerm: term })
   }
   initTopics = async () => {
-    this.setState({
-      from: 0,
-      topics: [],
-    },            () => { this.getTopics() })
-
+    this.setState(
+      {
+        from: 0,
+        topics: [],
+      },
+      () => {
+        this.getTopics()
+      }
+    )
   }
 
   getTopics = async () => {
@@ -51,17 +57,15 @@ export default class extends React.Component<{}, State> {
     const { topics, searchTerm, from } = this.state
     const url = `topic/search?keyword=${searchTerm}&from=${from}&size=20`
     const topicsTry = await GET<ITopic[]>(url)
-    topicsTry
-      .fail()
-      .succeed(
-        (topicsData: ITopic[]) => this.setState({
-          topics: topics.concat(topicsData),
-          from: from + topicsData.length,
-          isLoading: false,
-          isEnd: topicsData.length !== 20,
-          view: true,
-        })
-      )
+    topicsTry.fail().succeed((topicsData: ITopic[]) =>
+      this.setState({
+        topics: topics.concat(topicsData),
+        from: from + topicsData.length,
+        isLoading: false,
+        isEnd: topicsData.length !== 20,
+        view: true,
+      })
+    )
   }
 
   render() {
@@ -70,20 +74,27 @@ export default class extends React.Component<{}, State> {
     return (
       <div className={root}>
         <SearchInput className="search-input" onChange={this.searchUpdated} />
-        <Button color="primary" variant="outlined" onClick={() => { this.initTopics() }}>搜索</Button>
-        {view && <Paper><InfiniteList
-          isLoading={isLoading}
-          isEnd={isEnd}
-          callback={this.getTopics}
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={() => {
+            this.initTopics()
+          }}
         >
-          <List>
-            {topics.map(info => (
-              <TopicItem key={info.id} data={info} place={'search'} />
-            ))}
-          </List>
-        </InfiniteList></Paper>}
+          搜索
+        </Button>
+        {view && (
+          <Paper>
+            <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.getTopics}>
+              <List>
+                {topics.map(info => (
+                  <TopicItem key={info.id} data={info} place={'search'} />
+                ))}
+              </List>
+            </InfiniteList>
+          </Paper>
+        )}
       </div>
-
     )
   }
 }

@@ -15,8 +15,8 @@ interface Props {
   /**
    * 列表底部 loading 出现的回调
    */
-  // tslint:disable-next-line:no-any
-  callback: (...args: any[]) => any
+  // tslint:disable-next-line
+  callback: Function
   /**
    * loadingCircle 的位置
    */
@@ -59,19 +59,21 @@ class InfiniteList extends React.PureComponent<Props> {
 
     return (
       <>
-        {loadingPosition === 'top' && !isEnd && (
-          <div ref={this.loadingDom}>
-            <LoadingCircle />
-          </div>
-        )}
+        {loadingPosition === 'top' &&
+          !isEnd && (
+            <div ref={this.loadingDom}>
+              <LoadingCircle />
+            </div>
+          )}
 
         {children}
 
-        {loadingPosition === 'bottom' && !isEnd && (
-          <div ref={this.loadingDom}>
-            <LoadingCircle />
-          </div>
-        )}
+        {loadingPosition === 'bottom' &&
+          !isEnd && (
+            <div ref={this.loadingDom}>
+              <LoadingCircle />
+            </div>
+          )}
       </>
     )
   }

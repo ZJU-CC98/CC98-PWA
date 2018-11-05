@@ -103,7 +103,7 @@ module.exports = {
         <img width="150" height="150" src="https://github.com/adddna.png?s=150">
         <br>
         <a href="https://github.com/adddna">adddna</a>
-        <p>前端开发</p>
+        <p>低级前端开发</p>
         <p>zza</p>
       </td>
       <td align="center" valign="top">

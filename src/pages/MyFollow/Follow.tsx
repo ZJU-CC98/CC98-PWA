@@ -1,16 +1,18 @@
+import React from 'react'
+import { css } from 'emotion'
+
+import TopicItem from '@/components/TopicItem'
 import InfiniteList from '@/components/InfiniteList'
-import getBoardName from '@/services/getBoardName'
+
+import { List, Paper, Tab, Tabs } from '@material-ui/core'
+
+import { Theme, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+
 import { GET } from '@/utils/fetch'
 import { IBaseBoard, ITopic } from '@cc98/api'
-import List from '@material-ui/core/List'
-import Paper from '@material-ui/core/Paper'
-import { StyleRules, Theme, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import Tab from '@material-ui/core/Tab'
-import Tabs from '@material-ui/core/Tabs'
-import { css } from 'emotion'
-import React from 'react'
-import TopicItem from '../TopicItem'
+import getBoardName from '@/services/getBoardName'
+
 interface Props {
   boards: IBaseBoard[]
 }
@@ -23,17 +25,18 @@ interface State {
   u_from: number
   current: string
 }
-const TabsStyle = css`
-  width:100%;
+
+const IndexStyle = css`
+  && {
+    min-height: 90vh;
+  }
 `
-const IndexStyle = css`&&{
-  min-height:90vh;
-}`
+
 const styles = (theme: Theme) => ({
   root: {
     color: theme.palette.primary.main,
   },
-});
+})
 
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
@@ -49,17 +52,17 @@ export default withStyles(styles)(
 
     componentDidMount() {
       if (this.state.current === 'board') {
-        this.getFollowBoardTopics();
+        this.getFollowBoardTopics()
       } else {
-        this.getFolloweeTopics();
+        this.getFolloweeTopics()
       }
     }
 
     changeFocus = () => {
       if (this.state.current === 'board') {
-        this.getFolloweeTopics();
+        this.getFolloweeTopics()
       } else {
-        this.getFollowBoardTopics();
+        this.getFollowBoardTopics()
       }
       this.setState({
         current: this.state.current === 'board' ? 'user' : 'board',
@@ -73,21 +76,17 @@ export default withStyles(styles)(
         isLoading: true,
       })
 
-      const topicsTry = await GET<ITopic[]>(`me/custom-board/topic?from=${b_from}&size=20`);
+      const topicsTry = await GET<ITopic[]>(`me/custom-board/topic?from=${b_from}&size=20`)
       topicsTry.map(async topicList => {
         // tslint:disable-next-line:prefer-array-literal
-        topicList.map(
-          topic =>
-            topic.boardName = getBoardName(boards, topic.boardId)
-        )
+        topicList.map(topic => (topic.boardName = getBoardName(boards, topic.boardId)))
         this.setState({
           b_topics: this.state.b_topics.concat(topicList),
           b_from: b_from + topicList.length,
           isLoading: false,
           isEnd: topicList.length !== 20,
         })
-      }
-      );
+      })
     }
 
     getFolloweeTopics = async () => {
@@ -97,27 +96,23 @@ export default withStyles(styles)(
         isLoading: true,
       })
 
-      const topicsTry = await GET<ITopic[]>(`me/followee/topic?from=${u_from}&size=20`);
+      const topicsTry = await GET<ITopic[]>(`me/followee/topic?from=${u_from}&size=20`)
       topicsTry.map(async topicList => {
         // tslint:disable-next-line:prefer-array-literal
-        topicList.map(
-          topic =>
-            topic.boardName = getBoardName(boards, topic.boardId)
-        )
+        topicList.map(topic => (topic.boardName = getBoardName(boards, topic.boardId)))
         this.setState({
           u_topics: this.state.u_topics.concat(topicList),
           u_from: u_from + topicList.length,
           isLoading: false,
           isEnd: topicList.length !== 20,
         })
-      }
-      );
+      })
     }
 
     render() {
-      const { isLoading, isEnd, b_topics, u_topics, current } = this.state;
-      const {classes} = this.props
-      const topics = current === 'board' ? b_topics : u_topics;
+      const { isLoading, isEnd, b_topics, u_topics, current } = this.state
+      const { classes } = this.props
+      const topics = current === 'board' ? b_topics : u_topics
 
       return (
         <div>

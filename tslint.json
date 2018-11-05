@@ -11,7 +11,10 @@
     "import-name": false
   },
   "rules": {
+    "no-unused-variable": true,
     "indent": [true, "spaces", 2],
+    "ordered-imports": false,
+    "no-duplicate-imports": false,
     "eofline": true,
     "max-classes-per-file": [true, 1],
     "max-file-line-count": [true, 500],

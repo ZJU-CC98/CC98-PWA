@@ -1,12 +1,12 @@
-import { css } from 'emotion'
 import React from 'react'
+import { css } from 'emotion'
 
-import { IconButton, Typography } from '@material-ui/core'
+import { IconButton, Typography, Paper } from '@material-ui/core'
 
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 
 import { ITopic } from '@cc98/api'
-import Paper from '@material-ui/core/Paper'
+
 // FIXME: if history stack is empty ?
 const goback = () => window.history.back()
 
@@ -16,7 +16,7 @@ const root = css`
   position: sticky;
   top: 0;
   height: 56px;
-  padding: 0 18px;
+  padding: 0 16px;
   background-color: #fff;
   /* z-index of TopBar is 1100 and DrawerMenu is 1200 */
   z-index: 1105;
@@ -32,24 +32,35 @@ const gobackIcon = css`
     margin-right: 5px;
   }
 `
-const BoardNameStyle = css`&&{
-  opacity:0.54;
-  white-space: nowrap;
-}`
-const TitleStyle = css`&&{
-  flex-grow:2;
-}`
+
+const title = css`
+  && {
+    flex-grow: 2;
+  }
+`
+
+const subTitle = css`
+  && {
+    margin-left: 8px;
+    margin-right: -5px;
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+`
+
 interface Props {
   topicInfo: ITopic
 }
 
 const PostHead: React.SFC<Props> = ({ topicInfo }) => (
-  <Paper className={root}>
+  <Paper square elevation={1} className={root}>
     <IconButton className={gobackIcon} onClick={goback}>
       <KeyboardBackspaceIcon />
     </IconButton>
-    <Typography className={TitleStyle} variant="subtitle2">{topicInfo.title}</Typography>
-    <Typography className={BoardNameStyle}>{topicInfo.boardName}</Typography>
+    <Typography variant="subtitle2" className={title}>
+      {topicInfo.title}
+    </Typography>
+    <Typography className={subTitle}>{topicInfo.boardName}</Typography>
   </Paper>
 )
 

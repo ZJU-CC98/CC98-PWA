@@ -5,9 +5,11 @@
 import { GET, POST } from '@/utils/fetch'
 import { IMessageContent } from '@cc98/api'
 import { Container } from '@cc98/state'
+
 import reverse from 'lodash-es/reverse'
-import global from '../global'
-import user from '../user'
+
+import global from '@/model/global'
+import user from '@/model/user'
 
 interface IMap<T> {
   [key: string]: T

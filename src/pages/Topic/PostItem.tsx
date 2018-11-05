@@ -3,7 +3,6 @@ import React from 'react'
 import Utils from './PostUtils'
 
 import resolveMarkdown from '@/services/resolveMarkdown'
-import toast from '@/utils/Toast/index'
 import { IBasicUser, IPost, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
 import {
@@ -24,11 +23,11 @@ import Paper from '@material-ui/core/Paper'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import GradeIcon from '@material-ui/icons/Grade'
 import Quote from '@material-ui/icons/RotateLeft'
 import DislikeIcon from '@material-ui/icons/ThumbDown'
 import LikeIcon from '@material-ui/icons/ThumbUp'
 import { navigate } from '@reach/router'
+import { PostInfoStore } from '@/model/post'
 const root = css`
   margin-top: 6px;
   background-color: #ccc;
@@ -63,18 +62,12 @@ interface Props {
   awardUserMap: {
     [name: string]: IBasicUser
   }
+  postInstance: PostInfoStore
   /**
    * 方法
    */
   openDialog: (info: IPost) => void
   closeDialog: () => void
-  trace: (topicId: number, userId: number, traceOrNot: boolean, isAnonymous?: boolean)
-    => Promise<void>
-  refreshItem: <T extends Partial<IPost>>(postId: number, postUpdate: T) => Promise<void>
-  /**
-   * 引用几楼
-   */
-  initEditor: (a: string) => void
 }
 
 interface State {
@@ -83,7 +76,7 @@ interface State {
    */
   expanded: boolean
   // tslint:disable-next-line:no-any
-  anchorEl: any,
+  anchorEl: any
 }
 const CursorStyle = css`
   cursor: pointer;
@@ -157,7 +150,7 @@ const styles: StyleRules = {
   awardAction: {
     height: '30px',
     fontSize: '0.8rem',
-    opacity:0.54,
+    opacity: 0.54,
     borderTop: '#aaaaaa solid thin',
     marginLeft: '16px',
     marginRight: '16px',
@@ -174,8 +167,8 @@ const ContentRoot = css`&&{
     },
 }`
 const PostOptionStyle = css`
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
 `
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
@@ -192,15 +185,16 @@ export default withStyles(styles)(
 
     // tslint:disable-next-line:no-any
     handleClick = (event: any) => {
-      this.setState({ anchorEl: event.currentTarget });
+      this.setState({ anchorEl: event.currentTarget })
     }
     handleClose = () => {
-      this.setState({ anchorEl: null });
+      this.setState({ anchorEl: null })
     }
     render() {
-      const { postInfo, userInfo, classes, trace, refreshItem, isTrace, awardUserMap } = this.props
+      const { postInfo, userInfo, classes, isTrace, awardUserMap, postInstance } = this.props
+      const { trace, updateSinglePosts } = postInstance
       const { anchorEl } = this.state
-      const open = Boolean(anchorEl);
+      const open = Boolean(anchorEl)
       if (postInfo.isDeleted) {
         return null
       }
@@ -231,15 +225,15 @@ export default withStyles(styles)(
                   navigate(`/user/${postInfo.userId}`)
                 }}
               >
-                {postInfo.isAnonymous ? `匿名${postInfo.userName.toUpperCase()}` : postInfo.userName}
+                {postInfo.isAnonymous
+                  ? `匿名${postInfo.userName.toUpperCase()}`
+                  : postInfo.userName}
               </div>
             }
             subheader={new Date(postInfo.time).toLocaleString()}
-            action={
-              [<IconButton key="floor" classes={{ root: classes.iconRoot }}>
-                <Avatar
-                  classes={{ root: postInfo.isHot ? classes.hotFloor : classes.floor }}
-                >
+            action={[
+              <IconButton key="floor" classes={{ root: classes.iconRoot }}>
+                <Avatar classes={{ root: postInfo.isHot ? classes.hotFloor : classes.floor }}>
                   {postInfo.isHot ? '热' : `${postInfo.floor}`}
                 </Avatar>
               </IconButton>,
@@ -288,15 +282,15 @@ export default withStyles(styles)(
                           this.props.openDialog(postInfo)
                         }
                         this.handleClose()
-                      }
-                      }
+                      }}
                       classes={{ root: classes.menuItemRoot }}
                     >
                       {option}
                     </MenuItem>
                   ))}
                 </Menu>
-              </div>]}
+              </div>,
+            ]}
           />
 
           <CardContent>
@@ -304,7 +298,8 @@ export default withStyles(styles)(
               classes={{ root: classes.typographyRoot }}
               className={ContentRoot}
               component="div"
-            >{text}
+            >
+              {text}
             </Typography>
           </CardContent>
 
@@ -314,18 +309,21 @@ export default withStyles(styles)(
               disableRipple={true}
               onClick={async () => {
                 const res = await Utils.dislike(postInfo.id)
-                refreshItem(postInfo.id, res)
+                updateSinglePosts(postInfo.id, res)
               }}
             >
               <DislikeIcon
                 fontSize="small"
-                className={dislikeButton[likeStateMap[postInfo.likeState]
-                  === 'dislike' ? 'clicked' : 'unclicked']}
+                className={
+                  dislikeButton[likeStateMap[postInfo.likeState] ===
+                    'dislike' ? 'clicked' : 'unclicked']
+                }
               />
               <span
                 key="dislikeIcon"
-                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity:0.54 }}
-              >{postInfo.dislikeCount}
+                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity: 0.54 }}
+              >
+                {postInfo.dislikeCount}
               </span>
             </IconButton>
             <Divider classes={{ root: classes.hr }} />
@@ -334,11 +332,11 @@ export default withStyles(styles)(
               disableRipple={true}
               onClick={async () => {
                 const content = await Utils.quote(this.props.postInfo)
-                this.props.initEditor(content)
+                postInstance.wakeUpEditor(content)
               }}
             >
               <Quote fontSize="small" />
-            </IconButton >
+            </IconButton>
             <Divider classes={{ root: classes.hr }} />
 
             <IconButton
@@ -347,99 +345,92 @@ export default withStyles(styles)(
               disableTouchRipple={true}
               onClick={async () => {
                 const res = await Utils.like(postInfo.id)
-                refreshItem(postInfo.id, res)
+                updateSinglePosts(postInfo.id, res)
               }}
             >
               <LikeIcon
                 fontSize="small"
-                className={likeButton[likeStateMap[postInfo.likeState]
-                  === 'like' ? 'clicked' : 'unclicked']}
+                className={
+                  likeButton[likeStateMap[postInfo.likeState] === 'like' ? 'clicked' : 'unclicked']
+                }
               />
               <span
                 key="likeIcon"
-                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity:0.54  }}
-              >{postInfo.likeCount}
+                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity: 0.54 }}
+              >
+                {postInfo.likeCount}
               </span>
             </IconButton>
-
-
           </CardActions>
           {postInfo.awards.length > 5 &&
-            Object.keys(awardUserMap).length !== 0 &&
-            <CardActions classes={{ root: classes.awardAction }}>
-              <Button
-                classes={{ root: classes.expandButton }}
-                onClick={this.onExpandClick}
-              >
-                （{postInfo.awards.length}个评分）
-              </Button>
-              <IconButton
-                className={cx(expand, {
-                  [expandOpen]: this.state.expanded,
-                })}
-                style={{ width: '20%' }}
-                onClick={this.onExpandClick}
-              >
-                <ExpandMoreIcon
-                />
-              </IconButton>
-            </CardActions>}
+            Object.keys(awardUserMap).length !== 0 && (
+              <CardActions classes={{ root: classes.awardAction }}>
+                <Button classes={{ root: classes.expandButton }} onClick={this.onExpandClick}>
+                  （{postInfo.awards.length}
+                  个评分）
+                </Button>
+                <IconButton
+                  className={cx(expand, {
+                    [expandOpen]: this.state.expanded,
+                  })}
+                  style={{ width: '20%' }}
+                  onClick={this.onExpandClick}
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              </CardActions>
+            )}
           {postInfo.awards.length > 0 &&
             postInfo.awards.length <= 5 &&
-            Object.keys(awardUserMap).length !== 0 &&
-            <Collapse
-              in={true}
-              timeout="auto"
-              unmountOnExit
-            >
-              {postInfo.awards.length !== 0 &&
-                Object.keys(awardUserMap).length !== 0 &&
-                postInfo.awards.map(award => (
-                  <CardContent key={award.id} classes={{ root: classes.awardContentRoot }}>
-                    <div className={Row}>
-                      <div className={Left}>
-                        <Avatar
-                          src={awardUserMap[award.operatorName].portraitUrl}
-                          classes={{ root: classes.awardAvatar }}
-                        />
-                        <Typography  style={{ marginLeft: '1rem' }}>
-                        {award.operatorName}
-                        </Typography >
+            Object.keys(awardUserMap).length !== 0 && (
+              <Collapse in={true} timeout="auto" unmountOnExit>
+                {postInfo.awards.length !== 0 &&
+                  Object.keys(awardUserMap).length !== 0 &&
+                  postInfo.awards.map(award => (
+                    <CardContent key={award.id} classes={{ root: classes.awardContentRoot }}>
+                      <div className={Row}>
+                        <div className={Left}>
+                          <Avatar
+                            src={awardUserMap[award.operatorName].portraitUrl}
+                            classes={{ root: classes.awardAvatar }}
+                          />
+                          <Typography style={{ marginLeft: '1rem' }}>
+                            {award.operatorName}
+                          </Typography>
+                        </div>
+
+                        <Typography className={Middle}>{award.content}</Typography>
+                        <Typography className={Right}>{award.reason}</Typography>
                       </div>
-
-                      <Typography className={Middle}>{award.content}</Typography >
-                      <Typography className={Right}>{award.reason}</Typography >
-                    </div>
-                  </CardContent>))}
-
-            </Collapse>}
+                    </CardContent>
+                  ))}
+              </Collapse>
+            )}
           {postInfo.awards.length > 5 &&
-            Object.keys(awardUserMap).length !== 0 &&
-            <Collapse
-              in={this.state.expanded}
-              timeout="auto"
-              unmountOnExit
-            >
-              {postInfo.awards.length !== 0 &&
-                Object.keys(awardUserMap).length !== 0 &&
-                postInfo.awards.map(award => (
-                  <Paper>
-                  <CardContent key={award.id} classes={{ root: classes.awardContentRoot }}>
-                    <div className={Row}>
-                      <div className={Left}>
-                        <Avatar
-                          src={awardUserMap[award.operatorName].portraitUrl}
-                          classes={{ root: classes.awardAvatar }}
-                        />
-                        <div style={{ marginLeft: '1rem' }}>{award.operatorName}</div>
-                      </div>
+            Object.keys(awardUserMap).length !== 0 && (
+              <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+                {postInfo.awards.length !== 0 &&
+                  Object.keys(awardUserMap).length !== 0 &&
+                  postInfo.awards.map(award => (
+                    <Paper>
+                      <CardContent key={award.id} classes={{ root: classes.awardContentRoot }}>
+                        <div className={Row}>
+                          <div className={Left}>
+                            <Avatar
+                              src={awardUserMap[award.operatorName].portraitUrl}
+                              classes={{ root: classes.awardAvatar }}
+                            />
+                            <div style={{ marginLeft: '1rem' }}>{award.operatorName}</div>
+                          </div>
 
-                      <div className={Middle}>{award.content}</div>
-                      <div className={Right}>{award.reason}</div>
-                    </div>
-                  </CardContent></Paper>))}
-
-            </Collapse>}
+                          <div className={Middle}>{award.content}</div>
+                          <div className={Right}>{award.reason}</div>
+                        </div>
+                      </CardContent>
+                    </Paper>
+                  ))}
+              </Collapse>
+            )}
         </Card>
       )
     }
@@ -447,22 +438,22 @@ export default withStyles(styles)(
 )
 
 const Row = css`
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  width:100%;
-  font-size:0.8rem;
-  opacity:0.54;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  font-size: 0.8rem;
+  opacity: 0.54;
 `
 
 const Left = css`
-  display:flex;
-  min-width:8rem;
-  align-items:center;
+  display: flex;
+  min-width: 8rem;
+  align-items: center;
 `
 const Middle = css`
-  min-width:5rem;
+  min-width: 5rem;
 `
 const Right = css`
-  flex-grow:2;
+  flex-grow: 2;
 `

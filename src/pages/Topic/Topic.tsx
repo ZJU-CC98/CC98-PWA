@@ -1,6 +1,5 @@
-import { navigate } from '@reach/router'
-import { css } from 'emotion'
 import React from 'react'
+import { navigate } from '@reach/router'
 
 import LoadingCircle from '@/components/LoadingCircle'
 import Editor from './Editor'
@@ -12,13 +11,9 @@ import { GlobalContainer } from '@/model/global'
 import { PostInfoStore } from '@/model/post'
 import getBoardName from '@/services/getBoardName'
 import { GET } from '@/utils/fetch'
-import { IPost, IPostUtil, ITopic, IUser } from '@cc98/api'
-import { Subscribe } from '@cc98/state'
+import { IPost, ITopic, IUser } from '@cc98/api'
 import MyDialog from './Dialog'
 import PostItem from './PostItem'
-const root = css`
-  background-color: #eee;
-`
 
 interface Props {
   topicId: string
@@ -84,15 +79,15 @@ class Topic extends React.Component<Props, State> {
     this.setState({
       open: true,
       currentPost: info,
-    });
-  };
+    })
+  }
 
   handleDialogClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false })
   }
 
   render() {
-    const { topicInfo, currentPost, editing } = this.state
+    const { topicInfo, currentPost } = this.state
     const { postId, userId, global, postInstance } = this.props
     const { isLoading, isEnd, posts, userMap, awardsUserMap } = postInstance.state
 
@@ -103,37 +98,32 @@ class Topic extends React.Component<Props, State> {
     const myInfo = global.state.myInfo as IUser
 
     return (
-      <div className={root}>
+      <>
         <PostHead topicInfo={topicInfo} />
-        <MyDialog
-          open={this.state.open}
-          onClose={this.handleDialogClose}
-          currentPost={currentPost}
-          refreshItem={(data: { id: number, content: string, reason: string }) => {
-            postInstance.updatePostAward(data, myInfo.name)
-          }}
-        />
+        {currentPost && (
+          <MyDialog
+            open={this.state.open}
+            onClose={this.handleDialogClose}
+            currentPost={currentPost}
+            refreshItem={(data: { id: number; content: string; reason: string }) => {
+              postInstance.updatePostAward(data, myInfo.name)
+            }}
+          />
+        )}
 
-        <InfiniteList
-          isLoading={isLoading}
-          isEnd={isEnd}
-          callback={postInstance.fetchPosts}
-        >
+        <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={postInstance.fetchPosts}>
           {posts.map((info: IPost) => (
             <PostItem
               key={info.isHot ? `hot-${info.id}` : info.id}
               postInfo={info}
               userInfo={userMap[info.userId]}
               isTrace={isTrace}
-              trace={postInstance.trace}
-              refreshItem={postInstance.updateSinglePosts}
+              postInstance={postInstance}
               openDialog={this.handleClickOpen}
               closeDialog={this.handleDialogClose}
               awardUserMap={awardsUserMap}
-              initEditor={postInstance.wakeUpEditor}
             />
-          )
-          )}
+          ))}
         </InfiniteList>
 
         <Editor
@@ -143,7 +133,7 @@ class Topic extends React.Component<Props, State> {
           callback={postInstance.fetchPosts}
           theme={global.state.theme}
         />
-      </div>
+      </>
     )
   }
 }

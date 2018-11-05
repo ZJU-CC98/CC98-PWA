@@ -7,10 +7,15 @@ import { List } from '@material-ui/core'
 import React from 'react'
 
 import InfiniteList from '@/components/InfiniteList'
-import MessageStore from '@/model/message/recent'
+import MessageStore from '@/pages/Message/model/recent'
 
 import Paper from '@material-ui/core/Paper'
-import ListItem from './ListItem'
+import ListItem from './components/ListItem'
+
+/**
+ * @description 私信 联系人列表
+ * @author dongyansong
+ */
 export default class MessageList extends React.PureComponent {
   render() {
     return (
@@ -31,8 +36,8 @@ export default class MessageList extends React.PureComponent {
                 ))}
               </InfiniteList>
             </List>
-            </Paper>
-          )}
+          </Paper>
+        )}
       </Subscribe>
     )
   }

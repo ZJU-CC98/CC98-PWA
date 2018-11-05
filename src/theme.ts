@@ -13,6 +13,7 @@ export const dark = createMuiTheme({
     useNextVariants: true,
   },
 })
+
 export const light = createMuiTheme({
   palette: {
     primary: blue,

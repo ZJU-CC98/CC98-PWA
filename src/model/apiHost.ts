@@ -1,7 +1,3 @@
-/**
- * @author dongyansong
- * @date 2018-10-23
- */
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/utils/storage'
 import { Container } from '@cc98/state'
 
@@ -43,7 +39,7 @@ export class Store extends Container<IHost> {
       Object.assign(state, defaultHost)
     })
     removeLocalStorage('proxy')
-    global.logOut() // logout when change proxy
+    global.LOG_OUT() // logout when change proxy
   }
 
   useProxy() {
@@ -51,7 +47,7 @@ export class Store extends Container<IHost> {
       Object.assign(state, proxy)
     })
     setLocalStorage('proxy', 'proxy')
-    global.logOut() // logout when change proxy
+    global.LOG_OUT() // logout when change proxy
   }
 }
 

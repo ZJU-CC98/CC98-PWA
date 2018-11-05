@@ -3,7 +3,6 @@ import { POST } from '@/utils/fetch'
 import { ITopic } from '@cc98/api'
 import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input'
-import TextField from '@material-ui/core/TextField'
 import { css } from 'emotion'
 import React from 'react'
 interface Props {
@@ -14,14 +13,14 @@ interface Props {
   theme: string
 }
 interface State {
-  editing: boolean,
+  editing: boolean
 }
 const blackWrap = css`
-  height:100%;
-  width:100%;
-  position:fixed;
-  top:0px;
-  background-color:#00000063;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  background-color: #00000063;
 `
 const editing = css`
   && {
@@ -41,26 +40,29 @@ const decorEditor = css`
   background-color: white;
   height: 40px;
 `
-const darkStyle = css`&&{
-  background-color: #424242;
-}
+const darkStyle = css`
+  && {
+    background-color: #424242;
+  }
 `
-const lightStyle = css`&&{
-  background-color: white;
-}
+const lightStyle = css`
+  && {
+    background-color: white;
+  }
 `
 const blankBlock = css`
   height: 45px;
-  background-color:white;
+  /* background-color:white; */
 `
-const inputBox = css`&&{
-  margin-left: 15px;
-  width: 100%;
-  opacity:0.54;
-}
+const inputBox = css`
+  && {
+    margin-left: 15px;
+    width: 100%;
+    opacity: 0.54;
+  }
 `
 const post = async (value: string, topic: ITopic, self: ReplyEditor) => {
-  const url = `/post/topic/${topic.id}`
+  // const url = `/post/topic/${topic.id}`
   const content = {
     content: value,
     contentType: 0,
@@ -73,7 +75,6 @@ const post = async (value: string, topic: ITopic, self: ReplyEditor) => {
     self.setState({ editing: false })
     self.props.resetInitContent()
   })
-
 }
 
 class ReplyEditor extends React.Component<Props, State> {
@@ -113,7 +114,7 @@ class ReplyEditor extends React.Component<Props, State> {
               sendCallBack={(content: string, files: string[]) => {
                 let realContent: string
                 if (files) {
-                  const imgString = files.map(e => (` \n [img]${e}[/img]`)).join(' ')
+                  const imgString = files.map(e => ` \n [img]${e}[/img]`).join(' ')
                   realContent = content + imgString
                 } else {
                   realContent = content
@@ -125,9 +126,7 @@ class ReplyEditor extends React.Component<Props, State> {
             />
           </div>
         </div>
-        <div
-          className={blankBlock}
-        />
+        <div className={blankBlock} />
         <div
           className={`${decorEditor} ${theme === 'light' ? lightStyle : darkStyle}`}
           onClick={e => {
@@ -135,14 +134,8 @@ class ReplyEditor extends React.Component<Props, State> {
           }}
           style={!editMode ? {} : { display: 'none' }}
         >
-          <Input
-            defaultValue="输入内容"
-            className={inputBox}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-          >
+          <Input defaultValue="输入内容" className={inputBox} />
+          <Button variant="contained" color="primary">
             回帖
           </Button>
         </div>

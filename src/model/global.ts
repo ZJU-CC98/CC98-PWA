@@ -22,7 +22,7 @@ interface State {
   /**
    * 主题
    */
-  theme: string
+  theme: 'light' | 'dark'
 }
 
 class GlobalContainer extends Container<State> {
@@ -35,10 +35,10 @@ class GlobalContainer extends Container<State> {
 
   constructor() {
     super()
-    this.freshInfo()
+    this.FRESH_INFO()
   }
 
-  async freshInfo() {
+  FRESH_INFO = async () => {
     if (!this.state.isLogIn) return
 
     const myInfo = await GET<IUser>('me')
@@ -51,7 +51,7 @@ class GlobalContainer extends Container<State> {
     })
   }
 
-  async logIn(username: string, password: string) {
+  LOG_IN = async (username: string, password: string) => {
     const token = await logIn(username, password)
 
     token.fail().succeed(newToken => {
@@ -65,12 +65,12 @@ class GlobalContainer extends Container<State> {
       })
     })
 
-    this.freshInfo()
+    this.FRESH_INFO()
 
     return token
   }
 
-  logOut() {
+  LOG_OUT = () => {
     removeLocalStorage('access_token')
     removeLocalStorage('refresh_token')
 
@@ -79,24 +79,27 @@ class GlobalContainer extends Container<State> {
     })
   }
 
-  changeTheme() {
-    if (this.state.theme === 'light') {
-      this.put(state => state.theme = 'dark')
-    } else {
-      this.put(state => state.theme = 'light')
-    }
-  }
-
-  openDrawer() {
+  OPEN_DRAWER = () => {
     this.put(state => {
       state.isDrawerOpen = true
     })
   }
 
-  closeDrawer() {
+  CLOSE_DRAWER = () => {
     this.put(state => {
       state.isDrawerOpen = false
     })
+  }
+
+  CHANGE_THEME = () => {
+    switch (this.state.theme) {
+      case 'light':
+        this.put(state => (state.theme = 'dark'))
+        break
+      case 'dark':
+        this.put(state => (state.theme = 'light'))
+        break
+    }
   }
 }
 

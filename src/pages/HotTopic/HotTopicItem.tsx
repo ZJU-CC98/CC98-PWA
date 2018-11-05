@@ -1,12 +1,12 @@
 import React from 'react'
+import styled from 'react-emotion'
 
 import { IHotTopic } from '@cc98/api'
 import { ListItem, ListItemText } from '@material-ui/core'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import { css } from 'emotion';
-import styled from 'react-emotion'
+
 interface Props {
   info: IHotTopic
   click?: (topicID: number) => void
@@ -18,13 +18,14 @@ const styles: StyleRules = {
   },
   primary: {
     fontSize: '0.875rem',
-    opacity:0.54,
+    opacity: 0.54,
     textAlign: 'right',
   },
   secondary: {
     textAlign: 'right',
   },
 }
+
 const Text = styled.span`
   display: block;
   max-width: 80%;
@@ -32,12 +33,9 @@ const Text = styled.span`
   white-space: nowrap;
   text-overflow: ellipsis;
 `
+
 export default withStyles(styles)(({ info, click, classes }: Props & { classes: ClassNameMap }) => (
-  <ListItem
-    divider
-    button
-    onClick={() => click && click(info.id)}
-  >
+  <ListItem divider button onClick={() => click && click(info.id)}>
     <ListItemText
       classes={{ root: classes.root }}
       primary={<Text>{info.title}</Text>}
@@ -51,5 +49,4 @@ export default withStyles(styles)(({ info, click, classes }: Props & { classes: 
       />
     </ListItemSecondaryAction>
   </ListItem>
-)
-)
+))

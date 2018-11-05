@@ -1,12 +1,12 @@
+import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
-import React from 'react'
 
 import {
   Button,
   CircularProgress,
   FormControl,
-  FormHelperText,
+  // FormHelperText,
   Input,
   InputLabel,
   Typography,
@@ -55,7 +55,7 @@ interface State {
   logInFail: boolean
 }
 
-class LogIn extends React.PureComponent<{}, State> {
+class LogIn extends React.Component<{}, State> {
   state: State = {
     formField: {
       username: '',
@@ -85,19 +85,16 @@ class LogIn extends React.PureComponent<{}, State> {
       logInFail: false,
     })
 
-    const token = await global.logIn(username, password)
+    const token = await global.LOG_IN(username, password)
 
     token
       .fail(() => {
-        setTimeout(
-          () => {
-            this.setState({
-              loading: false,
-              logInFail: true,
-            })
-          },
-          2000
-        )
+        setTimeout(() => {
+          this.setState({
+            loading: false,
+            logInFail: true,
+          })
+        },         2000)
 
         // TODO: 错误提示
       })

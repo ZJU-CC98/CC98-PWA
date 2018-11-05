@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import Paper from '@material-ui/core/Paper';
+import Paper from '@material-ui/core/Paper'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
@@ -13,6 +13,7 @@ import { css } from 'emotion'
 import React from 'react'
 interface Props {
   data: IBoard | null
+  classes: ClassNameMap
 }
 interface State {
   isFollowed: boolean
@@ -32,59 +33,59 @@ const styles: StyleRules = {
     height: '0.8rem',
   },
 }
-const BoardHeader = css`
+const boardHeader = css`
   width: 100%;
-  position:sticky;
-  top:0px;
-  z-index:1105;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  background-color:#fff;
+  position: sticky;
+  top: 0px;
+  z-index: 1105;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
 `
-const BoardTitle = css`
+const boardTitle = css`
   && {
     text-align: center;
     font-size: 1.8rem;
-    flex-grow:2;
-    display:flex;
+    flex-grow: 2;
+    display: flex;
   }
 `
-const BoardMessage = css`
+const boardMessage = css`
   display: flex;
   font-size: 1rem;
   align-items: center;
   justify-content: space-between;
-  width:100%;
-  height:100px;
+  width: 100%;
+  height: 100px;
 `
-const BoardTopicNumber = css`
-  font-size:1rem;
-  margin-right:1rem;
+const boardTopicNumber = css`
+  font-size: 1rem;
+  margin-right: 1rem;
 `
-const FollowBtnStyle = css`
+const followBtnStyle = css`
   && {
     width: 1.5rem;
     height: 0.8rem;
     margin-right: 0.4rem;
   }
 `
-const BoardMasters = css`
-  display:flex;
-  width:100%;
-  padding-left:1.5rem;
-  border-bottom:#eaeaea solid thin;
+const boardMasters = css`
+  display: flex;
+  width: 100%;
+  padding-left: 1.5rem;
+  border-bottom: #eaeaea solid thin;
 `
 const toolButton = css`
   margin-right: 1rem;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-around;
-  height:100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
 `
 export default withStyles(styles)(
-  class extends React.Component<Props & { classes: ClassNameMap }, State> {
+  class extends React.Component<Props, State> {
     state: State = {
       isFollowed: false,
     }
@@ -94,7 +95,7 @@ export default withStyles(styles)(
     }
 
     render() {
-      const { classes } = this.props;
+      const { classes } = this.props
       const data = this.props.data
         ? this.props.data
         : {
@@ -106,17 +107,20 @@ export default withStyles(styles)(
           boardMasters: [],
           description: '',
         }
-      const { isFollowed } = this.state;
+      const { isFollowed } = this.state
 
       return (
-        <Paper className={BoardHeader}>
-
-          <div className={BoardMessage}>
-            <Button color="primary" className={BoardTitle}>{data.name}</Button>
-            <div className={BoardTopicNumber}>{data.todayCount}/{data.topicCount}</div>
+        <Paper className={boardHeader}>
+          <div className={boardMessage}>
+            <Button color="primary" className={boardTitle}>
+              {data.name}
+            </Button>
+            <div className={boardTopicNumber}>
+              {data.todayCount}/{data.topicCount}
+            </div>
             <div className={toolButton}>
               <Button
-                className={FollowBtnStyle}
+                className={followBtnStyle}
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -126,7 +130,7 @@ export default withStyles(styles)(
                 发帖
               </Button>
               <Button
-                className={FollowBtnStyle}
+                className={followBtnStyle}
                 onClick={this.changeFollowStatus}
                 variant="outlined"
               >
@@ -146,22 +150,16 @@ export default withStyles(styles)(
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>{data.description}</ExpansionPanelDetails>
           </ExpansionPanel>
-          <div className={BoardMasters}>
-
+          <div className={boardMasters}>
             <Button size="small" color="primary">
               版主:
-          </Button>{' '}
+            </Button>{' '}
             {data.boardMasters.map(master => (
-              <Button
-                key={master}
-                size="small"
-                color="primary"
-              >
+              <Button key={master} size="small" color="primary">
                 {master}
               </Button>
             ))}
           </div>
-
         </Paper>
       )
     }

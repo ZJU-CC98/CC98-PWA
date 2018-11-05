@@ -34,7 +34,7 @@ const root = css`
   background-color: #fff;
   /* z-index of TopBar is 1100 and DrawerMenu is 1200 */
   z-index: 1105;
-  width:100%;
+  width: 100%;
   @media (min-width: 600px) {
     height: 64px;
   }
@@ -67,20 +67,20 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     marginLeft: '8px',
     marginRight: '8px',
   },
-}
-)
-const ButtonStyle = css`&&{
-  width:100%;
-  margin-left:10px;
-  margin-right:10px;
-  margin-top:10px;
-}`
+})
+const ButtonStyle = css`
+  && {
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+`
 
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
-
     constructor(props: Props & { classes: ClassNameMap }) {
-      super(props);
+      super(props)
       this.state = {
         newInfo: props.info,
         buttonInfo: '修改',
@@ -88,42 +88,38 @@ export default withStyles(styles)(
       }
     }
 
-    handleChange = (name: keyof IUser) =>
-      (e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>) => {
-        const info: IUser = Object.assign({}, this.state.newInfo);
-        info[name] = e.target.value;
-        this.setState({
-          newInfo: info,
-        })
-      }
+    handleChange = (name: keyof IUser) => (
+      e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>
+    ) => {
+      const info: IUser = Object.assign({}, this.state.newInfo)
+      info[name] = e.target.value
+      this.setState({
+        newInfo: info,
+      })
+    }
 
     submit = async () => {
-      const { newInfo } = this.state;
-      this.setState(
-        {
-          disabled: true,
-          buttonInfo: '...',
-        })
+      const { newInfo } = this.state
+      this.setState({
+        disabled: true,
+        buttonInfo: '...',
+      })
 
-      const submitTry = await PUT('me', { params: newInfo });
+      const submitTry = await PUT('me', { params: newInfo })
       submitTry
-        .fail(
-          () => {
-            this.setState({ disabled: false });
-          }
-        )
-        .succeed(
-          () => {
-            basicInstance.freshInfo();
-            this.setState({ disabled: false, buttonInfo: '修改' });
-            navigate('/userCenter');
-          }
-        )
+        .fail(() => {
+          this.setState({ disabled: false })
+        })
+        .succeed(() => {
+          basicInstance.FRESH_INFO()
+          this.setState({ disabled: false, buttonInfo: '修改' })
+          navigate('/userCenter')
+        })
     }
 
     render() {
-      const { classes, info } = this.props;
-      const { newInfo, disabled, buttonInfo } = this.state;
+      const { classes, info } = this.props
+      const { newInfo, disabled, buttonInfo } = this.state
 
       return (
         <form className={classes.container} noValidate autoComplete="off">
@@ -146,13 +142,7 @@ export default withStyles(styles)(
               value={newInfo.gender}
               onChange={this.handleChange('gender')}
               input={
-                <OutlinedInput
-                  name="gender"
-                  labelWidth={10}
-                  id="outlined-age-native-simple"
-                />
-
-              }
+                <OutlinedInput name="gender" labelWidth={10} id="outlined-age-native-simple" />}
             >
               <option value={1}>男</option>
               <option value={0}>女</option>

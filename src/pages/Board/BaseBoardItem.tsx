@@ -19,16 +19,17 @@ const notExpandedBoards = [2, 29, 33, 35, 37, 604]
 
 interface Props {
   data: IBaseBoard
+  classes: ClassNameMap
 }
 
-const BaseBoardStyle = css`
+const baseBoardStyle = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-left: 1rem;
   margin: 0 0 0 0;
 `
-const ChildBoardStyle = css`
+const childBoardStyle = css`
   && {
     display: flex;
     width: 100%;
@@ -37,7 +38,7 @@ const ChildBoardStyle = css`
     padding: 0 0 0 0;
   }
 `
-const BaseBoardContainerStyle = css`
+const baseBoardContainerStyle = css`
   && {
     max-height: 30px;
     min-height: 30px;
@@ -55,7 +56,7 @@ const styles: StyleRules = {
 }
 
 export default withStyles(styles)(
-  class extends React.Component<Props & { classes: ClassNameMap }, { isExpanded: boolean }> {
+  class extends React.Component<Props, { isExpanded: boolean }> {
     state = {
       isExpanded: notExpandedBoards.indexOf(this.props.data.id) === -1,
     }
@@ -78,13 +79,13 @@ export default withStyles(styles)(
         >
           <ExpansionPanelSummary
             style={{ minHeight: '2.5rem' }}
-            className={BaseBoardContainerStyle}
+            className={baseBoardContainerStyle}
             expandIcon={<ExpandMoreIcon />}
           >
-            <Typography className={BaseBoardStyle}>{data.name}</Typography>
+            <Typography className={baseBoardStyle}>{data.name}</Typography>
           </ExpansionPanelSummary>
           {isExpanded ? (
-            <ExpansionPanelDetails className={ChildBoardStyle}>
+            <ExpansionPanelDetails className={childBoardStyle}>
               {data.boards.map(board => (
                 <BoardItem key={board.id} data={board} />
               ))}

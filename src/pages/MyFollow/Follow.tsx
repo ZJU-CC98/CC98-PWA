@@ -8,13 +8,13 @@ import { List, Paper, Tab, Tabs } from '@material-ui/core'
 
 import { Theme, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-
 import { GET } from '@/utils/fetch'
 import { IBaseBoard, ITopic } from '@cc98/api'
 import getBoardName from '@/services/getBoardName'
 
 interface Props {
   boards: IBaseBoard[]
+  classes: ClassNameMap
 }
 interface State {
   isLoading: boolean
@@ -26,7 +26,7 @@ interface State {
   current: string
 }
 
-const IndexStyle = css`
+const indexStyle = css`
   && {
     min-height: 90vh;
   }
@@ -39,7 +39,7 @@ const styles = (theme: Theme) => ({
 })
 
 export default withStyles(styles)(
-  class extends React.Component<Props & { classes: ClassNameMap }, State> {
+  class extends React.Component<Props, State> {
     state: State = {
       isLoading: false,
       isEnd: false,
@@ -116,7 +116,7 @@ export default withStyles(styles)(
 
       return (
         <div>
-          <Paper className={IndexStyle}>
+          <Paper className={indexStyle}>
             <Tabs fullWidth value={current} onChange={this.changeFocus}>
               <Tab classes={{ root: classes.root }} value="board" label="关注版面" />
               <Tab classes={{ root: classes.root }} value="user" label="关注用户" />

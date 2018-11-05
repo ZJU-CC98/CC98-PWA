@@ -11,6 +11,7 @@
     "import-name": false
   },
   "rules": {
+    "array-type": [true, "array"],
     "no-unused-variable": true,
     "indent": [true, "spaces", 2],
     "ordered-imports": false,

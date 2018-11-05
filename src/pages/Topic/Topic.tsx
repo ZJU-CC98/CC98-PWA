@@ -31,7 +31,7 @@ interface State {
   editing: boolean
 }
 
-class Topic extends React.Component<Props, State> {
+export default class extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     props.postInstance.init(parseInt(props.topicId, 10))
@@ -137,5 +137,3 @@ class Topic extends React.Component<Props, State> {
     )
   }
 }
-
-export default Topic

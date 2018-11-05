@@ -62,6 +62,7 @@ interface Props {
   awardUserMap: {
     [name: string]: IBasicUser
   }
+  classes: ClassNameMap
   postInstance: PostInfoStore
   /**
    * 方法
@@ -78,7 +79,7 @@ interface State {
   // tslint:disable-next-line:no-any
   anchorEl: any
 }
-const CursorStyle = css`
+const cursorStyle = css`
   cursor: pointer;
 `
 const likeStateMap = ['none', 'like', 'dislike']
@@ -161,17 +162,17 @@ const styles: StyleRules = {
   },
 }
 
-const ContentRoot = css`&&{
+const contentRoot = css`&&{
      img {
       max-width: 100%;
     },
 }`
-const PostOptionStyle = css`
+const postOptionStyle = css`
   display: flex;
   justify-content: center;
 `
 export default withStyles(styles)(
-  class extends React.Component<Props & { classes: ClassNameMap }, State> {
+  class extends React.Component<Props, State> {
     state: State = {
       expanded: false,
       anchorEl: null,
@@ -209,7 +210,7 @@ export default withStyles(styles)(
             classes={{ action: classes.headerAction }}
             avatar={
               <Avatar
-                className={CursorStyle}
+                className={cursorStyle}
                 onClick={() => {
                   navigate(`/user/${postInfo.userId}`)
                 }}
@@ -220,7 +221,7 @@ export default withStyles(styles)(
             }
             title={
               <div
-                className={CursorStyle}
+                className={cursorStyle}
                 onClick={() => {
                   navigate(`/user/${postInfo.userId}`)
                 }}
@@ -238,7 +239,7 @@ export default withStyles(styles)(
                 </Avatar>
               </IconButton>,
               // tslint:disable-next-line:ter-indent
-              <div key="options" className={PostOptionStyle}>
+              <div key="options" className={postOptionStyle}>
                 <IconButton
                   key="option"
                   classes={{ root: classes.iconRoot }}
@@ -296,7 +297,7 @@ export default withStyles(styles)(
           <CardContent>
             <Typography
               classes={{ root: classes.typographyRoot }}
-              className={ContentRoot}
+              className={contentRoot}
               component="div"
             >
               {text}
@@ -315,8 +316,10 @@ export default withStyles(styles)(
               <DislikeIcon
                 fontSize="small"
                 className={
-                  dislikeButton[likeStateMap[postInfo.likeState] ===
-                    'dislike' ? 'clicked' : 'unclicked']
+                  // tslint:disable-next-line:ter-computed-property-spacing
+                  dislikeButton[
+                    likeStateMap[postInfo.likeState] === 'dislike' ? 'clicked' : 'unclicked'
+]
                 }
               />
               <span

@@ -7,7 +7,7 @@ interface Props {
   data: IBoard
 }
 
-const CardStyle = css`
+const cardStyle = css`
   && {
     margin: 0.25rem 0.25rem 0.25rem 0.25rem;
     font-size: 0.8rem;
@@ -26,7 +26,7 @@ export default class extends React.PureComponent<Props> {
     return (
       <Button
         onClick={() => navigate(`/board/${data.id}`)}
-        className={CardStyle}
+        className={cardStyle}
         variant="outlined"
       >
         {data.name}

@@ -12,8 +12,7 @@ import { List } from '@material-ui/core'
 import { FormControl, MenuItem, Paper, Select } from '@material-ui/core'
 
 import { Theme, withStyles } from '@material-ui/core/styles'
-import { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+import { StyleRulesCallback, ClassNameMap } from '@material-ui/core/styles/withStyles'
 
 import BoardHead from './BoardHead'
 
@@ -24,6 +23,7 @@ interface Tag {
 interface Props {
   tags: Tag[]
   id: string
+  classes: ClassNameMap
 }
 // interface State {
 //   board: IBoard | null
@@ -53,7 +53,7 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   },
 })
 
-const BoardStyle = css`
+const boardStyle = css`
   && {
     display: flex;
     flex-direction: column;
@@ -63,7 +63,7 @@ const BoardStyle = css`
 `
 
 export default withStyles(styles)(
-  class extends React.PureComponent<Props & { classes: ClassNameMap }, {}> {
+  class extends React.PureComponent<Props, {}> {
     componentDidMount() {
       topicInstance.init(this.props.id, 'inboard')
       topicInstance.put(state => (state.itags = this.props.tags))
@@ -80,7 +80,7 @@ export default withStyles(styles)(
             const { classes } = this.props
 
             return (
-              <Paper className={BoardStyle}>
+              <Paper className={boardStyle}>
                 <BoardHead data={board} />
                 <div>
                   {tag1 ? (

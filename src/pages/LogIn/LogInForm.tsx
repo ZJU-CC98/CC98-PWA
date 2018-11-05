@@ -94,7 +94,8 @@ class LogIn extends React.Component<{}, State> {
             loading: false,
             logInFail: true,
           })
-        },         2000)
+          // tslint:disable-next-line:align
+        }, 2000)
 
         // TODO: 错误提示
       })

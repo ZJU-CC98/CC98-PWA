@@ -12,6 +12,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { StyleRules, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
 import InfiniteList from '@/components/InfiniteList'
 import TopicItem from '@/components/TopicItem'
@@ -83,6 +84,7 @@ const ExpandPanelSummaryStyle = css`
 interface Props {
   info: IUser
   boards: IBaseBoard[]
+  classes: ClassNameMap
 }
 
 interface State {
@@ -93,7 +95,7 @@ interface State {
   size: number
 }
 export default withStyles(styles)(
-  class extends React.Component<Props & { classes: ClassNameMap }, State> {
+  class extends React.Component<Props, State> {
     state: State = {
       recentTopics: [],
       isLoading: false,

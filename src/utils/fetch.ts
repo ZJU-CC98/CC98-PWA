@@ -2,7 +2,7 @@
 import { getLocalStorage, setLocalStorage } from './storage'
 import { Failure, Success, Try } from './fp/Try'
 
-import host from '@/model/apiHost'
+import host from '@/config/host'
 
 export interface FetchError {
   /**
@@ -77,8 +77,7 @@ export async function GET<T = any>(url: string, options: GETOptions = {}) {
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken)
-      headers.Authorization = accessToken
+    if (accessToken) headers.Authorization = accessToken
   }
 
   const requestInit: RequestInit = {
@@ -119,8 +118,7 @@ export async function POST<T = any>(url: string, options: POSTOptions = {}) {
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken)
-      headers.Authorization = accessToken
+    if (accessToken) headers.Authorization = accessToken
   }
 
   const requestInit: RequestInit = {
@@ -145,8 +143,7 @@ export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken)
-      headers.Authorization = accessToken
+    if (accessToken) headers.Authorization = accessToken
   }
 
   const requestInit: RequestInit = {
@@ -171,12 +168,11 @@ export async function DELETE<T = any>(url: string, options: DELETEOptions = {}) 
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken)
-      headers.Authorization = accessToken
+    if (accessToken) headers.Authorization = accessToken
   }
 
   const requestInit: RequestInit = {
-    method: "DELETE",
+    method: 'DELETE',
     headers: new Headers({
       ...headers,
       ...options.headers,
@@ -186,7 +182,6 @@ export async function DELETE<T = any>(url: string, options: DELETEOptions = {}) 
 
   return await cc98Fetch<T>(url, requestInit)
 }
-
 
 /**
  * just like $.param
@@ -240,15 +235,14 @@ export async function getAccessToken(): Promise<string> {
   if (!accessToken) {
     const refreshToken = getLocalStorage('refresh_token')
 
-    if (!refreshToken)
-      return ''
+    if (!refreshToken) return ''
 
     const token = await getTokenByRefreshToken(<string>refreshToken)
 
     token
-      .fail(
-        // TODO: 添加 refresh token 过期的处理
-      )
+      .fail
+      // TODO: 添加 refresh token 过期的处理
+      ()
       .succeed(newToken => {
         const access_token = `${newToken.token_type} ${newToken.access_token}`
         setLocalStorage('access_token', access_token, newToken.expires_in)

@@ -53,7 +53,7 @@ export default class DetailList extends React.PureComponent<Props> {
                     callback={store.getList}
                   >
                     {messages[id] &&
-                      messages[id].map(item => <DetailItem key={item.id} message={item} />)}
+                      messages[id]!.map(item => <DetailItem key={item.id} message={item} />)}
                   </InfiniteList>
                 </List>
               </RootRef>

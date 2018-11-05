@@ -9,6 +9,9 @@ interface T {
   name: string
 }
 interface State {
+  /**
+   * 设置初始化相关信息 版面id以及显示位置
+   */
   searchMes: { id: string, place: string } | null
   isLoading: boolean
   isEnd: boolean

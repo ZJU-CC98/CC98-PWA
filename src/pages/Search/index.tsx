@@ -12,11 +12,9 @@ import TopicItem from '../TopicItem'
 interface State {
   searchTerm: string
   topics: ITopic[]
-  users: IUser[]
   isLoading: boolean
   isEnd: boolean
-  t_from: number
-  u_from: number
+  from: number
   view: boolean
 }
 
@@ -30,10 +28,8 @@ export default class extends React.Component<{}, State> {
     searchTerm: '',
     isLoading: false,
     isEnd: false,
-    t_from: 0,
-    u_from: 0,
+    from: 0,
     topics: [],
-    users: [],
     view: false,
   }
 
@@ -42,11 +38,9 @@ export default class extends React.Component<{}, State> {
   }
   initTopics = async () => {
     this.setState({
-      t_from: 0,
-      u_from: 0,
+      from: 0,
       topics: [],
-      users: [],
-    }, () => { this.getTopics() })
+    },            () => { this.getTopics() })
 
   }
 
@@ -54,15 +48,15 @@ export default class extends React.Component<{}, State> {
     this.setState({
       isLoading: true,
     })
-    const { topics, searchTerm, t_from, isLoading, isEnd } = this.state
-    const url = `topic/search?keyword=${searchTerm}&from=${t_from}&size=20`
+    const { topics, searchTerm, from } = this.state
+    const url = `topic/search?keyword=${searchTerm}&from=${from}&size=20`
     const topicsTry = await GET<ITopic[]>(url)
     topicsTry
       .fail()
       .succeed(
         (topicsData: ITopic[]) => this.setState({
           topics: topics.concat(topicsData),
-          t_from: t_from + topicsData.length,
+          from: from + topicsData.length,
           isLoading: false,
           isEnd: topicsData.length !== 20,
           view: true,
@@ -71,7 +65,7 @@ export default class extends React.Component<{}, State> {
   }
 
   render() {
-    const { topics, users, isLoading, searchTerm, isEnd, view } = this.state
+    const { topics, isLoading, isEnd, view } = this.state
 
     return (
       <div className={root}>

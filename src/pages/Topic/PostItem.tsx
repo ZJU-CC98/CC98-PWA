@@ -34,11 +34,6 @@ const root = css`
   background-color: #ccc;
 `
 
-const floor = css`
-  margin-right: 4px;
-  font-size: 14px;
-`
-
 const expand = css`
   transform: rotate(0deg);
   transition-property: transform;

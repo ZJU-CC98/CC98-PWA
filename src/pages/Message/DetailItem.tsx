@@ -36,9 +36,9 @@ const MessageRoot = styled.div`
 const MessageContent = styled.div`
   background-color: #eee;
   line-height: 2em;
-  padding: .25em .5em;
+  padding: 0.25em 0.5em;
   position: relative;
-  font-size: .85em;
+  font-size: 0.85em;
   border-radius: 3px;
   min-height: 3em;
   display: flex;
@@ -49,7 +49,7 @@ const MessageContentLeft = styled(MessageContent)`
   &::before {
     content: '';
     border-style: solid;
-    border-width: .5em .5em .5em 0;
+    border-width: 0.5em 0.5em 0.5em 0;
     border-color: transparent;
     border-right-color: #eee;
     left: -0.5em;
@@ -62,7 +62,7 @@ const MessageContentRight = styled(MessageContent)`
   &::after {
     content: '';
     border-style: solid;
-    border-width: .5em 0 .5em .5em;
+    border-width: 0.5em 0 0.5em 0.5em;
     border-color: transparent;
     border-left-color: #eee;
     right: -0.5em;
@@ -74,7 +74,7 @@ const MessageContentRight = styled(MessageContent)`
 const MessageDate = styled.span<{ right?: boolean }>`
   color: #666;
   font-size: 0.7em;
-  align-self: ${props => props.right ? 'flex-end' : ''};
+  align-self: ${props => (props.right ? 'flex-end' : '')};
 `
 
 interface Props {
@@ -82,32 +82,29 @@ interface Props {
 }
 
 // TODO: 消息气泡
-const renderItem = (
-  message: IMessageContent,
-  userAvatar = avatar,
-  isCurrSend: boolean
-) => !isCurrSend ? (
-  <ListItem>
-    <ListItemAvatar className={AvatarClass}>
-      <Avatar src={userAvatar} />
-    </ListItemAvatar>
-    <MessageRoot>
-      <MessageContentLeft>{message.content}</MessageContentLeft>
-      <MessageDate right>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
-    </MessageRoot>
-  </ListItem>
-) : (
-      <ListItem>
-        <ListItemText />
-        <MessageRoot>
-          <MessageContentRight>{message.content}</MessageContentRight>
-          <MessageDate>{new Date(message.time).toLocaleString()}</MessageDate>
-        </MessageRoot>
-        <ListItemAvatar className={AvatarClass}>
-          <Avatar src={userAvatar} />
-        </ListItemAvatar>
-      </ListItem>
-    )
+const renderItem = (message: IMessageContent, userAvatar = avatar, isCurrSend: boolean) =>
+  !isCurrSend ? (
+    <ListItem>
+      <ListItemAvatar className={AvatarClass}>
+        <Avatar src={userAvatar} />
+      </ListItemAvatar>
+      <MessageRoot>
+        <MessageContentLeft>{message.content}</MessageContentLeft>
+        <MessageDate right>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
+      </MessageRoot>
+    </ListItem>
+  ) : (
+    <ListItem>
+      <ListItemText />
+      <MessageRoot>
+        <MessageContentRight>{message.content}</MessageContentRight>
+        <MessageDate>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
+      </MessageRoot>
+      <ListItemAvatar className={AvatarClass}>
+        <Avatar src={userAvatar} />
+      </ListItemAvatar>
+    </ListItem>
+  )
 
 export default ({ message }: Props) => (
   <Subscribe to={[user, global]}>
@@ -115,7 +112,7 @@ export default ({ message }: Props) => (
       renderItem(
         message,
         state[message.senderId] && state[message.senderId].portraitUrl,
-        !!myInfo && (myInfo.id === message.senderId)
+        !!myInfo && myInfo.id === message.senderId
       )}
   </Subscribe>
 )

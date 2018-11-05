@@ -8,11 +8,14 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from 'dayjs'
 // @ts-ignore
 import zh from 'dayjs/locale/zh-cn'
+
+// FIXME:
 declare module 'dayjs' {
   interface Dayjs {
-    fromNow(): () => void;
+    fromNow(): () => void
   }
 }
+
 // @ts-ignore
 dayjs.locale(zh, null, false)
 dayjs.extend(relativeTime)

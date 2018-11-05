@@ -39,9 +39,9 @@ const renderItem = (message: IRecentMessage, username = '', userAvatar = avatar)
     <ListItemAvatar>
       <Avatar src={userAvatar} />
     </ListItemAvatar>
-      <ListItemText primary={username} secondary={<Text>{message.lastContent}</Text>} />
+    <ListItemText primary={username} secondary={<Text>{message.lastContent}</Text>} />
     <ListItemSecondaryAction>
-      {/* <ListItemText secondary={dayjs(message.time).fromNow()} /> */}
+      <ListItemText secondary={dayjs(message.time).fromNow()} />
     </ListItemSecondaryAction>
   </ListItem>
 )

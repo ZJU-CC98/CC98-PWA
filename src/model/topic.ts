@@ -12,7 +12,7 @@ interface State {
   /**
    * 设置初始化相关信息 版面id以及显示位置
    */
-  searchMes: { id: string, place: string } | null
+  searchMes: { id: string | null, place: string } | null
   isLoading: boolean
   isEnd: boolean
   topics: ITopic[]
@@ -43,15 +43,24 @@ export class TopicInfoStore extends Container<State> {
   constructor() {
     super()
   }
-
-  init = (id: string, place: string) => {
-    this.initBoard(id)
-    this.initTag(id)
+  /**
+   * 初始化函数，设置当前topic id，获取版面、标签全局信息
+   */
+  init = (id: string | null, place: string) => {
+    if (id) {
+      this.initBoard(id)
+      this.initTag(id)
+    }
     this.initTopics(id, place)
     this.setSearchMes(id, place)
   }
 
-  setSearchMes(id: string, place: string) {
+  /**
+   * 设置api信息（版面帖子，新帖，搜索帖子，关注帖子）
+   * @param id 帖子id
+   * @param place 什么情况下显示的帖子列表
+   */
+  setSearchMes(id: string | null, place: string) {
     this.put(
       state => {
         state.searchMes = { id, place }
@@ -95,12 +104,14 @@ export class TopicInfoStore extends Container<State> {
     })
   }
 
-  initTopics = async (id: string, place: string) => {
-    await this.initTopTopics(id)
+  initTopics = async (id: string | null, place: string) => {
+    if (id) {
+      await this.initTopTopics(id)
+    }
     await this.getTopics(id, place)
   }
 
-  getTopics = async (id: string, place: string) => {
+  getTopics = async (id: string | null, place: string, searchItem?: string) => {
     const { tag1, tag2, from } = this.state
     this.put(state => (state.isLoading = true))
     let res: Try<ITopic[], FetchError> | null = null;
@@ -131,8 +142,29 @@ export class TopicInfoStore extends Container<State> {
             await GET(
               `topic/search/board/${id}/tag?tag${layer}=${tId}&from=${from}&size=20`)
         }
-        break;
+        break
+      case 'newtopic':
+        res = await GET<ITopic[]>('topic/new', {
+          params: {
+            from: `${this.state.from}`,
+            size: '20',
+          },
+        })
+        break
+      case 'search':
+        if (searchItem) {
+          res = await GET<ITopic[]>(`topic/search?keyword=${searchItem}`, {
+            params: {
+              from: `${this.state.from}`,
+              size: '20',
+            },
+          })
+        }
+        break
     }
+    /**
+     * api在有标签的时候返回的并不是ITopic 而是[].topics
+     */
     if (res) {
       if (place === 'inboard' && !((!tag1 || tag1.id < 0) && (!tag2 || tag2.id < 0))) {
         res.fail().succeed(

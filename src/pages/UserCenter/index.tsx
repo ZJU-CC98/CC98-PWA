@@ -8,19 +8,18 @@ import user, { UserInfoStore } from '@/model/user'
 import User from './User'
 interface Props {
   id: string | undefined
-  name: string | undefined
 }
 
 export default class extends React.Component<Props> {
   componentDidMount() {
-    const { id, name } = this.props
-    if (id) user.getInfo(id)
-    if (name) user.getInfo(name);
+    const { id } = this.props
+    if (id) user.getInfo(parseInt(id, 10))
   }
 
   render() {
-    const { id } = this.props
-    if (id) {
+    if (this.props.id) {
+      const id = parseInt(this.props.id, 10)
+
       return (
         <Subscribe to={[user]}>
           {({ state: userMap }: UserInfoStore) => (

@@ -99,7 +99,7 @@ export default withStyles(styles)(
     handleChange = (name: keyof IUser) => (
       e: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>
     ) => {
-      const info: IUser = Object.assign({}, this.state.newInfo)
+      const info: IUser = { ...this.state.newInfo }
       info[name] = e.target.value
       this.setState({
         newInfo: info,

@@ -1,6 +1,8 @@
 import React from 'react'
 import { navigate } from '@reach/router'
 
+import { TopicInfoStore } from '@/model/topic';
+
 import InfiniteList from '@/components/InfiniteList'
 
 import { List, Paper } from '@material-ui/core'
@@ -13,71 +15,33 @@ import getBoardName from '@/services/getBoardName'
 
 interface Props {
   boards: IBaseBoard[]
-}
-interface State {
-  topicList: ITopic[]
-
-  from: number
-  size: number
-
-  isLoading: boolean
-  isEnd: boolean
+  topicInstance: TopicInfoStore
 }
 
-class TopicList extends React.Component<Props, State> {
-  state: State = {
-    topicList: [],
-    from: 0,
-    size: 15,
+export default (props: Props) => {
 
-    isLoading: false,
-    isEnd: false,
-  }
+  const { topicInstance, boards } = props
+  const { isLoading, isEnd, topics } = topicInstance.state
+  const { getTopics } = topicInstance
 
-  async componentDidMount() {
-    this.fetchTopics()
-  }
+  return (
+    <Paper>
+      <InfiniteList
+        isLoading={isLoading}
+        isEnd={isEnd}
+        callback={() => { getTopics(null, 'newtopic') }}
+      >
+        <List>
+        {topics.map((info: ITopic) => {
+          const boardName = getBoardName(boards, info.boardId)
+          const topic = { boardName, ...info }
 
-  fetchTopics = async () => {
-    const { from, size } = this.state
-
-    this.setState({
-      isLoading: true,
-    })
-
-    const posts = await GET<ITopic[]>(`topic/new?from=${from}&size=${size}`)
-
-    posts.map(topicList => {
-      topicList.map(topic => (topic.boardName = getBoardName(this.props.boards, topic.boardId)))
-      this.setState({
-        topicList: this.state.topicList.concat(topicList),
-        from: from + topicList.length,
-
-        isLoading: false,
-        isEnd: topicList.length !== size,
-      })
-    })
-  }
-
-  jump2Post(topicID: number) {
-    navigate(`/topic/${topicID}`)
-  }
-
-  render() {
-    const { topicList, isLoading, isEnd } = this.state
-
-    return (
-      <Paper>
-        <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.fetchTopics}>
-          <List>
-            {topicList.map(info => (
-              <TopicItem key={info.id} data={info} place={'newtopic'} />
-            ))}
-          </List>
-        </InfiniteList>
-      </Paper>
-    )
-  }
+          return (
+            <TopicItem key={topic.id} data={topic} place={'newtopic'} />
+          )
+        })}
+      </List>
+      </InfiniteList>
+    </Paper >
+  )
 }
-
-export default TopicList

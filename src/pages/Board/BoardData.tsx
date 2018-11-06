@@ -3,8 +3,8 @@ import React from 'react'
 import { css } from 'emotion'
 import { Subscribe } from '@cc98/state'
 
-import boardInstance from '@/model/board'
-import topicInstance from '@/model/topic'
+import { BoardInfoStore } from '@/model/board'
+import { TopicInfoStore } from '@/model/topic'
 
 import InfiniteList from '@/components/InfiniteList'
 import TopicItem from '@/components/TopicItem'
@@ -21,7 +21,6 @@ interface Tag {
   id: number
 }
 interface Props {
-  tags: Tag[]
   id: string
   classes: ClassNameMap
 }
@@ -64,20 +63,31 @@ const boardStyle = css`
 
 export default withStyles(styles)(
   class extends React.PureComponent<Props, {}> {
-    componentDidMount() {
-      topicInstance.init(this.props.id, 'inboard')
-      topicInstance.put(state => (state.itags = this.props.tags))
-    }
-    componentWillUnmount() {
-      topicInstance.reset()
-    }
+    // componentDidMount() {
+    //   topicInstance.init(this.props.id, 'inboard')
+    //   topicInstance.put(state => (state.itags = this.props.tags))
+    // }
+    // componentWillUnmount() {
+    //   topicInstance.reset()
+    // }
 
     render() {
       return (
-        <Subscribe to={[topicInstance, boardInstance]}>
-          {() => {
-            const { topics, isLoading, isEnd, board, tag1, tag2, tags } = topicInstance.state
+        <Subscribe to={[BoardInfoStore, TopicInfoStore]}>
+          {(boardInstance: BoardInfoStore, topicInstance: TopicInfoStore) => {
+            const { topics, isLoading, isEnd, board, tag1, tag2, tags, searchMes }
+              = topicInstance.state
             const { classes } = this.props
+            if (!searchMes || searchMes.id !== this.props.id) {
+              topicInstance.reset()
+              topicInstance.init(this.props.id, 'inboard')
+              topicInstance.put(state => (state.itags = boardInstance.state.tagData))
+            }
+
+            if (boardInstance.state.boardData.length === 0) {
+
+              return null
+            }
 
             return (
               <Paper className={boardStyle}>

@@ -2,21 +2,31 @@ import React from 'react'
 
 import { Subscribe } from '@cc98/state'
 
-import boardInstance from '@/model/board'
+import { BoardInfoStore } from '@/model/board'
 import { TopicInfoStore } from '@/model/topic'
 
 import TopicList from './TopicList'
-import Topic from '../Topic';
 
-const NewTopic: React.SFC = () =>
-  (
-    <Subscribe to={[boardInstance, TopicInfoStore]}>
-      {(b, t: TopicInfoStore) => {
-        if (!t.state.searchMes) {
-          t.init(null, 'newtopic')
-        }
+interface State {
+  topicInstance: TopicInfoStore,
+}
+export default class extends React.Component<{}, State> {
+  state: State = {
+    topicInstance: new TopicInfoStore(),
+  }
 
-        return <TopicList boards={b.state.boardData} topicInstance={t} />
-      }}
-    </Subscribe >)
-export default NewTopic
+  render() {
+    const { topicInstance } = this.state
+
+    return (
+      <Subscribe to={[BoardInfoStore, topicInstance]}>
+        {(b: BoardInfoStore) => {
+          if (!topicInstance.state.searchMes) {
+            topicInstance.init(null, 'newtopic')
+          }
+
+          return <TopicList boards={b.state.boardData} topicInstance={topicInstance} />
+        }}
+      </Subscribe >)
+  }
+}

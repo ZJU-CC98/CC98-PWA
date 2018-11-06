@@ -62,9 +62,7 @@ export class TopicInfoStore extends Container<State> {
    */
   setSearchMes(id: string | null, place: string) {
     this.put(
-      state => {
-        state.searchMes = { id, place }
-      }
+      state => state.searchMes =  { id, place }
     )
   }
 
@@ -177,12 +175,13 @@ export class TopicInfoStore extends Container<State> {
           }))
       } else {
         res.fail().succeed(
-          data => this.put(state => {
-            state.topics = state.topics.concat(data)
-            state.isEnd = data.length !== 20
-            state.isLoading = false
-            state.from += data.length
-          })
+          data =>
+            this.put(state => {
+              state.topics = state.topics.concat(data)
+              state.isEnd = data.length !== 20
+              state.isLoading = false
+              state.from += data.length
+            })
         )
       }
 

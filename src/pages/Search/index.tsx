@@ -1,6 +1,7 @@
 import React from 'react'
 import { css } from 'react-emotion'
 
+import { Subscribe } from '@cc98/state';
 import { TopicInfoStore } from '@/model/topic';
 
 import { Button, List, Paper } from '@material-ui/core'
@@ -10,13 +11,10 @@ import SearchInput from 'react-search-input'
 import InfiniteList from '@/components/InfiniteList'
 import TopicItem from '@/components/TopicItem'
 
-import { GET } from '@/utils/fetch'
-import { ITopic } from '@cc98/api'
-import { Subscribe } from '@cc98/state';
-
 interface State {
   searchTerm: string
   view: boolean
+  topicInstance: TopicInfoStore
 }
 
 const root = css`
@@ -28,6 +26,7 @@ export default class extends React.Component<{}, State> {
   state: State = {
     searchTerm: '',
     view: false,
+    topicInstance: new TopicInfoStore(),
   }
 
   searchUpdated = (term: string) => {
@@ -35,14 +34,15 @@ export default class extends React.Component<{}, State> {
   }
 
   render() {
+    const { topicInstance } = this.state
 
     return (
-      <Subscribe to={[TopicInfoStore]}>
-        {(topicInstance: TopicInfoStore) => {
-          const { getTopics, reset } = topicInstance
+      <Subscribe to={[topicInstance]}>
+        {() => {
+          const { getTopics, reset, init } = topicInstance
           const { isLoading, isEnd, topics, searchMes } = topicInstance.state
           if (!searchMes) {
-            topicInstance.init(null, 'search')
+            init(null, 'search')
           }
 
           return (<div className={root}>
@@ -52,6 +52,7 @@ export default class extends React.Component<{}, State> {
               variant="outlined"
               onClick={() => {
                 reset()
+                init(null, 'search')
                 getTopics(null, 'search', this.state.searchTerm)
                 this.setState({ view: true })
               }}

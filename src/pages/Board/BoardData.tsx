@@ -24,6 +24,9 @@ interface Props {
   id: string
   classes: ClassNameMap
 }
+interface State {
+  topicInstance: TopicInfoStore
+}
 // interface State {
 //   board: IBoard | null
 //   topics: ITopic[]
@@ -62,19 +65,17 @@ const boardStyle = css`
 `
 
 export default withStyles(styles)(
-  class extends React.PureComponent<Props, {}> {
-    // componentDidMount() {
-    //   topicInstance.init(this.props.id, 'inboard')
-    //   topicInstance.put(state => (state.itags = this.props.tags))
-    // }
-    // componentWillUnmount() {
-    //   topicInstance.reset()
-    // }
+  class extends React.PureComponent<Props, State> {
+    state: State = {
+      topicInstance: new TopicInfoStore(),
+    }
 
     render() {
+      const { topicInstance } = this.state
+
       return (
-        <Subscribe to={[BoardInfoStore, TopicInfoStore]}>
-          {(boardInstance: BoardInfoStore, topicInstance: TopicInfoStore) => {
+        <Subscribe to={[BoardInfoStore, topicInstance]}>
+          {(boardInstance: BoardInfoStore) => {
             const { topics, isLoading, isEnd, board, tag1, tag2, tags, searchMes }
               = topicInstance.state
             const { classes } = this.props

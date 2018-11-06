@@ -1,7 +1,9 @@
-import global, { GlobalContainer } from '@/model/global';
-import { IUser } from '@cc98/api';
-import { Subscribe } from '@cc98/state';
 import React from 'react';
+
+import { Subscribe } from '@cc98/state';
+
+import global, { GlobalContainer } from '@/model/global';
+
 import EditContainer from './Edit';
 
 export default class extends React.Component<{}, {}> {

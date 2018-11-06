@@ -1,10 +1,12 @@
-import { css, cx } from 'emotion'
 import React from 'react'
-import Utils from './PostUtils'
+
+import { css, cx } from 'emotion'
+import { navigate } from '@reach/router'
+
 import { PostInfoStore } from '@/model/post'
-import resolveMarkdown from '@/services/resolveMarkdown'
-import { IBasicUser, IPost, IUser } from '@cc98/api'
 import UBB from '@cc98/ubb-react'
+
+import Utils from './PostUtils'
 import {
   Avatar,
   Button,
@@ -16,17 +18,27 @@ import {
   Divider,
   IconButton,
   Typography,
+  Menu,
+  MenuItem,
+  Paper,
+  Table,
+  TableHead,
+  TableCell,
+  TableRow,
+  TableBody,
+  Tab
 } from '@material-ui/core'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import Paper from '@material-ui/core/Paper'
+
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Quote from '@material-ui/icons/RotateLeft'
 import DislikeIcon from '@material-ui/icons/ThumbDown'
 import LikeIcon from '@material-ui/icons/ThumbUp'
-import { navigate } from '@reach/router'
+
+import resolveMarkdown from '@/services/resolveMarkdown'
+import { IBasicUser, IPost, IUser } from '@cc98/api'
+
 const root = css`
   margin-top: 6px;
   background-color: #ccc;
@@ -143,10 +155,6 @@ const styles: StyleRules = {
     width: '25px',
     height: '25px',
   },
-  awardContentRoot: {
-    paddingBottom: '0px',
-    paddingTop: '8px',
-  },
   awardAction: {
     height: '30px',
     fontSize: '0.8rem',
@@ -159,6 +167,9 @@ const styles: StyleRules = {
     width: '80%',
     height: '30px',
   },
+  tableRoot:{
+    width: '100%',
+  },
 }
 
 const contentRoot = css`&&{
@@ -170,6 +181,11 @@ const postOptionStyle = css`
   display: flex;
   justify-content: center;
 `
+const awardContentRoot = css`&&{
+  padding-bottom: 8px;
+  padding-top: 8px;
+}`
+
 export default withStyles(styles)(
   class extends React.Component<Props, State> {
     state: State = {
@@ -385,51 +401,57 @@ export default withStyles(styles)(
             postInfo.awards.length <= 5 &&
             Object.keys(awardUserMap).length !== 0 && (
               <Collapse in={true} timeout="auto" unmountOnExit>
-                {postInfo.awards.length !== 0 &&
-                  Object.keys(awardUserMap).length !== 0 &&
-                  postInfo.awards.map(award => (
-                    <CardContent key={award.id} classes={{ root: classes.awardContentRoot }}>
-                      <div className={Row}>
-                        <div className={Left}>
-                          <Avatar
-                            src={awardUserMap[award.operatorName].portraitUrl}
-                            classes={{ root: classes.awardAvatar }}
-                          />
-                          <Typography style={{ marginLeft: '1rem' }}>
-                            {award.operatorName}
-                          </Typography>
-                        </div>
+                <CardContent>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>评分人</TableCell>
+                        <TableCell>操作内容</TableCell>
+                        <TableCell>理由</TableCell>
+                      </TableRow>
+                    </TableHead>
 
-                        <Typography className={Middle}>{award.content}</Typography>
-                        <Typography className={Right}>{award.reason}</Typography>
-                      </div>
-                    </CardContent>
-                  ))}
+                    <TableBody>
+                      {postInfo.awards.length !== 0 &&
+                        Object.keys(awardUserMap).length !== 0 &&
+                        postInfo.awards.map(award => (
+                          <TableRow key={award.id} className={row}>
+                          <TableCell className={left}>{award.operatorName}</TableCell>
+                          <TableCell className={middle}>{award.content}</TableCell>
+                          <TableCell className={right}>{award.reason}</TableCell>
+                        </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
               </Collapse>
             )}
           {postInfo.awards.length > 5 &&
             Object.keys(awardUserMap).length !== 0 && (
               <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                {postInfo.awards.length !== 0 &&
-                  Object.keys(awardUserMap).length !== 0 &&
-                  postInfo.awards.map(award => (
-                    <Paper>
-                      <CardContent key={award.id} classes={{ root: classes.awardContentRoot }}>
-                        <div className={Row}>
-                          <div className={Left}>
-                            <Avatar
-                              src={awardUserMap[award.operatorName].portraitUrl}
-                              classes={{ root: classes.awardAvatar }}
-                            />
-                            <div style={{ marginLeft: '1rem' }}>{award.operatorName}</div>
-                          </div>
+                 <CardContent>
+                  <Table>
+                    <TableHead>
+                      <TableRow className={row}>
+                        <TableCell className={left}>评分人</TableCell>
+                        <TableCell className={middle}>操作内容</TableCell>
+                        <TableCell className={right}>理由</TableCell>
+                      </TableRow>
+                    </TableHead>
 
-                          <div className={Middle}>{award.content}</div>
-                          <div className={Right}>{award.reason}</div>
-                        </div>
-                      </CardContent>
-                    </Paper>
-                  ))}
+                    <TableBody>
+                      {postInfo.awards.length !== 0 &&
+                        Object.keys(awardUserMap).length !== 0 &&
+                        postInfo.awards.map(award => (
+                          <TableRow key={award.id} className={row}>
+                            <TableCell className={left}>{award.operatorName}</TableCell>
+                            <TableCell className={middle}>{award.content}</TableCell>
+                            <TableCell className={right}>{award.reason}</TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
               </Collapse>
             )}
         </Card>
@@ -438,23 +460,21 @@ export default withStyles(styles)(
   }
 )
 
-const Row = css`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  font-size: 0.8rem;
-  opacity: 0.54;
-`
-
-const Left = css`
-  display: flex;
+const left = css`&&{
   min-width: 8rem;
-  align-items: center;
-`
-const Middle = css`
+  white-space:nowrap;
+  padding: 0 0 0 0;
+}`
+const middle = css`&&{
   min-width: 5rem;
-`
-const Right = css`
+  white-space:nowrap;
+  padding: 0 0 0 0;
+}`
+const right = css`&&{
   flex-grow: 2;
-`
+  padding: 0 0 0 0;
+}`
+const row = css`&&{
+  padding: 0 0 0 0;
+  height:30px;
+}`

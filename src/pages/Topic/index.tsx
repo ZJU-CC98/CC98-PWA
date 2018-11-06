@@ -1,9 +1,13 @@
+import React from 'react'
+
+import { Subscribe } from '@cc98/state'
+
 import { BoardInfoStore } from '@/model/board'
 import global, { GlobalContainer } from '@/model/global'
 import { PostInfoStore } from '@/model/post'
-import { Subscribe } from '@cc98/state'
-import React from 'react'
+
 import Topic from './Topic'
+
 interface Props {
   topicId: string
   postId: string

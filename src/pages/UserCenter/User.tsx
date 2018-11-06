@@ -1,21 +1,29 @@
-import boardInstance, { BoardInfoStore } from '@/model/board'
-import { DELETE, PUT } from '@/utils/fetch'
-import { IUser } from '@cc98/api'
-import { Subscribe } from '@cc98/state'
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-import CardHeader from '@material-ui/core/CardHeader'
-import Divider from '@material-ui/core/Divider'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Paper from '@material-ui/core/Paper'
-import { StyleRules, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+import React from 'react'
+
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
-import React from 'react'
+import { Subscribe } from '@cc98/state'
+
+import boardInstance, { BoardInfoStore } from '@/model/board'
+
+import {
+  Avatar,
+  Button,
+  CardHeader,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Paper
+} from '@material-ui/core'
+import { StyleRules, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+
 import Topics from './Topics'
+
+import { DELETE, PUT } from '@/utils/fetch'
+import { IUser } from '@cc98/api'
+
 interface Props {
   info: IUser
   isUserCenter: boolean

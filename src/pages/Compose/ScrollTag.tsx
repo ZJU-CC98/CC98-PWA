@@ -1,10 +1,12 @@
+import React from 'react'
+
+import { css } from 'emotion'
+
 import toast from '@/utils/Toast'
 import {
   Chip,
-  SnackbarContent,
 } from '@material-ui/core'
-import { css } from 'emotion'
-import React from 'react'
+
 interface TagType {
   id: number,
   name: string,

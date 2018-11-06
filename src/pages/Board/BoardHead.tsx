@@ -1,16 +1,24 @@
-import { IBoard } from '@cc98/api'
-import Button from '@material-ui/core/Button'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import Paper from '@material-ui/core/Paper'
-import { StyleRules, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import Typography from '@material-ui/core/Typography'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import React from 'react'
+
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
-import React from 'react'
+
+import {
+  Button,
+  Typography,
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  Paper
+} from '@material-ui/core'
+
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+
+import { StyleRules, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+
+import { IBoard } from '@cc98/api'
+
 interface Props {
   data: IBoard | null
   classes: ClassNameMap

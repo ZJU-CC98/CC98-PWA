@@ -1,9 +1,10 @@
-import global, { GlobalContainer } from '@/model/global'
-import user, { UserInfoStore } from '@/model/user'
-import { GET } from '@/utils/fetch'
-import { IUser } from '@cc98/api'
-import { Subscribe } from '@cc98/state'
 import React from 'react'
+
+import { Subscribe } from '@cc98/state'
+
+import global from '@/model/global'
+import user, { UserInfoStore } from '@/model/user'
+
 import User from './User'
 interface Props {
   id: string | undefined

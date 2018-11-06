@@ -1,19 +1,23 @@
-import { PUT } from '@/utils/fetch'
-import { IAward, IPost } from '@cc98/api'
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import React from 'react';
+
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Tab,
+  Tabs,
+  TextField
+} from '@material-ui/core';
 import blue from '@material-ui/core/colors/blue';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import TextField from '@material-ui/core/TextField';
-import React from 'react';
+
+import { PUT } from '@/utils/fetch'
+import { IPost } from '@cc98/api'
+
 const styles: StyleRules = {
   avatar: {
     backgroundColor: blue[100],

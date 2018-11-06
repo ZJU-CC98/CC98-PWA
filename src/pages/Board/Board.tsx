@@ -1,7 +1,11 @@
-import boardInstance, { BoardInfoStore } from '@/model/board'
-import { Subscribe } from '@cc98/state'
 import React from 'react'
+
+import { Subscribe } from '@cc98/state'
+
+import boardInstance, { BoardInfoStore } from '@/model/board'
+
 import Component from './BoardData'
+
 interface Props {
   id: string
 }

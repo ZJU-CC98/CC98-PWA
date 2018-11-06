@@ -1,19 +1,19 @@
-import Editor from '@/components/Editor'
-import { GET, POST } from '@/utils/fetch'
-import toast from '@/utils/Toast/index'
+import React from 'react'
+
+import { navigate } from '@reach/router';
+
 import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
   TextField,
 } from '@material-ui/core'
-import Select from '@material-ui/core/Select'
-import { navigate } from '@reach/router';
-import { css } from 'emotion'
-import React from 'react'
+
+import Editor from '@/components/Editor'
+
 import ScrollTag from './ScrollTag'
 import TypeSelect from './TypeSelect'
+
+import toast from '@/utils/Toast/index'
+import { GET, POST } from '@/utils/fetch'
+
 interface TagType {
   id: number,
   name: string,

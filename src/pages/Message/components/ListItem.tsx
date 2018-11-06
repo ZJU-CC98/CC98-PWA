@@ -2,7 +2,13 @@
  * @author dongyansong
  * @date 2018-10-26
  */
+import React from 'react'
+import styled from 'react-emotion'
+import { navigate } from '@reach/router'
 import { Subscribe } from '@cc98/state'
+import { IRecentMessage } from '@cc98/api'
+import dayjs from 'dayjs'
+
 import {
   Avatar,
   ListItem,
@@ -10,13 +16,8 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@material-ui/core'
-import { navigate } from '@reach/router'
-import dayjs from 'dayjs'
-import React from 'react'
-import styled from 'react-emotion'
 
 import store, { UserInfoStore } from '@/model/user'
-import { IRecentMessage } from '@cc98/api'
 
 import avatar from '@/assets/9.png'
 
@@ -32,7 +33,7 @@ interface Props {
   message: IRecentMessage
 }
 
-const navigateToDetail = (userId: string) => navigate(`/messageDetail/${userId}`)
+const navigateToDetail = (userId: number) => navigate(`/messageDetail/${userId}`)
 
 const renderItem = (message: IRecentMessage, username = '', userAvatar = avatar) => (
   <ListItem button onClick={() => navigateToDetail(message.userId)}>

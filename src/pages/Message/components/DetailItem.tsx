@@ -2,15 +2,20 @@
  * @author dongyansong
  * @date 2018-10-26
  */
-import { Subscribe } from '@cc98/state'
-import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
-import dayjs from 'dayjs'
 import React from 'react'
+import { Subscribe } from '@cc98/state'
+<<<<<<< HEAD
+import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
+=======
+import { IMessageContent } from '@cc98/api'
+>>>>>>> 83d7178f1b3b84090baf080ad603547193d5b50e
+import dayjs from 'dayjs'
 import styled, { css } from 'react-emotion'
+
+import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 
 import global, { GlobalContainer } from '@/model/global'
 import user, { UserInfoStore } from '@/model/user'
-import { IMessageContent } from '@cc98/api'
 
 import avatar from '@/assets/9.png'
 

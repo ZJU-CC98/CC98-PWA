@@ -4,7 +4,7 @@
  */
 declare module '@cc98/api' {
   export interface IRecentMessage {
-    userId: string
+    userId: number
     time: string
     isRead: boolean
     lastContent: string

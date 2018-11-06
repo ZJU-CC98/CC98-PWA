@@ -29,7 +29,7 @@ export default class DetailList extends React.PureComponent<Props> {
   list = React.createRef<HTMLUListElement>()
 
   componentDidMount() {
-    store.init(this.props.id).then(this.scrollToBottom)
+    store.init(parseInt(this.props.id, 10)).then(this.scrollToBottom)
   }
 
   scrollToBottom = () => {

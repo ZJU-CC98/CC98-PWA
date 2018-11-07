@@ -44,14 +44,16 @@ export class TopicInfoStore extends Container<State> {
     super()
   }
   /**
-   * 初始化函数，设置当前topic id，获取版面、标签全局信息
+   * 初始化函数，设置当前board id，获取版面、标签全局信息
    */
   init = (id: string | null, place: string) => {
     if (id) {
       this.initBoard(id)
       this.initTag(id)
     }
-    this.initTopics(id, place)
+    if (place !== 'search') {
+      this.initTopics(id, place)
+    }
     this.setSearchMes(id, place)
   }
 
@@ -62,7 +64,7 @@ export class TopicInfoStore extends Container<State> {
    */
   setSearchMes(id: string | null, place: string) {
     this.put(
-      state => state.searchMes =  { id, place }
+      state => state.searchMes = { id, place }
     )
   }
 
@@ -151,8 +153,9 @@ export class TopicInfoStore extends Container<State> {
         break
       case 'search':
         if (searchItem) {
-          res = await GET<ITopic[]>(`topic/search?keyword=${searchItem}`, {
+          res = await GET<ITopic[]>('topic/search', {
             params: {
+              keyword: `${searchItem}`,
               from: `${this.state.from}`,
               size: '20',
             },

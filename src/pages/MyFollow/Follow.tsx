@@ -1,6 +1,8 @@
 import React from 'react'
 import { css } from 'emotion'
 
+import { TopicInfoStore } from '@/model/topic'
+
 import TopicItem from '@/components/TopicItem'
 import InfiniteList from '@/components/InfiniteList'
 
@@ -11,10 +13,12 @@ import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import { GET } from '@/utils/fetch'
 import { IBaseBoard, ITopic } from '@cc98/api'
 import getBoardName from '@/services/getBoardName'
+import Topic from '../Topic/Topic';
 
 interface Props {
   boards: IBaseBoard[]
   classes: ClassNameMap
+  topicInstance: TopicInfoStore
 }
 interface State {
   isLoading: boolean

@@ -28,6 +28,8 @@ injectGlobal`
     margin: 0;
     /* 禁止 Safari 的双击放大 */
     touch-action: manipulation;
+    /* 平滑滚动 */
+    scroll-behavior: smooth;
   }
   /* https://stackoverflow.com/questions/2781549/removing-input-background-colour-for-chrome-autocomplete */
   @keyframes autofill {

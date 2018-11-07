@@ -17,7 +17,7 @@ interface IMap<T> {
 
 interface State {
   messages: IMap<IMessageContent[] | undefined>
-  isEnd: boolean
+  isEnd: IMap<boolean>
   isLoading: boolean
   id: number
 }
@@ -27,7 +27,7 @@ let messageId = -1
 export class Detail extends Container<State> {
   state: State = {
     messages: {},
-    isEnd: false,
+    isEnd: {},
     isLoading: true,
     id: -1,
   }
@@ -36,7 +36,6 @@ export class Detail extends Container<State> {
     if (this.state.messages[id]) {
       this.put(state => {
         state.id = id
-        state.isEnd = false
       })
 
       return
@@ -55,7 +54,7 @@ export class Detail extends Container<State> {
         state.messages[id] = reverse(data)
         state.isLoading = false
         state.id = id
-        state.isEnd = data.length < 20
+        state.isEnd[id] = data.length < 20
       })
       user.getInfo(id)
     })
@@ -75,7 +74,7 @@ export class Detail extends Container<State> {
       this.put(state => {
         state.messages[this.state.id] = [...reverse(data), ...(state.messages[this.state.id] || [])]
         state.isLoading = false
-        state.isEnd = data.length < 20
+        state.isEnd[this.state.id] = data.length < 20
       })
     })
   }

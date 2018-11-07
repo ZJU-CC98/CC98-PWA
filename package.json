@@ -80,6 +80,8 @@
     ]
   },
   "husky": {
-    "hooks": {}
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

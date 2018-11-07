@@ -2,14 +2,14 @@
  * @author dongyansong
  * @date 2018-10-23
  */
-import { Subscribe } from '@cc98/state'
-import { List } from '@material-ui/core'
 import React from 'react'
+import { Subscribe } from '@cc98/state'
 
 import InfiniteList from '@/components/InfiniteList'
 import MessageStore from '@/pages/Message/model/recent'
 
-import Paper from '@material-ui/core/Paper'
+import { List, Paper } from '@material-ui/core'
+
 import ListItem from './components/ListItem'
 
 /**

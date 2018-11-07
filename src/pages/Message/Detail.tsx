@@ -25,43 +25,37 @@ interface Props {
  * @description 私信 会话列表
  * @author dongyansong
  */
-export default class DetailList extends React.PureComponent<Props> {
-  list = React.createRef<HTMLUListElement>()
+export default ({ id }: Props) => {
+  const list = React.useRef<HTMLUListElement>()
 
-  componentDidMount() {
-    store.init(parseInt(this.props.id, 10)).then(this.scrollToBottom)
-  }
+  React.useEffect(() => {
+    store
+      .init(parseInt(id, 10))
+      .then(() => list.current && window.scrollTo(0 ,list.current.scrollHeight))
+  }, [])
 
-  scrollToBottom = () => {
-    if (this.list.current) window.scrollTo(0, this.list.current.scrollHeight)
-  }
-
-  render() {
-    const { id } = this.props
-
-    return (
-      <Subscribe to={[store]}>
-        {({ state: { messages, isEnd, isLoading } }: Detail) => (
-          <>
-            <Paper>
-              <RootRef rootRef={this.list}>
-                <List>
-                  <InfiniteList
-                    loadingPosition="top"
-                    isEnd={isEnd}
-                    isLoading={isLoading}
-                    callback={store.getList}
-                  >
-                    {messages[id] &&
-                      messages[id]!.map(item => <DetailItem key={item.id} message={item} />)}
-                  </InfiniteList>
-                </List>
-              </RootRef>
-            </Paper>
-            <Editor sendCallBack={store.sendMessage} />
-          </>
-        )}
-      </Subscribe>
-    )
-  }
+  return (
+    <Subscribe to={[store]}>
+      {({ state: { messages, isEnd, isLoading } }: Detail) => (
+        <>
+          <Paper>
+            <RootRef rootRef={list}>
+              <List>
+                <InfiniteList
+                  loadingPosition="top"
+                  isEnd={isEnd[id]}
+                  isLoading={isLoading}
+                  callback={store.getList}
+                >
+                  {messages[id] &&
+                    messages[id]!.map(item => <DetailItem key={item.id} message={item} />)}
+                </InfiniteList>
+              </List>
+            </RootRef>
+          </Paper>
+          <Editor sendCallBack={store.sendMessage} />
+        </>
+      )}
+    </Subscribe>
+  )
 }

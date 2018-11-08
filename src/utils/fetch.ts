@@ -193,6 +193,44 @@ function encodeParams(params: { [key: string]: string }) {
 }
 
 /**
+ * 从本地取得 access_token，如果过期尝试刷新
+ */
+export async function getAccessToken(): Promise<string> {
+  let accessToken = getLocalStorage('access_token')
+
+  if (!accessToken) {
+    const refreshToken = getLocalStorage('refresh_token')
+
+    if (!refreshToken) {
+      return ''
+    }
+
+    const token = await getTokenByRefreshToken(<string>refreshToken)
+    token
+      .fail
+      // TODO: 添加 refresh token 过期的处理
+      ()
+      .succeed(token => {
+        const access_token = `${token.token_type} ${token.access_token}`
+        setLocalStorage('access_token', access_token, token.expires_in)
+        // refresh_token 有效期一个月
+        setLocalStorage('refresh_token', token.refresh_token, 2592000)
+
+        accessToken = access_token
+      })
+  }
+
+  return <string>accessToken
+}
+
+interface Token {
+  access_token: string
+  expires_in: number
+  refresh_token: string
+  token_type: string
+}
+
+/**
  * 使用refresh_token获取token
  * @param {string} refreshToken
  * @return {Promise<Try<Token, FetchError>>}
@@ -224,43 +262,6 @@ async function getTokenByRefreshToken(refreshToken: string): Promise<Try<Token, 
   }
 
   return Try.of<Token, FetchError>(Success.of(await response.json()))
-}
-
-/**
- * 从本地取得 access_token，如果过期尝试刷新
- */
-export async function getAccessToken(): Promise<string> {
-  let accessToken = getLocalStorage('access_token')
-
-  if (!accessToken) {
-    const refreshToken = getLocalStorage('refresh_token')
-
-    if (!refreshToken) return ''
-
-    const token = await getTokenByRefreshToken(<string>refreshToken)
-
-    token
-      .fail
-      // TODO: 添加 refresh token 过期的处理
-      ()
-      .succeed(newToken => {
-        const access_token = `${newToken.token_type} ${newToken.access_token}`
-        setLocalStorage('access_token', access_token, newToken.expires_in)
-        // refresh_token 有效期一个月
-        setLocalStorage('refresh_token', newToken.refresh_token, 2592000)
-
-        accessToken = access_token
-      })
-  }
-
-  return <string>accessToken
-}
-
-interface Token {
-  access_token: string
-  expires_in: number
-  refresh_token: string
-  token_type: string
 }
 
 /**
@@ -299,5 +300,12 @@ export async function logIn(username: string, password: string): Promise<Try<Tok
     )
   }
 
-  return Try.of<Token, FetchError>(Success.of(await response.json()))
+  const token = await response.json()
+
+  const access_token = `${token.token_type} ${token.access_token}`
+  setLocalStorage('access_token', access_token, token.expires_in)
+  // refresh_token 有效期一个月
+  setLocalStorage('refresh_token', token.refresh_token, 2592000)
+
+  return Try.of<Token, FetchError>(Success.of(token))
 }

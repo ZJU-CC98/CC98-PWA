@@ -1,63 +1,65 @@
 import React from 'react'
+import { css } from 'emotion'
 
-import SearchInput, { createFilter } from 'react-search-input'
+import { TextField } from '@material-ui/core'
 
 import BaseBoard from './BaseBoardItem'
 import BoardItem from './BoardItem'
 
 import { IBaseBoard, IBoard } from '@cc98/api'
-const KEYS_TO_FILTERS = ['name']
+
+const searchInput = css`
+  display: flex;
+  align-items: center;
+  height: 70px;
+`
+
 interface Props {
   boards: IBoard[]
   boardList: IBaseBoard[]
 }
+
 interface State {
   // boardList: IBaseBoard[]
   isLoading: boolean
   searchTerm: string
 }
+
 export default class extends React.Component<Props, State> {
   state: State = {
-   // boardList: [],
+    // boardList: [],
     isLoading: true,
     searchTerm: '',
   }
-  searchUpdated = (term: string) =>
-    this.setState({ searchTerm: term })
 
-  async componentDidMount() {
-   // this.getBoardList()
+  searchUpdated = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      searchTerm: event.target.value,
+    })
   }
 
-  // getBoardList = async () => {
-  //   this.setState({ isLoading: true })
-  //   const baseBoardsData = await GET<IBaseBoard[]>('board/all')
-  //   baseBoardsData.map(baseBoards =>
-  //     this.setState({
-  //       isLoading: false,
-  //       boardList: baseBoards,
-  //     })
-  //   )
-  // }
-
   render() {
-    const { isLoading, searchTerm } = this.state
-    const { boardList,  boards } = this.props
-    const filteredBoards = boards.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+    const { searchTerm } = this.state
+    const { boardList, boards } = this.props
+
+    const filteredBoards = boards.filter(board => board.name.indexOf(searchTerm) !== -1)
 
     return (
-      <div>
-        <SearchInput className="search-input" onChange={this.searchUpdated} />
-        {searchTerm ? filteredBoards.map(board =>
-          (
-            <BoardItem data={board} />
-          )
-        ) : null}
+      <>
+        {/* TODO: 放右下角 */}
+        <div className={searchInput}>
+          <TextField
+            label="搜索版面名称"
+            value={this.state.searchTerm}
+            onChange={this.searchUpdated}
+            fullWidth
+          />
+        </div>
 
-        {searchTerm ? null : boardList.map((data: IBaseBoard) => (
-          <BaseBoard key={data.id} data={data} />
-        ))}
-      </div>
+        {searchTerm ? filteredBoards.map(board => <BoardItem key={board.id} data={board} />) : null}
+
+        {searchTerm ? null : boardList.map(data => <BaseBoard key={data.id} data={data} />)}
+      </>
     )
   }
 }

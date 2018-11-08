@@ -7,6 +7,7 @@ import { PostInfoStore } from '@/model/post'
 import UBB from '@cc98/ubb-react'
 
 import Utils from './PostUtils'
+
 import {
   Avatar,
   Button,
@@ -20,13 +21,11 @@ import {
   Typography,
   Menu,
   MenuItem,
-  Paper,
   Table,
   TableHead,
   TableCell,
   TableRow,
   TableBody,
-  Tab
 } from '@material-ui/core'
 
 import { StyleRules, withStyles } from '@material-ui/core/styles'
@@ -36,7 +35,7 @@ import Quote from '@material-ui/icons/RotateLeft'
 import DislikeIcon from '@material-ui/icons/ThumbDown'
 import LikeIcon from '@material-ui/icons/ThumbUp'
 
-import resolveMarkdown from '@/services/resolveMarkdown'
+import resolveMarkdown from './resolveMarkdown'
 import { IBasicUser, IPost, IUser } from '@cc98/api'
 
 const root = css`
@@ -167,7 +166,7 @@ const styles: StyleRules = {
     width: '80%',
     height: '30px',
   },
-  tableRoot:{
+  tableRoot: {
     width: '100%',
   },
 }
@@ -181,10 +180,12 @@ const postOptionStyle = css`
   display: flex;
   justify-content: center;
 `
-const awardContentRoot = css`&&{
-  padding-bottom: 8px;
-  padding-top: 8px;
-}`
+const awardContentRoot = css`
+  && {
+    padding-bottom: 8px;
+    padding-top: 8px;
+  }
+`
 
 export default withStyles(styles)(
   class extends React.Component<Props, State> {
@@ -214,10 +215,9 @@ export default withStyles(styles)(
       if (postInfo.isDeleted) {
         return null
       }
-      let text = UBB(postInfo.content)
-      if (postInfo.contentType === 1) {
-        text = resolveMarkdown(postInfo.content)
-      }
+
+      const text =
+        postInfo.contentType === 1 ? UBB(postInfo.content) : resolveMarkdown(postInfo.content)
 
       return (
         <Card square elevation={0} className={root}>
@@ -333,7 +333,8 @@ export default withStyles(styles)(
                 className={
                   // tslint:disable-next-line:ter-computed-property-spacing
                   dislikeButton[
-                  likeStateMap[postInfo.likeState] === 'dislike' ? 'clicked' : 'unclicked']
+                    likeStateMap[postInfo.likeState] === 'dislike' ? 'clicked' : 'unclicked'
+]
                 }
               />
               <span
@@ -416,10 +417,10 @@ export default withStyles(styles)(
                         Object.keys(awardUserMap).length !== 0 &&
                         postInfo.awards.map(award => (
                           <TableRow key={award.id} className={row}>
-                          <TableCell className={left}>{award.operatorName}</TableCell>
-                          <TableCell className={middle}>{award.content}</TableCell>
-                          <TableCell className={right}>{award.reason}</TableCell>
-                        </TableRow>
+                            <TableCell className={left}>{award.operatorName}</TableCell>
+                            <TableCell className={middle}>{award.content}</TableCell>
+                            <TableCell className={right}>{award.reason}</TableCell>
+                          </TableRow>
                         ))}
                     </TableBody>
                   </Table>
@@ -429,7 +430,7 @@ export default withStyles(styles)(
           {postInfo.awards.length > 5 &&
             Object.keys(awardUserMap).length !== 0 && (
               <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                 <CardContent>
+                <CardContent>
                   <Table>
                     <TableHead>
                       <TableRow className={row}>
@@ -460,21 +461,29 @@ export default withStyles(styles)(
   }
 )
 
-const left = css`&&{
-  min-width: 8rem;
-  white-space:nowrap;
-  padding: 0 0 0 0;
-}`
-const middle = css`&&{
-  min-width: 5rem;
-  white-space:nowrap;
-  padding: 0 0 0 0;
-}`
-const right = css`&&{
-  flex-grow: 2;
-  padding: 0 0 0 0;
-}`
-const row = css`&&{
-  padding: 0 0 0 0;
-  height:30px;
-}`
+const left = css`
+  && {
+    min-width: 8rem;
+    white-space: nowrap;
+    padding: 0 0 0 0;
+  }
+`
+const middle = css`
+  && {
+    min-width: 5rem;
+    white-space: nowrap;
+    padding: 0 0 0 0;
+  }
+`
+const right = css`
+  && {
+    flex-grow: 2;
+    padding: 0 0 0 0;
+  }
+`
+const row = css`
+  && {
+    padding: 0 0 0 0;
+    height: 30px;
+  }
+`

@@ -2,7 +2,7 @@ import React from 'react'
 import Toast from './toast'
 import { NotifFnData } from './type'
 interface State {
-  open: boolean,
+  open: boolean
   messageInfo?: NotifFnData | null
 }
 class ConsecutiveSnackbars extends React.Component<{}, State> {
@@ -11,40 +11,40 @@ class ConsecutiveSnackbars extends React.Component<{}, State> {
   state = {
     open: false,
     messageInfo: null,
-  };
+  }
 
   addNotice = (w: NotifFnData) => {
-    this.queue.push(w);
-    console.log(this.state.open)
+    this.queue.push(w)
+    // console.log(this.state.open)
     if (this.state.open) {
       // immediately begin dismissing current message
       // to start showing new one
-      this.setState({ open: false });
+      this.setState({ open: false })
     } else {
-      this.processQueue();
+      this.processQueue()
     }
-  };
+  }
 
   processQueue = () => {
     if (this.queue.length > 0) {
       this.setState({
         messageInfo: this.queue.shift(),
         open: true,
-      });
+      })
     }
-  };
+  }
 
   // tslint:disable-next-line:no-any
   handleClose = (event: React.SyntheticEvent<any>, reason: string) => {
     if (reason === 'clickaway') {
       return
     }
-    this.setState({ open: false });
-  };
+    this.setState({ open: false })
+  }
 
   handleExited = () => {
-    this.processQueue();
-  };
+    this.processQueue()
+  }
 
   render() {
     if (this.state.messageInfo) {
@@ -63,7 +63,7 @@ class ConsecutiveSnackbars extends React.Component<{}, State> {
       )
     }
 
-    return (<></>)
+    return <></>
   }
 }
 

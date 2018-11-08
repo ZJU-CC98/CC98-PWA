@@ -2,22 +2,20 @@ import React from 'react'
 
 import { css } from 'emotion'
 
-import toast from '@/utils/Toast'
-import {
-  Chip,
-} from '@material-ui/core'
+import toast from './Toast'
+import { Chip } from '@material-ui/core'
 
 interface TagType {
-  id: number,
-  name: string,
+  id: number
+  name: string
 }
 interface State {
-  clickTag: TagType[],
+  clickTag: TagType[]
 }
 
 interface Props {
-  tags: TagType[] | null,
-  maxTag: number,
+  tags: TagType[] | null
+  maxTag: number
   tagChange: (tag: TagType[]) => void
 }
 const taglistbox = css`
@@ -56,7 +54,7 @@ class ScrollTag extends React.Component<Props, State> {
     let ret = false
     this.state.clickTag.forEach(e => {
       if (e.id === tag.id) ret = true
-    });
+    })
 
     return ret
   }
@@ -64,11 +62,13 @@ class ScrollTag extends React.Component<Props, State> {
   handleClick = (tag: TagType) => {
     const { clickTag } = this.state
     const { maxTag, tagChange } = this.props
-    if (this.didChose(tag)) { // 取消选中表气啊
+    if (this.didChose(tag)) {
+      // 取消选中表气啊
       const stateTag = clickTag.filter(e => e.id !== tag.id)
       tagChange(stateTag)
       this.setState({ clickTag: stateTag })
-    } else { // 选中标签
+    } else {
+      // 选中标签
       if (clickTag.length > maxTag - 1) {
         toast.info({ content: `最多只能选择${maxTag}个标签` })
       } else {
@@ -85,21 +85,19 @@ class ScrollTag extends React.Component<Props, State> {
       return null
     }
 
-    return(
+    return (
       <>
         <div className={taglistbox} style={{ flex: 1, flexDirection: 'column' }}>
           <div className={scrollbox}>
             <div className={insidebox}>
-              { tags.map(tag => (
+              {tags.map(tag => (
                 <Chip
                   style={{ marginRight: '20px' }}
                   label={tag.name}
                   onClick={() => {
                     this.handleClick(tag)
                   }}
-                  color={
-                    this.didChose(tag) ? 'primary' : 'default'
-                  }
+                  color={this.didChose(tag) ? 'primary' : 'default'}
                 />
               ))}
             </div>

@@ -39,7 +39,9 @@ declare module '@cc98/api' {
      * 是否是楼主（LZ）
      */
     isLZ: boolean
-
+    /**
+     * 最后更新作者
+     */
     lastUpdateAuthor: any
     /**
      * 最后更新时间

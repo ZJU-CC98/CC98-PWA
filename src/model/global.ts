@@ -1,7 +1,7 @@
 import { Container } from '@cc98/state'
 
 import { GET, logIn } from '@/utils/fetch'
-import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/utils/storage'
+import { getLocalStorage, removeLocalStorage } from '@/utils/storage'
 import { IUser } from '@cc98/api'
 
 import user from './user'
@@ -54,12 +54,7 @@ class GlobalContainer extends Container<State> {
   LOG_IN = async (username: string, password: string) => {
     const token = await logIn(username, password)
 
-    token.fail().succeed(newToken => {
-      const access_token = `${newToken.token_type} ${newToken.access_token}`
-      setLocalStorage('access_token', access_token, newToken.expires_in)
-      // refresh_token 有效期一个月
-      setLocalStorage('refresh_token', newToken.refresh_token, 2592000)
-
+    token.fail().succeed(_ => {
       this.put(state => {
         state.isLogIn = true
       })

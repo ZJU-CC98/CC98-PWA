@@ -70,6 +70,7 @@ class InfiniteList extends React.PureComponent<Props> {
 
         {loadingPosition === 'bottom' &&
           !isEnd && (
+            // TODO: forwordRef
             <div ref={this.loadingDom}>
               <LoadingCircle />
             </div>

@@ -87,7 +87,7 @@ module.exports = {
         <img width="150" height="150" src="https://github.com/AsukaSong.png?s=150">
         <br>
         <a href="https://github.com/AsukaSong">AsukaSong</a>
-        <p>高级前端开发</p>
+        <p>高级 Webpack 配置工程师</p>
         <p>董松松松</p>
       </td>
     </tr>

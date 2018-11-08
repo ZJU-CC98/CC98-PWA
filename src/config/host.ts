@@ -27,10 +27,6 @@ const proxy: IHost = {
   type: HostType.Proxy,
 }
 
-const host = {
-  get state() {
-    return getLocalStorage('proxy') ? proxy : defaultHost
-  },
-}
+const host = getLocalStorage('proxy') ? proxy : defaultHost
 
 export default host

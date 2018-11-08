@@ -23,7 +23,7 @@ export interface FetchError {
 async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, FetchError>> {
   // const baseUrl = "https://apitest.niconi.cc"
   // const baseUrl = "https://api-v2.cc98.org"
-  const baseUrl = host.state.api
+  const baseUrl = host.api
   const requestURL = `${baseUrl}/${url}`
 
   // console.log("Fetch: " + requestURL)
@@ -243,7 +243,7 @@ async function getTokenByRefreshToken(refreshToken: string): Promise<Try<Token, 
     refresh_token: refreshToken,
   }
 
-  const response = await fetch(host.state.oauth, {
+  const response = await fetch(host.oauth, {
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -282,7 +282,7 @@ export async function logIn(username: string, password: string): Promise<Try<Tok
     scope: 'cc98-api openid offline_access',
   }
 
-  const response = await fetch(host.state.oauth, {
+  const response = await fetch(host.oauth, {
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',

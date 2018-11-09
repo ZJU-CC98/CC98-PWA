@@ -1,7 +1,6 @@
 import getTagName from '@/services/getTagName'
-import { FetchError, GET } from '@/utils/fetch'
-import { Success, Try } from '@/utils/fp/Try'
-import { getLocalStorage, setLocalStorage } from '@/utils/storage'
+import { FetchError, GET, PUT, DELETE } from '@/utils/fetch'
+import { Try } from '@/utils/fp/Try'
 import { IBoard, ITag, ITopic } from '@cc98/api'
 import { Container } from '@cc98/state'
 interface T {
@@ -12,7 +11,7 @@ interface State {
   /**
    * 设置初始化相关信息 版面id以及显示位置
    */
-  searchMes: { id: string | null, place: string } | null
+  searchMes: { id: string | null; place: string } | null
   isLoading: boolean
   isEnd: boolean
   topics: ITopic[]
@@ -63,44 +62,35 @@ export class TopicInfoStore extends Container<State> {
    * @param place 什么情况下显示的帖子列表
    */
   setSearchMes(id: string | null, place: string) {
-    this.put(
-      state => state.searchMes = { id, place }
-    )
+    this.put(state => (state.searchMes = { id, place }))
   }
 
   initBoard = async (id: string) => {
     const boardData = await GET<IBoard>(`board/${id}`)
-    boardData.map(board =>
-      this.put(state => state.board = board))
+    boardData.map(board => this.put(state => (state.board = board)))
   }
 
   initTag = async (id: string) => {
     const tagsData = await GET<ITag[]>(`board/${id}/tag`)
-    tagsData
-      .fail()
-      .succeed(
-        tags => {
-          // 初始化标签
-          if (tags.length !== 0) {
-            const tag1 = { id: -1, name: '全部' }
-            let tag2: T | null = null;
-            if (tags.length === 2) {
-              tag2 = { id: -1, name: '全部' }
-            }
-            this.put(state => {
-              state.tag1 = tag1,
-                state.tag2 = tag2,
-                state.tags = tags
-            })
-          }
+    tagsData.fail().succeed(tags => {
+      // 初始化标签
+      if (tags.length !== 0) {
+        const tag1 = { id: -1, name: '全部' }
+        let tag2: T | null = null
+        if (tags.length === 2) {
+          tag2 = { id: -1, name: '全部' }
         }
-      )
+        this.put(state => {
+          ;(state.tag1 = tag1), (state.tag2 = tag2), (state.tags = tags)
+        })
+      }
+    })
   }
 
   initTopTopics = async (id: string) => {
     const topTopicsData = await GET<ITopic[]>(`topic/toptopics?boardid=${id}`)
     topTopicsData.map(topTopics => {
-      this.put(state => state.topics = state.topics.concat(topTopics))
+      this.put(state => (state.topics = state.topics.concat(topTopics)))
     })
   }
 
@@ -114,7 +104,7 @@ export class TopicInfoStore extends Container<State> {
   getTopics = async (id: string | null, place: string, searchItem?: string) => {
     const { tag1, tag2, from } = this.state
     this.put(state => (state.isLoading = true))
-    let res: Try<ITopic[], FetchError> | null = null;
+    let res: Try<ITopic[], FetchError> | null = null
     switch (place) {
       case 'inboard':
         // 无标签
@@ -125,22 +115,21 @@ export class TopicInfoStore extends Container<State> {
               size: '20',
             },
           })
-        } else if ((tag1 && tag1.id >= 0) && (tag2 && tag2.id > 0)) {
+        } else if (tag1 && tag1.id >= 0 && (tag2 && tag2.id > 0)) {
           res = await GET(
-            `topic/search/board/${id}/tag?tag1=${tag1.id}&tag2=${tag2.id}&from=${from}&size=20`)
+            `topic/search/board/${id}/tag?tag1=${tag1.id}&tag2=${tag2.id}&from=${from}&size=20`
+          )
         } else {
-          let layer = 1;
-          let tId = 0;
+          let layer = 1
+          let tId = 0
           if (tag1 && tag1.id > 0) {
             tId = tag1.id
           }
           if (tag2 && tag2.id >= 0) {
-            layer = 2;
-            tId = tag2.id;
+            layer = 2
+            tId = tag2.id
           }
-          res =
-            await GET(
-              `topic/search/board/${id}/tag?tag${layer}=${tId}&from=${from}&size=20`)
+          res = await GET(`topic/search/board/${id}/tag?tag${layer}=${tId}&from=${from}&size=20`)
         }
         break
       case 'newtopic':
@@ -170,32 +159,32 @@ export class TopicInfoStore extends Container<State> {
       if (place === 'inboard' && !((!tag1 || tag1.id < 0) && (!tag2 || tag2.id < 0))) {
         res.fail().succeed(
           // tslint:disable-next-line:no-any
-          (data: any) => this.put(state => {
-            state.topics = state.topics.concat(data.topics)
-            state.isEnd = data.topics.length !== 20
-            state.isLoading = false
-            state.from += data.topics.length
-          }))
-      } else {
-        res.fail().succeed(
-          data =>
+          (data: any) =>
             this.put(state => {
-              state.topics = state.topics.concat(data)
-              state.isEnd = data.length !== 20
+              state.topics = state.topics.concat(data.topics)
+              state.isEnd = data.topics.length !== 20
               state.isLoading = false
-              state.from += data.length
+              state.from += data.topics.length
             })
         )
+      } else {
+        res.fail().succeed(data =>
+          this.put(state => {
+            state.topics = state.topics.concat(data)
+            state.isEnd = data.length !== 20
+            state.isLoading = false
+            state.from += data.length
+          })
+        )
       }
-
     }
   }
 
   handleChange = (index: keyof State) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { itags } = this.state;
+    const { itags } = this.state
     // tslint:disable-next-line:radix
-    const id = parseInt(event.target.value);
-    const name = getTagName(itags, id);
+    const id = parseInt(event.target.value)
+    const name = getTagName(itags, id)
     if (index === 'tag1') {
       this.put(state => {
         state.tag1 = { id, name }
@@ -214,6 +203,20 @@ export class TopicInfoStore extends Container<State> {
     }
   }
 
+  /**
+   * 关注 取关版面
+   */
+  customBoard = async (id: number, opt: number) => {
+    const url = `me/custom-board/${id}`
+    let response = null
+    if (opt === 1) {
+      response = await PUT(url)
+    } else {
+      response = await DELETE(url)
+    }
+    response.fail()
+  }
+
   reset = () => {
     const initState: State = {
       isLoading: false,
@@ -227,13 +230,11 @@ export class TopicInfoStore extends Container<State> {
       itags: [],
       searchMes: null,
     }
-    this.put(
-      state => {
-        for (const key of Object.keys(state)) {
-          state[key] = initState[key]
-        }
+    this.put(state => {
+      for (const key of Object.keys(state)) {
+        state[key] = initState[key]
       }
-    )
+    })
   }
 }
 

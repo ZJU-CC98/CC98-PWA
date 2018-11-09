@@ -76,8 +76,16 @@ export default withStyles(styles)(
       return (
         <Subscribe to={[BoardInfoStore, topicInstance]}>
           {(boardInstance: BoardInfoStore) => {
-            const { topics, isLoading, isEnd, board, tag1, tag2, tags, searchMes }
-              = topicInstance.state
+            const {
+              topics,
+              isLoading,
+              isEnd,
+              board,
+              tag1,
+              tag2,
+              tags,
+              searchMes,
+            } = topicInstance.state
             const { classes } = this.props
             if (!searchMes || searchMes.id !== this.props.id) {
               topicInstance.reset()
@@ -86,13 +94,12 @@ export default withStyles(styles)(
             }
 
             if (boardInstance.state.boardData.length === 0) {
-
               return null
             }
 
             return (
               <Paper className={boardStyle}>
-                <BoardHead data={board} />
+                {board && <BoardHead data={board} topicInstance={topicInstance} />}
                 <div>
                   {tag1 ? (
                     <FormControl

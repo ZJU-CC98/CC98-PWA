@@ -217,7 +217,7 @@ export default withStyles(styles)(
       }
 
       const text =
-        postInfo.contentType === 1 ? UBB(postInfo.content) : resolveMarkdown(postInfo.content)
+        postInfo.contentType === 0 ? UBB(postInfo.content) : resolveMarkdown(postInfo.content)
 
       return (
         <Card square elevation={0} className={root}>

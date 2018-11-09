@@ -31,7 +31,7 @@ export default ({ id }: Props) => {
   React.useEffect(() => {
     store
       .init(parseInt(id, 10))
-      .then(() => list.current && window.scrollTo(0 ,list.current.scrollHeight))
+      .then(() => list.current && window.scrollTo(0, list.current.scrollHeight))
   }, [])
 
   return (

@@ -22,8 +22,8 @@ const defaultHost: IHost = {
 }
 
 const proxy: IHost = {
-  oauth: 'https://openid0.cc98.vaynetian.com/connect/token',
-  api: 'https://api0.cc98.vaynetian.com',
+  oauth: 'https://openid1.cc98.vaynetian.com/connect/token',
+  api: 'https://api1.cc98.vaynetian.com',
   type: HostType.Proxy,
 }
 

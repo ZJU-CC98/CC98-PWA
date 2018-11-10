@@ -115,7 +115,7 @@ class LogIn extends React.Component<{}, State> {
 
         <div className={form}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="component-simple">Username</InputLabel>
+            <InputLabel htmlFor="component-simple">用户名</InputLabel>
             <Input
               id="component-simple"
               value={formField.username}
@@ -123,7 +123,7 @@ class LogIn extends React.Component<{}, State> {
             />
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
+            <InputLabel htmlFor="password">密码</InputLabel>
             <Input
               id="password"
               type="password"

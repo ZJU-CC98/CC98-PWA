@@ -89,8 +89,7 @@ export default class extends React.Component<Props, State> {
   render() {
     const { topicInfo, currentPost } = this.state
     const { postId, userId, global, postInstance } = this.props
-    const { isLoading, isEnd, posts, userMap, awardsUserMap } = postInstance.state
-
+    const { isLoading, isEnd, posts, userMap } = postInstance.state
     const isTrace = Boolean(postId) || Boolean(userId)
     if (topicInfo === null) {
       return <LoadingCircle />
@@ -106,7 +105,7 @@ export default class extends React.Component<Props, State> {
             onClose={this.handleDialogClose}
             currentPost={currentPost}
             refreshItem={(data: { id: number; content: string; reason: string }) => {
-              postInstance.updatePostAward(data, myInfo.name)
+              postInstance.updatePostAward(data, myInfo)
             }}
           />
         )}
@@ -121,7 +120,6 @@ export default class extends React.Component<Props, State> {
               postInstance={postInstance}
               openDialog={this.handleClickOpen}
               closeDialog={this.handleDialogClose}
-              awardUserMap={awardsUserMap}
             />
           ))}
         </InfiniteList>

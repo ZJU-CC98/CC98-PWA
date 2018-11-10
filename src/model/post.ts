@@ -1,6 +1,4 @@
-import getTagName from '@/services/getTagName'
 import { GET } from '@/utils/fetch'
-import { getLocalStorage, setLocalStorage } from '@/utils/storage'
 import { IAward, IBasicUser, IPost, IUser } from '@cc98/api'
 import { Container } from '@cc98/state'
 
@@ -41,57 +39,58 @@ export class PostInfoStore extends Container<State> {
   init = (id: number) => {
     this.put(state => {
       state.topicId = id
-      state.request = async () => await GET<IPost[]>(`topic/${this.state.topicId}/post`, {
-        params: {
-          from: `${this.state.from}`,
-          size: '10',
-        },
-      })
+      state.request = async () =>
+        await GET<IPost[]>(`topic/${this.state.topicId}/post`, {
+          params: {
+            from: `${this.state.from}`,
+            size: '10',
+          },
+        })
     })
   }
 
   fetchPosts = async () => {
     const { topicId, from, posts, isLoading, isEnd, request, isTrace } = this.state
     const isFirstGlance = from === 0
-    this.put(state => state.isLoading = true)
+    this.put(state => (state.isLoading = true))
     const postTry = await request()
 
     postTry.fail().succeed(async (postList: IPost[]) => {
       this.fetchUsers(postList)
-      postList.map(post => post.isHot = false)
+      postList.map(post => (post.isHot = false))
       if (isFirstGlance && !isTrace) {
         const hotPostTry = await GET<IPost[]>(`topic/${this.state.topicId}/hot-post`)
-        hotPostTry.fail()
-          .succeed(
-            async hotPostList => {
-              hotPostList.map(post => post.isHot = true)
-              let newPostList: IPost[] = []
-              newPostList.push(postList[0])
-              newPostList = newPostList.concat(hotPostList)
-              newPostList = newPostList.concat(postList.slice(1, postList.length))
-              let allAwards: IAward[] = []
-              newPostList.forEach(postItem => { allAwards = allAwards.concat(postItem.awards) })
-              const newMap = await this.fetchUsersByName(allAwards)
-              this.put(
-                state => {
-                  state.posts = newPostList,
-                    state.from = from + postList.length,
-                    state.isEnd = postList.length !== 10,
-                    state.isLoading = false,
-                    state.awardsUserMap = Object.assign({}, this.state.awardsUserMap, newMap)
-                }
-              )
-            })
+        hotPostTry.fail().succeed(async hotPostList => {
+          hotPostList.map(post => (post.isHot = true))
+          let newPostList: IPost[] = []
+          newPostList.push(postList[0])
+          newPostList = newPostList.concat(hotPostList)
+          newPostList = newPostList.concat(postList.slice(1, postList.length))
+          let allAwards: IAward[] = []
+          newPostList.forEach(postItem => {
+            allAwards = allAwards.concat(postItem.awards)
+          })
+          const newMap = await this.fetchUsersByName(allAwards)
+          this.put(state => {
+            ;(state.posts = newPostList),
+              (state.from = from + postList.length),
+              (state.isEnd = postList.length !== 10),
+              (state.isLoading = false),
+              (state.awardsUserMap = { ...this.state.awardsUserMap, ...newMap })
+          })
+        })
       } else {
         let allAwards: IAward[] = []
-        postList.forEach(postItem => { allAwards = allAwards.concat(postItem.awards) })
+        postList.forEach(postItem => {
+          allAwards = allAwards.concat(postItem.awards)
+        })
         const newMap = await this.fetchUsersByName(allAwards)
         this.put(state => {
-          state.from = from + postList.length,
-            state.posts = posts.concat(postList),
-            state.isEnd = postList.length !== 10,
-            state.isLoading = false,
-            state.awardsUserMap = Object.assign({}, this.state.awardsUserMap, newMap)
+          ;(state.from = from + postList.length),
+            (state.posts = posts.concat(postList)),
+            (state.isEnd = postList.length !== 10),
+            (state.isLoading = false),
+            (state.awardsUserMap = { ...this.state.awardsUserMap, ...newMap })
         })
       }
     })
@@ -108,9 +107,8 @@ export class PostInfoStore extends Container<State> {
     const res = await GET<IBasicUser[]>(`user/basic/name?${query}`)
     res.fail().succeed(users => {
       const userMap: State['awardsUserMap'] = {}
-      users.forEach(u =>
-        userMap[u.name] = u)
-      newMap = Object.assign({}, this.state.awardsUserMap, userMap)
+      users.forEach(u => (userMap[u.name] = u))
+      newMap = { ...this.state.awardsUserMap, ...userMap }
     })
 
     return newMap
@@ -134,13 +132,14 @@ export class PostInfoStore extends Container<State> {
       })
 
       this.put(state => {
-        state.userMap = Object.assign({}, this.state.userMap, newUsers)
+        state.userMap = { ...this.state.userMap, ...newUsers }
       })
     })
   }
-  updateSinglePosts = async<T extends Partial<IPost>>(postId: number, postUpdate: T) => {
+  updateSinglePosts = async <T extends Partial<IPost>>(postId: number, postUpdate: T) => {
     const dlist = this.state.posts.map(e => {
       if (e.id === postId) {
+        // tslint:disable-next-line:prefer-object-spread
         return Object.assign({}, e, postUpdate)
       }
 
@@ -159,7 +158,7 @@ export class PostInfoStore extends Container<State> {
   freshLatestPosts = async () => {
     const { topicId, from, posts } = this.state
 
-    this.put(state => state.isLoading = true)
+    this.put(state => (state.isLoading = true))
 
     const postTry = await GET<IPost[]>(`topic/${topicId}/post?from=${from - 10}&size=10`)
 
@@ -167,14 +166,14 @@ export class PostInfoStore extends Container<State> {
       this.fetchUsers(postList)
       const dlist = posts.slice(0, from - 10)
       this.put(state => {
-        state.posts = dlist.concat(postList),
-          state.isEnd = postList.length !== 10,
-          state.isLoading = false
+        ;(state.posts = dlist.concat(postList)),
+          (state.isEnd = postList.length !== 10),
+          (state.isLoading = false)
       })
     })
   }
 
-  updatePostAward = (data: { id: number, content: string, reason: string }, name: string) => {
+  updatePostAward = (data: { id: number; content: string; reason: string }, myInfo: IUser) => {
     const newPosts: IPost[] = JSON.parse(JSON.stringify(this.state.posts))
 
     newPosts.forEach(post => {
@@ -183,62 +182,69 @@ export class PostInfoStore extends Container<State> {
           id: 0,
           content: data.content,
           reason: data.reason,
-          operatorName: name,
+          operatorName: myInfo.name,
           time: new Date(),
           type: 1,
         })
       }
     })
 
-    this.put(state => state.posts = newPosts)
+    this.put(state => (state.posts = newPosts))
   }
-  trace = async (topicId: number, identifyId: number,
+  trace = async (
+    topicId: number,
+    identifyId: number,
     // tslint:disable-next-line:align
-    traceOrNot: boolean, isAnonymous: boolean = false) => {
+    traceOrNot: boolean,
+    isAnonymous: boolean = false
+  ) => {
     if (traceOrNot) {
       if (!isAnonymous) {
         this.put(state => {
-          state.from = 0,
-            state.request = async () => await GET<IPost[]>('post/topic/user', {
-              params: {
-                topicId: `${topicId}`,
-                userId: `${identifyId}`,
-                from: `${this.state.from}`,
-                size: '10',
-              },
-            }),
-            state.userMap = {},
-            state.posts = [],
-            state.isTrace = true
+          ;(state.from = 0),
+            (state.request = async () =>
+              await GET<IPost[]>('post/topic/user', {
+                params: {
+                  topicId: `${topicId}`,
+                  userId: `${identifyId}`,
+                  from: `${this.state.from}`,
+                  size: '10',
+                },
+              })),
+            (state.userMap = {}),
+            (state.posts = []),
+            (state.isTrace = true)
         })
       } else {
         this.put(state => {
-          state.from = 0,
-            state.request = async () => await GET<IPost[]>('post/topic/anonymous/user', {
-              params: {
-                topicId: `${topicId}`,
-                postId: `${identifyId}`,
-                from: `${this.state.from}`,
-                size: '10',
-              },
-            }),
-            state.userMap = {},
-            state.posts = [],
-            state.isTrace = true
+          ;(state.from = 0),
+            (state.request = async () =>
+              await GET<IPost[]>('post/topic/anonymous/user', {
+                params: {
+                  topicId: `${topicId}`,
+                  postId: `${identifyId}`,
+                  from: `${this.state.from}`,
+                  size: '10',
+                },
+              })),
+            (state.userMap = {}),
+            (state.posts = []),
+            (state.isTrace = true)
         })
       }
     } else {
       this.put(state => {
-        state.from = 0,
-          state.request = async () => await GET<IPost[]>(`topic/${this.state.topicId}/post`, {
-            params: {
-              from: `${this.state.from}`,
-              size: '10',
-            },
-          }),
-          state.userMap = {},
-          state.posts = [],
-          state.isTrace = false
+        ;(state.from = 0),
+          (state.request = async () =>
+            await GET<IPost[]>(`topic/${this.state.topicId}/post`, {
+              params: {
+                from: `${this.state.from}`,
+                size: '10',
+              },
+            })),
+          (state.userMap = {}),
+          (state.posts = []),
+          (state.isTrace = false)
       })
     }
 
@@ -261,16 +267,14 @@ export class PostInfoStore extends Container<State> {
       requestUrl: '',
       request: null,
       awardsUserMap: {},
-      isTrace:false,
+      isTrace: false,
     }
 
-    this.put(
-      state => {
-        for (const key of Object.keys(state)) {
-          state[key] = initState[key]
-        }
+    this.put(state => {
+      for (const key of Object.keys(state)) {
+        state[key] = initState[key]
       }
-    )
+    })
   }
 }
 

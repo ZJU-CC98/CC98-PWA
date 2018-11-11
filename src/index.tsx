@@ -49,9 +49,6 @@ injectGlobal`
   div {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
-  #root {
-    min-height: 100%;
-  }
 `
 
 ReactDOM.render(<App />, document.getElementById('root'))

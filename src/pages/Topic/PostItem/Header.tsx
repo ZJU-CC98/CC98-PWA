@@ -24,12 +24,7 @@ const postOptionStyle = css`
   display: flex;
   justify-content: center;
 `
-const awardContentRoot = css`
-  && {
-    padding-bottom: 8px;
-    padding-top: 8px;
-  }
-`
+
 export default (props: Props) => {
   const { classes, postInfo, userInfo, isTrace, trace, openDialog } = props
   const [anchorEl, setAnchorEl] = useState(null)
@@ -101,7 +96,7 @@ export default (props: Props) => {
                     trace(postInfo.topicId, postInfo.userId, false)
                     navigate(`/topic/${postInfo.topicId}`)
                   } else if (option === '编辑') {
-                    // to do
+                    // TODO:
                   } else if (option === '评分') {
                     openDialog(postInfo)
                   }

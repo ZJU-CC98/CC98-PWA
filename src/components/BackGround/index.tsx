@@ -7,6 +7,7 @@ const Background = styled(Paper)`
   position: fixed;
   width: 100%;
   height: 100%;
+  z-index: -1;
 `
 
 // 该占位符高度和 TopBar 保持一致

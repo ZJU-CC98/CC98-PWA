@@ -1,50 +1,35 @@
-import { FetchError, GET, PUT } from '@/utils/fetch'
-import { Try } from '@/utils/fp/Try'
-
+import { GET, PUT } from '@/utils/fetch'
 import { ILike, IPost } from '@cc98/api'
-type PostUtilType = ILike | null
-interface PostUtil {
-  like: (id: number) => Promise<ILike>
-}
 
-const retSucceedData = <T extends PostUtilType>(Fn: Try<T, FetchError>): T => {
-  let ret: T
-  Fn.fail().succeed(data => {
-    ret = data
-  })
-
-  // @ts-ignore TODO: 这里怎么定义呢。。。
-  return ret
-}
-export class PostUtils implements PostUtil {
-  like = async (id: number) => {
+export default {
+  like: async (id: number) => {
     const resPut = await PUT<ILike>(`/post/${id}/like`, { params: '1' })
-    // const { refreshItem } = this.props
+
     const resPost = await GET<ILike>(`/post/${id}/like`)
 
-    return retSucceedData(resPost)
-  }
+    // FIXME: error handle
+    return resPost._value._value as ILike
+  },
 
-  dislike = async (id: number) => {
+  dislike: async (id: number) => {
     const resPut = await PUT<ILike>(`/post/${id}/like`, { params: '2' })
-    // const { refreshItem } = this.props
+
     const resPost = await GET<ILike>(`/post/${id}/like`)
 
-    return retSucceedData(resPost)
-  }
+    // FIXME: error handle
+    return resPost._value._value as ILike
+  },
 
-  quote = async (post: IPost) => {
-    const content = post.content
+  quote: async (post: IPost) => {
     const time = new Date(post.time).toLocaleString()
-    const realcontent = `[quote][b]以下是引用${post.floor}楼：${
+
+    const content = `[quote][b]以下是引用${post.floor}楼：${
       post.userName
     }在${time}的发言：[color=blue]\
-    [url=/topic/${post.topicId}/#${post.floor}]>>查看原帖<<[/url][/color][/b]\
-    ${[post.content]}[/quote]\
+      [url=/topic/${post.topicId}/#${post.floor}]>>查看原帖<<[/url][/color][/b]\
+      ${[post.content]}[/quote]\
     `
 
-    return realcontent
-  }
+    return content
+  },
 }
-
-export default new PostUtils()

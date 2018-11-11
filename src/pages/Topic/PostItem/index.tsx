@@ -219,7 +219,7 @@ export default withStyles(styles)(
               <DislikeIcon
                 fontSize="small"
                 className={
-                  // tslint:disable-next-line:ter-computed-property-spacing
+                  // tslint:disable-next-line
                   dislikeButton[
                     likeStateMap[postInfo.likeState] === 'dislike' ? 'clicked' : 'unclicked'
 ]
@@ -285,9 +285,8 @@ export default withStyles(styles)(
               </IconButton>
             </CardActions>
           )}
-          {postInfo.awards.length > 0 && postInfo.awards.length <= 5 && (
-            <Award postInfo={postInfo} />
-          )}
+          {postInfo.awards.length > 0 &&
+            postInfo.awards.length <= 5 && <Award postInfo={postInfo} />}
           {postInfo.awards.length > 5 && (
             <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
               <Award postInfo={postInfo} />

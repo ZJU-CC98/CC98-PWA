@@ -4,7 +4,9 @@ import styled from 'react-emotion'
 import { Paper } from '@material-ui/core'
 
 const Background = styled(Paper)`
-  min-height: 100vh;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 `
 
 // 该占位符高度和 TopBar 保持一致
@@ -17,10 +19,11 @@ const Placeholder = styled.div`
 `
 
 const BackGround: React.SFC = ({ children }) => (
-  <Background square elevation={0}>
+  <>
+    <Background square elevation={0} />
     <Placeholder />
     {children}
-  </Background>
+  </>
 )
 
 export default BackGround

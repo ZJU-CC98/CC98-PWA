@@ -63,3 +63,29 @@ const Routes: React.SFC = () => (
 )
 
 export default Routes
+
+// 全局左滑返回
+const globalBack = {
+  clientX: 0,
+  // clientY: 0,
+}
+
+document.addEventListener(
+  'touchstart',
+  (event: TouchEvent) => {
+    globalBack.clientX = event.changedTouches[0].clientX
+  },
+  false
+)
+
+document.addEventListener(
+  'touchend',
+  (event: TouchEvent) => {
+    const moveLen = event.changedTouches[0].clientX - globalBack.clientX
+
+    if (globalBack.clientX < 120 && moveLen > 120) {
+      window.history.back()
+    }
+  },
+  false
+)

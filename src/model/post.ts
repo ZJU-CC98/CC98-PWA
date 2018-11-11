@@ -70,13 +70,12 @@ export class PostInfoStore extends Container<State> {
           newPostList.forEach(postItem => {
             allAwards = allAwards.concat(postItem.awards)
           })
-          const newMap = await this.fetchUsersByName(allAwards)
+          // const newMap = await this.fetchUsersByName(allAwards)
           this.put(state => {
-            ;(state.posts = newPostList),
-              (state.from = from + postList.length),
-              (state.isEnd = postList.length !== 10),
-              (state.isLoading = false),
-              (state.awardsUserMap = { ...this.state.awardsUserMap, ...newMap })
+            state.posts = newPostList
+            state.from = from + postList.length
+            state.isEnd = postList.length !== 10
+            state.isLoading = false
           })
         })
       } else {
@@ -84,13 +83,12 @@ export class PostInfoStore extends Container<State> {
         postList.forEach(postItem => {
           allAwards = allAwards.concat(postItem.awards)
         })
-        const newMap = await this.fetchUsersByName(allAwards)
+        // const newMap = await this.fetchUsersByName(allAwards)
         this.put(state => {
-          ;(state.from = from + postList.length),
-            (state.posts = posts.concat(postList)),
-            (state.isEnd = postList.length !== 10),
-            (state.isLoading = false),
-            (state.awardsUserMap = { ...this.state.awardsUserMap, ...newMap })
+          state.from = from + postList.length
+          state.posts = posts.concat(postList)
+          state.isEnd = postList.length !== 10
+          state.isLoading = false
         })
       }
     })
@@ -166,9 +164,9 @@ export class PostInfoStore extends Container<State> {
       this.fetchUsers(postList)
       const dlist = posts.slice(0, from - 10)
       this.put(state => {
-        ;(state.posts = dlist.concat(postList)),
-          (state.isEnd = postList.length !== 10),
-          (state.isLoading = false)
+        state.posts = dlist.concat(postList)
+        state.isEnd = postList.length !== 10
+        state.isLoading = false
       })
     })
   }
@@ -201,19 +199,19 @@ export class PostInfoStore extends Container<State> {
     if (traceOrNot) {
       if (!isAnonymous) {
         this.put(state => {
-          ;(state.from = 0),
-            (state.request = async () =>
-              await GET<IPost[]>('post/topic/user', {
-                params: {
-                  topicId: `${topicId}`,
-                  userId: `${identifyId}`,
-                  from: `${this.state.from}`,
-                  size: '10',
-                },
-              })),
-            (state.userMap = {}),
-            (state.posts = []),
-            (state.isTrace = true)
+          state.from = 0
+          state.request = async () =>
+            await GET<IPost[]>('post/topic/user', {
+              params: {
+                topicId: `${topicId}`,
+                userId: `${identifyId}`,
+                from: `${this.state.from}`,
+                size: '10',
+              },
+            })
+          state.userMap = {}
+          state.posts = []
+          state.isTrace = true
         })
       } else {
         this.put(state => {
@@ -234,17 +232,17 @@ export class PostInfoStore extends Container<State> {
       }
     } else {
       this.put(state => {
-        ;(state.from = 0),
-          (state.request = async () =>
-            await GET<IPost[]>(`topic/${this.state.topicId}/post`, {
-              params: {
-                from: `${this.state.from}`,
-                size: '10',
-              },
-            })),
-          (state.userMap = {}),
-          (state.posts = []),
-          (state.isTrace = false)
+        state.from = 0
+        state.request = async () =>
+          await GET<IPost[]>(`topic/${this.state.topicId}/post`, {
+            params: {
+              from: `${this.state.from}`,
+              size: '10',
+            },
+          })
+        state.userMap = {}
+        state.posts = []
+        state.isTrace = false
       })
     }
 

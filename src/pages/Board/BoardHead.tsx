@@ -1,22 +1,32 @@
-import { IBoard } from '@cc98/api'
-import Button from '@material-ui/core/Button'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import { StyleRules, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import Typography from '@material-ui/core/Typography'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import React, { useState } from 'react'
+
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
-import React from 'react'
+
+import { TopicInfoStore } from '@/model/topic'
+
+import {
+  Button,
+  Typography,
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  Paper,
+} from '@material-ui/core'
+
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+
+import { StyleRules, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+
+import { IBoard } from '@cc98/api'
 
 interface Props {
-  data: IBoard | null
+  data: IBoard
+  topicInstance: TopicInfoStore
+  classes: ClassNameMap
 }
-interface State {
-  isFollowed: boolean
-}
+
 const styles: StyleRules = {
   root: {
     width: '100%',
@@ -32,138 +42,124 @@ const styles: StyleRules = {
     height: '0.8rem',
   },
 }
-const BoardHeader = css`
+const boardHeader = css`
   width: 100%;
-  position:sticky;
-  top:0px;
-  z-index:1105;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  background-color:#fff;
+  position: sticky;
+  top: 0px;
+  z-index: 1105;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
 `
-const BoardTitle = css`
+const boardTitle = css`
   && {
     text-align: center;
     font-size: 1.8rem;
-    flex-grow:2;
-    display:flex;
+    flex-grow: 2;
+    display: flex;
   }
 `
-const BoardMessage = css`
+const boardMessage = css`
   display: flex;
   font-size: 1rem;
   align-items: center;
   justify-content: space-between;
-  width:100%;
-  height:100px;
+  width: 100%;
+  height: 100px;
 `
-const BoardTopicNumber = css`
-  font-size:1rem;
-  margin-right:1rem;
+const boardTopicNumber = css`
+  font-size: 1rem;
+  margin-right: 1rem;
 `
-const FollowBtnStyle = css`
+const followBtnStyle = css`
   && {
     width: 1.5rem;
     height: 0.8rem;
     margin-right: 0.4rem;
   }
 `
-const BoardMasters = css`
-  display:flex;
-  width:100%;
-  padding-left:1.5rem;
-  border-bottom:#eaeaea solid thin;
+const boardMasters = css`
+  display: flex;
+  width: 100%;
+  padding-left: 1.5rem;
+  border-bottom: #eaeaea solid thin;
 `
 const toolButton = css`
   margin-right: 1rem;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-around;
-  height:100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
 `
-export default withStyles(styles)(
-  class extends React.Component<Props & { classes: ClassNameMap }, State> {
-    state: State = {
-      isFollowed: false,
-    }
 
-    changeFollowStatus = async () => {
-      const url = ''
-    }
+export default withStyles(styles)((props: Props) => {
+  const { classes, data, topicInstance } = props
+  const [state, setState] = useState({
+    isFollowed: data.isUserCustomBoard,
+    buttonMessage: data.isUserCustomBoard ? '取关' : '关注',
+  })
+  const { isFollowed, buttonMessage } = state
+  const { id } = data
 
-    render() {
-      const { classes } = this.props;
-      const data = this.props.data
-        ? this.props.data
-        : {
-          id: 0,
-          todayCount: 0,
-          topicCount: 0,
-          postCount: 0,
-          name: '',
-          boardMasters: [],
-          description: '',
-        }
-      const { isFollowed } = this.state;
-
-      return (
-        <div className={BoardHeader}>
-
-          <div className={BoardMessage}>
-            <Button color="primary" className={BoardTitle}>{data.name}</Button>
-            <div className={BoardTopicNumber}>{data.todayCount}/{data.topicCount}</div>
-            <div className={toolButton}>
-              <Button
-                className={FollowBtnStyle}
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  navigate(`/compose/${data.id}`)
-                }}
-              >
-                发帖
-              </Button>
-              <Button
-                className={FollowBtnStyle}
-                onClick={this.changeFollowStatus}
-                variant="outlined"
-              >
-                {isFollowed ? '取关' : '关注'}
-              </Button>
-            </div>
-          </div>
-
-          <ExpansionPanel classes={{ root: classes.root, expanded: classes.expanded }}>
-            <ExpansionPanelSummary
-              classes={{ root: classes.summaryRoot }}
-              expandIcon={<ExpandMoreIcon />}
-            >
-              <Typography>
-                <Button color="primary">版面公告</Button>
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>{data.description}</ExpansionPanelDetails>
-          </ExpansionPanel>
-          <div className={BoardMasters}>
-
-            <Button size="small" color="primary">
-              版主:
-          </Button>{' '}
-            {data.boardMasters.map(master => (
-              <Button
-                key={master}
-                size="small"
-                color="primary"
-              >
-                {master}
-              </Button>
-            ))}
-          </div>
-
+  return (
+    <Paper className={boardHeader}>
+      <div className={boardMessage}>
+        <Button color="primary" className={boardTitle}>
+          {data.name}
+        </Button>
+        <div className={boardTopicNumber}>
+          {data.todayCount}/{data.topicCount}
         </div>
-      )
-    }
-  }
-)
+        <div className={toolButton}>
+          <Button
+            className={followBtnStyle}
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              navigate(`/compose/${id}`)
+            }}
+          >
+            发帖
+          </Button>
+          <Button
+            className={followBtnStyle}
+            onClick={() => {
+              topicInstance.customBoard(data.id, isFollowed ? 0 : 1)
+              setState({
+                isFollowed: !isFollowed,
+                buttonMessage: isFollowed ? '关注' : '取关',
+              })
+            }}
+            variant="outlined"
+          >
+            {buttonMessage}
+          </Button>
+        </div>
+      </div>
+
+      <ExpansionPanel classes={{ root: classes.root, expanded: classes.expanded }}>
+        <ExpansionPanelSummary
+          classes={{ root: classes.summaryRoot }}
+          expandIcon={<ExpandMoreIcon />}
+        >
+          <Typography>
+            <Button color="primary">版面公告</Button>
+          </Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>{data.description}</ExpansionPanelDetails>
+      </ExpansionPanel>
+      <div className={boardMasters}>
+        <Button size="small" color="primary">
+          版主:
+        </Button>{' '}
+        {data.boardMasters.map(master => (
+          <Button key={master} size="small" color="primary">
+            {master}
+          </Button>
+        ))}
+      </div>
+    </Paper>
+  )
+})

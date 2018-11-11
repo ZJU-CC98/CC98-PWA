@@ -1,22 +1,20 @@
-import Editor from '@/components/Editor'
-import { GET, POST } from '@/utils/fetch'
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  TextField,
-} from '@material-ui/core'
-import Select from '@material-ui/core/Select'
-import { navigate } from '@reach/router';
-import { css } from 'emotion'
 import React from 'react'
+
+import { navigate } from '@reach/router'
+
+import { TextField } from '@material-ui/core'
+
+import Editor from '@/components/Editor'
+
 import ScrollTag from './ScrollTag'
 import TypeSelect from './TypeSelect'
 
+import toast from './Toast'
+import { GET, POST } from '@/utils/fetch'
+
 interface TagType {
-  id: number,
-  name: string,
+  id: number
+  name: string
 }
 const labelStyle = {
   paddingLeft: '15px',
@@ -25,19 +23,19 @@ const baseInputStyle = {
   padding: '0px 15px 0px 15px',
 }
 interface State {
-  picList: FileList | null,
-  title: string,
-  topicType: string,
-  tag: TagType[],
-  chosenTag: TagType[],
+  picList: FileList | null
+  title: string
+  topicType: string
+  tag: TagType[]
+  chosenTag: TagType[]
 }
 interface Props {
-  boardId: string,
+  boardId: string
 }
 
 interface BoradTag {
-  layer: number,
-  tags: TagType[],
+  layer: number
+  tags: TagType[]
 }
 
 class Compose extends React.Component<Props, State> {
@@ -55,7 +53,6 @@ class Compose extends React.Component<Props, State> {
   }
 
   async post(boardId: string, title: string, content: string, tags?: TagType[]) {
-
     let postTag = {}
     let i = 0
     if (tags) {
@@ -74,31 +71,30 @@ class Compose extends React.Component<Props, State> {
       type: 0,
       topicType: this.state.topicType,
       ...postTag,
-    };
-    const url = `/board/${boardId}/topic`;
+    }
+    const url = `/board/${boardId}/topic`
     const response = await POST(url, { params: data })
-    response
-      .fail()
-      .succeed(topicId => {
-        navigate(`/topic/${topicId}`)
+    response.fail().succeed(topicId => {
+      navigate(`/topic/${topicId}`)
 
-        return
-      })
+      return
+    })
   }
 
   async getTag(boardId: string) {
     const url = `board/${boardId}/tag`
     const res = await GET<BoradTag[]>(url)
     let ret: TagType[] = []
-    res.fail().succeed(data => { ret = data[0].tags })
+    res.fail().succeed(data => {
+      ret = data[0].tags
+    })
 
     return ret
   }
 
-  bindText = (event: React.ChangeEvent<HTMLInputElement
-                      | HTMLTextAreaElement
-                      | HTMLSelectElement>
-              ) => {
+  bindText = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     this.setState({
       title: event.target.value,
     })
@@ -110,31 +106,36 @@ class Compose extends React.Component<Props, State> {
 
   sendCallBack = (content: string, files?: string[]) => {
     // console.log(files)
+    if (this.state.title === '') {
+      toast.error({ content: '请填写标题～(￣▽￣～)(～￣▽￣)～ ' })
+
+      return
+    }
+
     let realContent: string
     if (files) {
-      const imgString = files.map(e => (` \n [img]${e}[/img]`)).join(' ')
+      const imgString = files.map(e => ` \n [img]${e}[/img]`).join(' ')
       realContent = content + imgString
     } else {
       realContent = content
     }
-    this.post(
-      this.props.boardId,
-      this.state.title,
-      realContent,
-      this.state.chosenTag
-    )
+    this.post(this.props.boardId, this.state.title, realContent, this.state.chosenTag)
   }
 
   render() {
     const { tag } = this.state
-    const tagDom = (tag.length === 0) ? <></> : (
-    <ScrollTag
-      maxTag={2}
-      tags={this.state.tag}
-      tagChange={tags => {
-        this.setState({ chosenTag: tags })
-      }}
-    />)
+    const tagDom =
+      tag.length === 0 ? (
+        <></>
+      ) : (
+        <ScrollTag
+          maxTag={2}
+          tags={this.state.tag}
+          tagChange={tags => {
+            this.setState({ chosenTag: tags })
+          }}
+        />
+      )
 
     return (
       <>
@@ -154,14 +155,9 @@ class Compose extends React.Component<Props, State> {
           }}
           margin="normal"
         />
-        <TypeSelect
-          onChange={this.bindType}
-          topicType={this.state.topicType}
-        />
+        <TypeSelect onChange={this.bindType} topicType={this.state.topicType} />
         {tagDom}
-        <Editor
-          sendCallBack={this.sendCallBack}
-        />
+        <Editor sendCallBack={this.sendCallBack} />
       </>
     )
   }

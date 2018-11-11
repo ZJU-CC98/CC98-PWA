@@ -1,7 +1,7 @@
 import { Container } from '@cc98/state'
 
 import { GET, logIn } from '@/utils/fetch'
-import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/utils/storage'
+import { getLocalStorage, removeLocalStorage } from '@/utils/storage'
 import { IUser } from '@cc98/api'
 
 import user from './user'
@@ -19,6 +19,10 @@ interface State {
    * 个人账户信息
    */
   myInfo: IUser | null
+  /**
+   * 主题
+   */
+  theme: 'light' | 'dark'
 }
 
 class GlobalContainer extends Container<State> {
@@ -26,14 +30,15 @@ class GlobalContainer extends Container<State> {
     isDrawerOpen: false,
     isLogIn: !!getLocalStorage('refresh_token'),
     myInfo: null,
+    theme: 'light',
   }
 
   constructor() {
     super()
-    this.freshInfo()
+    this.FRESH_INFO()
   }
 
-  async freshInfo() {
+  FRESH_INFO = async () => {
     if (!this.state.isLogIn) return
 
     const myInfo = await GET<IUser>('me')
@@ -46,26 +51,21 @@ class GlobalContainer extends Container<State> {
     })
   }
 
-  async logIn(username: string, password: string) {
+  LOG_IN = async (username: string, password: string) => {
     const token = await logIn(username, password)
 
-    token.fail().succeed(newToken => {
-      const access_token = `${newToken.token_type} ${newToken.access_token}`
-      setLocalStorage('access_token', access_token, newToken.expires_in)
-      // refresh_token 有效期一个月
-      setLocalStorage('refresh_token', newToken.refresh_token, 2592000)
-
+    token.fail().succeed(_ => {
       this.put(state => {
         state.isLogIn = true
       })
     })
 
-    this.freshInfo()
+    this.FRESH_INFO()
 
     return token
   }
 
-  logOut() {
+  LOG_OUT = () => {
     removeLocalStorage('access_token')
     removeLocalStorage('refresh_token')
 
@@ -74,16 +74,27 @@ class GlobalContainer extends Container<State> {
     })
   }
 
-  openDrawer() {
+  OPEN_DRAWER = () => {
     this.put(state => {
       state.isDrawerOpen = true
     })
   }
 
-  closeDrawer() {
+  CLOSE_DRAWER = () => {
     this.put(state => {
       state.isDrawerOpen = false
     })
+  }
+
+  CHANGE_THEME = () => {
+    switch (this.state.theme) {
+      case 'light':
+        this.put(state => (state.theme = 'dark'))
+        break
+      case 'dark':
+        this.put(state => (state.theme = 'light'))
+        break
+    }
   }
 }
 

@@ -1,13 +1,17 @@
-import { IBoard } from '@cc98/api'
-import Button from '@material-ui/core/Button'
-import { navigate } from '@reach/router'
 import React from 'react'
+
+import { navigate } from '@reach/router'
 import { css } from 'react-emotion'
+
+import Button from '@material-ui/core/Button'
+
+import { IBoard } from '@cc98/api'
+
 interface Props {
   data: IBoard
 }
 
-const CardStyle = css`
+const cardStyle = css`
   && {
     margin: 0.25rem 0.25rem 0.25rem 0.25rem;
     font-size: 0.8rem;
@@ -26,10 +30,9 @@ export default class extends React.PureComponent<Props> {
     return (
       <Button
         onClick={() => navigate(`/board/${data.id}`)}
-        className={CardStyle}
+        className={cardStyle}
         variant="outlined"
       >
-        {' '}
         {data.name}
       </Button>
     )

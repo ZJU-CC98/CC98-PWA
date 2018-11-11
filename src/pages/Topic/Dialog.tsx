@@ -1,19 +1,23 @@
-import { PUT } from '@/utils/fetch'
-import { IPost } from '@cc98/api'
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import React from 'react';
+
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Tab,
+  Tabs,
+  TextField
+} from '@material-ui/core';
 import blue from '@material-ui/core/colors/blue';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import TextField from '@material-ui/core/TextField';
-import React from 'react';
+
+import { PUT } from '@/utils/fetch'
+import { IPost } from '@cc98/api'
+
 const styles: StyleRules = {
   avatar: {
     backgroundColor: blue[100],
@@ -27,6 +31,7 @@ interface Props {
   onClose: () => void
   open: boolean
   currentPost: IPost
+  refreshItem: (data: { id: number, content: string, reason: string }) => void
 }
 interface State {
   value: number
@@ -36,7 +41,7 @@ interface State {
 export default withStyles(styles)(
   class extends React.Component<Props & { classes: ClassNameMap }, State> {
     state: State = {
-      value: 0,
+      value: 1,
       text: '',
     }
     handleClose = () => {
@@ -61,7 +66,14 @@ export default withStyles(styles)(
         },
       })
       request.fail()
-        .succeed(() => this.props.onClose)
+        .succeed(() => {
+          this.props.onClose()
+          this.props.refreshItem({
+            id: this.props.currentPost.id,
+            reason: this.state.text,
+            content: this.state.value === 1 ? '风评值+1' : '风评值-1',
+          })
+        })
     }
 
     render() {

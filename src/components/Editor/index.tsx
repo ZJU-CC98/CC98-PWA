@@ -1,7 +1,7 @@
-import { uploadFile } from '@/utils/fileHandle'
-
+import global, { GlobalContainer } from '@/model/global'
+import { uploadFile } from './fileHandle'
+import { Subscribe } from '@cc98/state'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
 import React from 'react'
 import ImageList from './ImageList'
@@ -14,15 +14,18 @@ interface Props {
    * content为文本内容
    * files是已经上传好的图片url列表
    */
-  sendCallBack: (content: string, files?: string[]) => void,
-  maxHeight?: number,
+  sendCallBack: (content: string, files?: string[]) => void
+  maxHeight?: number
   replyMode?: boolean
+  defaultContent?: string
+  content?: string
 }
 
 interface State {
-  showPicList: SPL[],
-  content: string,
+  showPicList: SPL[]
   sendLoading: boolean
+  content: string
+  lastDefaultContent?: string | null
 }
 
 const imgListStyle = {
@@ -48,16 +51,16 @@ const styles: StyleRules = {
 }
 
 function randomString(l: number) {
-  const len = l || 32;
-  const $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+  const len = l || 32
+  const $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
   /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
-  const maxPos = $chars.length;
-  let pwd = '';
+  const maxPos = $chars.length
+  let pwd = ''
   for (let i = 0; i < len; i += 1) {
-    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
   }
 
-  return pwd;
+  return pwd
 }
 export default withStyles(styles)(
   class Editor extends React.Component<Props & { classes: ClassNameMap }, State> {
@@ -65,6 +68,18 @@ export default withStyles(styles)(
       showPicList: [],
       content: '',
       sendLoading: false,
+      lastDefaultContent: null,
+    }
+
+    static getDerivedStateFromProps(props: Props, state: State) {
+      if (props.defaultContent !== state.lastDefaultContent) {
+        return {
+          content: props.defaultContent,
+          lastDefaultContent: props.defaultContent,
+        }
+      }
+
+      return null
     }
 
     uploadPic = (event: EventTarget & HTMLInputElement) => {
@@ -95,7 +110,7 @@ export default withStyles(styles)(
     deletePic = (id: string): void => {
       const { showPicList } = this.state
       this.setState({
-        showPicList: showPicList.filter((e: SPL) => (e.id !== id)),
+        showPicList: showPicList.filter((e: SPL) => e.id !== id),
       })
     }
 
@@ -105,10 +120,11 @@ export default withStyles(styles)(
       })
     }
 
-    onPost = async() => {
+    onPost = async () => {
       const { sendCallBack } = this.props
       const urlList = await this.postPicAndCall()
       sendCallBack(this.state.content, urlList)
+      this.setState({ content: '' })
     }
 
     postPicAndCall = async () => {
@@ -135,22 +151,30 @@ export default withStyles(styles)(
       const { showPicList } = this.state
 
       return (
-        <>
-          <TextBase
-            onChange={this.bindText}
-            replyMode={replyMode}
-          />
-          <ImageList
-            replyMode={replyMode}
-            imgList={showPicList}
-            deletePic={this.deletePic}
-          />
-          <ToolBar
-            sendLoading={this.state.sendLoading}
-            handlePic={this.uploadPic}
-            onPost={this.onPost}
-          />
-        </>
+        <Subscribe to={[global]}>
+          {(g: GlobalContainer) => (
+            <>
+              <TextBase
+                onChange={this.bindText}
+                replyMode={replyMode}
+                content={this.state.content}
+                theme={g.state.theme}
+              />
+              <ImageList
+                replyMode={replyMode}
+                imgList={showPicList}
+                deletePic={this.deletePic}
+                theme={g.state.theme}
+              />
+              <div style={{ height: '55px', width: '100%' }} />
+              <ToolBar
+                sendLoading={this.state.sendLoading}
+                handlePic={this.uploadPic}
+                onPost={this.onPost}
+              />
+            </>
+          )}
+        </Subscribe>
       )
     }
   }

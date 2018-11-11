@@ -1,20 +1,29 @@
-import boardInstance, { BoardInfoStore } from '@/model/board'
-import { DELETE, PUT } from '@/utils/fetch'
-import { ITopic, IUser } from '@cc98/api'
-import { Subscribe } from '@cc98/state'
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-import CardHeader from '@material-ui/core/CardHeader'
-import Divider from '@material-ui/core/Divider'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import { StyleRules, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+import React from 'react'
+
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
-import React from 'react'
+import { Subscribe } from '@cc98/state'
+
+import boardInstance, { BoardInfoStore } from '@/model/board'
+
+import {
+  Avatar,
+  Button,
+  CardHeader,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Paper
+} from '@material-ui/core'
+import { StyleRules, withStyles } from '@material-ui/core/styles'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+
 import Topics from './Topics'
+
+import { DELETE, PUT } from '@/utils/fetch'
+import { IUser } from '@cc98/api'
+
 interface Props {
   info: IUser
   isUserCenter: boolean
@@ -48,38 +57,39 @@ const styles: StyleRules = {
   primary: {
     width: '5rem',
     marginRight: '2rem',
-    color: 'rgba(0, 0, 0, 0.54)',
+    opacity: 0.54,
     fontSize: '0.8rem',
   },
   secondary: {
-    color: 'rgba(0, 0, 0, 0.87)',
+    opacity: 0.54,
   },
 }
-const UserNameStyle = css`
+const userNameStyle = css`
   && {
     font-size: 1.5rem;
   }
 `
-const UserStyle = css`
+const userStyle = css`
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
   justify-content: center;
 `
-const OptionStyle = css`
+const optionStyle = css`
   && {
     width: 100%;
   }
 `
-const ActionStyle = css`
-  display:flex;
-  justify-content:flex-end;
+const actionStyle = css`
+  display: flex;
+  justify-content: flex-end;
 `
-const BtnStyle = css`&&{
-  margin-right:10px;
-  margin-left:10px;
-}
+const btnStyle = css`
+  && {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
 `
 interface State {
   buttonInfo: string
@@ -92,7 +102,7 @@ interface ClassNameProps {
 export default withStyles(styles)(
   class extends React.Component<Props & ClassNameProps, State> {
     constructor(props: Props & ClassNameProps) {
-      super(props);
+      super(props)
       this.state = {
         buttonInfo: props.info.isFollowing ? '取关' : '关注',
         disabled: false,
@@ -100,24 +110,24 @@ export default withStyles(styles)(
       }
     }
     changeFollowStatus = async () => {
-      const { info } = this.props;
-      const { isFollowing } = this.state;
+      const { info } = this.props
+      const { isFollowing } = this.state
       this.setState({
         buttonInfo: '...',
         disabled: true,
       })
-      const url = `/me/followee/${info.id}`;
+      const url = `/me/followee/${info.id}`
       if (isFollowing) {
-        const unfollowTry = await DELETE(url);
+        const unfollowTry = await DELETE(url)
         unfollowTry
-          .fail(
-            () => this.setState({
+          .fail(() =>
+            this.setState({
               buttonInfo: '取关失败',
               disabled: false,
             })
           )
-          .succeed(
-            () => this.setState({
+          .succeed(() =>
+            this.setState({
               buttonInfo: '关注',
               disabled: false,
               isFollowing: false,
@@ -126,14 +136,14 @@ export default withStyles(styles)(
       } else {
         const followTry = await PUT(url)
         followTry
-          .fail(
-            () => this.setState({
+          .fail(() =>
+            this.setState({
               buttonInfo: '关注失败',
               disabled: false,
             })
           )
-          .succeed(
-            () => this.setState({
+          .succeed(() =>
+            this.setState({
               buttonInfo: '取关',
               disabled: false,
               isFollowing: true,
@@ -142,22 +152,25 @@ export default withStyles(styles)(
       }
     }
     render() {
-      const { classes, info, isUserCenter } = this.props;
-      const { buttonInfo, disabled } = this.state;
+      const { classes, info, isUserCenter } = this.props
+      const { buttonInfo, disabled } = this.state
       const followBtn = (
         <Button
-          className={BtnStyle}
+          className={btnStyle}
           onClick={this.changeFollowStatus}
           disabled={disabled}
           variant="contained"
           color="primary"
-        >{buttonInfo}
+        >
+          {buttonInfo}
         </Button>
-      );
+      )
       const editBtn = (
         <Button
-          className={BtnStyle}
-          onClick={() => { navigate('userCenter/edit') }}
+          className={btnStyle}
+          onClick={() => {
+            navigate('userCenter/edit')
+          }}
           variant="contained"
           color="primary"
         >
@@ -166,21 +179,24 @@ export default withStyles(styles)(
       )
       if (info) {
         return (
-          <div className={UserStyle}>
-
+          <Paper className={userStyle}>
             <CardHeader
               className={classes.row}
               classes={{ action: classes.action }}
               avatar={<Avatar className={classes.bigAvatar} src={info.portraitUrl} />}
-              title={<div className={UserNameStyle}>{info.name}</div>}
+              title={<div className={userNameStyle}>{info.name}</div>}
               action={
-                <div className={ActionStyle}>
+                <div className={actionStyle}>
                   {isUserCenter ? editBtn : followBtn}
-                  {!isUserCenter ? <Button variant="contained" color="primary">私信</Button> : null}
+                  {!isUserCenter ? (
+                    <Button variant="contained" color="primary">
+                      私信
+                    </Button>
+                  ) : null}
                 </div>}
             />
 
-            <List className={OptionStyle}>
+            <List className={optionStyle}>
               <Divider />
               <ListItem classes={{ root: classes.itemRoot }}>
                 <ListItemText
@@ -317,13 +333,13 @@ export default withStyles(styles)(
               <Divider />
             </List>
             <Subscribe to={[boardInstance]}>
-              {
-                (store: BoardInfoStore) =>
-                  store.state.boardData.length !== 0 ?
-                  <Topics info={info} boards={store.state.boardData} /> : null
+              {(store: BoardInfoStore) =>
+                store.state.boardData.length !== 0 ? (
+                  <Topics info={info} boards={store.state.boardData} />
+                ) : null
               }
             </Subscribe>
-          </div>
+          </Paper>
         )
       }
 

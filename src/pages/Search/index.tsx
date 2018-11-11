@@ -1,92 +1,97 @@
-import InfiniteList from '@/components/InfiniteList'
-import { GET } from '@/utils/fetch'
-import { ITopic, IUser } from '@cc98/api'
-import Button from '@material-ui/core/Button'
-import List from '@material-ui/core/List'
 import React from 'react'
 import { css } from 'react-emotion'
-import SearchInput from 'react-search-input'
-import TopicItem from '../TopicItem'
+
+import { Subscribe } from '@cc98/state'
+import { TopicInfoStore } from '@/model/topic'
+
+import { TextField, Button, List, Paper } from '@material-ui/core'
+
+import InfiniteList from '@/components/InfiniteList'
+import TopicItem from '@/components/TopicItem'
+
+const root = css`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`
+
+const searchInput = css`
+  display: flex;
+  align-items: center;
+  height: 70px;
+`
 interface State {
   searchTerm: string
-  topics: ITopic[]
-  users: IUser[]
-  isLoading: boolean
-  isEnd: boolean
-  t_from: number
-  u_from: number
   view: boolean
+  topicInstance: TopicInfoStore
 }
-const Root = css`
-  display:flex;
-  flex-direction:column;
-  width:100%;
-`
+
 export default class extends React.Component<{}, State> {
   state: State = {
     searchTerm: '',
-    isLoading: false,
-    isEnd: false,
-    t_from: 0,
-    u_from: 0,
-    topics: [],
-    users: [],
     view: false,
+    topicInstance: new TopicInfoStore(),
   }
 
-  searchUpdated = (term: string) => {
-    this.setState({ searchTerm: term })
-  }
-  initTopics = async () => {
-    this.setState({
-      t_from: 0,
-      u_from: 0,
-      topics: [],
-      users: [],
-    },            () => { this.getTopics() })
-
-  }
-
-  getTopics = async () => {
-    this.setState({
-      isLoading: true,
-    })
-    const { topics, searchTerm, t_from, isLoading, isEnd } = this.state
-    const url = `topic/search?keyword=${searchTerm}&from=${t_from}&size=20`
-    const topicsTry = await GET<ITopic[]>(url)
-    topicsTry
-      .fail()
-      .succeed(
-        (topicsData: ITopic[]) => this.setState({
-          topics: topics.concat(topicsData),
-          t_from: t_from + topicsData.length,
-          isLoading: false,
-          isEnd: topicsData.length !== 20,
-          view: true,
-        })
-      )
+  searchUpdated = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ searchTerm: event.target.value })
   }
 
   render() {
-    const { topics, users, isLoading, searchTerm, isEnd, view } = this.state
+    const { searchTerm, topicInstance } = this.state
 
     return (
-      <div className={Root}>
-        <SearchInput className="search-input" onChange={this.searchUpdated} />
-        <Button color="primary" variant="outlined" onClick={() => { this.initTopics() }}>搜索</Button>
-        {view && <InfiniteList
-          isLoading={isLoading}
-          isEnd={isEnd}
-          callback={this.getTopics}
-        >
-          <List>
-            {topics.map(info => (
-              <TopicItem key={info.id} data={info} place={'search'} />
-            ))}
-          </List>
-        </InfiniteList>}
-      </div>
+      <Subscribe to={[topicInstance]}>
+        {() => {
+          const { getTopics, reset, init } = topicInstance
+          const { isLoading, isEnd, topics, searchMes } = topicInstance.state
+          if (!searchMes) {
+            init(null, 'search')
+          }
 
+          return (
+            <div className={root}>
+              <div className={searchInput}>
+                <TextField
+                  label="搜索"
+                  value={searchTerm}
+                  onChange={this.searchUpdated}
+                  fullWidth
+                />
+              </div>
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={() => {
+                  reset()
+                  init(null, 'search')
+                  getTopics(null, 'search', this.state.searchTerm)
+                  this.setState({ view: true })
+                }}
+              >
+                搜索
+              </Button>
+              {this.state.view && (
+                <Paper>
+                  <InfiniteList
+                    isLoading={isLoading}
+                    isEnd={isEnd}
+                    callback={() => {
+                      getTopics(null, 'search', this.state.searchTerm)
+                    }}
+                  >
+                    <List>
+                      {topics.map(info => (
+                        <TopicItem key={info.id} data={info} place={'search'} />
+                      ))}
+                    </List>
+                  </InfiniteList>
+                </Paper>
+              )}
+            </div>
+          )
+        }}
+      </Subscribe>
     )
   }
 }

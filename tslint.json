@@ -11,7 +11,13 @@
     "import-name": false
   },
   "rules": {
+    "align": [true, "elements", "members", "parameters", "statements"],
+    "prefer-object-spread": true,
+    "array-type": [true, "array"],
+    "no-unused-variable": true,
     "indent": [true, "spaces", 2],
+    "ordered-imports": false,
+    "no-duplicate-imports": false,
     "eofline": true,
     "max-classes-per-file": [true, 1],
     "max-file-line-count": [true, 500],
@@ -46,7 +52,8 @@
     "jsx-no-multiline-js": false,
     "jsx-no-lambda": false,
     "interface-name": false,
-    "no-any": true
+    "no-any": true,
+    "function-name": false
   },
   "rulesDirectory": []
 }

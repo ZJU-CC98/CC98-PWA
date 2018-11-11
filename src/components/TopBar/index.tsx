@@ -1,24 +1,17 @@
-import version from '@/version'
-import { css } from 'emotion'
 import React from 'react'
+import { css } from 'emotion'
+
+import { Subscribe } from '@cc98/state'
+import global, { GlobalContainer } from '@/model/global'
 
 import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core'
 
 import MenuIcon from '@material-ui/icons/Menu'
 
-import global, { GlobalContainer } from '@/model/global'
-import { Subscribe } from '@cc98/state'
-
 import DrawerMenu from './DrawerMenu'
 import UserInfo from './UserInfo'
 
-const placeholder = css`
-  height: 56px;
-
-  @media (min-width: 600px) {
-    height: 64px;
-  }
-`
+import version from '@/version'
 
 const grow = css`
   flex-grow: 1;
@@ -31,47 +24,42 @@ const icon = css`
   }
 `
 
-const login = css`
+const button = css`
   && {
     margin-right: -12px;
   }
 `
 
 const TopBar: React.SFC<{
-  onOpen: () => void
-}> = ({ onOpen }) => (
-  <>
-    <AppBar position="fixed">
-      <Toolbar>
-        <IconButton className={icon} color="inherit" onClick={onOpen}>
-          <MenuIcon />
-        </IconButton>
+  onClick: () => void
+}> = ({ onClick }) => (
+  <AppBar position="fixed">
+    <Toolbar>
+      <IconButton className={icon} color="inherit" onClick={onClick}>
+        <MenuIcon />
+      </IconButton>
 
-        <Typography className={grow} color="inherit">
-          {' '}
-          CC98
-        </Typography>
+      <Typography className={grow} color="inherit">
+        CC98
+      </Typography>
 
-        <Button className={login} color="inherit" size="small">
-          {' '}
-          {version}
-        </Button>
-      </Toolbar>
-    </AppBar>
-    <div className={placeholder} />
-  </>
+      <Button className={button} color="inherit" size="small">
+        {version}
+      </Button>
+    </Toolbar>
+  </AppBar>
 )
 
 const Wrapper: React.SFC = () => (
-  <Subscribe to={[GlobalContainer]}>
+  <Subscribe to={[global]}>
     {(g: GlobalContainer) => (
       <>
-        <TopBar onOpen={() => g.openDrawer()} />
+        <TopBar onClick={g.OPEN_DRAWER} />
         <DrawerMenu
           isLogIn={g.state.isLogIn}
           open={g.state.isDrawerOpen}
-          onClose={() => g.closeDrawer()}
-          onLogout={() => g.logOut()}
+          onClose={g.CLOSE_DRAWER}
+          onLogout={g.LOG_OUT}
         >
           <UserInfo isLogIn={g.state.isLogIn} info={g.state.myInfo} />
         </DrawerMenu>

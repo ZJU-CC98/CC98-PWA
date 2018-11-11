@@ -1,12 +1,13 @@
-import { navigate } from '@reach/router'
 import React from 'react'
+import { navigate } from '@reach/router'
+
+import { List } from '@material-ui/core'
+
+import LoadingCircle from '@/components/LoadingCircle'
+import HotTopicItem from './HotTopicItem'
 
 import { GET } from '@/utils/fetch'
 import { IHotTopic } from '@cc98/api'
-
-import LoadingCircle from '@/components/LoadingCircle'
-import { List } from '@material-ui/core'
-import HotTopicItem from './HotTopicItem'
 
 interface State {
   hotTopics: IHotTopic[]

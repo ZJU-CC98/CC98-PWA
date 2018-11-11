@@ -1,7 +1,7 @@
 import { FetchError, GET } from '@/utils/fetch'
 import { Success, Try } from '@/utils/fp/Try'
 import { getLocalStorage, setLocalStorage } from '@/utils/storage'
-import { IBaseBoard, IBoard, ITag } from '@cc98/api'
+import { IBaseBoard, IBoard } from '@cc98/api'
 import { Container } from '@cc98/state'
 
 interface T {
@@ -55,7 +55,7 @@ export class BoardInfoStore extends Container<State> {
     }
 
     if (getLocalStorage('tagsInfo')) {
-      this.put(state => state.tagData = getLocalStorage('tagsInfo') as T[])
+      this.put(state => (state.tagData = getLocalStorage('tagsInfo') as T[]))
     } else {
       return this.forceGetTagInfo()
     }
@@ -90,12 +90,15 @@ export class BoardInfoStore extends Container<State> {
       cd = cd.concat(baseBoard.boards)
     }
     setLocalStorage('childBoardsInfo', cd, 3600 * 24 * 7)
-    this.put(state => { state.boardData = data; state.childBoardData = cd })
+    this.put(state => {
+      state.boardData = data
+      state.childBoardData = cd
+    })
   }
 
   setTagInfo = (data: T[]) => {
     setLocalStorage('tagsInfo', data, 3600 * 24 * 7)
-    this.put(state => state.tagData = data)
+    this.put(state => (state.tagData = data))
   }
 }
 

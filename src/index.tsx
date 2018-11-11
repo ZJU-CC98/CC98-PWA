@@ -4,28 +4,34 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import relativeTime from 'dayjs/plugin/relativeTime'
+
 import dayjs from 'dayjs'
 // @ts-ignore
 import zh from 'dayjs/locale/zh-cn'
-declare module 'dayjs' {
-  interface Dayjs {
-    fromNow(): () => void;
-  }
-}
+
 // @ts-ignore
 dayjs.locale(zh, null, false)
+// @ts-ignore
 dayjs.extend(relativeTime)
-injectGlobal`
 
+injectGlobal`
   * {
     box-sizing: border-box;
   }
+  html {
+    height: 100%;
+  }
   body {
     margin: 0;
+    height: 100%;
     /* 禁止 Safari 的双击放大 */
     touch-action: manipulation;
+    /* 平滑滚动 */
+    scroll-behavior: smooth;
   }
-
+  #root {
+    height: 100%;
+  }
   /* https://stackoverflow.com/questions/2781549/removing-input-background-colour-for-chrome-autocomplete */
   @keyframes autofill {
     to {
@@ -42,37 +48,6 @@ injectGlobal`
   /* https://stackoverflow.com/questions/5106934/prevent-grey-overlay-on-touchstart-in-mobile-safari-webview */
   div {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-  .search-input {
-    padding: 10px 10px;
-    height: 52px;
-    position: relative;
-  }
-  .search-input::before {
-    content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAQJJREFUKBWVkr2uQUEUhf3ET6GRaC5aFRoJKrf1BKpb8SwqovYGXkCj00k0QnRKEYkILYobvpUYmeMMyVnJl7P3mjN7Zu9zwiGv2qRFyMMSRrAFp6JPN8XzBj+wgDkUYAg7WINTYdwpDECxrRLJHeq2accdkgm8bzTvNAg2EDOGeUYI1KNO1gkuzTA1g8T7ojbn4ONQWPuHPWgeHmnzCqoe15tkSNPgPEAn68oVcOmA2XMtGK9FoE/VhOTTVNExqLCGZnxCv2pYauEC6lF0oQxX6IOvb7yX9NPEQafan+aPXDdQC18LsO6Tip5BBY6gIQaSbnMCFRCBZRcIvFkbsvCr4AFGOCxQy+JdGQAAAABJRU5ErkJggg==');
-    display: block;
-    position: absolute;
-    width: 15px;
-    z-index: 3;
-    height: 15px;
-    font-size: 20px;
-    top: 11px;
-    left: 16px;
-    line-height: 32px;
-    opacity: 0.6;
-  }
-
-  .search-input > input {
-    width: 100%;
-    font-size: 18px;
-    border: none;
-    line-height: 22px;
-    padding: 5px 10px 5px 25px;
-    height: 32px;
-    position: relative;
-  }
-  .search-input > input:focus {
-    outline: none;
   }
 `
 

@@ -1,6 +1,6 @@
+import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
-import React from 'react'
 
 import { Avatar, Typography } from '@material-ui/core'
 
@@ -21,20 +21,19 @@ const root = css`
 
 const avatar = css`
   && {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
   }
 `
 
-const name = css`
+const username = css`
   && {
-    margin-top: 12px;
+    margin-top: 8px;
+    margin-bottom: -8px;
+    font-weight: bolder;
+    opacity: 0.6;
   }
 `
-
-const tologIn = () => {
-  navigate('/logIn')
-}
 
 interface Props {
   isLogIn: boolean
@@ -46,9 +45,9 @@ const UserInfo: React.SFC<Props> = ({ isLogIn, info }) => (
     <Avatar
       className={avatar}
       src={isLogIn ? info && info.portraitUrl : defaultAvatarImg}
-      onClick={isLogIn ? () => navigate('/userCenter') : tologIn}
+      onClick={isLogIn ? () => navigate('/userCenter') : () => navigate('/logIn')}
     />
-    <Typography className={name} variant="body1">
+    <Typography className={username} variant="body1">
       {isLogIn ? info && info.name : '未登录'}
     </Typography>
   </div>

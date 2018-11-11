@@ -1,4 +1,4 @@
-import { POST } from './fetch'
+import { POST } from '@/utils/fetch'
 
 type imgList = string[]
 
@@ -18,11 +18,9 @@ export async function uploadFile(file: File): Promise<string> {
 
   let returl = ''
 
-  res
-    .fail()
-    .succeed(picurl => {
-      returl = picurl[0]
-    })
+  res.fail().succeed(picurl => {
+    returl = picurl[0]
+  })
 
   return returl
 }

@@ -1,13 +1,12 @@
+import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
-import React from 'react'
 
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 
 import AspectRatio from '@material-ui/icons/AspectRatio'
 import Book from '@material-ui/icons/Book'
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
-import Dashboard from '@material-ui/icons/Dashboard'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import FiberNew from '@material-ui/icons/FiberNew'
 import HomeIcon from '@material-ui/icons/Home'
@@ -16,13 +15,20 @@ import Settings from '@material-ui/icons/Settings'
 import SpeakerNotes from '@material-ui/icons/SpeakerNotes'
 import Whatshot from '@material-ui/icons/Whatshot'
 
+const jump = (link: string) => () => {
+  navigate(link)
+}
+
 const list = css`
   width: 190px;
 `
 
-const jump = (link: string) => () => {
-  navigate(link)
-}
+const divider = css`
+  && {
+    margin: 0 16px;
+    height: 1.5px;
+  }
+`
 
 interface ItemProps {
   // tslint:disable-next-line:no-any
@@ -49,16 +55,15 @@ const TopBar: React.SFC<Props> = ({ isLogIn, open, onClose, onLogout, children }
   <Drawer open={open} onClose={onClose}>
     <List className={list} onClick={onClose}>
       {children}
-      <Divider />
+      <Divider className={divider} />
       <Item icon={<HomeIcon />} text="主页" onClick={jump('/')} />
-      <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopic')} />
-      <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopic')} />
+      <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopics')} />
+      <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopics')} />
       <Item icon={<AspectRatio />} text="版面" onClick={jump('/boardList')} />
-      <Item icon={<Settings />} text="个性化" onClick={jump('/setting')} />
+      <Item icon={<Settings />} text="设置" onClick={jump('/setting')} />
       {isLogIn && (
         <>
-          <Item icon={<Book />} text="我的关注" onClick={jump('/myFollow')} />
-          <Item icon={<Dashboard />} text="个人中心" onClick={jump('/userCenter')} />
+          <Item icon={<Book />} text="关注" onClick={jump('/myFollow')} />
           <Item icon={<SpeakerNotes />} text="私信" onClick={jump('/messageList')} />
           <Item icon={<Search />} text="搜索" onClick={jump('/search')} />
           <Item icon={<CheckCircleOutline />} text="签到" onClick={jump('/signin')} />

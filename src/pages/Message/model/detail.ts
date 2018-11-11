@@ -5,9 +5,11 @@
 import { GET, POST } from '@/utils/fetch'
 import { IMessageContent } from '@cc98/api'
 import { Container } from '@cc98/state'
+
 import reverse from 'lodash-es/reverse'
-import global from '../global'
-import user from '../user'
+
+import global from '@/model/global'
+import user from '@/model/user'
 
 interface IMap<T> {
   [key: string]: T
@@ -15,9 +17,9 @@ interface IMap<T> {
 
 interface State {
   messages: IMap<IMessageContent[] | undefined>
-  isEnd: boolean
+  isEnd: IMap<boolean>
   isLoading: boolean
-  id: string
+  id: number
 }
 
 let messageId = -1
@@ -25,13 +27,19 @@ let messageId = -1
 export class Detail extends Container<State> {
   state: State = {
     messages: {},
-    isEnd: false,
+    isEnd: {},
     isLoading: true,
-    id: '',
+    id: -1,
   }
 
-  init = async (id: string) => {
-    if (this.state.messages[id]) return
+  init = async (id: number) => {
+    if (this.state.messages[id]) {
+      this.put(state => {
+        state.id = id
+      })
+
+      return
+    }
     this.put(state => (state.isLoading = true))
 
     const res = await GET<IMessageContent[]>(`message/user/${id}`, {
@@ -46,7 +54,7 @@ export class Detail extends Container<State> {
         state.messages[id] = reverse(data)
         state.isLoading = false
         state.id = id
-        if (data.length < 20) state.isEnd = true
+        state.isEnd[id] = data.length < 20
       })
       user.getInfo(id)
     })
@@ -64,15 +72,15 @@ export class Detail extends Container<State> {
 
     res.fail().succeed(data => {
       this.put(state => {
-        state.messages[this.state.id] = [...reverse(data), ...state.messages[this.state.id] || []]
+        state.messages[this.state.id] = [...reverse(data), ...(state.messages[this.state.id] || [])]
         state.isLoading = false
-        if (data.length < 20) state.isEnd = true
+        state.isEnd[this.state.id] = data.length < 20
       })
     })
   }
 
   getNewMessage = async () => {
-    this.put(state => state.isLoading = true)
+    this.put(state => (state.isLoading = true))
 
     const res = await GET<IMessageContent[]>(`message/user/${this.state.id}`, {
       params: {
@@ -85,8 +93,8 @@ export class Detail extends Container<State> {
       this.put(state => {
         if (messages[0] && this.state.messages[this.state.id]) {
           state.messages[this.state.id]!.push(messages[0])
-        } else if (messages[0]) {
-          state.messages[this.state.id]
+        } else {
+          state.messages[this.state.id] = messages
         }
       })
     })
@@ -106,7 +114,7 @@ export class Detail extends Container<State> {
           content,
           id: messageId,
           senderId: global.state.myInfo!.id,
-          receiverId: parseInt(this.state.id, 10),
+          receiverId: this.state.id,
           time: new Date(Date.now()).toUTCString(),
           isRead: true,
         }

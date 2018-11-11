@@ -2,7 +2,7 @@
 import { getLocalStorage, setLocalStorage } from './storage'
 import { Failure, Success, Try } from './fp/Try'
 
-import host from '@/model/apiHost'
+import host from '@/config/host'
 
 export interface FetchError {
   /**
@@ -23,7 +23,7 @@ export interface FetchError {
 async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, FetchError>> {
   // const baseUrl = "https://apitest.niconi.cc"
   // const baseUrl = "https://api-v2.cc98.org"
-  const baseUrl = host.state.api
+  const baseUrl = host.api
   const requestURL = `${baseUrl}/${url}`
 
   // console.log("Fetch: " + requestURL)
@@ -77,8 +77,7 @@ export async function GET<T = any>(url: string, options: GETOptions = {}) {
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken)
-      headers.Authorization = accessToken
+    if (accessToken) headers.Authorization = accessToken
   }
 
   const requestInit: RequestInit = {
@@ -119,8 +118,7 @@ export async function POST<T = any>(url: string, options: POSTOptions = {}) {
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken)
-      headers.Authorization = accessToken
+    if (accessToken) headers.Authorization = accessToken
   }
 
   const requestInit: RequestInit = {
@@ -145,8 +143,7 @@ export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken)
-      headers.Authorization = accessToken
+    if (accessToken) headers.Authorization = accessToken
   }
 
   const requestInit: RequestInit = {
@@ -171,12 +168,11 @@ export async function DELETE<T = any>(url: string, options: DELETEOptions = {}) 
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken)
-      headers.Authorization = accessToken
+    if (accessToken) headers.Authorization = accessToken
   }
 
   const requestInit: RequestInit = {
-    method: "DELETE",
+    method: 'DELETE',
     headers: new Headers({
       ...headers,
       ...options.headers,
@@ -187,7 +183,6 @@ export async function DELETE<T = any>(url: string, options: DELETEOptions = {}) 
   return await cc98Fetch<T>(url, requestInit)
 }
 
-
 /**
  * just like $.param
  */
@@ -195,6 +190,44 @@ function encodeParams(params: { [key: string]: string }) {
   return Object.keys(params)
     .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
     .join('&')
+}
+
+/**
+ * 从本地取得 access_token，如果过期尝试刷新
+ */
+export async function getAccessToken(): Promise<string> {
+  let accessToken = getLocalStorage('access_token')
+
+  if (!accessToken) {
+    const refreshToken = getLocalStorage('refresh_token')
+
+    if (!refreshToken) {
+      return ''
+    }
+
+    const token = await getTokenByRefreshToken(<string>refreshToken)
+    token
+      .fail
+      // TODO: 添加 refresh token 过期的处理
+      ()
+      .succeed(token => {
+        const access_token = `${token.token_type} ${token.access_token}`
+        setLocalStorage('access_token', access_token, token.expires_in)
+        // refresh_token 有效期一个月
+        setLocalStorage('refresh_token', token.refresh_token, 2592000)
+
+        accessToken = access_token
+      })
+  }
+
+  return <string>accessToken
+}
+
+interface Token {
+  access_token: string
+  expires_in: number
+  refresh_token: string
+  token_type: string
 }
 
 /**
@@ -210,7 +243,7 @@ async function getTokenByRefreshToken(refreshToken: string): Promise<Try<Token, 
     refresh_token: refreshToken,
   }
 
-  const response = await fetch(host.state.oauth, {
+  const response = await fetch(host.oauth, {
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -229,45 +262,6 @@ async function getTokenByRefreshToken(refreshToken: string): Promise<Try<Token, 
   }
 
   return Try.of<Token, FetchError>(Success.of(await response.json()))
-}
-
-/**
- * 从本地取得 access_token，如果过期尝试刷新
- */
-export async function getAccessToken(): Promise<string> {
-  let accessToken = getLocalStorage('access_token')
-
-  if (!accessToken) {
-    const refreshToken = getLocalStorage('refresh_token')
-
-    if (!refreshToken) {
-      accessToken = ''
-    }
-
-    const token = await getTokenByRefreshToken(<string>refreshToken)
-
-    token
-      .fail(
-        // TODO: 添加 refresh token 过期的处理
-      )
-      .succeed(newToken => {
-        const access_token = `${newToken.token_type} ${newToken.access_token}`
-        setLocalStorage('access_token', access_token, newToken.expires_in)
-        // refresh_token 有效期一个月
-        setLocalStorage('refresh_token', newToken.refresh_token, 2592000)
-
-        accessToken = access_token
-      })
-  }
-
-  return <string>accessToken
-}
-
-interface Token {
-  access_token: string
-  expires_in: number
-  refresh_token: string
-  token_type: string
 }
 
 /**
@@ -288,7 +282,7 @@ export async function logIn(username: string, password: string): Promise<Try<Tok
     scope: 'cc98-api openid offline_access',
   }
 
-  const response = await fetch(host.state.oauth, {
+  const response = await fetch(host.oauth, {
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -306,5 +300,12 @@ export async function logIn(username: string, password: string): Promise<Try<Tok
     )
   }
 
-  return Try.of<Token, FetchError>(Success.of(await response.json()))
+  const token = await response.json()
+
+  const access_token = `${token.token_type} ${token.access_token}`
+  setLocalStorage('access_token', access_token, token.expires_in)
+  // refresh_token 有效期一个月
+  setLocalStorage('refresh_token', token.refresh_token, 2592000)
+
+  return Try.of<Token, FetchError>(Success.of(token))
 }

@@ -1,18 +1,20 @@
-import { ITopic } from '@cc98/api'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
+import React from 'react'
+// import { css } from 'emotion'
+import styled from 'react-emotion'
+import { navigate } from '@reach/router'
+
+import dayjs from 'dayjs'
+
+import { ListItem, ListItemText, ListItemSecondaryAction } from '@material-ui/core'
+
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
-import { navigate } from '@reach/router'
-import dayjs from 'dayjs'
-import { css } from 'emotion'
-import React from 'react'
-import styled from 'react-emotion'
+
+import { ITopic } from '@cc98/api'
 
 interface Props {
   data: ITopic
-  place: string
+  place: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
 }
 
 const styles: StyleRules = {
@@ -21,7 +23,7 @@ const styles: StyleRules = {
   },
   primary: {
     fontSize: '0.875rem',
-    color: 'rgba(0, 0, 0, 0.54)',
+    opacity: 0.54,
     textAlign: 'right',
   },
   secondary: {
@@ -43,33 +45,26 @@ export default withStyles(styles)(
       const title = data.title
       const userName = `${data.userName ? data.userName : '匿名'}`
       const time = dayjs(data.lastPostTime).fromNow()
+      const createTime = dayjs(data.time).fromNow()
       const reply = `回复:${data.replyCount}`
       const boardName = data.boardName as string
       let text1 = userName
       let text2 = reply
       switch (place) {
         case 'inboard':
-          break;
-        case 'newtopic':
-          text2 = boardName
-          break;
+          break
         case 'usercenter':
           text1 = boardName
-          break;
+          break
+        case 'newtopic':
         case 'follow':
-          text2 = boardName
-          break;
         case 'search':
           text2 = boardName
-          break;
+          break
       }
 
       return (
-        <ListItem
-          onClick={() => navigate(`/topic/${data.id}`)}
-          button
-          divider
-        >
+        <ListItem onClick={() => navigate(`/topic/${data.id}`)} button divider>
           <ListItemText
             classes={{ root: classes.root }}
             primary={<Text>{title}</Text>}
@@ -78,7 +73,7 @@ export default withStyles(styles)(
           <ListItemSecondaryAction>
             <ListItemText
               classes={{ primary: classes.primary, secondary: classes.secondary }}
-              primary={time}
+              primary={place === 'newtopic' ? createTime : time}
               secondary={text2}
             />
           </ListItemSecondaryAction>

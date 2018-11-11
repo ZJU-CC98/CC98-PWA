@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
   FormControl,
   InputLabel,
@@ -5,7 +7,6 @@ import {
   OutlinedInput,
   Select,
 } from '@material-ui/core'
-import React from 'react'
 
 interface Props {
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void,

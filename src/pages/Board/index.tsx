@@ -1,16 +1,16 @@
-import boardInstance, { BoardInfoStore } from '@/model/board'
-import { Subscribe } from '@cc98/state'
 import React from 'react'
+import { Subscribe } from '@cc98/state'
+
+import boardInstance, { BoardInfoStore } from '@/model/board'
+
 import Component from './BoardList'
-interface Props {
-  id: string
-}
-export default (props: Props) => (
+
+export default () => (
   <Subscribe to={[boardInstance]}>
-    {
-      (store: BoardInfoStore) =>
-        store.state.childBoardData.length !== 0 ?
-          <Component boardList={store.state.boardData} boards={store.state.childBoardData} /> : null
+    {(store: BoardInfoStore) =>
+      store.state.childBoardData.length !== 0 ? (
+        <Component boardList={store.state.boardData} boards={store.state.childBoardData} />
+      ) : null
     }
   </Subscribe>
 )

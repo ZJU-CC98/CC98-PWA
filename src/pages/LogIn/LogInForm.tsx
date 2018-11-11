@@ -1,12 +1,12 @@
+import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
-import React from 'react'
 
 import {
   Button,
   CircularProgress,
   FormControl,
-  FormHelperText,
+  // FormHelperText,
   Input,
   InputLabel,
   Typography,
@@ -55,7 +55,7 @@ interface State {
   logInFail: boolean
 }
 
-class LogIn extends React.PureComponent<{}, State> {
+class LogIn extends React.Component<{}, State> {
   state: State = {
     formField: {
       username: '',
@@ -85,19 +85,17 @@ class LogIn extends React.PureComponent<{}, State> {
       logInFail: false,
     })
 
-    const token = await global.logIn(username, password)
+    const token = await global.LOG_IN(username, password)
 
     token
       .fail(() => {
-        setTimeout(
-          () => {
-            this.setState({
-              loading: false,
-              logInFail: true,
-            })
-          },
-          2000
-        )
+        setTimeout(() => {
+          this.setState({
+            loading: false,
+            logInFail: true,
+          })
+          // tslint:disable-next-line:align
+        }, 2000)
 
         // TODO: 错误提示
       })
@@ -117,7 +115,7 @@ class LogIn extends React.PureComponent<{}, State> {
 
         <div className={form}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="component-simple">Username</InputLabel>
+            <InputLabel htmlFor="component-simple">用户名</InputLabel>
             <Input
               id="component-simple"
               value={formField.username}
@@ -125,7 +123,7 @@ class LogIn extends React.PureComponent<{}, State> {
             />
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
+            <InputLabel htmlFor="password">密码</InputLabel>
             <Input
               id="password"
               type="password"

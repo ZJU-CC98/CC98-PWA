@@ -6,6 +6,7 @@ import { IconButton, Typography, Paper } from '@material-ui/core'
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 
 import { ITopic } from '@cc98/api'
+import { navigate } from '@reach/router'
 
 // FIXME: if history stack is empty ?
 const goback = () => window.history.back()
@@ -60,7 +61,9 @@ const PostHead: React.SFC<Props> = ({ topicInfo }) => (
     <Typography variant="subtitle2" className={title}>
       {topicInfo.title}
     </Typography>
-    <Typography className={subTitle}>{topicInfo.boardName}</Typography>
+    <Typography className={subTitle} onClick={() => navigate(`/board/${topicInfo.boardId}`)}>
+      {topicInfo.boardName}
+    </Typography>
   </Paper>
 )
 

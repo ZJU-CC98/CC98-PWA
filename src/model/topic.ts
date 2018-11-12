@@ -81,7 +81,9 @@ export class TopicInfoStore extends Container<State> {
           tag2 = { id: -1, name: '全部' }
         }
         this.put(state => {
-          ;(state.tag1 = tag1), (state.tag2 = tag2), (state.tags = tags)
+          state.tag1 = tag1
+          state.tag2 = tag2
+          state.tags = tags
         })
       }
     })
@@ -214,7 +216,8 @@ export class TopicInfoStore extends Container<State> {
     } else {
       response = await DELETE(url)
     }
-    response.fail()
+
+    return response
   }
 
   reset = () => {

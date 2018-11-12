@@ -99,9 +99,21 @@ export default withStyles(styles)((props: Props) => {
   const [state, setState] = useState({
     isFollowed: data.isUserCustomBoard,
     buttonMessage: data.isUserCustomBoard ? '取关' : '关注',
+    disabled: false,
   })
-  const { isFollowed, buttonMessage } = state
+  const { isFollowed, buttonMessage, disabled } = state
   const { id } = data
+  async function handleClick() {
+    setState({ buttonMessage: '...', disabled: true, ...state })
+    const response = await topicInstance.customBoard(data.id, isFollowed ? 0 : 1)
+    response.fail().succeed(mes =>
+      setState({
+        isFollowed: !isFollowed,
+        buttonMessage: isFollowed ? '关注' : '取关',
+        disabled: false,
+      })
+    )
+  }
 
   return (
     <Paper className={boardHeader}>
@@ -125,13 +137,8 @@ export default withStyles(styles)((props: Props) => {
           </Button>
           <Button
             className={followBtnStyle}
-            onClick={() => {
-              topicInstance.customBoard(data.id, isFollowed ? 0 : 1)
-              setState({
-                isFollowed: !isFollowed,
-                buttonMessage: isFollowed ? '关注' : '取关',
-              })
-            }}
+            onClick={handleClick}
+            disabled={disabled}
             variant="outlined"
           >
             {buttonMessage}

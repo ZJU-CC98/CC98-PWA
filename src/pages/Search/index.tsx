@@ -20,11 +20,6 @@ const searchInput = css`
   align-items: center;
   height: 70px;
 `
-interface State {
-  searchTerm: string
-  view: boolean
-  topicInstance: TopicInfoStore
-}
 
 export default () => {
   const [view, setView] = useState(false)
@@ -46,6 +41,7 @@ export default () => {
               <TextField
                 label="搜索"
                 value={searchTerm}
+                autoFocus={true}
                 onChange={e => setSearchTerm(e.target.value)}
                 fullWidth
               />

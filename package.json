@@ -15,11 +15,10 @@
   "dependencies": {
     "@aspnet/signalr": "^1.0.4",
     "@cc98/state": "^1.0.0",
-    "@cc98/ubb-react": "^1.0.0",
+    "@cc98/ubb-react": "^1.0.1",
     "@material-ui/core": "^3.4.0",
     "@material-ui/icons": "^3.0.1",
     "@reach/router": "^1.2.1",
-    "dayjs": "^1.6.10",
     "emotion": "^9.2.12",
     "lodash-es": "^4.17.11",
     "prop-types": "^15.6.2",
@@ -27,7 +26,8 @@
     "react-dom": "16.7.0-alpha.0",
     "react-emotion": "^9.2.12",
     "remark": "^10.0.0",
-    "remark-react": "^4.0.3"
+    "remark-react": "^4.0.3",
+    "timeago.js": "^4.0.0-beta.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.5",
@@ -38,7 +38,7 @@
     "@types/lodash-es": "^4.17.1",
     "@types/node": "^10.12.3",
     "@types/reach__router": "^1.2.0",
-    "@types/react": "16.4.18",
+    "@types/react": "^16.7.3",
     "@types/react-dom": "^16.0.9",
     "babel-loader": "^8.0.4",
     "babel-plugin-emotion": "^9.2.11",

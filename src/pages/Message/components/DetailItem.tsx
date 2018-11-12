@@ -5,7 +5,6 @@
 import React from 'react'
 import { Subscribe } from '@cc98/state'
 import { IMessageContent } from '@cc98/api'
-import dayjs from 'dayjs'
 import styled, { css } from 'react-emotion'
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
@@ -85,7 +84,8 @@ const renderItem = (message: IMessageContent, userAvatar = avatar, isCurrSend: b
       </ListItemAvatar>
       <MessageRoot>
         <MessageContentLeft>{message.content}</MessageContentLeft>
-        <MessageDate right>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
+        {/* FIXME: format Date*/}
+        {/* <MessageDate right>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate> */}
       </MessageRoot>
     </ListItem>
   ) : (
@@ -93,7 +93,7 @@ const renderItem = (message: IMessageContent, userAvatar = avatar, isCurrSend: b
       <ListItemText />
       <MessageRoot>
         <MessageContentRight>{message.content}</MessageContentRight>
-        <MessageDate>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
+        {/* <MessageDate>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate> */}
       </MessageRoot>
       <ListItemAvatar className={AvatarClass}>
         <Avatar src={userAvatar} />

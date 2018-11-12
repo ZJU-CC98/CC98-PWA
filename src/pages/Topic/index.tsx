@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Subscribe } from '@cc98/state'
 
@@ -14,36 +14,26 @@ interface Props {
   userId: string
 }
 
-interface State {
-  postInstance: PostInfoStore
-}
+export default (props: Props) => {
+  const [postInstance] = useState(new PostInfoStore())
+  const { postId, userId, topicId } = props
 
-export default class extends React.Component<Props, State> {
-  state = {
-    postInstance: new PostInfoStore(),
-  }
+  return (
+    <Subscribe to={[global, postInstance, BoardInfoStore]}>
+      {(g: GlobalContainer, p: PostInfoStore, boardInstance: BoardInfoStore) => {
+        const isRender = g.state.myInfo
 
-  render() {
-    const { postId, userId, topicId } = this.props
-    const { postInstance } = this.state
-
-    return (
-      <Subscribe to={[global, postInstance, BoardInfoStore]}>
-        {(g: GlobalContainer, p: PostInfoStore, boardInstance: BoardInfoStore) => {
-          const isRender = g.state.myInfo
-
-          return isRender ? (
-            <Topic
-              topicId={topicId}
-              postId={postId}
-              userId={userId}
-              global={g}
-              postInstance={postInstance}
-              boardInstance={boardInstance}
-            />
-          ) : null
-        }}
-      </Subscribe>
-    )
-  }
+        return isRender ? (
+          <Topic
+            topicId={topicId}
+            postId={postId}
+            userId={userId}
+            global={g}
+            postInstance={postInstance}
+            boardInstance={boardInstance}
+          />
+        ) : null
+      }}
+    </Subscribe>
+  )
 }

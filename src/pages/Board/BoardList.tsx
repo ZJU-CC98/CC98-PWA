@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { css } from 'emotion'
 
 import { TextField } from '@material-ui/core'
@@ -19,47 +19,28 @@ interface Props {
   boardList: IBaseBoard[]
 }
 
-interface State {
-  // boardList: IBaseBoard[]
-  isLoading: boolean
-  searchTerm: string
-}
+export default (props: Props) => {
+  const [searchTerm, setSearchTerm] = useState('')
 
-export default class extends React.Component<Props, State> {
-  state: State = {
-    // boardList: [],
-    isLoading: true,
-    searchTerm: '',
-  }
+  const { boardList, boards } = props
 
-  searchUpdated = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      searchTerm: event.target.value,
-    })
-  }
+  const filteredBoards = boards.filter(board => board.name.indexOf(searchTerm) !== -1)
 
-  render() {
-    const { searchTerm } = this.state
-    const { boardList, boards } = this.props
+  return (
+    <>
+      {/* TODO: 放右下角 */}
+      <div className={searchInput}>
+        <TextField
+          label="搜索版面名称"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          fullWidth
+        />
+      </div>
 
-    const filteredBoards = boards.filter(board => board.name.indexOf(searchTerm) !== -1)
+      {searchTerm ? filteredBoards.map(board => <BoardItem key={board.id} data={board} />) : null}
 
-    return (
-      <>
-        {/* TODO: 放右下角 */}
-        <div className={searchInput}>
-          <TextField
-            label="搜索版面名称"
-            value={this.state.searchTerm}
-            onChange={this.searchUpdated}
-            fullWidth
-          />
-        </div>
-
-        {searchTerm ? filteredBoards.map(board => <BoardItem key={board.id} data={board} />) : null}
-
-        {searchTerm ? null : boardList.map(data => <BaseBoard key={data.id} data={data} />)}
-      </>
-    )
-  }
+      {searchTerm ? null : boardList.map(data => <BaseBoard key={data.id} data={data} />)}
+    </>
+  )
 }

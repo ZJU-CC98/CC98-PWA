@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { css } from 'emotion'
 
 import {
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
-  Typography
+  Typography,
 } from '@material-ui/core'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -57,44 +57,30 @@ const styles: StyleRules = {
   },
 }
 
-export default withStyles(styles)(
-  class extends React.Component<Props, { isExpanded: boolean }> {
-    state = {
-      isExpanded: notExpandedBoards.indexOf(this.props.data.id) === -1,
-    }
+export default withStyles(styles)((props: Props) => {
+  const [isExpanded, setIsExpanded] = useState(notExpandedBoards.indexOf(props.data.id) === -1)
+  const { data, classes } = props
 
-    handleChange = (_: never, status: boolean) => {
-      this.setState({
-        isExpanded: status,
-      })
-    }
-
-    render() {
-      const { data, classes } = this.props
-      const { isExpanded } = this.state
-
-      return (
-        <ExpansionPanel
-          classes={{ expanded: classes.expanded }}
-          expanded={isExpanded}
-          onChange={this.handleChange}
-        >
-          <ExpansionPanelSummary
-            style={{ minHeight: '2.5rem' }}
-            className={baseBoardContainerStyle}
-            expandIcon={<ExpandMoreIcon />}
-          >
-            <Typography className={baseBoardStyle}>{data.name}</Typography>
-          </ExpansionPanelSummary>
-          {isExpanded ? (
-            <ExpansionPanelDetails className={childBoardStyle}>
-              {data.boards.map(board => (
-                <BoardItem key={board.id} data={board} />
-              ))}
-            </ExpansionPanelDetails>
-          ) : null}
-        </ExpansionPanel>
-      )
-    }
-  }
-)
+  return (
+    <ExpansionPanel
+      classes={{ expanded: classes.expanded }}
+      expanded={isExpanded}
+      onClick={() => setIsExpanded(!isExpanded)}
+    >
+      <ExpansionPanelSummary
+        style={{ minHeight: '2.5rem' }}
+        className={baseBoardContainerStyle}
+        expandIcon={<ExpandMoreIcon />}
+      >
+        <Typography className={baseBoardStyle}>{data.name}</Typography>
+      </ExpansionPanelSummary>
+      {isExpanded ? (
+        <ExpansionPanelDetails className={childBoardStyle}>
+          {data.boards.map(board => (
+            <BoardItem key={board.id} data={board} />
+          ))}
+        </ExpansionPanelDetails>
+      ) : null}
+    </ExpansionPanel>
+  )
+})

@@ -23,18 +23,12 @@ const cardStyle = css`
     min-width: 80px;
   }
 `
-export default class extends React.PureComponent<Props> {
-  render() {
-    const { data } = this.props
-
-    return (
-      <Button
-        onClick={() => navigate(`/board/${data.id}`)}
-        className={cardStyle}
-        variant="outlined"
-      >
-        {data.name}
-      </Button>
-    )
-  }
-}
+export default (props: Props) => (
+  <Button
+    onClick={() => navigate(`/board/${props.data.id}`)}
+    className={cardStyle}
+    variant="outlined"
+  >
+    {props.data.name}
+  </Button>
+)

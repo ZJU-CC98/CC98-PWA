@@ -153,6 +153,7 @@ export class PostInfoStore extends Container<State> {
       state.initEditorContent = a
     })
   }
+
   freshLatestPosts = async () => {
     const { topicId, from, posts } = this.state
 

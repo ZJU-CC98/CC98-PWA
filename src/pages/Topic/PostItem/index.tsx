@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { css, cx } from 'emotion'
 
@@ -162,138 +162,122 @@ const contentRoot = css`&&{
     },
 }`
 
-export default withStyles(styles)(
-  class extends React.Component<Props, State> {
-    state: State = {
-      expanded: false,
-      anchorEl: null,
-    }
-
-    onExpandClick = () => {
-      this.setState({
-        expanded: !this.state.expanded,
-      })
-    }
-
-    render() {
-      const { postInfo, classes, postInstance, isTrace, userInfo, openDialog } = this.props
-      const { updateSinglePosts, wakeUpEditor } = postInstance
-      const { anchorEl } = this.state
-      const open = Boolean(anchorEl)
-      if (postInfo.isDeleted) {
-        return null
-      }
-
-      const text =
-        postInfo.contentType === 0 ? UBB(postInfo.content) : resolveMarkdown(postInfo.content)
-
-      return (
-        <Card square elevation={0} className={root}>
-          <Header
-            postInfo={postInfo}
-            userInfo={userInfo}
-            trace={postInstance.trace}
-            isTrace={isTrace}
-            classes={classes}
-            openDialog={openDialog}
-          />
-          <CardContent>
-            <Typography
-              classes={{ root: classes.typographyRoot }}
-              className={contentRoot}
-              component="div"
-            >
-              {text}
-            </Typography>
-          </CardContent>
-
-          <CardActions classes={{ root: classes.actionsRoot }}>
-            <IconButton
-              classes={{ root: classes.action }}
-              disableRipple={true}
-              onClick={async () => {
-                const res = await Utils.dislike(postInfo.id)
-                updateSinglePosts(postInfo.id, res)
-              }}
-            >
-              <DislikeIcon
-                fontSize="small"
-                className={
-                  // tslint:disable-next-line
-                  dislikeButton[
-                    likeStateMap[postInfo.likeState] === 'dislike' ? 'clicked' : 'unclicked'
-]
-                }
-              />
-              <span
-                key="dislikeIcon"
-                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity: 0.54 }}
-              >
-                {postInfo.dislikeCount}
-              </span>
-            </IconButton>
-            <Divider classes={{ root: classes.hr }} />
-            <IconButton
-              classes={{ root: classes.action }}
-              disableRipple={true}
-              onClick={async () => {
-                const content = await Utils.quote(this.props.postInfo)
-                wakeUpEditor(content)
-              }}
-            >
-              <Quote fontSize="small" />
-            </IconButton>
-            <Divider classes={{ root: classes.hr }} />
-
-            <IconButton
-              classes={{ root: classes.action }}
-              disableRipple={true}
-              disableTouchRipple={true}
-              onClick={async () => {
-                const res = await Utils.like(postInfo.id)
-                updateSinglePosts(postInfo.id, res)
-              }}
-            >
-              <LikeIcon
-                fontSize="small"
-                className={
-                  likeButton[likeStateMap[postInfo.likeState] === 'like' ? 'clicked' : 'unclicked']
-                }
-              />
-              <span
-                key="likeIcon"
-                style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity: 0.54 }}
-              >
-                {postInfo.likeCount}
-              </span>
-            </IconButton>
-          </CardActions>
-          {postInfo.awards.length > 5 && (
-            <CardActions classes={{ root: classes.awardAction }}>
-              <Button classes={{ root: classes.expandButton }} onClick={this.onExpandClick}>
-                （{postInfo.awards.length}
-                个评分）
-              </Button>
-              <IconButton
-                className={cx(expand, {
-                  [expandOpen]: this.state.expanded,
-                })}
-                style={{ width: '20%' }}
-                onClick={this.onExpandClick}
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </CardActions>
-          )}
-          {postInfo.awards.length > 0 &&
-            postInfo.awards.length <= 5 && <Award postInfo={postInfo} />}
-          {postInfo.awards.length > 5 && (
-            <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-              <Award postInfo={postInfo} />
-            </Collapse>
-          )}
-        </Card>
-      )
-    }
+export default withStyles(styles)((props: Props) => {
+  const [expanded, setExpanded] = useState(false)
+  const { postInfo, classes, postInstance, isTrace, userInfo, openDialog } = props
+  const { updateSinglePosts, wakeUpEditor } = postInstance
+  if (postInfo.isDeleted) {
+    return null
   }
-)
+
+  const text =
+    postInfo.contentType === 0 ? UBB(postInfo.content) : resolveMarkdown(postInfo.content)
+
+  return (
+    <Card square elevation={0} className={root}>
+      <Header
+        postInfo={postInfo}
+        userInfo={userInfo}
+        trace={postInstance.trace}
+        isTrace={isTrace}
+        classes={classes}
+        openDialog={openDialog}
+      />
+      <CardContent>
+        <Typography
+          classes={{ root: classes.typographyRoot }}
+          className={contentRoot}
+          component="div"
+        >
+          {text}
+        </Typography>
+      </CardContent>
+
+      <CardActions classes={{ root: classes.actionsRoot }}>
+        <IconButton
+          classes={{ root: classes.action }}
+          disableRipple={true}
+          onClick={async () => {
+            const res = await Utils.dislike(postInfo.id)
+            updateSinglePosts(postInfo.id, res)
+          }}
+        >
+          <DislikeIcon
+            fontSize="small"
+            className={
+              likeStateMap[postInfo.likeState] === 'dislike'
+                ? dislikeButton.clicked
+                : dislikeButton.unclicked
+            }
+          />
+          <span
+            key="dislikeIcon"
+            style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity: 0.54 }}
+          >
+            {postInfo.dislikeCount}
+          </span>
+        </IconButton>
+        <Divider classes={{ root: classes.hr }} />
+        <IconButton
+          classes={{ root: classes.action }}
+          disableRipple={true}
+          onClick={async () => {
+            const content = await Utils.quote(this.props.postInfo)
+            wakeUpEditor(content)
+          }}
+        >
+          <Quote fontSize="small" />
+        </IconButton>
+        <Divider classes={{ root: classes.hr }} />
+
+        <IconButton
+          classes={{ root: classes.action }}
+          disableRipple={true}
+          disableTouchRipple={true}
+          onClick={async () => {
+            const res = await Utils.like(postInfo.id)
+            updateSinglePosts(postInfo.id, res)
+          }}
+        >
+          <LikeIcon
+            fontSize="small"
+            className={
+              likeStateMap[postInfo.likeState] === 'dislike'
+                ? dislikeButton.clicked
+                : dislikeButton.unclicked
+            }
+          />
+          <span
+            key="likeIcon"
+            style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity: 0.54 }}
+          >
+            {postInfo.likeCount}
+          </span>
+        </IconButton>
+      </CardActions>
+      {postInfo.awards.length > 5 && (
+        <CardActions classes={{ root: classes.awardAction }}>
+          <Button classes={{ root: classes.expandButton }} onClick={this.onExpandClick}>
+            （{postInfo.awards.length}
+            个评分）
+          </Button>
+          <IconButton
+            className={cx(expand, {
+              [expandOpen]: this.state.expanded,
+            })}
+            style={{ width: '20%' }}
+            onClick={() => setExpanded(!expanded)}
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+        </CardActions>
+      )}
+      {postInfo.awards.length > 0 && postInfo.awards.length <= 5 && <Award postInfo={postInfo} />}
+      {postInfo.awards.length > 5 && (
+        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+          <Award postInfo={postInfo} />
+        </Collapse>
+      )}
+    </Card>
+  )
+})

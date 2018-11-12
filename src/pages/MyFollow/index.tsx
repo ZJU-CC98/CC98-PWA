@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Subscribe } from '@cc98/state'
 
@@ -7,27 +7,16 @@ import { TopicInfoStore } from '@/model/topic'
 
 import Component from './Follow'
 
-interface State {
-  topicInstance: TopicInfoStore
-}
-export default class extends React.Component<{}, State> {
-  state: State = {
-    topicInstance: new TopicInfoStore(),
-  }
+export default () => {
+  const [topicInstance] = useState(new TopicInfoStore())
 
-  render() {
-    const { topicInstance } = this.state
-
-    return (
-      <Subscribe
-        to={[BoardInfoStore, topicInstance]}
-      >
-        {
-          (data: BoardInfoStore) => data.state.boardData.length !== 0 ?
-            <Component boards={data.state.boardData} topicInstance={topicInstance} /> : null
-        }
-      </Subscribe>
-    )
-
-  }
+  return (
+    <Subscribe to={[BoardInfoStore, topicInstance]}>
+      {(data: BoardInfoStore) =>
+        data.state.boardData.length !== 0 ? (
+          <Component boards={data.state.boardData} topicInstance={topicInstance} />
+        ) : null
+      }
+    </Subscribe>
+  )
 }

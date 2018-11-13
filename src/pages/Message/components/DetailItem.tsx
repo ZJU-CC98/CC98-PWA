@@ -14,6 +14,8 @@ import user, { UserInfoStore } from '@/model/user'
 
 import avatar from '@/assets/9.png'
 
+import dayjs from 'dayjs'
+
 const AvatarClass = css`
   align-self: flex-start;
 `
@@ -84,8 +86,7 @@ const renderItem = (message: IMessageContent, userAvatar = avatar, isCurrSend: b
       </ListItemAvatar>
       <MessageRoot>
         <MessageContentLeft>{message.content}</MessageContentLeft>
-        {/* FIXME: format Date*/}
-        {/* <MessageDate right>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate> */}
+        <MessageDate right>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
       </MessageRoot>
     </ListItem>
   ) : (
@@ -93,7 +94,7 @@ const renderItem = (message: IMessageContent, userAvatar = avatar, isCurrSend: b
       <ListItemText />
       <MessageRoot>
         <MessageContentRight>{message.content}</MessageContentRight>
-        {/* <MessageDate>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate> */}
+        <MessageDate>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
       </MessageRoot>
       <ListItemAvatar className={AvatarClass}>
         <Avatar src={userAvatar} />

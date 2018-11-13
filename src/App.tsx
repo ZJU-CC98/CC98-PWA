@@ -10,12 +10,12 @@ import TopBar from '@/components/TopBar'
 import BackGround from '@/components/BackGround'
 import Router from './router'
 
-const App: React.SFC = () => (
+const App: React.SFC = React.memo(() => (
   <BackGround>
     <TopBar />
     <Router />
   </BackGround>
-)
+))
 
 const Root: React.SFC = () => (
   <Provider>

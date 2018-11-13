@@ -19,6 +19,7 @@
     "@material-ui/core": "^3.4.0",
     "@material-ui/icons": "^3.0.1",
     "@reach/router": "^1.2.1",
+    "dayjs": "^1.7.7",
     "emotion": "^9.2.12",
     "lodash-es": "^4.17.11",
     "prop-types": "^15.6.2",
@@ -26,8 +27,7 @@
     "react-dom": "16.7.0-alpha.0",
     "react-emotion": "^9.2.12",
     "remark": "^10.0.0",
-    "remark-react": "^4.0.3",
-    "timeago.js": "^4.0.0-beta.1"
+    "remark-react": "^4.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.1.5",

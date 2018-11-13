@@ -9,7 +9,7 @@ import { StyleRules, withStyles } from '@material-ui/core/styles'
 
 import { ITopic } from '@cc98/api'
 
-import { timeago } from '@/utils/time'
+import dayjs from 'dayjs'
 
 interface Props {
   data: ITopic
@@ -43,8 +43,8 @@ export default withStyles(styles)(
       const { data, place, classes } = this.props
       const title = data.title
       const userName = `${data.userName ? data.userName : '匿名'}`
-      const time = timeago(data.lastPostTime)
-      const createTime = timeago(data.time)
+      const time = dayjs(data.lastPostTime).fromNow()
+      const createTime = dayjs(data.time).fromNow()
       const reply = `回复:${data.replyCount}`
       const boardName = data.boardName as string
       let text1 = userName

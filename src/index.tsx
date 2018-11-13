@@ -4,6 +4,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 
+import dayjs from 'dayjs'
+import zh from 'dayjs/locale/zh-cn'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.locale(zh, null, false)
+dayjs.extend(relativeTime)
+
 injectGlobal`
   * {
     box-sizing: border-box;

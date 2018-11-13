@@ -8,7 +8,6 @@ import { navigate } from '@reach/router'
 import { Subscribe } from '@cc98/state'
 import { IRecentMessage } from '@cc98/api'
 
-import { timeago } from '@/utils/time'
 
 import {
   Avatar,

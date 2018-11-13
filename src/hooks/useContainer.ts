@@ -43,7 +43,7 @@ export class Container<State extends Object = {}> {
   }
 }
 
-/**U
+/**
  * 注入一个全局 Container
  * @param containerInstance 全局 container 实例
  */

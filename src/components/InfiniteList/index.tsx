@@ -1,7 +1,8 @@
-import { debounce } from 'lodash-es'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import LoadingCircle from '@/components/LoadingCircle'
+
+import { debounce } from 'lodash-es'
 
 interface Props {
   /**
@@ -23,61 +24,53 @@ interface Props {
   loadingPosition?: 'top' | 'bottom'
 }
 
-class InfiniteList extends React.PureComponent<Props> {
-  /**
-   * 存储 debounce 之后的函数
-   */
-  bindFunc: () => void
-  /**
-   * loading 图标 <CircularProgress />
-   */
-  loadingDom = React.createRef<HTMLDivElement>()
+const InfiniteList: React.SFC<Props> = props => {
+  const loadingDom = useRef<HTMLDivElement>(null)
+  // 保证 bindFunc 取到最新的值
+  const refProps = useRef(props)
 
-  componentDidMount() {
-    const func = () => {
-      const { isLoading, isEnd, callback } = this.props
-      if (isLoading || isEnd) return
+  useEffect(() => {
+    refProps.current = props
+  })
 
+  useEffect(() => {
+    const bindFunc = debounce(() => {
+      // tslint:disable-next-line
+      const { isEnd, isLoading, callback } = refProps.current
+      if (isLoading || isEnd) {
+        return
+      }
       // loadingDom 出现在可视区域
       const distance =
-        this.loadingDom.current &&
-        window.innerHeight - this.loadingDom.current.getBoundingClientRect().top
-      if (distance === null || distance < 0) return
+        loadingDom.current && window.innerHeight - loadingDom.current.getBoundingClientRect().top
+      if (distance === null || distance < 0) {
+        return
+      }
+
       callback()
+    }, 250)
+    window.addEventListener('scroll', bindFunc)
+
+    return () => {
+      window.removeEventListener('scroll', bindFunc)
     }
+  }, [])
 
-    this.bindFunc = debounce(func, 250)
-    window.addEventListener('scroll', this.bindFunc)
-  }
+  const { isEnd, loadingPosition = 'bottom', children } = props
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.bindFunc)
-  }
+  const Loading = isEnd ? null : (
+    <div ref={loadingDom}>
+      <LoadingCircle />
+    </div>
+  )
 
-  render() {
-    const { isEnd, loadingPosition = 'bottom', children } = this.props
-
-    return (
-      <>
-        {loadingPosition === 'top' &&
-          !isEnd && (
-            <div ref={this.loadingDom}>
-              <LoadingCircle />
-            </div>
-          )}
-
-        {children}
-
-        {loadingPosition === 'bottom' &&
-          !isEnd && (
-            // TODO: forwordRef
-            <div ref={this.loadingDom}>
-              <LoadingCircle />
-            </div>
-          )}
-      </>
-    )
-  }
+  return (
+    <>
+      {loadingPosition === 'top' && Loading}
+      {children}
+      {loadingPosition === 'bottom' && Loading}
+    </>
+  )
 }
 
 export default InfiniteList

@@ -1,7 +1,7 @@
-import { css } from 'emotion'
-import React from 'react'
+// import React from 'react'
+import styled from 'react-emotion'
 
-const root = css`
+const LayoutCenter = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -11,7 +11,5 @@ const root = css`
   justify-content: center;
   align-items: center;
 `
-
-const LayoutCenter: React.SFC = ({ children }) => <div className={root}>{children}</div>
 
 export default LayoutCenter

@@ -40,7 +40,7 @@ interface Props {
   info: IUser | null
 }
 
-const UserInfo: React.SFC<Props> = ({ isLogIn, info }) => (
+const UserInfo: React.FunctionComponent<Props> = ({ isLogIn, info }) => (
   <div className={root}>
     <Avatar
       className={avatar}

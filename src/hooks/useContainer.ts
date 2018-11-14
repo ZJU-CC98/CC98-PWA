@@ -1,10 +1,10 @@
 /* tslint:disable */
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 declare global {
   interface Window {
     __$$GLOBAL_STATE_: {
-      [key: string]: Object
+      [key: string]: object
     }
   }
 }
@@ -13,15 +13,16 @@ declare global {
 window.__$$GLOBAL_STATE_ = {}
 
 type Listener = () => void
+type UpdateFunc = () => void | boolean | Promise<void> | Promise<boolean>
 
-export class Container<State extends Object = {}> {
+export class Container<State extends object = {}> {
   namespace: string
 
   state: State
   _listeners: Listener[] = []
 
-  construtor() {
-    window.__$$GLOBAL_STATE_.namespace = this.state
+  _attachToGlobal() {
+    window.__$$GLOBAL_STATE_[this.namespace] = this.state
   }
 
   _subscribe(fn: Listener) {
@@ -33,13 +34,22 @@ export class Container<State extends Object = {}> {
     listeners.splice(listeners.indexOf(fn), 1)
   }
 
-  updator<T>(updateFunc: () => T, shouldUpdate = true) {
-    const retValue = updateFunc()
-    if (shouldUpdate) {
+  /**
+   * Update the state
+   * @param updateFunc 更新状态的函数
+   */
+  update = (updateFunc: UpdateFunc) => {
+    return Promise.resolve<void | boolean>(updateFunc()).then(shouldBroadcast => {
+      if (!(shouldBroadcast === false)) return
       this._listeners.forEach(listener => listener())
-    }
+    })
+  }
 
-    return retValue
+  /**
+   * Return a func which can update the state
+   */
+  updator = (updateFunc: UpdateFunc) => {
+    return () => this.update(updateFunc)
   }
 }
 
@@ -47,13 +57,14 @@ export class Container<State extends Object = {}> {
  * 注入一个全局 Container
  * @param containerInstance 全局 container 实例
  */
-export function useGlobalContainer<State>(containerInstance: Container<State>) {
-  const [updateCount, setUpdateCount] = useState(0)
-  const forceUpdate = useRef(() => setUpdateCount(updateCount + 1))
+export function useGlobalContainer<T extends Container>(containerInstance: T) {
+  const forceUpdate = useState(null)[1]
 
   useEffect(() => {
-    containerInstance._subscribe(forceUpdate.current)
-    return () => containerInstance._unsubscribe(forceUpdate.current)
+    const listener = () => forceUpdate(null)
+    containerInstance._subscribe(listener)
+
+    return () => containerInstance._unsubscribe(listener)
   }, [])
 
   return containerInstance

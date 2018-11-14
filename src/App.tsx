@@ -10,14 +10,14 @@ import TopBar from '@/components/TopBar'
 import BackGround from '@/components/BackGround'
 import Router from './router'
 
-const App: React.SFC = () => (
+const App: React.FunctionComponent = () => (
   <BackGround>
     <TopBar />
     <Router />
   </BackGround>
 )
 
-const Root: React.SFC = () => (
+const Root: React.FunctionComponent = () => (
   <Provider>
     <Subscribe to={[global]}>
       {(g: GlobalContainer) => (

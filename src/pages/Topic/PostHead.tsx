@@ -53,7 +53,7 @@ interface Props {
   topicInfo: ITopic
 }
 
-const PostHead: React.SFC<Props> = ({ topicInfo }) => (
+const PostHead: React.FunctionComponent<Props> = ({ topicInfo }) => (
   <Paper square elevation={1} className={root}>
     <IconButton className={gobackIcon} onClick={goback}>
       <KeyboardBackspaceIcon />

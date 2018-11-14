@@ -21,7 +21,6 @@ export interface FetchError {
 }
 
 async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, FetchError>> {
-  // const baseUrl = "https://apitest.niconi.cc"
   // const baseUrl = "https://api-v2.cc98.org"
   const baseUrl = host.api
   const requestURL = `${baseUrl}/${url}`
@@ -45,6 +44,7 @@ async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, Fetc
   try {
     data = await response.clone().json()
   } catch {
+    console.warn(`FIX: ${requestURL} response.json() fail.`)
     data = await response.text()
   }
 
@@ -199,17 +199,17 @@ export async function getAccessToken(): Promise<string> {
   let accessToken = getLocalStorage('access_token')
 
   if (!accessToken) {
-    const refreshToken = getLocalStorage('refresh_token')
+    const refreshToken = getLocalStorage('refresh_token') as string
 
     if (!refreshToken) {
       return ''
     }
 
-    const token = await getTokenByRefreshToken(<string>refreshToken)
+    const token = await getTokenByRefreshToken(refreshToken)
     token
-      .fail
-      // TODO: 添加 refresh token 过期的处理
-      ()
+      .fail(() => {
+        // TODO: 添加 refresh token 过期的处理
+      })
       .succeed(token => {
         const access_token = `${token.token_type} ${token.access_token}`
         setLocalStorage('access_token', access_token, token.expires_in)
@@ -220,7 +220,7 @@ export async function getAccessToken(): Promise<string> {
       })
   }
 
-  return <string>accessToken
+  return accessToken as string
 }
 
 interface Token {
@@ -243,25 +243,15 @@ async function getTokenByRefreshToken(refreshToken: string): Promise<Try<Token, 
     refresh_token: refreshToken,
   }
 
-  const response = await fetch(host.oauth, {
-    method: 'POST',
+  return await POST<Token>(host.oauth, {
+    noAuthorization: true,
     headers: new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',
     }),
-    body: encodeParams(requestBody),
+    requestInit: {
+      body: encodeParams(requestBody),
+    },
   })
-
-  if (!(response.ok && response.status === 200)) {
-    return Try.of<Token, FetchError>(
-      Failure.of({
-        status: response.status,
-        msg: await response.text(),
-        response,
-      })
-    )
-  }
-
-  return Try.of<Token, FetchError>(Success.of(await response.json()))
 }
 
 /**
@@ -282,30 +272,22 @@ export async function logIn(username: string, password: string): Promise<Try<Tok
     scope: 'cc98-api openid offline_access',
   }
 
-  const response = await fetch(host.oauth, {
-    method: 'POST',
+  const token = await POST<Token>(host.oauth, {
+    noAuthorization: true,
     headers: new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',
     }),
-    body: encodeParams(requestBody),
+    requestInit: {
+      body: encodeParams(requestBody),
+    },
   })
 
-  if (!(response.ok && response.status === 200)) {
-    return Try.of<Token, FetchError>(
-      Failure.of({
-        status: response.status,
-        msg: await response.text(),
-        response,
-      })
-    )
-  }
+  token.map(token => {
+    const access_token = `${token.token_type} ${token.access_token}`
+    setLocalStorage('access_token', access_token, token.expires_in)
+    // refresh_token 有效期一个月
+    setLocalStorage('refresh_token', token.refresh_token, 2592000)
+  })
 
-  const token = await response.json()
-
-  const access_token = `${token.token_type} ${token.access_token}`
-  setLocalStorage('access_token', access_token, token.expires_in)
-  // refresh_token 有效期一个月
-  setLocalStorage('refresh_token', token.refresh_token, 2592000)
-
-  return Try.of<Token, FetchError>(Success.of(token))
+  return token
 }

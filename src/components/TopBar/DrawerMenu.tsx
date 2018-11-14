@@ -37,7 +37,7 @@ interface ItemProps {
   onClick: () => void
 }
 
-const Item: React.SFC<ItemProps> = ({ icon, text, onClick }) => (
+const Item: React.FunctionComponent<ItemProps> = ({ icon, text, onClick }) => (
   <ListItem button onClick={onClick}>
     <ListItemIcon>{icon}</ListItemIcon>
     <ListItemText primary={text} />
@@ -51,7 +51,7 @@ interface Props {
   onLogout: () => void
 }
 
-const TopBar: React.SFC<Props> = ({ isLogIn, open, onClose, onLogout, children }) => (
+const TopBar: React.FunctionComponent<Props> = ({ isLogIn, open, onClose, onLogout, children }) => (
   <Drawer open={open} onClose={onClose}>
     <List className={list} onClick={onClose}>
       {children}

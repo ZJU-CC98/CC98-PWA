@@ -22,7 +22,7 @@ import UserCenter from './pages/UserCenter'
 import UserCenterEdit from './pages/UserCenter/Edit'
 
 // TODO: cache
-const Route: React.SFC<
+const Route: React.FunctionComponent<
   RouteComponentProps & {
     // @types/react 里 createElement 签名很混乱
     // tslint:disable-next-line:no-any
@@ -34,7 +34,7 @@ const Route: React.SFC<
   return React.createElement(component, otherProps)
 }
 
-const Routes: React.SFC = () => (
+const Routes: React.FunctionComponent = () => (
   <Router>
     <Route path="/" component={Home} />
     <Route path="/hotTopics" component={HotTopic} />

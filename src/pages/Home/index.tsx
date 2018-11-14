@@ -34,7 +34,7 @@ const text = css`
   }
 `
 
-const Home: React.SFC = () => (
+const Home: React.FunctionComponent = () => (
   <>
     <div className={img} />
     <LayoutCenter>

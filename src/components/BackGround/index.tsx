@@ -19,7 +19,7 @@ const Placeholder = styled.div`
   }
 `
 
-const BackGround: React.SFC = ({ children }) => (
+const BackGround: React.FunctionComponent = ({ children }) => (
   <>
     <Background square elevation={0} />
     <Placeholder />

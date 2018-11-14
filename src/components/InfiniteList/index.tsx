@@ -24,7 +24,7 @@ interface Props {
   loadingPosition?: 'top' | 'bottom'
 }
 
-const InfiniteList: React.SFC<Props> = props => {
+const InfiniteList: React.FunctionComponent<Props> = props => {
   const loadingDom = useRef<HTMLDivElement>(null)
   // 保证 bindFunc 取到最新的值
   const refProps = useRef(props)

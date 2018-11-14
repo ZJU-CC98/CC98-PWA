@@ -30,7 +30,7 @@ const button = css`
   }
 `
 
-const TopBar: React.SFC<{
+const TopBar: React.FunctionComponent<{
   onClick: () => void
 }> = ({ onClick }) => (
   <AppBar position="fixed">
@@ -50,7 +50,7 @@ const TopBar: React.SFC<{
   </AppBar>
 )
 
-const Wrapper: React.SFC = () => (
+const Wrapper: React.FunctionComponent = () => (
   <Subscribe to={[global]}>
     {(g: GlobalContainer) => (
       <>

@@ -9,7 +9,7 @@ const loading = css`
   padding: 15px 0;
 `
 
-const LoadingCircle: React.SFC = () => (
+const LoadingCircle: React.FunctionComponent = () => (
   <div className={loading}>
     <CircularProgress />
   </div>

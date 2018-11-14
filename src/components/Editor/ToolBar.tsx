@@ -1,14 +1,11 @@
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-} from '@material-ui/core'
+import { BottomNavigation, BottomNavigationAction } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Photo from '@material-ui/icons/Photo'
 import Send from '@material-ui/icons/Send'
 import React from 'react'
 interface Props {
-  sendLoading: boolean,
-  handlePic: (e: EventTarget & HTMLInputElement) => void,
+  sendLoading: boolean
+  handlePic: (e: EventTarget & HTMLInputElement) => void
   onPost: () => Promise<void>
 }
 const bottomBar: React.CSSProperties = {
@@ -21,43 +18,34 @@ const bottomButton = {
   maxWidth: '100px',
 }
 export default class extends React.PureComponent<Props> {
+  uploadFile = React.createRef<HTMLInputElement>()
 
   clickUpload = () => {
-    this.refs.uploadfile.click()
+    if (this.uploadFile.current) this.uploadFile.current.click()
   }
 
   render() {
     const { handlePic, onPost } = this.props
-    const sendIcon = this.props.sendLoading
-    ? <CircularProgress size={30} />
-    : <Send />
+    const sendIcon = this.props.sendLoading ? <CircularProgress size={30} /> : <Send />
 
-    return(
+    return (
       <>
         <input
           type="file"
           name="file"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePic(e.target)}
           style={{ display: 'none' }}
-
-          // FIXME:
-          ref="uploadfile"
+          ref={this.uploadFile}
           multiple
           accept="image/*"
         />
-        <BottomNavigation
-          style={bottomBar}
-        >
-        <BottomNavigationAction
-          icon={<Photo />}
-          style={bottomButton}
-          onClick={this.clickUpload}
-        />
-        <BottomNavigationAction
-          icon={sendIcon}
-          style={bottomButton}
-          onClick={onPost}
-        />
+        <BottomNavigation style={bottomBar}>
+          <BottomNavigationAction
+            icon={<Photo />}
+            style={bottomButton}
+            onClick={this.clickUpload}
+          />
+          <BottomNavigationAction icon={sendIcon} style={bottomButton} onClick={onPost} />
         </BottomNavigation>
       </>
     )

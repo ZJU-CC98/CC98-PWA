@@ -1,29 +1,12 @@
 /* tslint:disable */
 import { useState, useEffect } from 'react'
 
-declare global {
-  interface Window {
-    __$$GLOBAL_STATE_: {
-      [key: string]: object
-    }
-  }
-}
-
-// Prepare for debug tools
-window.__$$GLOBAL_STATE_ = {}
-
 type Listener = () => void
-type UpdateFunc = () => void | boolean | Promise<void> | Promise<boolean>
 
 export class Container<State extends object = {}> {
   namespace: string
-
-  state: State
+  state: Readonly<State>
   _listeners: Listener[] = []
-
-  _attachToGlobal() {
-    window.__$$GLOBAL_STATE_[this.namespace] = this.state
-  }
 
   _subscribe(fn: Listener) {
     this._listeners.push(fn)
@@ -35,21 +18,42 @@ export class Container<State extends object = {}> {
   }
 
   /**
-   * Update the state
-   * @param updateFunc 更新状态的函数
+   * just like setState in react
+   * @param state_or_updater
+   * @param callback
    */
-  update = (updateFunc: UpdateFunc) => {
-    return Promise.resolve<void | boolean>(updateFunc()).then(shouldBroadcast => {
-      if (!(shouldBroadcast === false)) return
-      this._listeners.forEach(listener => listener())
-    })
-  }
+  setState<K extends keyof State>(
+    updater:
+      | ((prevState: Readonly<State>) => Pick<State, K> | State | null)
+      | (Pick<State, K> | State | null),
+    callback?: () => void
+  ): Promise<void> {
+    return Promise.resolve().then(() => {
+      let nextState: Pick<State, K> | State | null
 
-  /**
-   * Return a func which can update the state
-   */
-  updator = (updateFunc: UpdateFunc) => {
-    return () => this.update(updateFunc)
+      if (typeof updater === 'function') {
+        nextState = (updater as Function)(this.state)
+      } else {
+        nextState = updater
+      }
+
+      // (v == null) equal to (v === null || v === undefined)
+      // this will prevent broadcast
+      if (nextState == null) {
+        if (callback) callback()
+        return
+      }
+
+      this.state = Object.assign({}, this.state, nextState)
+
+      const promises = this._listeners.map(listener => listener())
+
+      return Promise.all(promises).then(() => {
+        if (callback) {
+          return callback()
+        }
+      })
+    })
   }
 }
 

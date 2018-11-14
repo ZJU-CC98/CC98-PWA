@@ -1,42 +1,17 @@
-/**
- * @author Dearkano
- * @date 2018-11-10
- */
-import React, { useState } from 'react'
+import React from 'react'
 
-import { Subscribe } from '@cc98/state'
-import global from '@/model/global'
+import { useGlobalContainer } from '@/hooks/useContainer'
+import settingInstance from '@/containers/setting'
 
 import { ListItem, ListItemText, Switch } from '@material-ui/core'
-import WhiteList from '../../config/proxy'
 
 export default () => {
-  const [state, setState] = useState(Boolean(localStorage.getItem('proxy')))
-  function changeProxy() {
-    if (localStorage.getItem('proxy')) {
-      localStorage.removeItem('proxy')
-      setState(false)
-    } else {
-      localStorage.setItem('proxy', '233333')
-      setState(true)
-    }
-  }
+  const { state, TOGGLE_PROXY } = useGlobalContainer(settingInstance)
 
   return (
-    <Subscribe to={[global]}>
-      {() => {
-        const name = global.state.myInfo ? global.state.myInfo.name : ''
-        if (WhiteList.indexOf(name) !== -1) {
-          return (
-            <ListItem button onClick={() => changeProxy()}>
-              <ListItemText primary="开启代理" />
-              <Switch checked={state} />
-            </ListItem>
-          )
-        }
-
-        return null
-      }}
-    </Subscribe>
+    <ListItem button>
+      <ListItemText primary="使用代理" />
+      <Switch checked={state.useProxy} onChange={TOGGLE_PROXY} />
+    </ListItem>
   )
 }

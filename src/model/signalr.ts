@@ -30,14 +30,14 @@ export class Store extends Container<IStore> {
 
   start = async () => {
     const shouldUseSignalr =
-      global.state.isLogIn && this.state.shouldUseSignalr && apiHost.state.type === HostType.Default
+      global.state.isLogIn && this.state.shouldUseSignalr && apiHost.type === HostType.Default
     if (!shouldUseSignalr) return
     let token = await getAccessToken()
     // remove "Bearer "
     token = token.slice(7)
 
     this.connection = new SignalR.HubConnectionBuilder()
-      .withUrl(`${apiHost.state.api}/signalr/notification`, {
+      .withUrl(`${apiHost.api}/signalr/notification`, {
         accessTokenFactory: () => token,
         transport: SignalR.HttpTransportType.WebSockets,
       })

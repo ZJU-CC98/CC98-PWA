@@ -26,7 +26,7 @@ interface Props {
  * @author dongyansong
  */
 export default ({ id }: Props) => {
-  const list = React.useRef<HTMLUListElement>()
+  const list = React.useRef<HTMLUListElement>(null)
 
   React.useEffect(() => {
     store

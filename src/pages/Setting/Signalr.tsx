@@ -1,20 +1,17 @@
-/**
- * @author dongyansong
- * @date 2018-10-29
- */
-import { Subscribe } from '@cc98/state'
-import { ListItem, ListItemText, Switch } from '@material-ui/core'
 import React from 'react'
 
-import store, { Store } from '@/model/signalr'
+import { useGlobalContainer } from '@/hooks/useContainer'
+import settingInstance from '@/containers/setting'
 
-export default () => (
-  <Subscribe to={[store]}>
-    {({ state: { shouldUseSignalr }, setShouldUseSignalr }: Store) => (
-      <ListItem button onClick={() => setShouldUseSignalr(!shouldUseSignalr)}>
-        <ListItemText primary="开启实时通知" />
-        <Switch checked={shouldUseSignalr} />
-      </ListItem>
-    )}
-  </Subscribe>
-)
+import { ListItem, ListItemText, Switch } from '@material-ui/core'
+
+export default () => {
+  const { state, TOGGLE_SIGNALR } = useGlobalContainer(settingInstance)
+
+  return (
+    <ListItem button>
+      <ListItemText primary="开启实时通知" />
+      <Switch checked={state.useSignalr} onChange={TOGGLE_SIGNALR} />
+    </ListItem>
+  )
+}

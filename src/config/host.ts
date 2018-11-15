@@ -1,4 +1,3 @@
-import { getLocalStorage } from '@/utils/storage'
 
 export enum HostType {
   Proxy,
@@ -26,9 +25,8 @@ const proxyHost: IHost = {
 /**
  * 代理设置
  */
-let host = getLocalStorage('proxy') ? proxyHost : defaultHost
-
-console.log('1111', getLocalStorage('proxy'), host)
+// let host = getLocalStorage('proxy') ? proxyHost : defaultHost
+let host = proxyHost
 
 /**
  * 切换代理

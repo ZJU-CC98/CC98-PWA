@@ -11,12 +11,11 @@ import { List, Paper, Tab, Tabs } from '@material-ui/core'
 import { Theme, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import { GET } from '@/utils/fetch'
-import { IBaseBoard, ITopic } from '@cc98/api'
-import getBoardName from '@/services/getBoardName'
-import Topic from '../Topic/Topic';
+import { IBoardGroup, ITopic } from '@cc98/api'
+import { getBoardNameById } from '@/services/board'
 
 interface Props {
-  boards: IBaseBoard[]
+  boards: IBoardGroup[]
   classes: ClassNameMap
   topicInstance: TopicInfoStore
 }
@@ -83,7 +82,7 @@ export default withStyles(styles)(
       const topicsTry = await GET<ITopic[]>(`me/custom-board/topic?from=${b_from}&size=20`)
       topicsTry.map(async topicList => {
         // tslint:disable-next-line:prefer-array-literal
-        topicList.map(topic => (topic.boardName = getBoardName(boards, topic.boardId)))
+        topicList.map(topic => (topic.boardName = getBoardNameById(boards, topic.boardId)))
         this.setState({
           b_topics: this.state.b_topics.concat(topicList),
           b_from: b_from + topicList.length,
@@ -103,7 +102,7 @@ export default withStyles(styles)(
       const topicsTry = await GET<ITopic[]>(`me/followee/topic?from=${u_from}&size=20`)
       topicsTry.map(async topicList => {
         // tslint:disable-next-line:prefer-array-literal
-        topicList.map(topic => (topic.boardName = getBoardName(boards, topic.boardId)))
+        topicList.map(topic => (topic.boardName = getBoardNameById(boards, topic.boardId)))
         this.setState({
           u_topics: this.state.u_topics.concat(topicList),
           u_from: u_from + topicList.length,

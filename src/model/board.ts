@@ -1,7 +1,7 @@
 import { FetchError, GET } from '@/utils/fetch'
 import { Success, Try } from '@/utils/fp/Try'
 import { getLocalStorage, setLocalStorage } from '@/utils/storage'
-import { IBaseBoard, IBoard } from '@cc98/api'
+import { IBoardGroup, IBoard } from '@cc98/api'
 import { Container } from '@cc98/state'
 
 interface T {
@@ -10,7 +10,7 @@ interface T {
 }
 interface State {
   tagData: T[]
-  boardData: IBaseBoard[]
+  boardData: IBoardGroup[]
   childBoardData: IBoard[]
 }
 
@@ -31,13 +31,13 @@ export class BoardInfoStore extends Container<State> {
    * @return {Promise<Try<IUser, FetchError>>}
    * @memberof BoardInfoStore
    */
-  getInfo = (): Promise<Try<IBaseBoard[], FetchError>> | undefined => {
+  getInfo = (): Promise<Try<IBoardGroup[], FetchError>> | undefined => {
     if (this.state.boardData.length !== 0) {
-      return Promise.resolve(Try.of<IBaseBoard[], FetchError>(Success.of(this.state.boardData)))
+      return Promise.resolve(Try.of<IBoardGroup[], FetchError>(Success.of(this.state.boardData)))
     }
     if (getLocalStorage('boardsInfo')) {
       this.put(state => {
-        state.boardData = getLocalStorage('boardsInfo') as IBaseBoard[]
+        state.boardData = getLocalStorage('boardsInfo') as IBoardGroup[]
         state.childBoardData = getLocalStorage('childBoardsInfo') as IBoard[]
       })
     } else {
@@ -65,8 +65,8 @@ export class BoardInfoStore extends Container<State> {
    * @return {Promise<Try<IUser, FetchError>>}
    * @memberof BoardInfoStore
    */
-  forceGetInfo = async (): Promise<Try<IBaseBoard[], FetchError>> => {
-    const res = await GET<IBaseBoard[]>('board/all')
+  forceGetInfo = async (): Promise<Try<IBoardGroup[], FetchError>> => {
+    const res = await GET<IBoardGroup[]>('board/all')
     res.fail().succeed(info => this.setInfo(info))
 
     return res
@@ -83,7 +83,7 @@ export class BoardInfoStore extends Container<State> {
 
     return res
   }
-  setInfo = (data: IBaseBoard[]) => {
+  setInfo = (data: IBoardGroup[]) => {
     let cd: IBoard[] = []
     setLocalStorage('boardsInfo', data, 3600 * 24 * 7)
     for (const baseBoard of data) {

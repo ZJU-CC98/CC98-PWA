@@ -2,8 +2,8 @@ import React from 'react'
 // https://reach.tech/router/api/Router
 import { RouteComponentProps, Router } from '@reach/router'
 
-import BoardList from './pages/Board'
-import Board from './pages/Board/Board'
+import BoardList from './pages/BoardList'
+import Board from './pages/Board'
 import Compose from './pages/Compose'
 import Page401 from './pages/Error/401'
 import Page404 from './pages/Error/404'

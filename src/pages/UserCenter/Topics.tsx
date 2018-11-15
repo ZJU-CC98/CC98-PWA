@@ -18,7 +18,7 @@ import InfiniteList from '@/components/InfiniteList'
 import TopicItem from '@/components/TopicItem'
 
 import { GET } from '@/utils/fetch'
-import { IBaseBoard, ITopic, IUser } from '@cc98/api'
+import { IBoardGroup, ITopic, IUser } from '@cc98/api'
 import { getBoardNameById } from '@/services/board'
 
 const styles: StyleRules = {
@@ -83,7 +83,7 @@ const ExpandPanelSummaryStyle = css`
 
 interface Props {
   info: IUser
-  boards: IBaseBoard[]
+  boards: IBoardGroup[]
   classes: ClassNameMap
 }
 

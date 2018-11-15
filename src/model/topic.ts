@@ -1,4 +1,4 @@
-import getTagName from '@/services/getTagName'
+import { getTagNameById } from '@/services/tag'
 import { FetchError, GET, PUT, DELETE } from '@/utils/fetch'
 import { Try } from '@/utils/fp/Try'
 import { IBoard, ITag, ITopic } from '@cc98/api'
@@ -182,11 +182,11 @@ export class TopicInfoStore extends Container<State> {
     }
   }
 
-  handleChange = (index: keyof State) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+  handleChange = (index: keyof State) => async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { itags } = this.state
     // tslint:disable-next-line:radix
     const id = parseInt(event.target.value)
-    const name = getTagName(itags, id)
+    const name = await getTagNameById(id)
     if (index === 'tag1') {
       this.put(state => {
         state.tag1 = { id, name }

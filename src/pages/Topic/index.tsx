@@ -9,7 +9,9 @@ import { PostInfoStore } from '@/model/post'
 import Topic from './Topic'
 
 interface Props {
+  // 如果是普通帖子 路由为/topic/topicId
   topicId: string
+  // 如果是追踪匿名版块 路由为/topic/
   postId: string
   userId: string
 }

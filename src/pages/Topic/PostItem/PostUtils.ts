@@ -20,7 +20,7 @@ export default {
     return resPost._value._value as ILike
   },
 
-  quote: async (post: IPost) => {
+  quote: (post: IPost) => {
     const time = new Date(post.time).toLocaleString()
 
     const content = `[quote][b]以下是引用${post.floor}楼：${

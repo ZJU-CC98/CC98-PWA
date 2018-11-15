@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 
 import { css, cx } from 'emotion'
 
-import { PostInfoStore } from '@/model/post'
 import UBB from '@cc98/ubb-react'
 
 import Utils from './PostUtils'
@@ -60,21 +59,13 @@ interface Props {
    */
   isTrace: boolean
   classes: ClassNameMap
-  postInstance: PostInfoStore
   /**
    * 方法
    */
   openDialog: (info: IPost) => void
   closeDialog: () => void
-}
-
-interface State {
-  /**
-   * 签名档是否展开
-   */
-  expanded: boolean
-  // tslint:disable-next-line:no-any
-  anchorEl: any
+  setQuote: (content: string) => void
+  setPosts: <T extends Partial<IPost>>(postId: number, postUpdate: T) => void
 }
 
 const likeStateMap = ['none', 'like', 'dislike']
@@ -156,16 +147,18 @@ const styles: StyleRules = {
   },
 }
 
-const contentRoot = css`&&{
-     img {
+const contentRoot = css`
+  && {
+    img {
       max-width: 100%;
-    },
-}`
+    }
+  }
+`
 
 export default withStyles(styles)((props: Props) => {
   const [expanded, setExpanded] = useState(false)
-  const { postInfo, classes, postInstance, isTrace, userInfo, openDialog } = props
-  const { updateSinglePosts, wakeUpEditor } = postInstance
+  const onExpandClick = () => setExpanded(prevExpanded => !prevExpanded)
+  const { postInfo, classes, isTrace, userInfo, openDialog, setQuote, setPosts } = props
   if (postInfo.isDeleted) {
     return null
   }
@@ -178,7 +171,6 @@ export default withStyles(styles)((props: Props) => {
       <Header
         postInfo={postInfo}
         userInfo={userInfo}
-        trace={postInstance.trace}
         isTrace={isTrace}
         classes={classes}
         openDialog={openDialog}
@@ -199,7 +191,7 @@ export default withStyles(styles)((props: Props) => {
           disableRipple={true}
           onClick={async () => {
             const res = await Utils.dislike(postInfo.id)
-            updateSinglePosts(postInfo.id, res)
+            setPosts(postInfo.id, res)
           }}
         >
           <DislikeIcon
@@ -222,8 +214,8 @@ export default withStyles(styles)((props: Props) => {
           classes={{ root: classes.action }}
           disableRipple={true}
           onClick={async () => {
-            const content = await Utils.quote(this.props.postInfo)
-            wakeUpEditor(content)
+            const content = Utils.quote(postInfo)
+            setQuote(content)
           }}
         >
           <Quote fontSize="small" />
@@ -236,15 +228,15 @@ export default withStyles(styles)((props: Props) => {
           disableTouchRipple={true}
           onClick={async () => {
             const res = await Utils.like(postInfo.id)
-            updateSinglePosts(postInfo.id, res)
+            setPosts(postInfo.id, res)
           }}
         >
           <LikeIcon
             fontSize="small"
             className={
-              likeStateMap[postInfo.likeState] === 'dislike'
-                ? dislikeButton.clicked
-                : dislikeButton.unclicked
+              likeStateMap[postInfo.likeState] === 'like'
+                ? likeButton.clicked
+                : likeButton.unclicked
             }
           />
           <span
@@ -257,13 +249,13 @@ export default withStyles(styles)((props: Props) => {
       </CardActions>
       {postInfo.awards.length > 5 && (
         <CardActions classes={{ root: classes.awardAction }}>
-          <Button classes={{ root: classes.expandButton }} onClick={this.onExpandClick}>
+          <Button classes={{ root: classes.expandButton }} onClick={onExpandClick}>
             （{postInfo.awards.length}
             个评分）
           </Button>
           <IconButton
             className={cx(expand, {
-              [expandOpen]: this.state.expanded,
+              [expandOpen]: expanded,
             })}
             style={{ width: '20%' }}
             onClick={() => setExpanded(!expanded)}
@@ -274,7 +266,7 @@ export default withStyles(styles)((props: Props) => {
       )}
       {postInfo.awards.length > 0 && postInfo.awards.length <= 5 && <Award postInfo={postInfo} />}
       {postInfo.awards.length > 5 && (
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
           <Award postInfo={postInfo} />
         </Collapse>
       )}

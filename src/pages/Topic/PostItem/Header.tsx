@@ -13,7 +13,6 @@ interface Props {
   postInfo: IPost
   userInfo: IUser | null
   isTrace: boolean
-  trace: (topicId: number, userId: number, isTrace: boolean, isAnonymous?: boolean) => void
   openDialog: (info: IPost) => void
 }
 
@@ -26,7 +25,7 @@ const postOptionStyle = css`
 `
 
 export default (props: Props) => {
-  const { classes, postInfo, userInfo, isTrace, trace, openDialog } = props
+  const { classes, postInfo, userInfo, isTrace, openDialog } = props
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
@@ -86,14 +85,11 @@ export default (props: Props) => {
                 onClick={() => {
                   if (option === '追踪') {
                     if (!postInfo.isAnonymous) {
-                      trace(postInfo.topicId, postInfo.userId, true)
                       navigate(`/topic/${postInfo.topicId}/trace/${postInfo.userId}`)
                     } else {
-                      trace(postInfo.topicId, postInfo.id, true, true)
                       navigate(`/topic/${postInfo.topicId}/anonymous/trace/${postInfo.id}`)
                     }
                   } else if (option === '返回') {
-                    trace(postInfo.topicId, postInfo.userId, false)
                     navigate(`/topic/${postInfo.topicId}`)
                   } else if (option === '编辑') {
                     // TODO:

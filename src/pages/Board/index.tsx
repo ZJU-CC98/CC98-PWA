@@ -113,17 +113,15 @@ export default withStyles(styles)((props: Props) => {
               <MenuItem key={0} value={-1}>
                 全部
               </MenuItem>
-              {tags.length >= 1
-                ? tags[0].tags.map(tag => (
-                    <MenuItem key={tag.id} value={tag.id}>
-                      {tag.name}
-                    </MenuItem>
-                  ))
-                : null}
+              {tags[0].tags.map(tag => (
+                <MenuItem key={tag.id} value={tag.id}>
+                  {tag.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         ) : null}
-        {tags.length > 0 ? (
+        {tags.length > 1 ? (
           <FormControl className={classes.formControl} classes={{ root: classes.selectRoot }}>
             <Select
               autoWidth
@@ -137,13 +135,11 @@ export default withStyles(styles)((props: Props) => {
               <MenuItem key={0} value={-1}>
                 全部
               </MenuItem>
-              {tags.length === 2
-                ? tags[1].tags.map(tag => (
-                    <MenuItem key={tag.id} value={tag.id}>
-                      {tag.name}
-                    </MenuItem>
-                  ))
-                : null}
+              {tags[1].tags.map(tag => (
+                <MenuItem key={tag.id} value={tag.id}>
+                  {tag.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         ) : null}

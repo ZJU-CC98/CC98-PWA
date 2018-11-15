@@ -34,17 +34,21 @@ export function getBoard(id: string) {
 /**
  * 通过版面Id获取版面名称
  */
-export function getBoardNameById(boards: IBoardGroup[], id: number) {
-  for (const baseBoard of boards) {
-    for (const childBoard of baseBoard.boards) {
-      if (id === childBoard.id) return childBoard.name
+export async function getBoardNameById(id: number) {
+  const boardsTry = await getBoardsInfo()
+  let name = '版面不存在'
+  boardsTry.fail().succeed(boards => {
+    for (const baseBoard of boards) {
+      for (const childBoard of baseBoard.boards) {
+        if (id === childBoard.id) name = childBoard.name
+      }
     }
-  }
+  })
 
-  return '版面不存在'
+  return name
 }
 
-export async function customBoard(id: number, opt: number) {
+export function customBoard(id: number, opt: number) {
   const url = `me/custom-board/${id}`
   if (opt === 1) {
     return PUT(url)

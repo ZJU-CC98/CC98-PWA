@@ -19,7 +19,7 @@ import TopicItem from '@/components/TopicItem'
 
 import { GET } from '@/utils/fetch'
 import { IBaseBoard, ITopic, IUser } from '@cc98/api'
-import getBoardNameById from '@/services/getBoardName'
+import { getBoardNameById } from '@/services/board'
 
 const styles: StyleRules = {
   root: {

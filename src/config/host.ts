@@ -28,6 +28,8 @@ const proxyHost: IHost = {
  */
 let host = getLocalStorage('proxy') ? proxyHost : defaultHost
 
+console.log('1111', getLocalStorage('proxy'), host)
+
 /**
  * 切换代理
  */

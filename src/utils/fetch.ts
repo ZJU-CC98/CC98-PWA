@@ -243,15 +243,25 @@ async function getTokenByRefreshToken(refreshToken: string): Promise<Try<Token, 
     refresh_token: refreshToken,
   }
 
-  return await POST<Token>(host.oauth, {
-    noAuthorization: true,
+  const response = await fetch(host.oauth, {
+    method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',
     }),
-    requestInit: {
-      body: encodeParams(requestBody),
-    },
+    body: encodeParams(requestBody),
   })
+
+  if (!(response.ok && response.status === 200)) {
+    return Try.of<Token, FetchError>(
+      Failure.of({
+        status: response.status,
+        msg: await response.text(),
+        response,
+      })
+    )
+  }
+
+  return Try.of<Token, FetchError>(Success.of(await response.json()))
 }
 
 /**
@@ -272,22 +282,30 @@ export async function logIn(username: string, password: string): Promise<Try<Tok
     scope: 'cc98-api openid offline_access',
   }
 
-  const token = await POST<Token>(host.oauth, {
-    noAuthorization: true,
+  const response = await fetch(host.oauth, {
+    method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',
     }),
-    requestInit: {
-      body: encodeParams(requestBody),
-    },
+    body: encodeParams(requestBody),
   })
 
-  token.map(token => {
-    const access_token = `${token.token_type} ${token.access_token}`
-    setLocalStorage('access_token', access_token, token.expires_in)
-    // refresh_token 有效期一个月
-    setLocalStorage('refresh_token', token.refresh_token, 2592000)
-  })
+  if (!(response.ok && response.status === 200)) {
+    return Try.of<Token, FetchError>(
+      Failure.of({
+        status: response.status,
+        msg: await response.text(),
+        response,
+      })
+    )
+  }
 
-  return token
+  const token = await response.json()
+
+  const access_token = `${token.token_type} ${token.access_token}`
+  setLocalStorage('access_token', access_token, token.expires_in)
+  // refresh_token 有效期一个月
+  setLocalStorage('refresh_token', token.refresh_token, 2592000)
+
+  return Try.of<Token, FetchError>(Success.of(token))
 }

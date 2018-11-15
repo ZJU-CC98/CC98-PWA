@@ -1,16 +1,20 @@
-import React from 'react'
-import { Subscribe } from '@cc98/state'
+import React, { useState, useEffect } from 'react'
 
-import boardInstance, { BoardInfoStore } from '@/model/board'
-
+import { IBaseBoard, IBoard } from '@cc98'
+import { getBoardsInfo } from '@/services/board'
 import Component from './BoardList'
+interface State {
+  boardData: IBaseBoard[]
+  childBoardData: IBoard[]
+}
+export default () => {
+  const [state, setState] = useState(null)
 
-export default () => (
-  <Subscribe to={[boardInstance]}>
-    {(store: BoardInfoStore) =>
-      store.state.childBoardData.length !== 0 ? (
-        <Component boardList={store.state.boardData} boards={store.state.childBoardData} />
-      ) : null
-    }
-  </Subscribe>
-)
+  useEffect(() => {
+    ; (async () => {
+      await getBoardsInfo()
+    })()
+  }, [])
+
+  return <>{state && <Component boardList={state.boardData} boards={state.childBoardData} />}</>
+}

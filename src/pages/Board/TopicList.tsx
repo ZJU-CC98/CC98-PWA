@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
+import { navigate } from '@reach/router'
+
 import TopicItem from '@/components/TopicItem'
 import InfiniteList from '@/components/InfiniteList'
 
@@ -62,14 +64,16 @@ export default (props: Props) => {
       return t as ITopic[]
     })
 
-    newTopicsTry.fail().succeed(newTopics => {
-      setTopics(prevTopics => prevTopics.concat(newTopics))
-      setState({
-        isLoading: false,
-        isEnd: newTopics.length !== 20,
-        from: state.from += newTopics.length,
+    newTopicsTry
+      .fail(() => navigate('error/403'))
+      .succeed(newTopics => {
+        setTopics(prevTopics => prevTopics.concat(newTopics))
+        setState({
+          isLoading: false,
+          isEnd: newTopics.length !== 20,
+          from: state.from += newTopics.length,
+        })
       })
-    })
   }
 
   return (

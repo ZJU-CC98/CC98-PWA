@@ -8,6 +8,7 @@ import { getTracePost, getHotPost, getPost, getAnonymousTracePost } from '@/serv
 import { getUsersInfo } from '@/services/user'
 import { IPost, IAward, ITopic, IUser } from '@cc98/api'
 import { TempAward } from './index'
+import { navigate } from '@reach/router'
 
 interface Props {
   topicInfo: ITopic
@@ -85,33 +86,35 @@ export default (props: Props) => {
           : await getTracePost(id, parseInt(identifyId, 10), from)
         : await getPost(id, from)
 
-    postTry.fail().succeed(async (postList: IPost[]) => {
-      await fetchUsers(postList)
-      postList.map(post => (post.isHot = false))
-      let newPostList = postList
-      // 第一页 且 不是追踪模式
-      if (isFirstGlance && !isTrace) {
-        newPostList = []
-        const hotPostTry = await getHotPost(id)
-        hotPostTry.fail().succeed(async hotPostList => {
-          hotPostList.map(post => (post.isHot = true))
-          newPostList.push(postList[0])
-          newPostList = newPostList.concat(hotPostList)
-          newPostList = newPostList.concat(postList.slice(1, postList.length))
+    postTry
+      .fail(() => navigate('/error/403'))
+      .succeed(async (postList: IPost[]) => {
+        await fetchUsers(postList)
+        postList.map(post => (post.isHot = false))
+        let newPostList = postList
+        // 第一页 且 不是追踪模式
+        if (isFirstGlance && !isTrace) {
+          newPostList = []
+          const hotPostTry = await getHotPost(id)
+          hotPostTry.fail().succeed(async hotPostList => {
+            hotPostList.map(post => (post.isHot = true))
+            newPostList.push(postList[0])
+            newPostList = newPostList.concat(hotPostList)
+            newPostList = newPostList.concat(postList.slice(1, postList.length))
+          })
+        }
+        let allAwards: IAward[] = []
+        newPostList.forEach(postItem => {
+          allAwards = allAwards.concat(postItem.awards)
         })
-      }
-      let allAwards: IAward[] = []
-      newPostList.forEach(postItem => {
-        allAwards = allAwards.concat(postItem.awards)
-      })
 
-      setPosts(prevPosts => prevPosts.concat(newPostList))
-      setState({
-        from: from + postList.length,
-        isEnd: postList.length !== 10,
-        isLoading: false,
+        setPosts(prevPosts => prevPosts.concat(newPostList))
+        setState({
+          from: from + postList.length,
+          isEnd: postList.length !== 10,
+          isLoading: false,
+        })
       })
-    })
   }
 
   // 获取用户信息 建立映射

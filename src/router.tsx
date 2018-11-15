@@ -50,7 +50,7 @@ const Routes: React.FunctionComponent = () => (
     <Route path="/setting" component={Setting} />
     <Route path="/messageList" component={MessageList} />
     <Route path="/messageDetail/:id" component={MessageDetail} />
-    <Route path="/compose/:boardId" component={Compose} />
+    <Route path="/compose/:boardId/:editType" component={Compose} />
     <Route path="/myFollow" component={MyFollow} />
     <Route path="/search" component={Search} />
     <Route path="/signin" component={SignIn} />

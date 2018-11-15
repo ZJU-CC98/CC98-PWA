@@ -157,7 +157,7 @@ class Compose extends React.Component<Props, State> {
         />
         <TypeSelect onChange={this.bindType} topicType={this.state.topicType} />
         {tagDom}
-        <Editor sendCallBack={this.sendCallBack} />
+        <Editor sendCallBack={this.sendCallBack} defaultContent={''} />
       </>
     )
   }

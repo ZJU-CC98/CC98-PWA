@@ -67,3 +67,30 @@ export function getAnonymousTracePost(topicId: number, postId: number, from: num
 export function getHotPost(id: number) {
   return GET<IPost[]>(`topic/${id}/hot-post`)
 }
+
+export function getNewTopics(from: number) {
+  return GET<ITopic[]>('topic/new', {
+    params: {
+      from: `${from}`,
+      size: '20',
+    },
+  })
+}
+
+export function getFollowBoardsTopics(from: number) {
+  return GET<ITopic[]>(`me/custom-board/topic?from=${from}&size=20`)
+}
+
+export function getFollowUsersTopics(from: number) {
+  return GET<ITopic[]>(`me/followee/topic?from=${from}&size=20`)
+}
+
+export function searchTopics(keyword: string, from: number) {
+  return GET<ITopic[]>('topic/search', {
+    params: {
+      keyword: `${keyword}`,
+      from: `${from}`,
+      size: '20',
+    },
+  })
+}

@@ -27,11 +27,6 @@ interface Tags {
   tag1: Tag
   tag2: Tag
 }
-interface State {
-  from: number
-  isLoading: boolean
-  isEnd: boolean
-}
 
 const styles: StyleRulesCallback = (theme: Theme) => ({
   root: {

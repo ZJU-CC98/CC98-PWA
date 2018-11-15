@@ -2,9 +2,6 @@ import React from 'react'
 
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
-import { Subscribe } from '@cc98/state'
-
-import boardInstance, { BoardInfoStore } from '@/model/board'
 
 import {
   Avatar,
@@ -14,13 +11,12 @@ import {
   List,
   ListItem,
   ListItemText,
-  Paper
+  Paper,
 } from '@material-ui/core'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
 import Topics from './Topics'
-
 import { DELETE, PUT } from '@/utils/fetch'
 import { IUser } from '@cc98/api'
 
@@ -332,13 +328,8 @@ export default withStyles(styles)(
               </ListItem>
               <Divider />
             </List>
-            <Subscribe to={[boardInstance]}>
-              {(store: BoardInfoStore) =>
-                store.state.boardData.length !== 0 ? (
-                  <Topics info={info} boards={store.state.boardData} />
-                ) : null
-              }
-            </Subscribe>
+
+            <Topics info={info} />
           </Paper>
         )
       }

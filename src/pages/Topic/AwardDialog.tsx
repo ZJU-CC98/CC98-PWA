@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core'
 import blue from '@material-ui/core/colors/blue'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
-
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import { PUT } from '@/utils/fetch'
 import { IPost } from '@cc98/api'
 
@@ -30,6 +30,7 @@ interface Props {
   onClose: () => void
   open: boolean
   currentPost: IPost
+  classes: ClassNameMap
   callback: (data: { id: number; content: string; reason: string }) => void
 }
 interface State {
@@ -38,7 +39,7 @@ interface State {
 }
 
 export default withStyles(styles)(
-  class extends React.Component<Props & { classes: ClassNameMap }, State> {
+  class extends React.Component<Props, State> {
     state: State = {
       value: 1,
       text: '',

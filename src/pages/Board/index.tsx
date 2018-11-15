@@ -63,11 +63,6 @@ export default withStyles(styles)((props: Props) => {
   const { classes, id } = props
 
   const [board, setBoard] = useState<IBoard | null>(null)
-  const [state, setState] = useState<State>({
-    isLoading: false,
-    isEnd: false,
-    from: 0,
-  })
   const [tags, setTags] = useState<ITag[]>([])
   const [tag1, setTag1] = useState<Tag>({ id: -1, name: '全部' })
   const [tag2, setTag2] = useState<Tag>({ id: -1, name: '全部' })
@@ -81,8 +76,6 @@ export default withStyles(styles)((props: Props) => {
       tagsInfo.fail().succeed(setTags)
     })()
   }, [])
-
-  const { isLoading, isEnd } = state
 
   const handleChange = (index: keyof Tags) => async (
     event: React.ChangeEvent<HTMLSelectElement>

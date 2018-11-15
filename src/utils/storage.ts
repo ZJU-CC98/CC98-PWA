@@ -36,8 +36,14 @@ export function getLocalStorage(key: string): string | object | null {
   if (!value) {
     return null
   }
+  if (value.startsWith('obj-')) {
+    return JSON.parse(value.slice(4))
+  }
+  if (value.startsWith('str-')) {
+    return value.slice(4)
+  }
 
-  return value.startsWith('obj-') ? JSON.parse(value.slice(4)) : value.slice(4)
+  return value
 }
 
 /**

@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 import { css, cx } from 'emotion'
 
+import setting from '../../../containers/setting'
+
 import { PostInfoStore } from '@/model/post'
 import UBB from '@cc98/ubb-react'
 
@@ -156,11 +158,13 @@ const styles: StyleRules = {
   },
 }
 
-const contentRoot = css`&&{
-     img {
+const contentRoot = css`
+  && {
+    img {
       max-width: 100%;
-    },
-}`
+    }
+  }
+`
 
 export default withStyles(styles)((props: Props) => {
   const [expanded, setExpanded] = useState(false)
@@ -170,8 +174,9 @@ export default withStyles(styles)((props: Props) => {
     return null
   }
 
+  const theme = { theme: setting.state.theme }
   const text =
-    postInfo.contentType === 0 ? UBB(postInfo.content) : resolveMarkdown(postInfo.content)
+    postInfo.contentType === 0 ? UBB(postInfo.content, theme) : resolveMarkdown(postInfo.content)
 
   return (
     <Card square elevation={0} className={root}>

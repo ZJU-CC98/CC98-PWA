@@ -19,7 +19,7 @@
     "@material-ui/core": "^3.5.1",
     "@material-ui/icons": "^3.0.1",
     "@reach/router": "^1.2.1",
-    "copy-to-clipboard": "3.0.8",
+    "copy-to-clipboard": "^3.0.8",
     "dayjs": "^1.7.7",
     "emotion": "^9.2.12",
     "lodash-es": "^4.17.11",

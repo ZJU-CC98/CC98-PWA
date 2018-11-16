@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 import { css, cx } from 'emotion'
 
+import setting from '../../../containers/setting'
+
 import UBB from '@cc98/ubb-react'
 
 import {
@@ -140,8 +142,10 @@ export default withStyles(styles)((props: Props) => {
     return null
   }
 
+  const theme = { theme: setting.state.theme }
   const text =
     postInfo.contentType === 0 ? UBB(postInfo.content) : resolveMarkdown(postInfo.content)
+  //    postInfo.contentType === 0 ? UBB(postInfo.content, theme) : resolveMarkdown(postInfo.content)
 
   return (
     <Card

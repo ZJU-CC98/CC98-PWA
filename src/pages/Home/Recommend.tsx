@@ -31,7 +31,7 @@ export default () => {
   useEffect(() => {
     const timerId = setInterval(() => {
       setIndex(prevIndex => (prevIndex + 1) % 5)
-    }, 2000)
+    }, 3000)
 
     return () => clearInterval(timerId)
   }, [])

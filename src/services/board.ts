@@ -15,7 +15,7 @@ export async function getBoardsInfo() {
   }
 
   const res = await GET<IBoardGroup[]>('/board/all')
-  res.succeed(data => {
+  res.fail().succeed(data => {
     setLocalStorage('boardsInfo', data, 3600 * 24 * 7)
     let childBoard: IBoard[] = []
     for (const baseBoard of data) {

@@ -86,10 +86,31 @@ export function searchTopics(keyword: string, from: number) {
 }
 
 /**
- * 获取十大
+ * 获取热门
  */
 export function getHotTopics() {
   return GET<IHotTopic[]>('topic/hot')
+}
+
+/**
+ * 获取本周热门
+ */
+export function getWeeklyHotTopics() {
+  return GET<IHotTopic[]>('topic/hot-weekly')
+}
+
+/**
+ * 获取本月热门
+ */
+export function getMonthlyHotTopics() {
+  return GET<IHotTopic[]>('topic/hot-monthly')
+}
+
+/**
+ * 获取历史热门
+ */
+export function getHistoryHotTopics() {
+  return GET<IHotTopic[]>('topic/hot-history')
 }
 
 /**

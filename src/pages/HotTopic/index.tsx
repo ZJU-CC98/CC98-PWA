@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
-import { List, ListItem, ListItemText, ListItemIcon, Divider, Tab, Tabs } from '@material-ui/core'
-import Whatshot from '@material-ui/icons/Whatshot'
+import { List, Tab, Tabs } from '@material-ui/core'
 
 import LoadingCircle from '@/components/LoadingCircle'
 import HotTopicItem from './HotTopicItem'
@@ -93,13 +92,6 @@ export default () => {
       </Tabs>
 
       <List className={hotTopicList}>
-        <ListItem>
-          <ListItemIcon>
-            <Whatshot />
-          </ListItemIcon>
-          <ListItemText primary="热门话题" />
-        </ListItem>
-        <Divider />
         {topics.map(info => (
           <HotTopicItem key={info.id} info={info} click={() => navigate(`/topic/${info.id}`)} />
         ))}

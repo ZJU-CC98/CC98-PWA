@@ -2,22 +2,59 @@ import React, { useState, useEffect } from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
-import { List, ListItem, ListItemText, ListItemIcon, Divider, Avatar } from '@material-ui/core'
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  Avatar,
+  Button,
+  MobileStepper,
+} from '@material-ui/core'
+import { withStyles, Theme } from '@material-ui/core/styles'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import Event from '@material-ui/icons/Event'
-import Left from '@material-ui/icons/ChevronLeft'
-import Right from '@material-ui/icons/ChevronRight'
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import ItemsCarousel from 'react-items-carousel'
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 
 import { getHomeInfo } from '@/services/global'
+import SwipeableViews from 'react-swipeable-views'
+import { autoPlay } from 'react-swipeable-views-utils'
 
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 const RecommendList = css`
   && {
     padding-left: 15px;
   }
 `
+const styles = (theme: Theme) => ({
+  root: {
+    maxWidth: 400,
+    flexGrow: 1,
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 50,
+    paddingLeft: theme.spacing.unit * 4,
+    backgroundColor: theme.palette.background.default,
+  },
+  img: {
+    height: 255,
+    display: 'block',
+    maxWidth: 400,
+    overflow: 'hidden',
+    width: '100%',
+  },
+})
 
-export default () => {
+interface Props {
+  classes: ClassNameMap
+  theme: Theme
+}
+export default withStyles(styles, { withTheme: true })((props: Props) => {
+  const { classes, theme } = props
   // tslint:disable-next-line:no-any
   const [data, setData] = useState<any>(null)
   const [index, setIndex] = useState(0)
@@ -36,45 +73,53 @@ export default () => {
     return () => clearInterval(timerId)
   }, [])
 
-  const changeActiveItem = (i: number) => setIndex(i)
+  const handleStepChange = (i: number) => setIndex(i)
+  const handleNext = () => setIndex(prevState => prevState + 1)
+  const handleBack = () => setIndex(prevState => prevState - 1)
 
   return (
     data && (
       <List className={RecommendList}>
-        <ListItem>
+        <ListItem key="head">
           <ListItemIcon>
             <Event />
           </ListItemIcon>
           <ListItemText primary="推荐阅读" />
         </ListItem>
         <Divider />
-        <ItemsCarousel
-          // Carousel configurations
-          numberOfCards={1}
-          gutter={12}
-          showSlither={true}
-          firstAndLastGutter={true}
-          freeScrolling={false}
-          // Active item configurations
-          requestToChangeActive={changeActiveItem}
-          activeItemIndex={index}
-          activePosition={'center'}
-          chevronWidth={24}
-          rightChevron={<Right />}
-          leftChevron={<Left />}
-          outsideChevron={false}
+
+        <AutoPlaySwipeableViews
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          index={index}
+          onChangeIndex={handleStepChange}
+          enableMouseEvents
         >
           {// tslint:disable-next-line:no-any
           data.recommendationReading.map((info: any) => (
-            <ListItem onClick={() => navigate(info.url)}>
+            <ListItem key={info.id} onClick={() => navigate(info.url)}>
               <ListItemIcon>
                 <Avatar src={info.imageUrl} />
               </ListItemIcon>
               <ListItemText primary={info.title} />
             </ListItem>
           ))}
-        </ItemsCarousel>
+        </AutoPlaySwipeableViews>
+
+        <MobileStepper
+          steps={5}
+          position="static"
+          activeStep={index}
+          className={classes.mobileStepper}
+          nextButton={
+            <Button size="small" onClick={handleNext} disabled={index === 4}>
+              {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+            </Button>}
+          backButton={
+            <Button size="small" onClick={handleBack} disabled={index === 0}>
+              {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+            </Button>}
+        />
       </List>
     )
   )
-}
+})

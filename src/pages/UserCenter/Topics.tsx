@@ -18,8 +18,8 @@ import InfiniteList from '@/components/InfiniteList'
 import TopicItem from '@/components/TopicItem'
 
 import { GET } from '@/utils/fetch'
-import { IBaseBoard, ITopic, IUser } from '@cc98/api'
-import getBoardNameById from '@/services/getBoardName'
+import { ITopic, IUser } from '@cc98/api'
+import { getBoardNameById } from '@/services/board'
 
 const styles: StyleRules = {
   root: {
@@ -83,7 +83,6 @@ const ExpandPanelSummaryStyle = css`
 
 interface Props {
   info: IUser
-  boards: IBaseBoard[]
   classes: ClassNameMap
 }
 
@@ -109,7 +108,7 @@ export default withStyles(styles)(
     }
 
     getRecentTopics = async () => {
-      const { info, boards } = this.props
+      const { info } = this.props
       this.setState({ isLoading: true })
       const { from, recentTopics, size } = this.state
       if (info) {
@@ -118,7 +117,7 @@ export default withStyles(styles)(
         )
         recentTopicsData.fail().succeed(async (newRecentTopics: ITopic[]) => {
           newRecentTopics.forEach(async topic => {
-            topic.boardName = getBoardNameById(boards, topic.boardId)
+            topic.boardName = await getBoardNameById(topic.boardId)
           })
           this.setState({
             recentTopics: recentTopics.concat(newRecentTopics),

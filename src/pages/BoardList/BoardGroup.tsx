@@ -15,12 +15,12 @@ import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
 import BoardItem from './BoardItem'
 
-import { IBaseBoard } from '@cc98/api'
+import { IBoardGroup } from '@cc98/api'
 
 const notExpandedBoards = [2, 29, 33, 35, 37, 604]
 
 interface Props {
-  data: IBaseBoard
+  data: IBoardGroup
   classes: ClassNameMap
 }
 

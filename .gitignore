@@ -27,3 +27,4 @@ package-lock.json
 
 # env
 .env/
+src/pages/Topic/index.tsx

@@ -2,10 +2,7 @@ import React, { useState } from 'react'
 
 import { css, cx } from 'emotion'
 
-import { PostInfoStore } from '@/model/post'
 import UBB from '@cc98/ubb-react'
-
-import Utils from './PostUtils'
 
 import {
   Button,
@@ -13,7 +10,6 @@ import {
   CardActions,
   CardContent,
   Collapse,
-  Divider,
   IconButton,
   Typography,
 } from '@material-ui/core'
@@ -21,12 +17,10 @@ import {
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Quote from '@material-ui/icons/RotateLeft'
-import DislikeIcon from '@material-ui/icons/ThumbDown'
-import LikeIcon from '@material-ui/icons/ThumbUp'
 
 import Header from './Header'
 import Award from './Award'
+import Actions from './Actions'
 
 import resolveMarkdown from './resolveMarkdown'
 import { IPost, IUser } from '@cc98/api'
@@ -60,40 +54,15 @@ interface Props {
    */
   isTrace: boolean
   classes: ClassNameMap
-  postInstance: PostInfoStore
   /**
    * 方法
    */
   openDialog: (info: IPost) => void
   closeDialog: () => void
+  setQuote: (content: string) => void
+  setPosts: <T extends Partial<IPost>>(postId: number, postUpdate: T) => void
 }
 
-interface State {
-  /**
-   * 签名档是否展开
-   */
-  expanded: boolean
-  // tslint:disable-next-line:no-any
-  anchorEl: any
-}
-
-const likeStateMap = ['none', 'like', 'dislike']
-const likeButton = {
-  clicked: css`
-    color: #dd5e5c;
-  `,
-  unclicked: css`
-    color: inherit;
-  `,
-}
-const dislikeButton = {
-  clicked: css`
-    color: #6464ff;
-  `,
-  unclicked: css`
-    color: inherit;
-  `,
-}
 const styles: StyleRules = {
   actionsRoot: {
     display: 'flex',
@@ -101,10 +70,7 @@ const styles: StyleRules = {
     height: '2rem',
   },
   action: {
-    flexGrow: 1,
-    '&:hover': {
-      backgroundColor: '#fff',
-    },
+    width: '4rem',
   },
   hr: {
     border: '#555 solid thin',
@@ -116,6 +82,7 @@ const styles: StyleRules = {
   },
   iconRoot: {
     padding: '5px',
+    marginLeft: 'auto',
   },
   menuItemRoot: {
     width: '3rem',
@@ -156,16 +123,18 @@ const styles: StyleRules = {
   },
 }
 
-const contentRoot = css`&&{
-     img {
+const contentRoot = css`
+  && {
+    img {
       max-width: 100%;
-    },
-}`
+    }
+  }
+`
 
 export default withStyles(styles)((props: Props) => {
   const [expanded, setExpanded] = useState(false)
-  const { postInfo, classes, postInstance, isTrace, userInfo, openDialog } = props
-  const { updateSinglePosts, wakeUpEditor } = postInstance
+  const onExpandClick = () => setExpanded(prevExpanded => !prevExpanded)
+  const { postInfo, classes, isTrace, userInfo, openDialog, setQuote, setPosts } = props
   if (postInfo.isDeleted) {
     return null
   }
@@ -175,14 +144,8 @@ export default withStyles(styles)((props: Props) => {
 
   return (
     <Card square elevation={0} className={root}>
-      <Header
-        postInfo={postInfo}
-        userInfo={userInfo}
-        trace={postInstance.trace}
-        isTrace={isTrace}
-        classes={classes}
-        openDialog={openDialog}
-      />
+      <Header postInfo={postInfo} userInfo={userInfo} classes={classes} />
+
       <CardContent>
         <Typography
           classes={{ root: classes.typographyRoot }}
@@ -193,77 +156,24 @@ export default withStyles(styles)((props: Props) => {
         </Typography>
       </CardContent>
 
-      <CardActions classes={{ root: classes.actionsRoot }}>
-        <IconButton
-          classes={{ root: classes.action }}
-          disableRipple={true}
-          onClick={async () => {
-            const res = await Utils.dislike(postInfo.id)
-            updateSinglePosts(postInfo.id, res)
-          }}
-        >
-          <DislikeIcon
-            fontSize="small"
-            className={
-              likeStateMap[postInfo.likeState] === 'dislike'
-                ? dislikeButton.clicked
-                : dislikeButton.unclicked
-            }
-          />
-          <span
-            key="dislikeIcon"
-            style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity: 0.54 }}
-          >
-            {postInfo.dislikeCount}
-          </span>
-        </IconButton>
-        <Divider classes={{ root: classes.hr }} />
-        <IconButton
-          classes={{ root: classes.action }}
-          disableRipple={true}
-          onClick={async () => {
-            const content = await Utils.quote(this.props.postInfo)
-            wakeUpEditor(content)
-          }}
-        >
-          <Quote fontSize="small" />
-        </IconButton>
-        <Divider classes={{ root: classes.hr }} />
+      <Actions
+        postInfo={postInfo}
+        setPosts={setPosts}
+        setQuote={setQuote}
+        openDialog={openDialog}
+        isTrace={isTrace}
+        classes={classes}
+      />
 
-        <IconButton
-          classes={{ root: classes.action }}
-          disableRipple={true}
-          disableTouchRipple={true}
-          onClick={async () => {
-            const res = await Utils.like(postInfo.id)
-            updateSinglePosts(postInfo.id, res)
-          }}
-        >
-          <LikeIcon
-            fontSize="small"
-            className={
-              likeStateMap[postInfo.likeState] === 'dislike'
-                ? dislikeButton.clicked
-                : dislikeButton.unclicked
-            }
-          />
-          <span
-            key="likeIcon"
-            style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity: 0.54 }}
-          >
-            {postInfo.likeCount}
-          </span>
-        </IconButton>
-      </CardActions>
       {postInfo.awards.length > 5 && (
         <CardActions classes={{ root: classes.awardAction }}>
-          <Button classes={{ root: classes.expandButton }} onClick={this.onExpandClick}>
+          <Button classes={{ root: classes.expandButton }} onClick={onExpandClick}>
             （{postInfo.awards.length}
             个评分）
           </Button>
           <IconButton
             className={cx(expand, {
-              [expandOpen]: this.state.expanded,
+              [expandOpen]: expanded,
             })}
             style={{ width: '20%' }}
             onClick={() => setExpanded(!expanded)}
@@ -274,7 +184,7 @@ export default withStyles(styles)((props: Props) => {
       )}
       {postInfo.awards.length > 0 && postInfo.awards.length <= 5 && <Award postInfo={postInfo} />}
       {postInfo.awards.length > 5 && (
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
           <Award postInfo={postInfo} />
         </Collapse>
       )}

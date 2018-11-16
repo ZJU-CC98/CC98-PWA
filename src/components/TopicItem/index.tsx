@@ -10,10 +10,12 @@ import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ITopic } from '@cc98/api'
 
 import dayjs from 'dayjs'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
 interface Props {
   data: ITopic
   place: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
+  classes: ClassNameMap
 }
 
 const styles: StyleRules = {
@@ -38,7 +40,7 @@ const Text = styled.span`
   text-overflow: ellipsis;
 `
 export default withStyles(styles)(
-  class extends React.PureComponent<Props & { classes: ClassNameMap }> {
+  class extends React.PureComponent<Props> {
     render() {
       const { data, place, classes } = this.props
       const title = data.title

@@ -19,3 +19,7 @@ export function getUserInfoById(id: number): Promise<Try<IUser, FetchError>> {
 export function getUserInfoByName(name: string): Promise<Try<IUser, FetchError>> {
   return GET<IUser>(`/user/name/${name}`)
 }
+
+export function getUsersInfo(query: string) {
+  return GET<IUser[]>(`user?${query}`)
+}

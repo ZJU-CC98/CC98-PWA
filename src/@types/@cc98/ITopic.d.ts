@@ -85,7 +85,9 @@ declare module '@cc98/api' {
     tag2: number
 
     isInternalOnly: boolean
-
+    /**
+     * 版面名
+     */
     boardName?: string
   }
 }

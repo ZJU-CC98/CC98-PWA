@@ -243,15 +243,25 @@ async function getTokenByRefreshToken(refreshToken: string): Promise<Try<Token, 
     refresh_token: refreshToken,
   }
 
-  return await POST<Token>(host.oauth, {
-    noAuthorization: true,
+  const response = await fetch(host.oauth, {
+    method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/x-www-form-urlencoded',
     }),
-    requestInit: {
-      body: encodeParams(requestBody),
-    },
+    body: encodeParams(requestBody),
   })
+
+  if (!(response.ok && response.status === 200)) {
+    return Try.of<Token, FetchError>(
+      Failure.of({
+        status: response.status,
+        msg: await response.text(),
+        response,
+      })
+    )
+  }
+
+  return Try.of<Token, FetchError>(Success.of(await response.json()))
 }
 
 /**

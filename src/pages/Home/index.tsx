@@ -1,13 +1,9 @@
 import React from 'react'
 import { css } from 'emotion'
 
-import global from '@/model/global'
-
-import { Button, Typography } from '@material-ui/core'
-
-import LayoutCenter from '@/components/LayoutCenter'
-
-import { Background, HomeText } from './config'
+import { Background } from './config'
+import HotTopics from '../HotTopic'
+import RecommendReadings from './Recommend'
 
 const img = css`
   position: fixed;
@@ -36,17 +32,8 @@ const text = css`
 
 const Home: React.FunctionComponent = () => (
   <>
-    <div className={img} />
-    <LayoutCenter>
-      <Button
-        className={button}
-        variant="outlined"
-        disableRipple
-        onClick={() => global.OPEN_DRAWER()}
-      >
-        <Typography className={text}>{HomeText}</Typography>
-      </Button>
-    </LayoutCenter>
+    <RecommendReadings />
+    <HotTopics />
   </>
 )
 

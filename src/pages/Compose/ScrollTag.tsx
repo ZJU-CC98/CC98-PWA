@@ -1,20 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { css } from 'emotion'
 
 import toast from './Toast'
 import { Chip } from '@material-ui/core'
 
-interface TagType {
-  id: number
+export interface TagType {
+  id: string
   name: string
 }
-interface State {
-  clickTag: TagType[]
-}
-
 interface Props {
   tags: TagType[] | null
+  clickTag: TagType[]
+  onChange: (clickTag: TagType[]) => void
   maxTag: number
 }
 const taglistbox = css`
@@ -70,7 +68,7 @@ const handleClick = (clickTag: TagType[], tag: TagType) => {
 }
 
 const ScrollTag: React.FunctionComponent<Props> = props => {
-  const [clickTag, setClickTag] = useState<TagType[]>([])
+  const clickTag = props.clickTag
   if (!props.tags) {
     return null
   }
@@ -88,14 +86,14 @@ const ScrollTag: React.FunctionComponent<Props> = props => {
                   // 判断是否选中
                   if (didChose(clickTag, tag)) {
                     const stateTag = clickTag.filter(e => e.id !== tag.id)
-                    setClickTag(stateTag)
+                    props.onChange(stateTag)
                   } else {
                     // 判断是否超过可选的标签数目
                     if (clickTag.length > props.maxTag - 1) {
                       toast.info({ content: `最多只能选择${props.maxTag}个标签` })
                     } else {
                       const stateTag = clickTag.concat([tag])
-                      setClickTag(stateTag)
+                      props.onChange(stateTag)
                     }
                   }
                 }}

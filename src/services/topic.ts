@@ -1,4 +1,4 @@
-import { GET } from '@/utils/fetch'
+import { POST, GET } from '@/utils/fetch'
 import { ITopic, IHotTopic } from '@cc98/api'
 
 /**
@@ -118,4 +118,35 @@ export function getHistoryHotTopics() {
  */
 export function getUsersRecentTopics(id: number, from: number) {
   return GET<ITopic[]>(`user/${id}/recent-topic?from=${from}&size=10`)
+}
+
+export function postNewTopic(
+  boardId: string,
+  title: string,
+  topicType: string,
+  content: string,
+  tags: string[]
+) {
+  let postTag = {}
+  let i = 0
+  if (tags) {
+    for (const iterator of tags) {
+      i = i + 1
+      postTag = {
+        [`tag${i}`]: iterator,
+        ...postTag,
+      }
+    }
+  }
+
+  return POST<string>(`/board/${boardId}/topic`, {
+    params: {
+      content,
+      title,
+      topicType,
+      contentType: 0,
+      type: 0,
+      ...postTag,
+    },
+  })
 }

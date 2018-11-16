@@ -5,7 +5,7 @@ import Send from '@material-ui/icons/Send'
 import React from 'react'
 interface Props {
   sendLoading: boolean
-  handlePic: (e: EventTarget & HTMLInputElement) => void
+  handlePic: (files: FileList) => Promise<void>
   onPost: () => Promise<void>
 }
 const bottomBar: React.CSSProperties = {
@@ -33,7 +33,11 @@ export default class extends React.PureComponent<Props> {
         <input
           type="file"
           name="file"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePic(e.target)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            if (e.target.files) {
+              handlePic(e.target.files)
+            }
+          }}
           style={{ display: 'none' }}
           ref={this.uploadFile}
           multiple

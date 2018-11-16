@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { css } from 'emotion'
 
@@ -16,7 +16,6 @@ interface State {
 interface Props {
   tags: TagType[] | null
   maxTag: number
-  tagChange: (tag: TagType[]) => void
 }
 const taglistbox = css`
   background-color: #fff;
@@ -44,68 +43,70 @@ const insidebox = css`
   overflow-x: scroll;
   display: inline-block;
 `
+const didChose = (clickTag: TagType[], tag: TagType) => {
+  let ret = false
+  clickTag.forEach(e => {
+    if (e.id === tag.id) ret = true
+  })
 
-class ScrollTag extends React.Component<Props, State> {
-  state: State = {
-    clickTag: [],
-  }
+  return ret
+}
 
-  didChose = (tag: TagType) => {
-    let ret = false
-    this.state.clickTag.forEach(e => {
-      if (e.id === tag.id) ret = true
-    })
-
-    return ret
-  }
-
-  handleClick = (tag: TagType) => {
-    const { clickTag } = this.state
-    const { maxTag, tagChange } = this.props
-    if (this.didChose(tag)) {
-      // 取消选中表气啊
-      const stateTag = clickTag.filter(e => e.id !== tag.id)
-      tagChange(stateTag)
-      this.setState({ clickTag: stateTag })
+const handleClick = (clickTag: TagType[], tag: TagType) => {
+  const { maxTag } = this.props
+  if (didChose(clickTag, tag)) {
+    // 取消选中表气啊
+    const stateTag = clickTag.filter(e => e.id !== tag.id)
+    this.setState({ clickTag: stateTag })
+  } else {
+    // 选中标签
+    if (clickTag.length > maxTag - 1) {
+      toast.info({ content: `最多只能选择${maxTag}个标签` })
     } else {
-      // 选中标签
-      if (clickTag.length > maxTag - 1) {
-        toast.info({ content: `最多只能选择${maxTag}个标签` })
-      } else {
-        const stateTag = clickTag.concat([tag])
-        tagChange(stateTag)
-        this.setState({ clickTag: stateTag })
-      }
+      const stateTag = clickTag.concat([tag])
+      this.setState({ clickTag: stateTag })
     }
   }
+}
 
-  render() {
-    const { tags } = this.props
-    if (!tags) {
-      return null
-    }
+const ScrollTag: React.FunctionComponent<Props> = props => {
+  const [clickTag, setClickTag] = useState<TagType[]>([])
+  if (!props.tags) {
+    return null
+  }
 
-    return (
-      <>
-        <div className={taglistbox} style={{ flex: 1, flexDirection: 'column' }}>
-          <div className={scrollbox}>
-            <div className={insidebox}>
-              {tags.map(tag => (
-                <Chip
-                  style={{ marginRight: '20px' }}
-                  label={tag.name}
-                  onClick={() => {
-                    this.handleClick(tag)
-                  }}
-                  color={this.didChose(tag) ? 'primary' : 'default'}
-                />
-              ))}
-            </div>
+  return (
+    <>
+      <div className={taglistbox} style={{ flex: 1, flexDirection: 'column' }}>
+        <div className={scrollbox}>
+          <div className={insidebox}>
+            {props.tags.map(tag => (
+              <Chip
+                style={{ marginRight: '20px' }}
+                label={tag.name}
+                onClick={() => {
+                  // 判断是否选中
+                  if (didChose(clickTag, tag)) {
+                    const stateTag = clickTag.filter(e => e.id !== tag.id)
+                    setClickTag(stateTag)
+                  } else {
+                    // 判断是否超过可选的标签数目
+                    if (clickTag.length > props.maxTag - 1) {
+                      toast.info({ content: `最多只能选择${props.maxTag}个标签` })
+                    } else {
+                      const stateTag = clickTag.concat([tag])
+                      setClickTag(stateTag)
+                    }
+                  }
+                }}
+                color={didChose(clickTag, tag) ? 'primary' : 'default'}
+              />
+            ))}
           </div>
         </div>
-      </>
-    )
-  }
+      </div>
+    </>
+  )
 }
 
 export default ScrollTag

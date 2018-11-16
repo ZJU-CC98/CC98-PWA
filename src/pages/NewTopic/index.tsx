@@ -33,13 +33,17 @@ export default () => {
   async function callback() {
     setState({ ...state, isLoading: true })
     const res = await getNewTopics(from)
-    // FIXME 异步获取版面名称
-    res.fail().succeed(async data => {
-      data.forEach(async (info: ITopic) => {
-        info.boardName = await getBoardNameById(info.boardId)
-      })
 
-      setTopics(prevData => prevData.concat(data))
+    res.fail().succeed(async data => {
+      const result = await Promise.all(
+        data.map(async (info: ITopic) => {
+          info.boardName = await getBoardNameById(info.boardId)
+
+          return info
+        })
+      )
+
+      setTopics(prevData => prevData.concat(result))
       setState({
         isLoading: false,
         isEnd: data.length !== 20,

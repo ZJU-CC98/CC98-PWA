@@ -71,11 +71,16 @@ export default withStyles(styles)((props: Props) => {
 
     const topicsTry = await getFollowBoardsTopics(b_from)
     topicsTry.map(async topicList => {
-      // FIXME
-      topicList.map(async topic => (topic.boardName = await getBoardNameById(topic.boardId)))
+      const result = await Promise.all(
+        topicList.map(async topic => {
+          topic.boardName = await getBoardNameById(topic.boardId)
+
+          return topic
+        })
+      )
       setState(prevState => ({
         ...prevState,
-        b_topics: prevState.b_topics.concat(topicList),
+        b_topics: prevState.b_topics.concat(result),
         b_from: prevState.b_from + topicList.length,
         isLoading: false,
         isEnd: topicList.length !== 20,
@@ -87,11 +92,16 @@ export default withStyles(styles)((props: Props) => {
     setState({ ...state, isLoading: true })
     const topicsTry = await getFollowUsersTopics(u_from)
     topicsTry.fail().succeed(async topicList => {
-      // FIXME
-      topicList.map(async topic => (topic.boardName = await getBoardNameById(topic.boardId)))
+      const result = await Promise.all(
+        topicList.map(async topic => {
+          topic.boardName = await getBoardNameById(topic.boardId)
+
+          return topic
+        })
+      )
       setState(prevState => ({
         ...prevState,
-        u_topics: prevState.u_topics.concat(topicList),
+        u_topics: prevState.u_topics.concat(result),
         u_from: prevState.u_from + topicList.length,
         isLoading: false,
         isEnd: topicList.length !== 20,

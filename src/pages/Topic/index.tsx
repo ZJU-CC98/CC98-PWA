@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { navigate } from '@reach/router'
-
 import { useGlobalContainer } from '@/hooks/useContainer'
 import settingInstance from '@/containers/setting'
 import userInstance from '@/containers/user'
 
 import LoadingCircle from '@/components/LoadingCircle'
-import Editor from './Editor'
 import PostHead from './PostHead'
 
 import { getTopicInfo } from '@/services/topic'
@@ -14,7 +12,7 @@ import { getBoardNameById } from '@/services/board'
 import { IPost, ITopic } from '@cc98/api'
 import AwardDialog from './AwardDialog'
 import PostList from './PostList'
-
+import PostButton from './postButton'
 interface Props {
   // 普通帖子
   topicId: string
@@ -113,16 +111,7 @@ export default (props: Props) => {
         setQuote={setQuote}
         tempAward={tempAward}
       />
-
-      <Editor
-        topic={topicInfo}
-        initContent={quote}
-        resetInitContent={() => setQuote(undefined)}
-        callback={() => {
-          /** */
-        }}
-        theme={state.theme}
-      />
+      <PostButton topicId={topicInfo.id} />
     </>
   )
 }

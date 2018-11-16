@@ -123,7 +123,7 @@ export default withStyles(styles)((props: Props) => {
             variant="contained"
             color="primary"
             onClick={() => {
-              navigate(`/compose/${id}`)
+              navigate(`/compose/${id}/newpost`)
             }}
           >
             发帖

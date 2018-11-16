@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { TextField } from '@material-ui/core'
 
@@ -10,7 +10,7 @@ import TypeSelect from './TypeSelect'
 
 import { getBoardTags } from '@/services/tag'
 import { postNewTopic } from '@/services/topic'
-
+import { newPost } from '@/services/post'
 const labelStyle = {
   paddingLeft: '15px',
 }
@@ -20,23 +20,24 @@ const baseInputStyle = {
 interface Props {
   targetId: string
   /**
-   * editpost 编辑自己的帖子
+   * editTOPIC 编辑自己的帖子
    *  如果是题主可以调整标题和类型
    *  非题主只能调节内容
    * newpost 发新贴
    *  需要标题和类型和标签
-   * reply 回复他人的帖子（引用、回复、等）
+   * reply 回复他人的帖子
+   * quote 引用他人的帖子
    */
-  editType: 'editpost' | 'newpost' | 'editTopic' | 'reply'
+  editType: 'quote' | 'newpost' | 'editTopic' | 'reply'
 }
 
 /**
  * tag数组转换成
  * { tag1: xx, tag2: xx ...}
  */
-const Compose: React.FunctionComponent<Props> = props => {
+const Compose: React.FunctionComponent<Props> = ({ editType, targetId }) => {
   const [selectTag, setSelectTag] = useState<TagType[]>([])
-  const tagComponent = useRef(null)
+  const [defaultContent, setDefaultContent] = useState<string>('')
   const [tags, setTags] = useState<TagType[]>([])
   /**
    * type表示帖子的类型
@@ -61,26 +62,42 @@ const Compose: React.FunctionComponent<Props> = props => {
     )
 
   const callback = async (content: string, newUrlList?: string[] | undefined) => {
-    if (props.editType === 'newpost') {
-      const res = await postNewTopic(props.targetId, title, type, content, selectTag.map(v => v.id))
+    let newContent: string = content
+    if (newUrlList) {
+      newContent += ' \n'
+      newUrlList.forEach(e => {
+        newContent += ` [img]${e}[/img]`
+      })
+    }
+    if (editType === 'newpost') {
+      const res = await postNewTopic(targetId, title, type, newContent, selectTag.map(v => v.id))
       res.fail().succeed(newTopicId => {
-        navigate(`topic/${newTopicId}`)
+        navigate(`/topic/${newTopicId}`)
+      })
+    }
+    if (editType === 'reply' || editType === 'quote') {
+      const res = await newPost(newContent, targetId)
+      res.fail().succeed(e => {
+        navigate(`/topic/${targetId}`)
       })
     }
   }
   let topDom = <></>
   useEffect(() => {
-    if (props.editType === 'newpost') {
+    if (editType === 'newpost') {
       ;(async () => {
-        const res = await getBoardTags(props.targetId)
+        const res = await getBoardTags(targetId)
         res.fail().succeed(e => {
           setTags(e[0].tags)
         })
       })()
     }
+    if (editType === 'quote') {
+      // setDefaultContent(window.quote)
+    }
   }, [])
 
-  if (props.editType === 'newpost') {
+  if (editType === 'newpost') {
     topDom = (
       <>
         <TextField
@@ -110,136 +127,16 @@ const Compose: React.FunctionComponent<Props> = props => {
     )
   }
 
+  if (editType === 'reply') {
+    topDom = <></>
+  }
+
   return (
     <>
       {topDom}
-      <Editor sendCallBack={callback} defaultContent={''} />
+      <Editor sendCallBack={callback} defaultContent={defaultContent} />
     </>
   )
 }
 
-// class Compose extends React.Component<Props, State> {
-//   state: State = {
-//     picList: null,
-//     title: '',
-//     topicType: '0',
-//     tag: [],
-//     chosenTag: [],
-//   }
-
-// async componentDidMount() {
-//   const res = await this.getTag(this.props.boardId)
-//   this.setState({ tag: res })
-// }
-
-// async post(boardId: string, title: string, content: string, tags?: TagType[]) {
-//   let postTag = {}
-//   let i = 0
-//   if (tags) {
-//     for (const iterator of tags) {
-//       i = i + 1
-//       postTag = {
-//         [`tag${i}`]: iterator.id,
-//         ...postTag,
-//       }
-//     }
-//   }
-//   const data = {
-//     content,
-//     title,
-//     contentType: 0,
-//     type: 0,
-//     topicType: this.state.topicType,
-//     ...postTag,
-//   }
-//   const url = `/board/${boardId}/topic`
-//   const response = await POST(url, { params: data })
-//   response.fail().succeed(topicId => {
-//     navigate(`/topic/${topicId}`)
-
-//     return
-//   })
-// }
-
-// async getTag(boardId: string) {
-//   const url = `board/${boardId}/tag`
-//   const res = await GET<BoradTag[]>(url)
-//   let ret: TagType[] = []
-//   res.fail().succeed(data => {
-//     ret = data[0].tags
-//   })
-
-//   return ret
-// }
-
-//   bindText = (
-//     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-//   ) => {
-//     this.setState({
-//       title: event.target.value,
-//     })
-//   }
-
-//   bindType = (event: React.ChangeEvent<HTMLSelectElement>) => {
-//     this.setState({ topicType: event.target.value })
-//   }
-
-//   sendCallBack = (content: string, files?: string[]) => {
-//     // console.log(files)
-//     if (this.state.title === '') {
-//       toast.error({ content: '请填写标题～(￣▽￣～)(～￣▽￣)～ ' })
-
-//       return
-//     }
-
-//     let realContent: string
-//     if (files) {
-//       const imgString = files.map(e => ` \n [img]${e}[/img]`).join(' ')
-//       realContent = content + imgString
-//     } else {
-//       realContent = content
-//     }
-//     this.post(this.props.boardId, this.state.title, realContent, this.state.chosenTag)
-//   }
-
-//   render() {
-// const { tag } = this.state
-// const tagDom =
-//   tag.length === 0 ? (
-//     <></>
-//   ) : (
-//     <ScrollTag
-//       maxTag={2}
-//       tags={this.state.tag}
-//       tagChange={tags => {
-//         this.setState({ chosenTag: tags })
-//       }}
-//     />
-//   )
-
-//     return (
-//       <>
-//         <TextField
-//           label="帖子主题"
-//           InputLabelProps={{
-//             style: labelStyle,
-//           }}
-//           InputProps={{
-//             style: baseInputStyle,
-//           }}
-//           placeholder="帖子主题"
-//           required
-//           fullWidth
-//           onChange={e => {
-//             this.bindText(e)
-//           }}
-//           margin="normal"
-//         />
-//         <TypeSelect onChange={this.bindType} topicType={this.state.topicType} />
-//         {tagDom}
-//         <Editor sendCallBack={this.sendCallBack} defaultContent={''} />
-//       </>
-//     )
-//   }
-// }
 export default Compose

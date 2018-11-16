@@ -1,4 +1,4 @@
-import { PUT, GET } from '@/utils/fetch'
+import { POST, PUT, GET } from '@/utils/fetch'
 import { IPost } from '@cc98/api'
 
 /**
@@ -60,4 +60,18 @@ export function getAnonymousTracePost(topicId: number, postId: number, from: num
  */
 export function getHotPost(id: number) {
   return GET<IPost[]>(`topic/${id}/hot-post`)
+}
+
+/**
+ * 回帖
+ */
+export function newPost(content: string, topicId: string) {
+  // const url = `/post/topic/${topic.id}`
+  const param = {
+    content,
+    contentType: 0,
+    title: '',
+  }
+
+  return POST(`/topic/${topicId}/post`, { params: param })
 }

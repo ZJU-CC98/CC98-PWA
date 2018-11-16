@@ -145,6 +145,7 @@ export default withStyles(styles)((props: Props) => {
   const theme = { theme: setting.state.theme }
   const text =
     postInfo.contentType === 0 ? UBB(postInfo.content) : resolveMarkdown(postInfo.content)
+  // tslint:disable-next-line:max-line-length
   //    postInfo.contentType === 0 ? UBB(postInfo.content, theme) : resolveMarkdown(postInfo.content)
 
   return (

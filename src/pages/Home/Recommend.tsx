@@ -47,6 +47,9 @@ const styles = (theme: Theme) => ({
     overflow: 'hidden',
     width: '100%',
   },
+  avatarRoot: {
+    backgroundColor: '#79b8fa',
+  },
 })
 
 interface Props {
@@ -98,7 +101,7 @@ export default withStyles(styles, { withTheme: true })((props: Props) => {
           data.recommendationReading.map((info: any) => (
             <ListItem key={info.id} onClick={() => navigate(info.url)}>
               <ListItemIcon>
-                <Avatar src={info.imageUrl} />
+                <Avatar classes={{ root: classes.avatarRoot }} src={info.imageUrl} />
               </ListItemIcon>
               <ListItemText primary={info.title} />
             </ListItem>

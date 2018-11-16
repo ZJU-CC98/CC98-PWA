@@ -32,5 +32,29 @@ declare module '@cc98/api' {
      * 是否关注
      */
     isUserCustomBoard?: boolean
+    /**
+     * 是否仅内网可见
+     */
+    internalState: number
+    /**
+     * 是否已锁定
+     */
+    isLock: boolean
+    /**
+     * 父版面id
+     */
+    parentId: number
+    /**
+     * 是否匿名
+     */
+    anonymousState: number
+    /**
+     * 是否能进入
+     */
+    canEntry: boolean
+    /**
+     * 是否能投票
+     */
+    canVote: boolean
   }
 }

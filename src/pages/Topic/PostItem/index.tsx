@@ -28,6 +28,7 @@ import { IPost, IUser } from '@cc98/api'
 const root = css`
   margin-top: 6px;
   background-color: #ccc;
+  border-bottom: #eaeaea solid thick;
 `
 
 const expand = css`
@@ -143,7 +144,13 @@ export default withStyles(styles)((props: Props) => {
     postInfo.contentType === 0 ? UBB(postInfo.content) : resolveMarkdown(postInfo.content)
 
   return (
-    <Card square elevation={0} className={root}>
+    <Card
+      square
+      elevation={0}
+      className={root}
+      id={postInfo.isHot ? `hot-${postInfo.floor.toString()}` : postInfo.floor.toString()}
+      data-uk-scrollspy="{cls:'uk-animation-fade', delay:900}"
+    >
       <Header postInfo={postInfo} userInfo={userInfo} classes={classes} />
 
       <CardContent>

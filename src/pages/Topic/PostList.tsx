@@ -87,7 +87,13 @@ export default (props: Props) => {
         : await getPost(id, from)
 
     postTry
-      .fail(() => navigate('/error/403'))
+      .fail(fetchError => {
+        if (fetchError.status === 403) {
+          navigate('/error/403')
+        } else if (fetchError.status === 401) {
+          navigate('/error/401')
+        }
+      })
       .succeed(async (postList: IPost[]) => {
         await fetchUsers(postList)
         postList.map(post => (post.isHot = false))

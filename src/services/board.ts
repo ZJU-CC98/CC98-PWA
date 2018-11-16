@@ -27,6 +27,9 @@ export async function getBoardsInfo() {
   return res
 }
 
+/**
+ * 获取单个版面信息
+ */
 export function getBoard(id: string) {
   return GET(`board/${id}`)
 }
@@ -47,6 +50,10 @@ export async function getBoardNameById(id: number) {
 
   return name
 }
+
+/**
+ * 用户关注/取关版面
+ */
 
 export function customBoard(id: number, opt: number) {
   const url = `me/custom-board/${id}`

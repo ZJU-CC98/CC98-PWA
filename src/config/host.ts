@@ -32,7 +32,7 @@ let host = getLocalStorage('proxy') ? proxyHost : defaultHost
  * 切换代理
  */
 const changeHost = (hostType: HostType) => {
-  host = hostType === HostType.Default ? proxyHost : defaultHost
+  host = hostType !== HostType.Default ? proxyHost : defaultHost
 }
 
 export { host as default, changeHost }

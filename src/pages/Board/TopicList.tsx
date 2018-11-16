@@ -65,7 +65,7 @@ export default (props: Props) => {
     })
 
     newTopicsTry
-      .fail(() => navigate('error/403'))
+      .fail(() => navigate('/error/403'))
       .succeed(newTopics => {
         setTopics(prevTopics => prevTopics.concat(newTopics))
         setState({

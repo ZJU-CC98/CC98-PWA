@@ -10,6 +10,8 @@ import Quote from '@material-ui/icons/RotateLeft'
 import { CardActions, Divider, IconButton, Menu, MenuItem } from '@material-ui/core'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
+import copy from 'copy-to-clipboard'
+import toast from '../../Compose/Toast'
 import Utils from './PostUtils'
 import { IPost } from '@cc98/api'
 
@@ -127,7 +129,7 @@ export default (props: Props) => {
           },
         }}
       >
-        {['评分', isTrace ? '返回' : '追踪', '编辑'].map(option => (
+        {['评分', isTrace ? '返回' : '追踪', '编辑', '分享'].map(option => (
           <MenuItem
             key={option}
             onClick={() => {
@@ -143,6 +145,13 @@ export default (props: Props) => {
                 // TODO:
               } else if (option === '评分') {
                 openDialog(postInfo)
+              } else if (option === '分享') {
+                // tslint:disable-next-line:max-line-length
+                const url = `https://${document.location && document.location.host}/topic/${
+                  postInfo.topicId
+                }#${postInfo.floor}`
+                copy(url)
+                toast.success({ content: '链接信息已复制到您的剪切板' })
               }
               setAnchorEl(null)
             }}

@@ -21,11 +21,9 @@ export interface FetchError {
 }
 
 async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, FetchError>> {
-  // const baseUrl = "https://api-v2.cc98.org"
   const baseUrl = host.api
   const requestURL = `${baseUrl}/${url}`
 
-  // console.log("Fetch: " + requestURL)
   const response = await fetch(requestURL, init)
 
   if (!(response.ok && response.status === 200)) {

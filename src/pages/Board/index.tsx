@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { css } from 'emotion'
+import { navigate } from '@reach/router'
 
 import { FormControl, MenuItem, Paper, Select } from '@material-ui/core'
 
@@ -67,7 +68,21 @@ export default withStyles(styles)((props: Props) => {
       const boardsInfo = await getBoard(id)
       const tagsInfo = await getBoardTags(id)
 
-      boardsInfo.fail().succeed(setBoard)
+      boardsInfo
+        .fail(fetchError => {
+          if (fetchError.status === 403) {
+            navigate('/error/403')
+          } else if (fetchError.status === 401) {
+            navigate('/error/401')
+          }
+        })
+        .succeed((data: IBoard) => {
+          // 外网不可见的版面
+          if (data.internalState === 1) {
+            navigate('/error/401')
+          }
+          setBoard(data)
+        })
       tagsInfo.fail().succeed(setTags)
     })()
   }, [])

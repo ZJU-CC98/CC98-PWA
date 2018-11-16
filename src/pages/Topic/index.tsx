@@ -58,16 +58,22 @@ export default (props: Props) => {
     ;(async () => {
       if (isNaN(parseInt(topicId, 10))) {
         navigate('/404')
-
-        return null
       }
 
       const topic = await getTopicInfo(topicId)
-      topic.fail().succeed(async topicInfo => {
-        const boardName = await getBoardNameById(topicInfo.boardId)
-        topicInfo.boardName = boardName
-        setTopicInfo(topicInfo)
-      })
+      topic
+        .fail(fetchError => {
+          if (fetchError.status === 403) {
+            navigate('/error/403')
+          } else if (fetchError.status === 401) {
+            navigate('/error/401')
+          }
+        })
+        .succeed(async topicInfo => {
+          const boardName = await getBoardNameById(topicInfo.boardId)
+          topicInfo.boardName = boardName
+          setTopicInfo(topicInfo)
+        })
     })()
   }, [])
 

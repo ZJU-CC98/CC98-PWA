@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { css } from 'emotion'
 import { navigate } from '@reach/router'
 
-import { FormControl, MenuItem, Paper, Select } from '@material-ui/core'
+import { FormControl, MenuItem, Select } from '@material-ui/core'
 
 import { Theme, withStyles } from '@material-ui/core/styles'
 import { StyleRulesCallback, ClassNameMap } from '@material-ui/core/styles/withStyles'
@@ -100,7 +100,7 @@ export default withStyles(styles)((props: Props) => {
   }
 
   return (
-    <Paper className={boardStyle}>
+    <div className={boardStyle}>
       {board && <BoardHead data={board} />}
       <>
         {tags.length > 0 ? (
@@ -149,6 +149,6 @@ export default withStyles(styles)((props: Props) => {
       </>
 
       <TopicList key={`${tag1.id}-${tag2.id}`} id={id} tags={[tag1, tag2]} />
-    </Paper>
+    </div>
   )
 })

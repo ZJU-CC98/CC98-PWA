@@ -4,17 +4,12 @@ import { css } from 'emotion'
 import TopicItem from '@/components/TopicItem'
 import InfiniteList from '@/components/InfiniteList'
 
-import { List, Paper, Tab, Tabs } from '@material-ui/core'
+import { List, Tab, Tabs } from '@material-ui/core'
 
-import { Theme, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import { getFollowBoardsTopics, getFollowUsersTopics } from '@/services/topic'
 import { ITopic } from '@cc98/api'
 import { getBoardNameById } from '@/services/board'
 
-interface Props {
-  classes: ClassNameMap
-}
 interface State {
   isLoading: boolean
   isEnd: boolean
@@ -30,14 +25,7 @@ const indexStyle = css`
   }
 `
 
-const styles = (theme: Theme) => ({
-  root: {
-    color: theme.palette.primary.main,
-  },
-})
-
-export default withStyles(styles)((props: Props) => {
-  const { classes } = props
+export default () => {
   const [state, setState] = useState<State>({
     isLoading: false,
     isEnd: false,
@@ -112,25 +100,29 @@ export default withStyles(styles)((props: Props) => {
   const topics = current === 'board' ? b_topics : u_topics
 
   return (
-    <div>
-      <Paper className={indexStyle}>
-        <Tabs fullWidth value={current} onChange={changeFocus}>
-          <Tab classes={{ root: classes.root }} value="board" label="关注版面" />
-          <Tab classes={{ root: classes.root }} value="user" label="关注用户" />
-        </Tabs>
+    <div className={indexStyle}>
+      <Tabs
+        textColor="primary"
+        indicatorColor="primary"
+        fullWidth
+        value={current}
+        onChange={changeFocus}
+      >
+        <Tab value="board" label="关注版面" />
+        <Tab value="user" label="关注用户" />
+      </Tabs>
 
-        <InfiniteList
-          isLoading={isLoading}
-          isEnd={isEnd}
-          callback={current === 'board' ? getFollowBTopics : getFolloweeTopics}
-        >
-          <List>
-            {topics.map(topic => (
-              <TopicItem key={topic.id} data={topic} place={'follow'} />
-            ))}
-          </List>
-        </InfiniteList>
-      </Paper>
+      <InfiniteList
+        isLoading={isLoading}
+        isEnd={isEnd}
+        callback={current === 'board' ? getFollowBTopics : getFolloweeTopics}
+      >
+        <List>
+          {topics.map(topic => (
+            <TopicItem key={topic.id} data={topic} place={'follow'} />
+          ))}
+        </List>
+      </InfiniteList>
     </div>
   )
-})
+}

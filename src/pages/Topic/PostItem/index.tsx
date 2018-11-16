@@ -30,7 +30,6 @@ import { IPost, IUser } from '@cc98/api'
 const root = css`
   margin-top: 6px;
   background-color: #ccc;
-  border-bottom: #eaeaea solid thick;
 `
 
 const expand = css`
@@ -113,7 +112,6 @@ const styles: StyleRules = {
     height: '30px',
     fontSize: '0.8rem',
     opacity: 0.54,
-    borderTop: '#aaaaaa solid thin',
     marginLeft: '16px',
     marginRight: '16px',
   },

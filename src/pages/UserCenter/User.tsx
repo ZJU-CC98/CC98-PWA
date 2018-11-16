@@ -11,7 +11,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  Paper,
 } from '@material-ui/core'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
@@ -34,7 +33,6 @@ const styles: StyleRules = {
   itemRoot: {
     paddingTop: 3,
     paddingBottom: 3,
-    borderTop: '#eaeaea solid thin',
   },
   bigAvatar: {
     width: '5rem',
@@ -170,7 +168,7 @@ export default withStyles(styles)((props: Props) => {
   )
   if (info) {
     return (
-      <Paper className={userStyle}>
+      <div className={userStyle}>
         <CardHeader
           className={classes.row}
           classes={{ action: classes.action }}
@@ -325,7 +323,7 @@ export default withStyles(styles)((props: Props) => {
         </List>
 
         <Topics info={info} />
-      </Paper>
+      </div>
     )
   }
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { css } from 'react-emotion'
 
-import { TextField, Button, List, Paper } from '@material-ui/core'
+import { TextField, Button, List } from '@material-ui/core'
 
 import { searchTopics } from '@/services/topic'
 import { ITopic } from '@cc98/api'
@@ -74,21 +74,19 @@ export default () => {
         搜索
       </Button>
       {view && (
-        <Paper>
-          <InfiniteList
-            isLoading={isLoading}
-            isEnd={isEnd}
-            callback={() => {
-              search()
-            }}
-          >
-            <List>
-              {topics.map(info => (
-                <TopicItem key={info.id} data={info} place={'search'} />
-              ))}
-            </List>
-          </InfiniteList>
-        </Paper>
+        <InfiniteList
+          isLoading={isLoading}
+          isEnd={isEnd}
+          callback={() => {
+            search()
+          }}
+        >
+          <List>
+            {topics.map(info => (
+              <TopicItem key={info.id} data={info} place={'search'} />
+            ))}
+          </List>
+        </InfiniteList>
       )}
     </div>
   )

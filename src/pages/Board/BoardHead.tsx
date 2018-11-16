@@ -9,7 +9,6 @@ import {
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
-  Paper,
 } from '@material-ui/core'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -28,9 +27,6 @@ interface Props {
 const styles: StyleRules = {
   root: {
     width: '100%',
-    boxShadow: '0 0 0 0',
-    borderTop: '#eaeaea solid thin',
-    borderBottom: '#eaeaea solid thin',
   },
   expanded: {
     marginTop: '0.5rem',
@@ -82,7 +78,6 @@ const boardMasters = css`
   display: flex;
   width: 100%;
   padding-left: 1.5rem;
-  border-bottom: #eaeaea solid thin;
 `
 const toolButton = css`
   margin-right: 1rem;
@@ -114,7 +109,7 @@ export default withStyles(styles)((props: Props) => {
   }
 
   return (
-    <Paper className={boardHeader}>
+    <div className={boardHeader}>
       <div className={boardMessage}>
         <Button color="primary" className={boardTitle}>
           {data.name}
@@ -165,6 +160,6 @@ export default withStyles(styles)((props: Props) => {
           </Button>
         ))}
       </div>
-    </Paper>
+    </div>
   )
 })

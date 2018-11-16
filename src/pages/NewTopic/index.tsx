@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import InfiniteList from '@/components/InfiniteList'
 
-import { List, Paper } from '@material-ui/core'
+import { List } from '@material-ui/core'
 
 import TopicItem from '@/components/TopicItem'
 
@@ -53,14 +53,12 @@ export default () => {
   }
 
   return (
-    <Paper>
-      <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
-        <List>
-          {topics.map((info: ITopic) => (
-            <TopicItem key={info.id} data={info} place={'newtopic'} />
-          ))}
-        </List>
-      </InfiniteList>
-    </Paper>
+    <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
+      <List>
+        {topics.map((info: ITopic) => (
+          <TopicItem key={info.id} data={info} place={'newtopic'} />
+        ))}
+      </List>
+    </InfiniteList>
   )
 }

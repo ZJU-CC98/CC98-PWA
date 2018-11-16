@@ -35,7 +35,6 @@ const styles: StyleRules = {
   itemRoot: {
     paddingTop: 3,
     paddingBottom: 3,
-    borderTop: '#eaeaea solid thin',
   },
   bigAvatar: {
     width: '5rem',

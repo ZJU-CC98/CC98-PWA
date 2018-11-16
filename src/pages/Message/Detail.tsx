@@ -10,7 +10,6 @@ import InfiniteList from '@/components/InfiniteList'
 import store, { Detail } from '@/pages/Message/model/detail'
 
 import { List, RootRef } from '@material-ui/core'
-import Paper from '@material-ui/core/Paper'
 
 import DetailItem from './components/DetailItem'
 
@@ -38,21 +37,19 @@ export default ({ id }: Props) => {
     <Subscribe to={[store]}>
       {({ state: { messages, isEnd, isLoading } }: Detail) => (
         <>
-          <Paper>
-            <RootRef rootRef={list}>
-              <List>
-                <InfiniteList
-                  loadingPosition="top"
-                  isEnd={isEnd[id]}
-                  isLoading={isLoading}
-                  callback={store.getList}
-                >
-                  {messages[id] &&
-                    messages[id]!.map(item => <DetailItem key={item.id} message={item} />)}
-                </InfiniteList>
-              </List>
-            </RootRef>
-          </Paper>
+          <RootRef rootRef={list}>
+            <List>
+              <InfiniteList
+                loadingPosition="top"
+                isEnd={isEnd[id]}
+                isLoading={isLoading}
+                callback={store.getList}
+              >
+                {messages[id] &&
+                  messages[id]!.map(item => <DetailItem key={item.id} message={item} />)}
+              </InfiniteList>
+            </List>
+          </RootRef>
           <Editor sendCallBack={store.sendMessage} />
         </>
       )}

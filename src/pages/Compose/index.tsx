@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 
-
 import { TextField } from '@material-ui/core'
 
 import Editor from '@/components/Editor'
+import { navigate } from '@reach/router'
+import { POST } from '@/utils/fetch'
 
 import ScrollTag from './ScrollTag'
 import TypeSelect from './TypeSelect'
-
 
 interface TagType {
   id: number
@@ -36,6 +36,34 @@ interface BoradTag {
   tags: TagType[]
 }
 
+const post = async (boardId: string, title: string, content: string, tags?: TagType[]) => {
+  let postTag = {}
+  let i = 0
+  if (tags) {
+    for (const iterator of tags) {
+      i = i + 1
+      postTag = {
+        [`tag${i}`]: iterator.id,
+        ...postTag,
+      }
+    }
+  }
+  const data = {
+    content,
+    title,
+    contentType: 0,
+    type: 0,
+    topicType: this.state.topicType,
+    ...postTag,
+  }
+  const url = `/board/${boardId}/topic`
+  const response = await POST(url, { params: data })
+  response.fail().succeed(topicId => {
+    navigate(`/topic/${topicId}`)
+
+    return
+  })
+}
 const Compose: React.FunctionComponent<Props> = props => {
   const [selectTag, setSelectTag] = useState<TagType[]>([])
   const [tags, setTags] = useState<TagType[]>([])
@@ -43,9 +71,11 @@ const Compose: React.FunctionComponent<Props> = props => {
   const tagDom = tags.length === 0 ? <></> : <ScrollTag maxTag={2} tags={tags} />
 
   useEffect(() => {
-    const res = await this.getTag(props.boardId)
-    setTags(res)
-  })
+    ;(async () => {
+      const res = await this.getTag(props.boardId)
+      setTags(res)
+    })()
+  }, [])
 
   return (
     <>
@@ -85,34 +115,34 @@ const Compose: React.FunctionComponent<Props> = props => {
 //   this.setState({ tag: res })
 // }
 
-//   async post(boardId: string, title: string, content: string, tags?: TagType[]) {
-//     let postTag = {}
-//     let i = 0
-//     if (tags) {
-//       for (const iterator of tags) {
-//         i = i + 1
-//         postTag = {
-//           [`tag${i}`]: iterator.id,
-//           ...postTag,
-//         }
+// async post(boardId: string, title: string, content: string, tags?: TagType[]) {
+//   let postTag = {}
+//   let i = 0
+//   if (tags) {
+//     for (const iterator of tags) {
+//       i = i + 1
+//       postTag = {
+//         [`tag${i}`]: iterator.id,
+//         ...postTag,
 //       }
 //     }
-//     const data = {
-//       content,
-//       title,
-//       contentType: 0,
-//       type: 0,
-//       topicType: this.state.topicType,
-//       ...postTag,
-//     }
-//     const url = `/board/${boardId}/topic`
-//     const response = await POST(url, { params: data })
-//     response.fail().succeed(topicId => {
-//       navigate(`/topic/${topicId}`)
-
-//       return
-//     })
 //   }
+//   const data = {
+//     content,
+//     title,
+//     contentType: 0,
+//     type: 0,
+//     topicType: this.state.topicType,
+//     ...postTag,
+//   }
+//   const url = `/board/${boardId}/topic`
+//   const response = await POST(url, { params: data })
+//   response.fail().succeed(topicId => {
+//     navigate(`/topic/${topicId}`)
+
+//     return
+//   })
+// }
 
 // async getTag(boardId: string) {
 //   const url = `board/${boardId}/tag`

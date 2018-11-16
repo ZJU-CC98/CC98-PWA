@@ -10,6 +10,7 @@ import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 interface Props {
   info: IHotTopic
   click?: (topicID: number) => void
+  classes: ClassNameMap
 }
 
 const styles: StyleRules = {
@@ -34,7 +35,7 @@ const Text = styled.span`
   text-overflow: ellipsis;
 `
 
-export default withStyles(styles)(({ info, click, classes }: Props & { classes: ClassNameMap }) => (
+export default withStyles(styles)(({ info, click, classes }: Props) => (
   <ListItem divider button onClick={() => click && click(info.id)}>
     <ListItemText
       classes={{ root: classes.root }}

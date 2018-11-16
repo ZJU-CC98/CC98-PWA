@@ -1,5 +1,5 @@
 import { GET } from '@/utils/fetch'
-import { ITopic, IPost } from '@cc98/api'
+import { ITopic, IPost, IHotTopic } from '@cc98/api'
 
 export function getTopTopics(id: string) {
   return GET<ITopic[]>(`topic/toptopics?boardid=${id}`)
@@ -93,4 +93,12 @@ export function searchTopics(keyword: string, from: number) {
       size: '20',
     },
   })
+}
+
+export function getHotTopics() {
+  return GET<IHotTopic[]>('topic/hot')
+}
+
+export function getUsersRecentTopics(id: number, from: number) {
+  return GET<ITopic[]>(`user/${id}/recent-topic?from=${from}&size=10`)
 }

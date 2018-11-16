@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
@@ -14,6 +14,8 @@ import Search from '@material-ui/icons/Search'
 import Settings from '@material-ui/icons/Settings'
 import SpeakerNotes from '@material-ui/icons/SpeakerNotes'
 import Whatshot from '@material-ui/icons/Whatshot'
+
+import { getSignState, sign } from '@/services/global'
 
 const jump = (link: string) => () => {
   navigate(link)
@@ -51,27 +53,49 @@ interface Props {
   onLogout: () => void
 }
 
-const TopBar: React.FunctionComponent<Props> = ({ isLogIn, open, onClose, onLogout, children }) => (
-  <Drawer open={open} onClose={onClose}>
-    <List className={list} onClick={onClose}>
-      {children}
-      <Divider className={divider} />
-      <Item icon={<HomeIcon />} text="主页" onClick={jump('/')} />
-      <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopics')} />
-      <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopics')} />
-      <Item icon={<AspectRatio />} text="版面" onClick={jump('/boardList')} />
-      <Item icon={<Settings />} text="设置" onClick={jump('/setting')} />
-      {isLogIn && (
-        <>
-          <Item icon={<Book />} text="关注" onClick={jump('/myFollow')} />
-          <Item icon={<SpeakerNotes />} text="私信" onClick={jump('/messageList')} />
-          <Item icon={<Search />} text="搜索" onClick={jump('/search')} />
-          <Item icon={<CheckCircleOutline />} text="签到" onClick={jump('/signin')} />
-          <Item icon={<ExitToApp />} text="登出" onClick={onLogout} />
-        </>
-      )}
-    </List>
-  </Drawer>
-)
+const TopBar: React.FunctionComponent<Props> = ({ isLogIn, open, onClose, onLogout, children }) => {
+  const [signState, setSignState] = useState(false)
+  useEffect(() => {
+    ; (async () => {
+      await freshSignState()
+    })()
+  }, [])
+  async function signAction() {
+    await sign()
+    await freshSignState()
+  }
+  async function freshSignState() {
+    const res = await getSignState()
+    res.fail().succeed(data => setSignState(data.hasSignedInToday))
+  }
+
+  return (
+    <Drawer open={open} onClose={onClose}>
+      <List className={list} onClick={onClose}>
+        {children}
+        <Divider className={divider} />
+        <Item icon={<HomeIcon />} text="主页" onClick={jump('/')} />
+        <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopics')} />
+        <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopics')} />
+        <Item icon={<AspectRatio />} text="版面" onClick={jump('/boardList')} />
+        <Item icon={<Settings />} text="设置" onClick={jump('/setting')} />
+        {isLogIn && (
+          <>
+            <Item icon={<Book />} text="关注" onClick={jump('/myFollow')} />
+            <Item icon={<SpeakerNotes />} text="私信" onClick={jump('/messageList')} />
+            <Item icon={<Search />} text="搜索" onClick={jump('/search')} />
+            {/* TODO  签到后不关闭窗口 登出后刷新状态 状态转移到全局 */}
+            <Item
+              icon={<CheckCircleOutline />}
+              text={signState ? '已签到' : '签到'}
+              onClick={signState ? () => null : () => signAction()}
+            />
+            <Item icon={<ExitToApp />} text="登出" onClick={onLogout} />
+          </>
+        )}
+      </List>
+    </Drawer>
+  )
+}
 
 export default TopBar

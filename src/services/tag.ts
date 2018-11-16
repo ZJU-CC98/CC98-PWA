@@ -2,6 +2,11 @@ import { Try, Success } from '@/utils/fp/Try'
 import { FetchError, GET } from '@/utils/fetch'
 import { getLocalStorage, setLocalStorage } from '@/utils/storage'
 
+interface Tag {
+  name: string
+  id: number
+}
+
 /**
  * 获取标签信息
  */
@@ -16,11 +21,6 @@ export async function getTagsInfo() {
   res.succeed(data => setLocalStorage('tagsInfo', data, 3600 * 24 * 7))
 
   return res
-}
-
-interface Tag {
-  name: string
-  id: number
 }
 
 /**
@@ -41,6 +41,9 @@ export async function getTagNameById(id: number) {
   return name
 }
 
+/**
+ * 获取某个版面的标签组
+ */
 export async function getBoardTags(id: string) {
   return GET(`board/${id}/tag`)
 }

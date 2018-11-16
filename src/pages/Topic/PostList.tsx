@@ -4,7 +4,7 @@ import PostItem from './PostItem'
 import InfiniteList from '@/components/InfiniteList'
 
 import { List } from '@material-ui/core'
-import { getTracePost, getHotPost, getPost, getAnonymousTracePost } from '@/services/topic'
+import { getTracePost, getHotPost, getPost, getAnonymousTracePost } from '@/services/post'
 import { getUsersInfo } from '@/services/user'
 import { IPost, IAward, ITopic, IUser } from '@cc98/api'
 import { TempAward } from './index'

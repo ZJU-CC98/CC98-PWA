@@ -1,10 +1,20 @@
 import { GET } from '@/utils/fetch'
-import { ITopic, IPost, IHotTopic } from '@cc98/api'
+import { ITopic, IHotTopic } from '@cc98/api'
 
+/**
+ * 根据id获取某个版面的置顶帖子
+ */
 export function getTopTopics(id: string) {
   return GET<ITopic[]>(`topic/toptopics?boardid=${id}`)
 }
 
+/**
+ * @param id 版面id
+ * @param from 帖子组起始位置
+ * @param size 一次取的数量
+ * @param tag1 如果有tag1，则传一个tag1值，-1为默认
+ * @param tag2 如果有tag2，则传一个tag2值，-1为默认
+ */
 export function getTopicsInBoard(id: string, from: number, size: number, tag1 = -1, tag2 = -1) {
   const params: { [key: string]: string } = {}
 
@@ -29,45 +39,16 @@ export function getTopicsInBoard(id: string, from: number, size: number, tag1 = 
   })
 }
 
+/**
+ * 获取帖子基本信息
+ */
 export function getTopicInfo(id: string) {
   return GET<ITopic>(`topic/${id}`)
 }
 
-export function getPost(id: number, from: number) {
-  return GET<IPost[]>(`topic/${id}/post`, {
-    params: {
-      from: `${from}`,
-      size: '10',
-    },
-  })
-}
-
-export function getTracePost(topicId: number, userId: number, from: number) {
-  return GET<IPost[]>('post/topic/user', {
-    params: {
-      topicId: `${topicId}`,
-      userId: `${userId}`,
-      from: `${from}`,
-      size: '10',
-    },
-  })
-}
-
-export function getAnonymousTracePost(topicId: number, postId: number, from: number) {
-  return GET<IPost[]>('post/topic/anonymous/user', {
-    params: {
-      topicId: `${topicId}`,
-      postId: `${postId}`,
-      from: `${from}`,
-      size: '10',
-    },
-  })
-}
-
-export function getHotPost(id: number) {
-  return GET<IPost[]>(`topic/${id}/hot-post`)
-}
-
+/**
+ * 获取新帖
+ */
 export function getNewTopics(from: number) {
   return GET<ITopic[]>('topic/new', {
     params: {
@@ -77,14 +58,23 @@ export function getNewTopics(from: number) {
   })
 }
 
+/**
+ * 获取关注版面的帖子
+ */
 export function getFollowBoardsTopics(from: number) {
   return GET<ITopic[]>(`me/custom-board/topic?from=${from}&size=20`)
 }
 
+/**
+ * 获取关注用户的帖子
+ */
 export function getFollowUsersTopics(from: number) {
   return GET<ITopic[]>(`me/followee/topic?from=${from}&size=20`)
 }
 
+/**
+ * 搜索
+ */
 export function searchTopics(keyword: string, from: number) {
   return GET<ITopic[]>('topic/search', {
     params: {
@@ -95,10 +85,16 @@ export function searchTopics(keyword: string, from: number) {
   })
 }
 
+/**
+ * 获取十大
+ */
 export function getHotTopics() {
   return GET<IHotTopic[]>('topic/hot')
 }
 
+/**
+ * 获取一个用户近期发的帖子
+ */
 export function getUsersRecentTopics(id: number, from: number) {
   return GET<ITopic[]>(`user/${id}/recent-topic?from=${from}&size=10`)
 }

@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
-import { TopicInfoStore } from '@/model/topic'
-
 import {
   Button,
   Typography,
@@ -19,11 +17,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
+import { customBoard } from '@/services/board'
 import { IBoard } from '@cc98/api'
 
 interface Props {
   data: IBoard
-  topicInstance: TopicInfoStore
   classes: ClassNameMap
 }
 
@@ -95,7 +93,7 @@ const toolButton = css`
 `
 
 export default withStyles(styles)((props: Props) => {
-  const { classes, data, topicInstance } = props
+  const { classes, data } = props
   const [state, setState] = useState({
     isFollowed: data.isUserCustomBoard,
     buttonMessage: data.isUserCustomBoard ? '取关' : '关注',
@@ -105,7 +103,7 @@ export default withStyles(styles)((props: Props) => {
   const { id } = data
   async function handleClick() {
     setState({ buttonMessage: '...', disabled: true, ...state })
-    const response = await topicInstance.customBoard(data.id, isFollowed ? 0 : 1)
+    const response = await customBoard(data.id, isFollowed ? 0 : 1)
     response.fail().succeed(mes =>
       setState({
         isFollowed: !isFollowed,

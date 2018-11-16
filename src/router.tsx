@@ -2,10 +2,11 @@ import React from 'react'
 // https://reach.tech/router/api/Router
 import { RouteComponentProps, Router } from '@reach/router'
 
-import BoardList from './pages/Board'
-import Board from './pages/Board/Board'
+import BoardList from './pages/BoardList'
+import Board from './pages/Board'
 import Compose from './pages/Compose'
 import Page401 from './pages/Error/401'
+import Page403 from './pages/Error/403'
 import Page404 from './pages/Error/404'
 import Home from './pages/Home'
 import HotTopic from './pages/HotTopic'
@@ -57,6 +58,7 @@ const Routes: React.FunctionComponent = () => (
 
     <Route path="/logIn" component={LogIn} />
     <Route path="/error/401" component={Page401} />
+    <Route path="/error/403" component={Page403} />
     <Route path="/error/404" component={Page404} />
     <Route default component={Page404} />
   </Router>

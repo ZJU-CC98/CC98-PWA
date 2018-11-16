@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { css } from 'emotion'
 
 import {
@@ -17,9 +17,9 @@ import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import InfiniteList from '@/components/InfiniteList'
 import TopicItem from '@/components/TopicItem'
 
-import { GET } from '@/utils/fetch'
-import { IBaseBoard, ITopic, IUser } from '@cc98/api'
-import getBoardNameById from '@/services/getBoardName'
+import { getUsersRecentTopics } from '@/services/topic'
+import { ITopic, IUser } from '@cc98/api'
+import { getBoardNameById } from '@/services/board'
 
 const styles: StyleRules = {
   root: {
@@ -83,80 +83,70 @@ const ExpandPanelSummaryStyle = css`
 
 interface Props {
   info: IUser
-  boards: IBaseBoard[]
   classes: ClassNameMap
 }
 
 interface State {
-  recentTopics: ITopic[]
   isLoading: boolean
   isEnd: boolean
   from: number
-  size: number
 }
-export default withStyles(styles)(
-  class extends React.Component<Props, State> {
-    state: State = {
-      recentTopics: [],
-      isLoading: false,
-      isEnd: false,
-      from: 0,
-      size: 10,
-    }
 
-    componentDidMount() {
-      this.getRecentTopics()
-    }
+export default withStyles(styles)((props: Props) => {
+  const [state, setState] = useState<State>({
+    isLoading: false,
+    isEnd: false,
+    from: 0,
+  })
+  const [topics, setTopics] = useState<ITopic[]>([])
+  const { info, classes } = props
+  const { isLoading, isEnd, from } = state
 
-    getRecentTopics = async () => {
-      const { info, boards } = this.props
-      this.setState({ isLoading: true })
-      const { from, recentTopics, size } = this.state
-      if (info) {
-        const recentTopicsData = await GET<ITopic[]>(
-          `user/${info.id}/recent-topic?from=${from}&size=10`
-        )
-        recentTopicsData.fail().succeed(async (newRecentTopics: ITopic[]) => {
-          newRecentTopics.forEach(async topic => {
-            topic.boardName = getBoardNameById(boards, topic.boardId)
-          })
-          this.setState({
-            recentTopics: recentTopics.concat(newRecentTopics),
-            from: from + newRecentTopics.length,
-            isLoading: false,
-            isEnd: size !== newRecentTopics.length,
-          })
+  useEffect(() => {
+    ;(async () => {
+      getRecentTopics()
+    })()
+  }, [])
+
+  const getRecentTopics = async () => {
+    setState({ ...state, isLoading: true })
+    if (info) {
+      const recentTopicsData = await getUsersRecentTopics(info.id, from)
+      recentTopicsData.fail().succeed(async (newRecentTopics: ITopic[]) => {
+        newRecentTopics.forEach(async topic => {
+          topic.boardName = await getBoardNameById(topic.boardId)
         })
-      }
-    }
-
-    render() {
-      const { classes } = this.props
-      const { isLoading, isEnd, recentTopics } = this.state
-
-      return (
-        <ExpansionPanel
-          classes={{ expanded: classes.expanded, root: classes.expandRoot }}
-          defaultExpanded={true}
-        >
-          <ExpansionPanelSummary
-            style={{ maxHeight: '30px', minHeight: '30px' }}
-            className={ExpandPanelSummaryStyle}
-            expandIcon={<ExpandMoreIcon />}
-          >
-            <Typography>发表主题</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails classes={{ root: classes.expandDetailRoot }}>
-            <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={this.getRecentTopics}>
-              <List>
-                {recentTopics.map(topic => (
-                  <TopicItem key={topic.id} data={topic} place={'usercenter'} />
-                ))}
-              </List>
-            </InfiniteList>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      )
+        setTopics(prevTopics => prevTopics.concat(newRecentTopics))
+        setState({
+          from: from + newRecentTopics.length,
+          isLoading: false,
+          isEnd: 10 !== newRecentTopics.length,
+        })
+      })
     }
   }
-)
+
+  return (
+    <ExpansionPanel
+      classes={{ expanded: classes.expanded, root: classes.expandRoot }}
+      defaultExpanded={true}
+    >
+      <ExpansionPanelSummary
+        style={{ maxHeight: '30px', minHeight: '30px' }}
+        className={ExpandPanelSummaryStyle}
+        expandIcon={<ExpandMoreIcon />}
+      >
+        <Typography>发表主题</Typography>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails classes={{ root: classes.expandDetailRoot }}>
+        <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={getRecentTopics}>
+          <List>
+            {topics.map(topic => (
+              <TopicItem key={topic.id} data={topic} place={'usercenter'} />
+            ))}
+          </List>
+        </InfiniteList>
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
+  )
+})

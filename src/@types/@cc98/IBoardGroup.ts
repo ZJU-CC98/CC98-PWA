@@ -1,5 +1,5 @@
 declare module '@cc98/api' {
-  export interface IBaseBoard {
+  export interface IBoardGroup {
     /**
      * 版面id
      */

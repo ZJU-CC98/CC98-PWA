@@ -145,6 +145,7 @@ export default (props: Props) => {
                 navigate(`/topic/${postInfo.topicId}`)
               } else if (option === '编辑') {
                 // TODO:
+                navigate(`/compose/${postInfo.id}/edit`)
               } else if (option === '评分') {
                 openDialog(postInfo)
               } else if (option === '分享') {

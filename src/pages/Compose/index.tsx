@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react'
 
-import { TextField } from '@material-ui/core'
 
 import Editor from '@/components/Editor'
 import { navigate } from '@reach/router'
 
 import ScrollTag, { TagType } from './ScrollTag'
 import TypeSelect from './TypeSelect'
-
+import toast from './Toast'
+import Title from './Title'
 import { getBoardTags } from '@/services/tag'
 import { postNewTopic } from '@/services/topic'
-import { newPost } from '@/services/post'
-const labelStyle = {
-  paddingLeft: '15px',
-}
-const baseInputStyle = {
-  padding: '0px 15px 0px 15px',
-}
+import { newPost, getEditAuth, modifyPost } from '@/services/post'
+import { IPost } from '@cc98/api'
+
 interface Props {
   targetId: string
   /**
@@ -28,7 +24,7 @@ interface Props {
    * reply 回复他人的帖子
    * quote 引用他人的帖子
    */
-  editType: 'quote' | 'newpost' | 'editTopic' | 'reply'
+  editType: 'quote' | 'newpost' | 'edit' | 'reply'
 }
 
 /**
@@ -39,6 +35,7 @@ const Compose: React.FunctionComponent<Props> = ({ editType, targetId }) => {
   const [selectTag, setSelectTag] = useState<TagType[]>([])
   const [defaultContent, setDefaultContent] = useState<string>('')
   const [tags, setTags] = useState<TagType[]>([])
+  const [editInfo, setEditInfo] = useState<IPost | null>(null)
   /**
    * type表示帖子的类型
    * { id: '0', name:'普通' },
@@ -51,14 +48,7 @@ const Compose: React.FunctionComponent<Props> = ({ editType, targetId }) => {
     tags.length === 0 ? (
       <></>
     ) : (
-      <ScrollTag
-        onChange={newClickTags => {
-          setSelectTag(newClickTags)
-        }}
-        clickTag={selectTag}
-        maxTag={2}
-        tags={tags}
-      />
+      <ScrollTag onChange={setSelectTag} clickTag={selectTag} maxTag={2} tags={tags} />
     )
 
   const callback = async (content: string, newUrlList?: string[] | undefined) => {
@@ -81,60 +71,69 @@ const Compose: React.FunctionComponent<Props> = ({ editType, targetId }) => {
         navigate(`/topic/${targetId}`)
       })
     }
+
+    if (editType === 'edit') {
+      // const res = await editPost()
+      const res = await modifyPost(title, newContent, targetId, selectTag.map(v => v.id))
+      res
+        .fail(err => {
+          toast.error({ content: err.msg })
+        })
+        .succeed(v => {
+          navigate(`/topic/${editInfo.topicId}`)
+        })
+    }
   }
-  let topDom = <></>
+  let haveTopdom: boolean = false
+
+  const getTags = async (boardId: string) => {
+    const res = await getBoardTags(boardId)
+    res.fail().succeed(e => {
+      if (e[0].tags) setTags(e[0].tags)
+    })
+  }
+
+  const getEdit = async () => {
+    const res = await getEditAuth(targetId)
+    res
+      .fail(() => {
+        toast.error({
+          content: '没有操作权限',
+          // FIXME:
+          onClose: () => {
+            window.history.back()
+          },
+        })
+      })
+      .succeed(e => {
+        setDefaultContent(e.content)
+        setEditInfo(e)
+        setTitle(e.title)
+        getTags(e.boardId.toString())
+      })
+  }
   useEffect(() => {
     if (editType === 'newpost') {
-      ;(async () => {
-        const res = await getBoardTags(targetId)
-        res.fail().succeed(e => {
-          setTags(e[0].tags)
-        })
-      })()
+      getTags(targetId)
     }
     if (editType === 'quote') {
       // FIXME: 接受从postItem 通过window传过来的引用内容
       setDefaultContent(window.edit.quoteContent)
     }
+    if (editType === 'edit') {
+      getEdit()
+    }
   }, [])
 
-  if (editType === 'newpost') {
-    topDom = (
-      <>
-        <TextField
-          label="帖子主题"
-          InputLabelProps={{
-            style: labelStyle,
-          }}
-          InputProps={{
-            style: baseInputStyle,
-          }}
-          placeholder="帖子主题"
-          required
-          fullWidth
-          onChange={e => {
-            setTitle(e.target.value)
-          }}
-          margin="normal"
-        />
-        <TypeSelect
-          onChange={(e: string) => {
-            setType(e)
-          }}
-          topicType={type}
-        />
-        {tagDom}
-      </>
-    )
-  }
-
-  if (editType === 'reply') {
-    topDom = <></>
+  if (editType === 'newpost' || (editType === 'edit' && editInfo && editInfo.floor === 1)) {
+    haveTopdom = true
   }
 
   return (
     <>
-      {topDom}
+      {haveTopdom && <Title onChange={setTitle} label="标题" placeholder="标题" value={title} />}
+      {editType === 'newpost' && <TypeSelect onChange={setType} topicType={type} />}
+      {haveTopdom && tagDom}
       <Editor sendCallBack={callback} defaultContent={defaultContent} />
     </>
   )

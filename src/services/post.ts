@@ -75,3 +75,36 @@ export function newPost(content: string, topicId: string) {
 
   return POST(`/topic/${topicId}/post`, { params: param })
 }
+
+/**
+ * 获取编辑权限
+ */
+export function getEditAuth(postId: string) {
+  return GET<IPost>(`/post/${postId}/original`)
+}
+
+/**
+ *
+ */
+export function modifyPost(title: string, content: string, postId: string, tags: string[]) {
+  let postTag = {}
+  let i = 0
+  if (tags) {
+    for (const iterator of tags) {
+      i = i + 1
+      postTag = {
+        [`tag${i}`]: iterator,
+        ...postTag,
+      }
+    }
+  }
+
+  return PUT(`/post/${postId}`, {
+    params: {
+      title,
+      content,
+      contentType: 0,
+      ...postTag,
+    },
+  })
+}

@@ -3,14 +3,13 @@ import Toast from './toast'
 import { NotifFnData } from './type'
 interface State {
   open: boolean
-  messageInfo?: NotifFnData | null
+  messageInfo?: NotifFnData
 }
 class ConsecutiveSnackbars extends React.Component<{}, State> {
   queue: NotifFnData[] = []
 
-  state = {
+  state: State = {
     open: false,
-    messageInfo: null,
   }
 
   addNotice = (w: NotifFnData) => {
@@ -43,6 +42,8 @@ class ConsecutiveSnackbars extends React.Component<{}, State> {
   }
 
   handleExited = () => {
+    const { messageInfo } = this.state
+    if (messageInfo && messageInfo.onClose) messageInfo.onClose()
     this.processQueue()
   }
 

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react'
 import ImageList from './ImageList'
 import TextBase from './TextBase'
@@ -65,11 +64,15 @@ const Editor: React.FunctionComponent<Props> = props => {
   const [sendLoading, setSendLoading] = useState<boolean>(false)
   const [content, setContent] = useState<string>('')
 
-  useEffect(() => {
-    if (props.defaultContent) {
-      setContent(props.defaultContent)
-    }
-  }, [])
+  useEffect(
+    () => {
+      // console.log('IN useEffect', props)
+      if (props.defaultContent) {
+        setContent(props.defaultContent)
+      }
+    },
+    [props.defaultContent]
+  )
 
   return (
     <>

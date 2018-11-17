@@ -93,7 +93,8 @@ const Compose: React.FunctionComponent<Props> = ({ editType, targetId }) => {
       })()
     }
     if (editType === 'quote') {
-      // setDefaultContent(window.quote)
+      // FIXME: 接受从postItem 通过window传过来的引用内容
+      setDefaultContent(window.edit.quoteContent)
     }
   }, [])
 

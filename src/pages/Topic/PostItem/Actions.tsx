@@ -78,7 +78,9 @@ export default (props: Props) => {
         disableRipple={true}
         onClick={async () => {
           const content = Utils.quote(postInfo)
-          setQuote(content)
+          // FIXME: 全局状态传递 这里挂window了
+          window.edit = { quoteContent: content }
+          navigate(`/compose/${postInfo.topicId}/quote`)
         }}
       >
         <Quote fontSize="small" />

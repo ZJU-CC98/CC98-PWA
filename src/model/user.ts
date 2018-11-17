@@ -1,7 +1,5 @@
-/**
- * @author dongyansong
- * @date 2018-10-26
- */
+// FIXME: DELETE
+
 import { FetchError, GET } from '@/utils/fetch'
 import { Success, Try } from '@/utils/fp/Try'
 import { IUser } from '@cc98/api'

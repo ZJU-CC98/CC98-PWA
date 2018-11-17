@@ -24,7 +24,7 @@ export async function getTagsInfo() {
 }
 
 /**
- * 根据 标签ID 获取 标签名
+ * 根据标签ID获取标签名
  */
 export async function getTagNameById(id: number) {
   const tagsInfo = await getTagsInfo()

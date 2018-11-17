@@ -8,6 +8,7 @@ import { navigate } from '@reach/router'
 import { Subscribe } from '@cc98/state'
 import { IRecentMessage } from '@cc98/api'
 
+import dayjs from 'dayjs'
 
 import {
   Avatar,
@@ -42,7 +43,7 @@ const renderItem = (message: IRecentMessage, username = '', userAvatar = avatar)
     </ListItemAvatar>
     <ListItemText primary={username} secondary={<Text>{message.lastContent}</Text>} />
     <ListItemSecondaryAction>
-      <ListItemText secondary={timeago(message.time)} />
+      <ListItemText secondary={dayjs(message.time).fromNow()} />
     </ListItemSecondaryAction>
   </ListItem>
 )

@@ -9,7 +9,8 @@ import styled, { css } from 'react-emotion'
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 
-import global, { GlobalContainer } from '@/model/global'
+import { useGlobalContainer } from '@/hooks/useContainer'
+import userInstace from '@/containers/user'
 import user, { UserInfoStore } from '@/model/user'
 
 import avatar from '@/assets/9.png'
@@ -102,13 +103,19 @@ const renderItem = (message: IMessageContent, userAvatar = avatar, isCurrSend: b
     </ListItem>
   )
 
-export default ({ message }: Props) => (
-  <Subscribe to={[user, global]}>
-    {({ state }: UserInfoStore, { state: { myInfo } }: GlobalContainer) =>
-      renderItem(
-        message,
-        state[message.senderId] && state[message.senderId].portraitUrl,
-        !!myInfo && myInfo.id === message.senderId
-      )}
-  </Subscribe>
-)
+export default ({ message }: Props) => {
+  const {
+    state: { myInfo },
+  } = useGlobalContainer(userInstace)
+
+  return (
+    <Subscribe to={[user]}>
+      {({ state }: UserInfoStore) =>
+        renderItem(
+          message,
+          state[message.senderId] && state[message.senderId].portraitUrl,
+          !!myInfo && myInfo.id === message.senderId
+        )}
+    </Subscribe>
+  )
+}

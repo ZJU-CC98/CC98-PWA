@@ -3,7 +3,7 @@ import React from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
-import basicInstance from '@/model/global'
+import userInstace from '@/containers/user'
 
 import {
   IconButton,
@@ -13,7 +13,7 @@ import {
   InputLabel,
   OutlinedInput,
   Select,
-  TextField
+  TextField,
 } from '@material-ui/core'
 import { Theme, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap, StyleRulesCallback } from '@material-ui/core/styles/withStyles'
@@ -119,7 +119,7 @@ export default withStyles(styles)(
           this.setState({ disabled: false })
         })
         .succeed(() => {
-          basicInstance.FRESH_INFO()
+          userInstace.FRESH_INFO()
           this.setState({ disabled: false, buttonInfo: '修改' })
           navigate('/userCenter')
         })

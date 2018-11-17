@@ -1,40 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
-import { Subscribe } from '@cc98/state'
+import { useGlobalContainer } from '@/hooks/useContainer'
+import userInstance from '@/containers/user'
 
-import global from '@/model/global'
-import user, { UserInfoStore } from '@/model/user'
+import { IUser } from '@cc98/api'
+import { getUserInfoById } from '@/services/user'
 
 import User from './User'
 interface Props {
   id: string | undefined
 }
 
-export default class extends React.Component<Props> {
-  componentDidMount() {
-    const { id } = this.props
-    if (id) user.getInfo(parseInt(id, 10))
+const UserCenter: React.FunctionComponent<Props> = props => {
+  const {
+    state: { myInfo },
+  } = useGlobalContainer(userInstance)
+  const [userInfo, setUserInfo] = useState<IUser | null>(null)
+
+  useEffect(() => {
+    ; (async () => {
+      if (props.id) {
+        const userInfo = await getUserInfoById(parseInt(props.id, 10))
+        userInfo.fail().succeed(userInfo => {
+          setUserInfo(userInfo)
+        })
+      }
+    })()
+  }, [])
+
+  if (!props.id) {
+    return myInfo && <User info={myInfo} isUserCenter={true} />
   }
 
-  render() {
-    if (this.props.id) {
-      const id = parseInt(this.props.id, 10)
-
-      return (
-        <Subscribe to={[user]}>
-          {({ state: userMap }: UserInfoStore) => (
-            userMap[id] ? <User info={userMap[id]} isUserCenter={false} /> : null
-          )}
-        </Subscribe>
-      )
-    }
-
-    return (
-      <Subscribe to={[global]}>
-        {() => (
-          global.state.myInfo ? <User info={global.state.myInfo} isUserCenter={true} /> : null
-        )}
-      </Subscribe>
-    )
-  }
+  return userInfo && <User info={userInfo} isUserCenter={false} />
 }
+
+export default UserCenter

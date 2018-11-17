@@ -24,6 +24,10 @@ class SettingContainer extends Container<State> {
     useSignalr: false,
   }
 
+  SYNC_SETTING = () => {
+    // TODO:
+  }
+
   TOGGLE_THEME = () => {
     this.setState(state => ({
       theme: state.theme === 'light' ? 'dark' : 'light',

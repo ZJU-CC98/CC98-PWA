@@ -28,7 +28,12 @@ class SettingContainer extends Container<State> {
       useSignalr: false,
     }
 
-    this.setState(getLocalStorage('setting') as State | null, this.TOGGLE_PROXY)
+    const setting = getLocalStorage('setting') as State | null
+
+    if (setting && setting.useProxy) {
+      changeHost(HostType.Proxy)
+      this.setState(setting)
+    }
   }
 
   SYNC_SETTING = () => {

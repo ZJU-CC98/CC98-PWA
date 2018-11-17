@@ -31,9 +31,12 @@ class UserContainer extends Container<State> {
     const token = await logIn(username, password)
 
     token.fail().succeed(_ => {
-      this.setState({
-        isLogIn: true,
-      })
+      this.setState(
+        {
+          isLogIn: true,
+        },
+        this.FRESH_INFO
+      )
     })
 
     return token

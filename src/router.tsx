@@ -17,18 +17,17 @@ import MyFollow from './pages/MyFollow'
 import NewTopic from './pages/NewTopic'
 import Search from './pages/Search'
 import Setting from './pages/Setting'
-import SignIn from './pages/SignIn'
 import Topic from './pages/Topic'
 import UserCenter from './pages/UserCenter'
 import UserCenterEdit from './pages/UserCenter/Edit'
 import About from './pages/About'
 
-// TODO: cache
 const Route: React.FunctionComponent<
   RouteComponentProps & {
     // @types/react 里 createElement 签名很混乱
     // tslint:disable-next-line:no-any
     component: any
+    // component: React.FunctionComponent<any>
   }
 > = props => {
   const { path, component, ...otherProps } = props
@@ -56,7 +55,6 @@ const Routes: React.FunctionComponent = () => (
     <Route path="/compose/:targetId/:editType" component={Compose} />
     <Route path="/myFollow" component={MyFollow} />
     <Route path="/search" component={Search} />
-    <Route path="/signin" component={SignIn} />
 
     <Route path="/logIn" component={LogIn} />
     <Route path="/error/401" component={Page401} />
@@ -90,7 +88,6 @@ document.addEventListener(
     if (moveLen > 150) {
       window.history.back()
     }
-
     if (moveLen < -150) {
       window.history.back()
     }

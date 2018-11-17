@@ -49,7 +49,7 @@ export default () => {
 
   return (
     <>
-      <Typography className={headStyle} align="center" variant="title">
+      <Typography className={headStyle} align="center" variant="h6">
         论坛统计
       </Typography>
       <Divider />
@@ -68,7 +68,7 @@ export default () => {
         </TableBody>
       </Table>
 
-      <Typography className={headStyle} align="center" variant="title">
+      <Typography className={headStyle} align="center" variant="h6">
         开发组
       </Typography>
       <Divider />

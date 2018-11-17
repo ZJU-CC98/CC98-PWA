@@ -1,6 +1,7 @@
 import { Container } from '@/hooks/useContainer'
 
 import { HostType, changeHost } from '@/config/host'
+import { getLocalStorage, setLocalStorage } from '@/utils/storage'
 
 interface State {
   /**
@@ -18,20 +19,28 @@ interface State {
 }
 
 class SettingContainer extends Container<State> {
-  state: State = {
-    theme: 'light',
-    useProxy: false,
-    useSignalr: false,
+  constructor() {
+    super()
+
+    this.state = {
+      theme: 'light',
+      useProxy: false,
+      useSignalr: false,
+    }
+
+    this.setState(getLocalStorage('setting') as State | null)
   }
 
   SYNC_SETTING = () => {
-    // TODO:
+    setLocalStorage('setting', this.state)
   }
 
   TOGGLE_THEME = () => {
     this.setState(state => ({
       theme: state.theme === 'light' ? 'dark' : 'light',
     }))
+
+    this.SYNC_SETTING()
   }
 
   TOGGLE_PROXY = () => {
@@ -42,12 +51,16 @@ class SettingContainer extends Container<State> {
         useProxy: !state.useProxy,
       }
     })
+
+    this.SYNC_SETTING()
   }
 
   TOGGLE_SIGNALR = () => {
     this.setState(state => ({
       useSignalr: !state.useSignalr,
     }))
+
+    this.SYNC_SETTING()
   }
 }
 

@@ -2,6 +2,13 @@ import { GET, POST } from '@/utils/fetch'
 import { ISignIn } from '@cc98/api'
 
 /**
+ * 获取全站基本信息
+ */
+export function getSiteInfo() {
+  return GET('config/global')
+}
+
+/**
  * 获取全站主页信息
  */
 export function getHomeInfo() {

@@ -21,6 +21,7 @@ import SignIn from './pages/SignIn'
 import Topic from './pages/Topic'
 import UserCenter from './pages/UserCenter'
 import UserCenterEdit from './pages/UserCenter/Edit'
+import About from './pages/About'
 
 // TODO: cache
 const Route: React.FunctionComponent<
@@ -38,6 +39,7 @@ const Route: React.FunctionComponent<
 const Routes: React.FunctionComponent = () => (
   <Router>
     <Route path="/" component={Home} />
+    <Route path="/about" component={About} />
     <Route path="/hotTopics" component={HotTopic} />
     <Route path="/newTopics" component={NewTopic} />
     <Route path="/topic/:topicId" component={Topic} />

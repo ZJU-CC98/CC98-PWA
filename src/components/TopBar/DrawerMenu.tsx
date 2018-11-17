@@ -12,6 +12,7 @@ import FiberNew from '@material-ui/icons/FiberNew'
 import HomeIcon from '@material-ui/icons/Home'
 import Search from '@material-ui/icons/Search'
 import Settings from '@material-ui/icons/Settings'
+import Subject from '@material-ui/icons/Subject'
 import SpeakerNotes from '@material-ui/icons/SpeakerNotes'
 import Whatshot from '@material-ui/icons/Whatshot'
 
@@ -78,7 +79,6 @@ const TopBar: React.FunctionComponent<Props> = ({ isLogIn, open, onClose, onLogo
         <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopics')} />
         <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopics')} />
         <Item icon={<AspectRatio />} text="版面" onClick={jump('/boardList')} />
-        <Item icon={<Settings />} text="设置" onClick={jump('/setting')} />
         {isLogIn && (
           <>
             <Item icon={<Book />} text="关注" onClick={jump('/myFollow')} />
@@ -93,6 +93,8 @@ const TopBar: React.FunctionComponent<Props> = ({ isLogIn, open, onClose, onLogo
             <Item icon={<ExitToApp />} text="登出" onClick={onLogout} />
           </>
         )}
+        <Item icon={<Settings />} text="设置" onClick={jump('/setting')} />
+        <Item icon={<Subject />} text="关于" onClick={jump('/about')} />
       </List>
     </Drawer>
   )

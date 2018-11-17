@@ -122,10 +122,10 @@ document.addEventListener(
     const moveLen = event.changedTouches[0].clientX - globalBack.clientX
 
     if (moveLen > 150) {
-      window.history.back()
+      window.history.go(-1)
     }
     if (moveLen < -150) {
-      window.history.back()
+      window.history.go(1)
     }
   },
   false

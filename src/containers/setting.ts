@@ -28,7 +28,7 @@ class SettingContainer extends Container<State> {
       useSignalr: false,
     }
 
-    this.setState(getLocalStorage('setting') as State | null)
+    this.setState(getLocalStorage('setting') as State | null, this.TOGGLE_PROXY)
   }
 
   SYNC_SETTING = () => {

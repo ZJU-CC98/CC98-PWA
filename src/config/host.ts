@@ -27,7 +27,7 @@ const proxyHost: IHost = {
  * 代理设置
  */
 let host = getLocalStorage('proxy') ? proxyHost : defaultHost
-
+// let host = proxyHost
 /**
  * 切换代理
  */

@@ -1,19 +1,12 @@
-import React from 'react';
+import React from 'react'
 
-import { Subscribe } from '@cc98/state';
+import { useGlobalContainer } from '@/hooks/useContainer'
+import userInstace from '@/containers/user'
 
-import global, { GlobalContainer } from '@/model/global';
+import EditContainer from './Edit'
 
-import EditContainer from './Edit';
+export default () => {
+  const { state: user } = useGlobalContainer(userInstace)
 
-export default class extends React.Component<{}, {}> {
-  render() {
-
-    return (
-    <Subscribe to={[global]}>
-      {(basic: GlobalContainer) =>
-        basic.state.myInfo ? <EditContainer info={basic.state.myInfo} /> : null
-      }
-    </Subscribe>);
-  }
+  return <>{user.myInfo && <EditContainer info={user.myInfo} />}</>
 }

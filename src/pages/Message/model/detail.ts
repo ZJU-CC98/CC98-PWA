@@ -8,7 +8,7 @@ import { Container } from '@cc98/state'
 
 import reverse from 'lodash-es/reverse'
 
-import global from '@/model/global'
+import userInstace from '@/containers/user'
 import user from '@/model/user'
 
 interface IMap<T> {
@@ -113,7 +113,7 @@ export class Detail extends Container<State> {
         const newMessage = {
           content,
           id: messageId,
-          senderId: global.state.myInfo!.id,
+          senderId: userInstace.state.myInfo!.id,
           receiverId: this.state.id,
           time: new Date(Date.now()).toUTCString(),
           isRead: true,

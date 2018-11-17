@@ -63,6 +63,7 @@ export default withStyles(styles)((props: Props) => {
 
   return (
     <ExpansionPanel
+      elevation={0}
       classes={{ expanded: classes.expanded }}
       expanded={isExpanded}
       onClick={() => setIsExpanded(!isExpanded)}

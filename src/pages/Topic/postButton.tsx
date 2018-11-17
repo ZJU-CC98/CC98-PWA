@@ -9,17 +9,20 @@ interface Props {
 }
 
 const fixStyle = css`
-  position: fixed !important;
-  bottom: 100px !important;
-  right: 15px !important;
+  && {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+  }
 `
+
 const PostHead: React.FunctionComponent<Props> = ({ topicId }) => (
   <Tooltip title="post">
     <Button
       variant="fab"
+      mini
       className={fixStyle}
       color="primary"
-      aria-label="Add"
       onClick={() => {
         navigate(`/compose/${topicId}/reply`)
       }}

@@ -77,7 +77,10 @@ const CacheRouter: React.FunctionComponent<ILocation> = ({ location }) => {
   if (_ROUTER_CACHE.length > 5) {
     _ROUTER_CACHE.shift()
   }
-  _ROUTER_CACHE.push({ ...location })
+
+  if (_ROUTER_CACHE.every(backLoc => backLoc.href !== location.href)) {
+    _ROUTER_CACHE.push({ ...location })
+  }
 
   return (
     <>

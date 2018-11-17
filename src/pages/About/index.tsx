@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { css } from 'emotion'
 import { navigate } from '@reach/router'
+import Deturium from '@/assets/developTeam/Deturium.jpg'
+import Dearkano from '@/assets/developTeam/Dearkano.jpg'
+import AsukaSong from '@/assets/developTeam/AsukaSong.jpg'
+import adddna from '@/assets/developTeam/adddna.jpg'
+import Tsukiko15 from '@/assets/developTeam/Tsukiko15.jpg'
+import c708423 from '@/assets/developTeam/c708423.jpg'
 
 import {
   Table,
@@ -69,7 +75,7 @@ export default () => {
       <Card elevation={0}>
         <CardHeader
           onClick={() => navigate('/user/530817')}
-          avatar={<Avatar src="https://github.com/Deturium.png?s=150" />}
+          avatar={<Avatar src={Deturium} />}
           title="Deturium"
           subheader="项目背锅人"
         />
@@ -77,7 +83,7 @@ export default () => {
       <Card elevation={0}>
         <CardHeader
           onClick={() => navigate('/user/556551')}
-          avatar={<Avatar src="https://github.com/Dearkano.png?s=150" />}
+          avatar={<Avatar src={Dearkano} />}
           title="Dearkano"
           subheader="苦力"
         />
@@ -85,7 +91,7 @@ export default () => {
       <Card elevation={0}>
         <CardHeader
           onClick={() => navigate('/user/569380')}
-          avatar={<Avatar src="https://github.com/AsukaSong.png?s=150" />}
+          avatar={<Avatar src={AsukaSong} />}
           title="AsukaSong"
           subheader="高级 Webpack 配置工程师"
         />
@@ -93,7 +99,7 @@ export default () => {
       <Card elevation={0}>
         <CardHeader
           onClick={() => navigate('/user/405730')}
-          avatar={<Avatar src="https://github.com/Tsukiko15.png?s=150" />}
+          avatar={<Avatar src={Tsukiko15} />}
           title="Tsukiko15"
           subheader="后端开发"
         />
@@ -101,7 +107,7 @@ export default () => {
       <Card elevation={0}>
         <CardHeader
           onClick={() => navigate('/user/559244')}
-          avatar={<Avatar src="https://github.com/adddna.png?s=150" />}
+          avatar={<Avatar src={adddna} />}
           title="adddna"
           subheader="低级前端开发"
         />
@@ -109,7 +115,7 @@ export default () => {
       <Card elevation={0}>
         <CardHeader
           onClick={() => navigate('/user/558467')}
-          avatar={<Avatar src="https://github.com/c708423.png?s=150" />}
+          avatar={<Avatar src={c708423} />}
           title="c708423"
           subheader="前端开发"
         />

@@ -1,6 +1,6 @@
 import React from 'react'
 // https://reach.tech/router/api/Router
-import { RouteComponentProps, Router } from '@reach/router'
+import { Router, Location, RouteComponentProps, WindowLocation } from '@reach/router'
 
 import BoardList from './pages/BoardList'
 import Board from './pages/Board'
@@ -35,8 +35,12 @@ const Route: React.FunctionComponent<
   return React.createElement(component, otherProps)
 }
 
-const Routes: React.FunctionComponent = () => (
-  <Router>
+interface ILocation {
+  location: WindowLocation
+}
+
+const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
+  <Router location={location}>
     <Route path="/" component={Home} />
     <Route path="/about" component={About} />
     <Route path="/hotTopics" component={HotTopic} />
@@ -64,7 +68,36 @@ const Routes: React.FunctionComponent = () => (
   </Router>
 )
 
-export default Routes
+/**
+ * 路由级页面缓存
+ */
+const _ROUTER_CACHE: WindowLocation[] = []
+
+const CacheRouter: React.FunctionComponent<ILocation> = ({ location }) => {
+  if (_ROUTER_CACHE.length > 5) {
+    _ROUTER_CACHE.shift()
+  }
+  _ROUTER_CACHE.push({ ...location })
+
+  return (
+    <>
+      {_ROUTER_CACHE.map(backLoc => (
+        <div
+          key={backLoc.href}
+          style={{ display: backLoc.href === location.href ? 'block' : 'none' }}
+        >
+          <MyRouter location={backLoc} />
+        </div>
+      ))}
+    </>
+  )
+}
+
+const RootRouter: React.FunctionComponent = React.memo(() => (
+  <Location>{({ location }) => <CacheRouter location={location} />}</Location>
+))
+
+export default RootRouter
 
 // 全局左滑返回
 const globalBack = {

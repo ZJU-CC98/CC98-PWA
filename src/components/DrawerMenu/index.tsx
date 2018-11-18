@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
+import { useGlobalContainer } from '@/hooks/useContainer'
+import userInstance from '@/containers/user'
+import stateInstance from '@/containers/state'
+
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 
 import AspectRatio from '@material-ui/icons/AspectRatio'
@@ -16,7 +20,9 @@ import Subject from '@material-ui/icons/Subject'
 import SpeakerNotes from '@material-ui/icons/SpeakerNotes'
 import Whatshot from '@material-ui/icons/Whatshot'
 
-import { getSignState, sign } from '@/services/global'
+import UserInfo from './UserInfo'
+
+import { getSignState, signIn } from '@/services/global'
 
 const jump = (link: string) => () => {
   navigate(link)
@@ -47,50 +53,51 @@ const Item: React.FunctionComponent<ItemProps> = ({ icon, text, onClick }) => (
   </ListItem>
 )
 
-interface Props {
-  isLogIn: boolean
-  open: boolean
-  onClose: () => void
-  onLogout: () => void
-}
+const DrawerMenu: React.FunctionComponent = () => {
+  // 今日是否已经签到
+  const [hasSigned, setHasSigned] = useState(false)
 
-const TopBar: React.FunctionComponent<Props> = ({ isLogIn, open, onClose, onLogout, children }) => {
-  const [signState, setSignState] = useState(false)
+  const { state: user, LOG_OUT } = useGlobalContainer(userInstance)
+  const { state, CLOSE_DRAWER } = useGlobalContainer(stateInstance)
+
   useEffect(() => {
     ; (async () => {
-      await freshSignState()
+      const res = await getSignState()
+      res.fail().succeed(signIn => setHasSigned(signIn.hasSignedInToday))
     })()
   }, [])
-  async function signAction() {
-    await sign()
-    await freshSignState()
-  }
-  async function freshSignState() {
-    const res = await getSignState()
-    res.fail().succeed(data => setSignState(data.hasSignedInToday))
+
+  const signOnClick = async () => {
+    if (hasSigned) {
+      return
+    }
+
+    const res = await signIn()
+    res.fail().succeed(_ => setHasSigned(true))
   }
 
   return (
-    <Drawer open={open} onClose={onClose}>
-      <List className={list} onClick={onClose}>
-        {children}
+    <Drawer open={state.isDrawerOpen} onClose={CLOSE_DRAWER}>
+      <List className={list} onClick={CLOSE_DRAWER}>
+        <UserInfo isLogIn={user.isLogIn} info={user.myInfo} />
+
         <Divider className={divider} />
         <Item icon={<HomeIcon />} text="主页" onClick={jump('/')} />
         <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopics')} />
         <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopics')} />
         <Item icon={<AspectRatio />} text="版面" onClick={jump('/boardList')} />
-        {isLogIn && (
+        {user.isLogIn && (
           <>
             <Item icon={<Book />} text="关注" onClick={jump('/myFollow')} />
             <Item icon={<SpeakerNotes />} text="私信" onClick={jump('/messageList')} />
             <Item icon={<Search />} text="搜索" onClick={jump('/search')} />
-            {/* TODO  签到后不关闭窗口 登出后刷新状态 状态转移到全局 */}
+
             <Item
               icon={<CheckCircleOutline />}
-              text={signState ? '已签到' : '签到'}
-              onClick={signState ? () => null : () => signAction()}
+              text={hasSigned ? '已签到' : '签到'}
+              onClick={signOnClick}
             />
-            <Item icon={<ExitToApp />} text="登出" onClick={onLogout} />
+            <Item icon={<ExitToApp />} text="登出" onClick={LOG_OUT} />
           </>
         )}
         <Item icon={<Settings />} text="设置" onClick={jump('/setting')} />
@@ -100,4 +107,4 @@ const TopBar: React.FunctionComponent<Props> = ({ isLogIn, open, onClose, onLogo
   )
 }
 
-export default TopBar
+export default DrawerMenu

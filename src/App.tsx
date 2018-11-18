@@ -9,12 +9,14 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 import { dark, light } from './theme'
 
 import TopBar from '@/components/TopBar'
+import DrawerMenu from '@/components/DrawerMenu'
 import BackGround from '@/components/BackGround'
 import Router from './router'
 
 const App = () => (
   <BackGround>
     <TopBar />
+    <DrawerMenu />
     <Router />
   </BackGround>
 )

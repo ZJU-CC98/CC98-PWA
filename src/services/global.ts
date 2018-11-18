@@ -25,6 +25,6 @@ export function getSignState() {
 /**
  * 签到
  */
-export function sign() {
+export function signIn() {
   return POST<ISignIn>('me/signin')
 }

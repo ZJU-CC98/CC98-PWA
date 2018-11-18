@@ -1,30 +1,47 @@
 import React from 'react'
+import { css } from 'emotion'
 
-import { useGlobalContainer } from '@/hooks/useContainer'
-import userInstance from '@/containers/user'
 import stateInstance from '@/containers/state'
 
-import TopBar from './TopBar'
-import DrawerMenu from './DrawerMenu'
-import UserInfo from './UserInfo'
+import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core'
 
-const Top: React.FunctionComponent = () => {
-  const { state: user, LOG_OUT } = useGlobalContainer(userInstance)
-  const { state, OPEN_DRAWER, CLOSE_DRAWER } = useGlobalContainer(stateInstance)
+import MenuIcon from '@material-ui/icons/Menu'
 
-  return (
-    <>
-      <TopBar onMenuClick={OPEN_DRAWER} />
-      <DrawerMenu
-        isLogIn={user.isLogIn}
-        open={state.isDrawerOpen}
-        onClose={CLOSE_DRAWER}
-        onLogout={LOG_OUT}
-      >
-        <UserInfo isLogIn={user.isLogIn} info={user.myInfo} />
-      </DrawerMenu>
-    </>
-  )
-}
+import version from '@/version'
 
-export default Top
+const grow = css`
+  flex-grow: 1;
+`
+
+const icon = css`
+  && {
+    margin-left: -12px;
+    margin-right: 5px;
+  }
+`
+
+const button = css`
+  && {
+    margin-right: -12px;
+  }
+`
+
+const TopBar: React.FunctionComponent = () => (
+  <AppBar position="fixed">
+    <Toolbar>
+      <IconButton className={icon} color="inherit" onClick={stateInstance.OPEN_DRAWER}>
+        <MenuIcon />
+      </IconButton>
+
+      <Typography className={grow} color="inherit">
+        CC98
+      </Typography>
+
+      <Button className={button} color="inherit" size="small">
+        {version}
+      </Button>
+    </Toolbar>
+  </AppBar>
+)
+
+export default TopBar

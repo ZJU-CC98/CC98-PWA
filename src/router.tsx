@@ -73,8 +73,12 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
  */
 const _ROUTER_CACHE: WindowLocation[] = []
 
+// 最大缓存页面数
+// TODO: 加入 setting 配置
+const MAX_CACHE_SIZE = 5
+
 const CacheRouter: React.FunctionComponent<ILocation> = ({ location }) => {
-  if (_ROUTER_CACHE.length > 5) {
+  if (_ROUTER_CACHE.length > MAX_CACHE_SIZE) {
     _ROUTER_CACHE.shift()
   }
 
@@ -96,13 +100,28 @@ const CacheRouter: React.FunctionComponent<ILocation> = ({ location }) => {
   )
 }
 
+// tslint:disable-next-line
+export function bindURL(func: Function, href: string) {
+  // tslint:disable-next-line:no-any
+  return (...rest: any) => {
+    if (window.location.href === href) {
+      return func.apply(null, rest)
+    }
+  }
+}
+
 const RootRouter: React.FunctionComponent = React.memo(() => (
   <Location>{({ location }) => <CacheRouter location={location} />}</Location>
 ))
 
 export default RootRouter
 
-// 全局左滑返回
+/**
+ * 全局手势滑动
+ *
+ * TODO: 动画效果
+ */
+
 const globalBack = {
   clientX: 0,
   // clientY: 0,

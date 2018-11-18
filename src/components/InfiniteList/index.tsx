@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import LoadingCircle from '@/components/LoadingCircle'
 
 import { debounce } from 'lodash-es'
+import { bindURL } from '@/router'
 
 interface Props {
   /**
@@ -34,21 +35,24 @@ const InfiniteList: React.FunctionComponent<Props> = props => {
   })
 
   useEffect(() => {
-    const bindFunc = debounce(() => {
-      // tslint:disable-next-line
-      const { isEnd, isLoading, callback } = refProps.current
-      if (isLoading || isEnd) {
-        return
-      }
-      // loadingDom 出现在可视区域
-      const distance =
-        loadingDom.current && window.innerHeight - loadingDom.current.getBoundingClientRect().top
-      if (distance === null || distance < 0) {
-        return
-      }
+    const bindFunc = debounce(
+      bindURL(() => {
+        const { isEnd, isLoading, callback } = refProps.current
+        if (isLoading || isEnd) {
+          return
+        }
+        // loadingDom 出现在可视区域
+        const distance =
+          loadingDom.current && window.innerHeight - loadingDom.current.getBoundingClientRect().top
+        if (distance === null || distance < 0) {
+          return
+        }
 
-      callback()
-    }, 250)
+        callback()
+      }, window.location.href),
+
+      250
+    )
     window.addEventListener('scroll', bindFunc)
 
     return () => {

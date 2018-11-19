@@ -102,10 +102,9 @@ const CacheRouter: React.FunctionComponent<ILocation> = ({ location }) => {
 
 // tslint:disable-next-line
 export function bindURL(func: Function, href: string) {
-  // tslint:disable-next-line:no-any
-  return (...rest: any) => {
+  return () => {
     if (window.location.href === href) {
-      return func.apply(null, rest)
+      func()
     }
   }
 }
@@ -124,13 +123,14 @@ export default RootRouter
 
 const globalBack = {
   clientX: 0,
-  // clientY: 0,
+  clientY: 0,
 }
 
 document.addEventListener(
   'touchstart',
   (event: TouchEvent) => {
     globalBack.clientX = event.changedTouches[0].clientX
+    globalBack.clientY = event.changedTouches[0].clientY
   },
   false
 )
@@ -138,12 +138,17 @@ document.addEventListener(
 document.addEventListener(
   'touchend',
   (event: TouchEvent) => {
-    const moveLen = event.changedTouches[0].clientX - globalBack.clientX
+    const moveX = event.changedTouches[0].clientX - globalBack.clientX
+    const moveY = event.changedTouches[0].clientY - globalBack.clientY
 
-    if (moveLen > 150) {
+    if (Math.abs(moveY) > 40) {
+      return
+    }
+
+    if (moveX > 150) {
       window.history.go(-1)
     }
-    if (moveLen < -150) {
+    if (moveX < -150) {
       window.history.go(1)
     }
   },

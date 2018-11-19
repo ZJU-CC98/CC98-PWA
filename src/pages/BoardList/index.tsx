@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { css } from 'emotion'
+
+import { useFetcher } from '@/hooks/useFetcher'
 
 import { TextField } from '@material-ui/core'
 
@@ -7,7 +9,7 @@ import BoardGroup from './BoardGroup'
 import BoardItem from './BoardItem'
 
 import { getBoardsInfo } from '@/services/board'
-import { IBoardGroup, IBoard } from '@cc98/api'
+import { IBoard } from '@cc98/api'
 
 const searchInput = css`
   display: flex;
@@ -16,26 +18,23 @@ const searchInput = css`
 `
 
 export default () => {
-  const [boardList, setBoardList] = useState<IBoardGroup[]>([])
   const [childBoards, setChildBoards] = useState<IBoard[]>([])
+  const [boardList] = useFetcher(getBoardsInfo, {
+    success: boards => {
+      setChildBoards(
+        boards.map(baseBoard => baseBoard.boards).reduce((prev, cur) => cur.concat(prev))
+      )
+    },
+  })
 
-  useEffect(() => {
-    ; (async () => {
-      const boardsInfo = await getBoardsInfo()
-      boardsInfo.fail().succeed(boards => {
-        setBoardList(boards)
-
-        const childBoards = boards
-          .map(baseBoard => baseBoard.boards)
-          .reduce((prev, cur) => cur.concat(prev))
-
-        setChildBoards(childBoards)
-      })
-    })()
-  }, [])
-
+  // 版面搜索 state
   const [searchTerm, setSearchTerm] = useState('')
-  const filteredBoards = childBoards.filter(board => board.name.indexOf(searchTerm) !== -1)
+  const [filteredBoards, setFilteredBoards] = useState<IBoard[]>([])
+
+  const onSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
+    setFilteredBoards(childBoards.filter(board => board.name.indexOf(searchTerm) !== -1))
+  }
 
   return (
     <>
@@ -43,13 +42,14 @@ export default () => {
         <TextField
           label="搜索版面名称"
           value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
+          onChange={onSearchTermChange}
           fullWidth
         />
       </div>
+
       {searchTerm && filteredBoards.map(board => <BoardItem key={board.id} data={board} />)}
 
-      {!searchTerm && boardList.map(data => <BoardGroup key={data.id} data={data} />)}
+      {!searchTerm && boardList && boardList.map(data => <BoardGroup key={data.id} data={data} />)}
     </>
   )
 }

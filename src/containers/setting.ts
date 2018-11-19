@@ -32,8 +32,9 @@ class SettingContainer extends Container<State> {
 
     if (setting && setting.useProxy) {
       changeHost(HostType.Proxy)
-      this.setState(setting)
     }
+
+    this.setState(setting)
   }
 
   SYNC_SETTING = () => {

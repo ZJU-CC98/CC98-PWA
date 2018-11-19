@@ -1,5 +1,7 @@
 import React from 'react'
 
-const Page401: React.FunctionComponent = () => <>401</>
+import LayoutCenter from '@/components/LayoutCenter'
+
+const Page401: React.FunctionComponent = () => <LayoutCenter>401 请先登录</LayoutCenter>
 
 export default Page401

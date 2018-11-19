@@ -61,10 +61,11 @@ const DrawerMenu: React.FunctionComponent = () => {
   const { state, CLOSE_DRAWER } = useGlobalContainer(stateInstance)
 
   useEffect(() => {
-    ; (async () => {
-      const res = await getSignState()
-      res.fail().succeed(signIn => setHasSigned(signIn.hasSignedInToday))
-    })()
+    if (user.isLogIn) {
+      getSignState().then(res => {
+        res.fail().succeed(signIn => setHasSigned(signIn.hasSignedInToday))
+      })
+    }
   }, [])
 
   const signOnClick = async () => {

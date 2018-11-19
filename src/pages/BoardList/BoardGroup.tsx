@@ -1,87 +1,65 @@
 import React, { useState } from 'react'
-import { css } from 'emotion'
+import { css, cx } from 'emotion'
 
-import {
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  Typography,
-} from '@material-ui/core'
+import { Typography, Collapse, IconButton } from '@material-ui/core'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-
-import { StyleRules, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
 import BoardItem from './BoardItem'
 
 import { IBoardGroup } from '@cc98/api'
 
-const notExpandedBoards = [2, 29, 33, 35, 37, 604]
+const root = css`
+  margin-bottom: 20px;
+`
+
+const header = css`
+  display: flex;
+  margin: 2px 32px;
+  margin-right: 10px;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const body = css`
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 12px 10px 12px;
+`
+
+const expandOpen = css`
+  transform: rotate(180deg);
+`
 
 interface Props {
   data: IBoardGroup
-  classes: ClassNameMap
 }
 
-const baseBoardStyle = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 1rem;
-  margin: 0 0 0 0;
-`
-const childBoardStyle = css`
-  && {
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-    padding: 0 0 0 0;
-  }
-`
-const baseBoardContainerStyle = css`
-  && {
-    max-height: 30px;
-    min-height: 30px;
-    margin: 0 0 0 0;
-  }
-`
-const styles: StyleRules = {
-  root: {
-    width: '100%',
-  },
-  expanded: {
-    marginTop: '0.5rem',
-    marginBottom: '0.5rem',
-  },
-}
+const notExpandedBoards = [2, 29, 33, 35, 37, 604]
 
-export default withStyles(styles)((props: Props) => {
+export default (props: Props) => {
   const [isExpanded, setIsExpanded] = useState(notExpandedBoards.indexOf(props.data.id) === -1)
-  const { data, classes } = props
+  const { data } = props
 
   return (
-    <ExpansionPanel
-      elevation={0}
-      classes={{ expanded: classes.expanded }}
-      expanded={isExpanded}
-      onClick={() => setIsExpanded(!isExpanded)}
-    >
-      <ExpansionPanelSummary
-        style={{ minHeight: '2.5rem' }}
-        className={baseBoardContainerStyle}
-        expandIcon={<ExpandMoreIcon />}
-      >
-        <Typography className={baseBoardStyle}>{data.name}</Typography>
-      </ExpansionPanelSummary>
-      {isExpanded ? (
-        <ExpansionPanelDetails className={childBoardStyle}>
+    <div className={root}>
+      <div className={header} onClick={() => setIsExpanded(!isExpanded)}>
+        <Typography variant="subtitle1" color="primary">
+          {data.name}
+        </Typography>
+
+        <IconButton color="primary">
+          <ExpandMoreIcon className={cx({ [expandOpen]: isExpanded })} />
+        </IconButton>
+      </div>
+
+      <Collapse in={isExpanded} timeout="auto">
+        <div className={body}>
           {data.boards.map(board => (
             <BoardItem key={board.id} data={board} />
           ))}
-        </ExpansionPanelDetails>
-      ) : null}
-    </ExpansionPanel>
+        </div>
+      </Collapse>
+    </div>
   )
-})
+}

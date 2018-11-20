@@ -44,8 +44,7 @@ export default () => {
     return <LoadingCircle />
   }
 
-  // tslint:disable-next-line:no-any
-  const handleChange = async (e: any, value: string) => {
+  const handleChange = async (e: never, value: string) => {
     setCurrent(value)
     let res: Try<IHotTopic[], FetchError> | null = null
     switch (value) {

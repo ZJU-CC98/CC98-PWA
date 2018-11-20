@@ -1,4 +1,3 @@
-
 export enum HostType {
   Proxy,
   Default,
@@ -25,7 +24,7 @@ const proxyHost: IHost = {
 /**
  * 代理设置
  */
-let host = defaultHost
+let host = process.env.PROXY ? proxyHost : defaultHost
 
 /**
  * 切换代理

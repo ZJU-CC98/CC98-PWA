@@ -16,27 +16,34 @@ export function getTopTopics(id: string) {
  * @param tag2 如果有tag2，则传一个tag2值，-1为默认
  */
 export function getTopicsInBoard(id: string, from: number, size: number, tag1 = -1, tag2 = -1) {
-  const params: { [key: string]: string } = {}
-
-  if (tag1 >= 0 || tag2 >= 0) {
-    if (tag1 >= 0) {
-      params.tag1 = `${tag1}`
-    }
-    if (tag2 >= 0) {
-      params.tag2 = `${tag2}`
-    }
-    params.from = `${from}`
-    params.size = `${size}`
-
-    return GET(`topic/search/board/${id}/tag`, { params })
+  if (tag1 === -1 && tag2 === -1) {
+    return GET<ITopic[]>(`board/${id}/topic`, {
+      params: {
+        from: `${from}`,
+        size: `${size}`,
+      },
+    })
   }
 
-  return GET(`board/${id}/topic`, {
-    params: {
-      from: `${from}`,
-      size: `${size}`,
-    },
-  })
+  const params: { [key: string]: string } = {}
+
+  if (tag1 !== -1) {
+    params.tag1 = `${tag1}`
+  }
+  if (tag2 !== -1) {
+    params.tag2 = `${tag2}`
+  }
+  params.from = `${from}`
+  params.size = `${size}`
+
+  interface Topics {
+    count: number
+    topics: ITopic[]
+  }
+
+  return GET<Topics>(`topic/search/board/${id}/tag`, { params }).then(res =>
+    Promise.resolve(res.map(topics => topics.topics))
+  )
 }
 
 /**

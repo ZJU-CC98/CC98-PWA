@@ -1,12 +1,14 @@
 import React from 'react'
 
-import HotTopics from './HotTopic'
+import { TopicList } from '../HotTopic'
 import RecommendReadings from './Recommend'
+
+import { getHotTopics } from '@/services/topic'
 
 const Home: React.FunctionComponent = () => (
   <>
     <RecommendReadings />
-    <HotTopics />
+    <TopicList service={getHotTopics} />
   </>
 )
 

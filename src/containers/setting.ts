@@ -42,11 +42,12 @@ class SettingContainer extends Container<State> {
   }
 
   TOGGLE_THEME = () => {
-    this.setState(state => ({
-      theme: state.theme === 'light' ? 'dark' : 'light',
-    }))
-
-    this.SYNC_SETTING()
+    this.setState(
+      state => ({
+        theme: state.theme === 'light' ? 'dark' : 'light',
+      }),
+      this.SYNC_SETTING
+    )
   }
 
   TOGGLE_PROXY = () => {
@@ -56,17 +57,16 @@ class SettingContainer extends Container<State> {
       return {
         useProxy: !state.useProxy,
       }
-    })
-
-    this.SYNC_SETTING()
+    }, this.SYNC_SETTING)
   }
 
   TOGGLE_SIGNALR = () => {
-    this.setState(state => ({
-      useSignalr: !state.useSignalr,
-    }))
-
-    this.SYNC_SETTING()
+    this.setState(
+      state => ({
+        useSignalr: !state.useSignalr,
+      }),
+      this.SYNC_SETTING
+    )
   }
 }
 

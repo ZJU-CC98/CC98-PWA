@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useGlobalContainer } from '@/hooks/useContainer'
+import useGlobalContainer from '@/hooks/useContainer'
 import userInstace from '@/containers/user'
 
 import EditContainer from './Edit'

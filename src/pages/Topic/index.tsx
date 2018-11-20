@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { navigate } from '@reach/router'
-import { useGlobalContainer } from '@/hooks/useContainer'
+import useGlobalContainer from '@/hooks/useContainer'
 import settingInstance from '@/containers/setting'
 import userInstance from '@/containers/user'
 

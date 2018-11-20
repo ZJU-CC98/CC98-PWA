@@ -1,52 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { css } from 'emotion'
 import { navigate } from '@reach/router'
 
-import { FormControl, MenuItem, Select } from '@material-ui/core'
+import useFetcher from '@/hooks/useFetcher'
 
-import { Theme, withStyles } from '@material-ui/core/styles'
-import { StyleRulesCallback, ClassNameMap } from '@material-ui/core/styles/withStyles'
+import { List } from '@material-ui/core'
+
+import TopicList from '@/components/TopicList'
+import TopicItem from '@/components/TopicItem'
 
 import BoardHead from './BoardHead'
-import TopicList from './TopicList'
+import Tags from './Tags'
 
-import { IBoard, ITag } from '@cc98/api'
+import { getBoard, getBoardTags } from '@/services/board'
+import { getTopicsInBoard, getTopTopics } from '@/services/topic'
 
-import { getBoard } from '@/services/board'
-import { getBoardTags, getTagNameById } from '@/services/tag'
-
-interface Tag {
-  name: string
-  id: number
-}
-interface Props {
-  id: string
-  classes: ClassNameMap
-}
-interface Tags {
-  tag1: Tag
-  tag2: Tag
-}
-
-const styles: StyleRulesCallback = (theme: Theme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
-  },
-  selectRoot: {
-    minWidth: 0,
-  },
-})
-
-const boardStyle = css`
+const root = css`
   && {
     display: flex;
     flex-direction: column;
@@ -55,100 +25,65 @@ const boardStyle = css`
   }
 `
 
-export default withStyles(styles)((props: Props) => {
-  const { classes, id } = props
+const wrapper = css`
+  && {
+    width: 100%;
+  }
+`
 
-  const [board, setBoard] = useState<IBoard | null>(null)
-  const [tags, setTags] = useState<ITag[]>([])
-  const [tag1, setTag1] = useState<Tag>({ id: -1, name: '全部' })
-  const [tag2, setTag2] = useState<Tag>({ id: -1, name: '全部' })
+interface Props {
+  id: string
+}
 
-  useEffect(() => {
-    ; (async () => {
-      const boardsInfo = await getBoard(id)
-      const tagsInfo = await getBoardTags(id)
+export default ({ id }: Props) => {
+  const [board] = useFetcher(() => getBoard(id), {
+    fail: err => {
+      if (err.status === 403) {
+        navigate('/error/403')
+      } else if (err.status === 401) {
+        navigate('/error/401')
+      }
+    },
+    success: data => {
+      // 外网不可见的版面
+      if (data.internalState === 1) {
+        navigate('/error/401')
+      }
+    },
+  })
 
-      boardsInfo
-        .fail(fetchError => {
-          if (fetchError.status === 403) {
-            navigate('/error/403')
-          } else if (fetchError.status === 401) {
-            navigate('/error/401')
-          }
-        })
-        .succeed((data: IBoard) => {
-          // 外网不可见的版面
-          if (data.internalState === 1) {
-            navigate('/error/401')
-          }
-          setBoard(data)
-        })
-      tagsInfo.fail().succeed(setTags)
-    })()
-  }, [])
+  const [topTopics] = useFetcher(() => getTopTopics(id))
 
-  const handleChange = (index: keyof Tags) => async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const tagId = parseInt(event.target.value, 10)
-    const name = await getTagNameById(tagId)
-    if (index === 'tag1') {
-      setTag1({ name, id: tagId })
+  const [boardTags] = useFetcher(() => getBoardTags(id))
+  const [tagIDs, setTagIDs] = useState<[number, number]>([-1, -1])
+
+  const onTagChange = (tagID: number, index: number) => {
+    if (index === 0) {
+      setTagIDs([tagID, tagIDs[1]])
     } else {
-      setTag2({ name, id: tagId })
+      setTagIDs([tagIDs[0], tagID])
     }
   }
 
   return (
-    <div className={boardStyle}>
+    <div className={root}>
       {board && <BoardHead data={board} />}
-      <>
-        {tags.length > 0 ? (
-          <FormControl className={classes.formControl} classes={{ root: classes.selectRoot }}>
-            <Select
-              value={tag1.id}
-              onChange={handleChange('tag1')}
-              inputProps={{
-                name: 'age',
-                id: 'age-native-simple',
-              }}
-            >
-              <MenuItem key={0} value={-1}>
-                全部
-              </MenuItem>
-              {tags[0].tags.map(tag => (
-                <MenuItem key={tag.id} value={tag.id}>
-                  {tag.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        ) : null}
-        {tags.length > 1 ? (
-          <FormControl className={classes.formControl} classes={{ root: classes.selectRoot }}>
-            <Select
-              autoWidth
-              value={tag2.id}
-              onChange={handleChange('tag2')}
-              inputProps={{
-                name: 'age',
-                id: 'age-native-simple',
-              }}
-            >
-              <MenuItem key={0} value={-1}>
-                全部
-              </MenuItem>
-              {tags[1].tags.map(tag => (
-                <MenuItem key={tag.id} value={tag.id}>
-                  {tag.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        ) : null}
-      </>
 
-      <TopicList key={`${tag1.id}-${tag2.id}`} id={id} tags={[tag1, tag2]} />
+      <Tags boardTags={boardTags} onChange={onTagChange} />
+
+      {topTopics && (
+        <List className={wrapper}>
+          {topTopics.map(info => (
+            <TopicItem key={info.id} data={info} />
+          ))}
+        </List>
+      )}
+
+      <TopicList
+        key={`${tagIDs[0]}-${tagIDs[1]}`}
+        service={(from: number) => getTopicsInBoard(id, from, 20, tagIDs[0], tagIDs[1])}
+        place="inboard"
+      />
     </div>
   )
-})
+}

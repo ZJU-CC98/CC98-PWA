@@ -61,7 +61,7 @@ export class Container<State extends object = {}> {
  * 注入一个全局 Container
  * @param containerInstance 全局 container 实例
  */
-export function useGlobalContainer<T extends Container>(containerInstance: T) {
+export default function useGlobalContainer<T extends Container>(containerInstance: T) {
   const forceUpdate = useState(null)[1]
 
   useEffect(() => {

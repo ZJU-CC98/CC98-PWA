@@ -1,4 +1,5 @@
 import React from 'react'
+import { navigate } from '@reach/router'
 import styled from 'react-emotion'
 
 import { IHotTopic } from '@cc98/api'
@@ -8,8 +9,10 @@ import { StyleRules, withStyles } from '@material-ui/core/styles'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
 interface Props {
+  /**
+   * 帖子信息
+   */
   info: IHotTopic
-  click?: (topicID: number) => void
   classes: ClassNameMap
 }
 
@@ -35,8 +38,11 @@ const Text = styled.span`
   text-overflow: ellipsis;
 `
 
-export default withStyles(styles)(({ info, click, classes }: Props) => (
-  <ListItem divider button onClick={() => click && click(info.id)}>
+export default withStyles(styles)(({ info, classes }: Props) => (
+  // TODO:
+  // useState(boardName)
+
+  <ListItem divider button onClick={() => navigate(`/topic/${info.id}`)}>
     <ListItemText
       classes={{ root: classes.root }}
       primary={<Text>{info.title}</Text>}

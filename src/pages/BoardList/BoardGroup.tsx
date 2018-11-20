@@ -15,10 +15,10 @@ const root = css`
 
 const header = css`
   display: flex;
-  margin: 2px 32px;
-  margin-right: 10px;
   justify-content: space-between;
   align-items: center;
+  padding: 2px 32px;
+  padding-right: 15px;
 `
 
 const body = css`

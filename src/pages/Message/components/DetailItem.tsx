@@ -9,7 +9,7 @@ import styled, { css } from 'react-emotion'
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 
-import { useGlobalContainer } from '@/hooks/useContainer'
+import useGlobalContainer from '@/hooks/useContainer'
 import userInstace from '@/containers/user'
 import user, { UserInfoStore } from '@/model/user'
 

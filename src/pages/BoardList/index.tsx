@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { css } from 'emotion'
 
-import { useFetcher } from '@/hooks/useFetcher'
+import useFetcher from '@/hooks/useFetcher'
 
 import { TextField, IconButton } from '@material-ui/core'
 
@@ -40,6 +40,10 @@ const wrapStyle = css`
   margin: 0 10px;
 `
 
+const empty = css`
+  height: 120px;
+`
+
 export default () => {
   const [childBoards, setChildBoards] = useState<IBoard[]>([])
   const [boardList] = useFetcher(getBoardsInfo, {
@@ -69,8 +73,11 @@ export default () => {
           ))}
         </div>
       ) : (
-        boardList &&
-        boardList.map(boardGroup => <BoardGroup key={boardGroup.id} data={boardGroup} />)
+        <>
+          {boardList &&
+            boardList.map(boardGroup => <BoardGroup key={boardGroup.id} data={boardGroup} />)}
+          <div className={empty} />
+        </>
       )}
     </>
   )

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { navigate } from '@reach/router'
 import { css } from 'emotion'
 
-import { useGlobalContainer } from '@/hooks/useContainer'
+import useGlobalContainer from '@/hooks/useContainer'
 import userInstance from '@/containers/user'
 import stateInstance from '@/containers/state'
 

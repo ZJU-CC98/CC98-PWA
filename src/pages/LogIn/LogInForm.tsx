@@ -115,9 +115,9 @@ class LogIn extends React.Component<{}, State> {
 
         <div className={form}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="component-simple">用户名</InputLabel>
+            <InputLabel htmlFor="username">用户名</InputLabel>
             <Input
-              id="component-simple"
+              id="username"
               value={formField.username}
               onChange={this.handleChange('username')}
             />

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-
 import Editor from '@/components/Editor'
 import { navigate } from '@reach/router'
 
@@ -8,7 +7,7 @@ import ScrollTag, { TagType } from './ScrollTag'
 import TypeSelect from './TypeSelect'
 import toast from './Toast'
 import Title from './Title'
-import { getBoardTags } from '@/services/tag'
+import { getBoardTags } from '@/services/board'
 import { postNewTopic } from '@/services/topic'
 import { newPost, getEditAuth, modifyPost } from '@/services/post'
 import { IPost } from '@cc98/api'

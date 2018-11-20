@@ -1,5 +1,6 @@
 import React from 'react'
-import { useGlobalContainer } from '@/hooks/useContainer'
+
+import useGlobalContainer from '@/hooks/useContainer'
 import settingInstance from '@/containers/setting'
 
 // FIXME: remove after refactor

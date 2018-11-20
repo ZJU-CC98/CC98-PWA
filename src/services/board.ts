@@ -1,6 +1,8 @@
 import { Try, Success } from '@/utils/fp/Try'
-import { IBoardGroup, IBoard } from '@cc98/api'
 import { FetchError, GET, PUT, DELETE } from '@/utils/fetch'
+
+import { IBoardGroup, IBoard, ITagGroup } from '@cc98/api'
+
 import { getLocalStorage, setLocalStorage } from '@/utils/storage'
 
 /**
@@ -32,6 +34,13 @@ export async function getBoardsInfo() {
  */
 export function getBoard(id: string) {
   return GET(`board/${id}`)
+}
+
+/**
+ * 获取某个版面的标签组
+ */
+export async function getBoardTags(id: string) {
+  return GET<ITagGroup[]>(`board/${id}/tag`)
 }
 
 /**

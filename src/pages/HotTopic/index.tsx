@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { navigate } from '@reach/router'
-import { css } from 'emotion'
+import React, { useState } from 'react'
+
+import useFetcher from '@/hooks/useFetcher'
 
 import { List, Tab, Tabs } from '@material-ui/core'
 
@@ -9,70 +9,36 @@ import HotTopicItem from './HotTopicItem'
 
 import {
   getHotTopics,
-  getMonthlyHotTopics,
   getWeeklyHotTopics,
+  getMonthlyHotTopics,
   getHistoryHotTopics,
 } from '@/services/topic'
-import { IHotTopic } from '@cc98/api'
-import { FetchError } from '@/utils/fetch'
-import { Try } from '@/utils/fp/Try'
-import { getBoardNameById } from '@/services/board'
 
-const hotTopicList = css`
-  && {
-    padding-left: 15px;
-  }
-`
+interface Props {
+  service: typeof getHotTopics
+}
 
-export default () => {
-  const [topics, setTopics] = useState<IHotTopic[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [current, setCurrent] = useState('day')
-  useEffect(() => {
-    ;(async () => {
-      setIsLoading(true)
-      const res = await getHotTopics()
+export const TopicList: React.FunctionComponent<Props> = ({ service }) => {
+  const [topics] = useFetcher(service)
 
-      res.fail().succeed(hotTopics => {
-        setTopics(hotTopics)
-        setIsLoading(false)
-      })
-    })()
-  }, [])
-
-  if (isLoading) {
+  if (topics === null) {
     return <LoadingCircle />
   }
 
-  const handleChange = async (e: never, value: string) => {
-    setCurrent(value)
-    let res: Try<IHotTopic[], FetchError> | null = null
-    switch (value) {
-      case 'day':
-        res = await getHotTopics()
-        break
-      case 'week':
-        res = await getWeeklyHotTopics()
-        break
-      case 'month':
-        res = await getMonthlyHotTopics()
-        break
-      case 'history':
-        res = await getHistoryHotTopics()
-        break
-    }
-    if (res) {
-      res.fail().succeed(async data => {
-        const res = await Promise.all(
-          data.map(async t => {
-            t.boardName = await getBoardNameById(t.boardId)
+  return (
+    <List>
+      {topics.map(info => (
+        <HotTopicItem key={info.id} info={info} />
+      ))}
+    </List>
+  )
+}
 
-            return t
-          })
-        )
-        setTopics(res)
-      })
-    }
+export default () => {
+  const [current, setCurrent] = useState('day')
+
+  const handleChange = (_: React.ChangeEvent, value: string) => {
+    setCurrent(value)
   }
 
   return (
@@ -90,11 +56,10 @@ export default () => {
         <Tab value="history" label="历史上的今天" />
       </Tabs>
 
-      <List className={hotTopicList}>
-        {topics.map(info => (
-          <HotTopicItem key={info.id} info={info} click={() => navigate(`/topic/${info.id}`)} />
-        ))}
-      </List>
+      {current === 'day' && <TopicList service={getHotTopics} />}
+      {current === 'week' && <TopicList service={getWeeklyHotTopics} />}
+      {current === 'month' && <TopicList service={getMonthlyHotTopics} />}
+      {current === 'history' && <TopicList service={getHistoryHotTopics} />}
     </>
   )
 }

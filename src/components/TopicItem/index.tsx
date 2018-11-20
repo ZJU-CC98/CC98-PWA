@@ -14,7 +14,7 @@ import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
 interface Props {
   data: ITopic
-  place: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
+  place?: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
   classes: ClassNameMap
 }
 

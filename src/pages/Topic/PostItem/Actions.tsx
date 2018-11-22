@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { css } from 'emotion'
-import { navigate } from '@reach/router'
+import { navigate } from '@/utils/history'
 
 import DislikeIcon from '@material-ui/icons/ThumbDown'
 import LikeIcon from '@material-ui/icons/ThumbUp'

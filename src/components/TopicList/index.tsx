@@ -1,38 +1,46 @@
 import React from 'react'
-import { css } from 'emotion'
 
-import useInfList, { Service } from '@/hooks/useInfList'
+import useInfList, { Service as InfService } from '@/hooks/useInfList'
+import useFetcher, { Service as FinService } from '@/hooks/useFetcher'
 
-import { List } from '@material-ui/core'
+import TopicList from './TopicList'
 
 import InfiniteList from '@/components/InfiniteList'
-import TopicListItem from '@/components/TopicItem'
+import LoadingCircle from '@/components/LoadingCircle'
 
 import { ITopic } from '@cc98/api'
 
-const wrapper = css`
-  width: 100%;
-`
-
-interface Props {
-  service: Service<ITopic[]>
+interface InfProps {
+  service: InfService<ITopic[]>
   // TODO: remove
   place?: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
 }
 
-const TopicList: React.FunctionComponent<Props> = ({ service, place }) => {
+const InfTopicList: React.FunctionComponent<InfProps> = ({ service, place }) => {
   const [topics, state, callback] = useInfList(service)
   const { isLoading, isEnd } = state
 
   return (
     <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
-      <List className={wrapper}>
-        {topics.map(info => (
-          <TopicListItem key={info.id} data={info} place={place} />
-        ))}
-      </List>
+      <TopicList topics={topics} place={place} />
     </InfiniteList>
   )
 }
 
-export default TopicList
+interface FinProps {
+  service: FinService<ITopic[]>
+  noLoading?: boolean
+  place?: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
+}
+
+const FinTopicList: React.FunctionComponent<FinProps> = ({ service, noLoading, place }) => {
+  const [topics] = useFetcher(service)
+
+  if (topics === null) {
+    return noLoading ? null : <LoadingCircle />
+  }
+
+  return <TopicList topics={topics} place={place} />
+}
+
+export { InfTopicList, FinTopicList }

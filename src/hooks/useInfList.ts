@@ -18,7 +18,7 @@ interface Options<T> {
    */
   initRequest?: boolean
   /**
-   * 步长
+   * 步长，默认 20
    */
   step?: number
   /**
@@ -41,17 +41,18 @@ export default function useInfList<T>(service: Service<T[]>, options: Options<T>
   const [list, setList] = useState<T[]>([])
 
   function callback() {
-    setState({ ...state, isLoading: true })
+    setState({
+      ...state,
+      isLoading: true,
+    })
 
-    // TODO: step/size
     service(state.from).then(res => {
       res
         .fail(err => {
           options.fail && options.fail(err)
         })
         .succeed(list => {
-          const newList = options.map && options.map(list)
-          setList(prevList => prevList.concat(newList || list))
+          setList(prevList => prevList.concat((options.map && options.map(list)) || list))
 
           setState({
             isLoading: false,
@@ -63,7 +64,7 @@ export default function useInfList<T>(service: Service<T[]>, options: Options<T>
   }
 
   useEffect(() => {
-    if (!options.initRequest) {
+    if (options.initRequest === undefined || options.initRequest === true) {
       callback()
     }
   }, [])

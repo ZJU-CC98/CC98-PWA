@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { css } from 'emotion'
-import { navigate } from '@reach/router'
+import { navigate } from '@/utils/history'
 
 import { CardHeader, Avatar, IconButton } from '@material-ui/core'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'

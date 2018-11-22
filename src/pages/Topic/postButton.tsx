@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Tooltip, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import { navigate } from '@reach/router'
+import { navigate } from '@/utils/history'
 import { css } from 'emotion'
 interface Props {
   topicId: number

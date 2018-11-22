@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { navigate } from '@reach/router'
+import { navigate } from '@/utils/history'
 import { css } from 'emotion'
 
 import {

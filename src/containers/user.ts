@@ -1,7 +1,7 @@
 import { Container } from '@/hooks/useContainer'
 
-import { GET, logIn } from '@/utils/fetch'
-import { getLocalStorage, removeLocalStorage } from '@/utils/storage'
+import { GET } from '@/utils/fetch'
+import { logIn, logOut, isLogIn } from '@/utils/logIn'
 import { IUser } from '@cc98/api'
 
 interface State {
@@ -20,7 +20,7 @@ class UserContainer extends Container<State> {
     super()
 
     this.state = {
-      isLogIn: !!getLocalStorage('refresh_token'),
+      isLogIn: isLogIn(),
       myInfo: null,
     }
 
@@ -43,11 +43,11 @@ class UserContainer extends Container<State> {
   }
 
   LOG_OUT = () => {
-    removeLocalStorage('access_token')
-    removeLocalStorage('refresh_token')
+    logOut()
 
     this.setState({
       isLogIn: false,
+      myInfo: null,
     })
   }
 

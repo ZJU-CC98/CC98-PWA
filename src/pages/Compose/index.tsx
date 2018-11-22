@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import Editor from '@/components/Editor'
-import { navigate } from '@reach/router'
+import { navigate, goback } from '@/utils/history'
 
 import ScrollTag, { TagType } from './ScrollTag'
 import TypeSelect from './TypeSelect'
@@ -99,9 +99,7 @@ const Compose: React.FunctionComponent<Props> = ({ editType, targetId }) => {
         toast.error({
           content: '没有操作权限',
           // FIXME:
-          onClose: () => {
-            window.history.back()
-          },
+          onClose: goback,
         })
       })
       .succeed(e => {

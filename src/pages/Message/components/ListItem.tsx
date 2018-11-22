@@ -4,7 +4,7 @@
  */
 import React from 'react'
 import styled from 'react-emotion'
-import { navigate } from '@reach/router'
+import { navigate } from '@/utils/history'
 import { Subscribe } from '@cc98/state'
 import { IRecentMessage } from '@cc98/api'
 

@@ -1,6 +1,7 @@
 import React from 'react'
 // https://reach.tech/router/api/Router
 import { Router, Location, RouteComponentProps, WindowLocation } from '@reach/router'
+import history from '@/utils/history'
 
 import BoardList from './pages/BoardList'
 import Board from './pages/Board'
@@ -146,10 +147,10 @@ document.addEventListener(
     }
 
     if (moveX > 150) {
-      window.history.go(-1)
+      history.go(-1)
     }
     if (moveX < -150) {
-      window.history.go(1)
+      history.go(1)
     }
   },
   false

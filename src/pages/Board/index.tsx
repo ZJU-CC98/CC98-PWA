@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
 
 import { css } from 'emotion'
-import { navigate } from '@reach/router'
+import { navigate } from '@/utils/history'
 
 import useFetcher from '@/hooks/useFetcher'
 
-import { List } from '@material-ui/core'
-
-import TopicList from '@/components/TopicList'
-import TopicItem from '@/components/TopicItem'
+import { InfTopicList, FinTopicList } from '@/components/TopicList'
 
 import BoardHead from './BoardHead'
 import Tags from './Tags'
@@ -21,12 +18,6 @@ const root = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-  }
-`
-
-const wrapper = css`
-  && {
     width: 100%;
   }
 `
@@ -52,8 +43,6 @@ export default ({ id }: Props) => {
     },
   })
 
-  const [topTopics] = useFetcher(() => getTopTopics(id))
-
   const [boardTags] = useFetcher(() => getBoardTags(id))
   const [tagIDs, setTagIDs] = useState<[number, number]>([-1, -1])
 
@@ -71,15 +60,9 @@ export default ({ id }: Props) => {
 
       <Tags boardTags={boardTags} onChange={onTagChange} />
 
-      {topTopics && (
-        <List className={wrapper}>
-          {topTopics.map(info => (
-            <TopicItem key={info.id} data={info} />
-          ))}
-        </List>
-      )}
+      <FinTopicList service={() => getTopTopics(id)} place="inboard" />
 
-      <TopicList
+      <InfTopicList
         key={`${tagIDs[0]}-${tagIDs[1]}`}
         service={(from: number) => getTopicsInBoard(id, from, 20, tagIDs[0], tagIDs[1])}
         place="inboard"

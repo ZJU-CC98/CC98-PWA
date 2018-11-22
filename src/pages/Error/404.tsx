@@ -5,13 +5,12 @@ import img404 from '@/assets/404.png'
 
 import LayoutCenter from '@/components/LayoutCenter'
 
+import { goback } from '@/utils/history'
+
 const img = css`
   width: 60%;
   max-width: 600px;
 `
-
-// https://github.com/reach/router/issues/44
-const goback = () => window.history.back()
 
 const Page404: React.FunctionComponent = () => (
   <LayoutCenter>

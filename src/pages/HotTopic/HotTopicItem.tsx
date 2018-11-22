@@ -1,5 +1,5 @@
 import React from 'react'
-import { navigate } from '@reach/router'
+import { navigate } from '@/utils/history'
 import styled from 'react-emotion'
 
 import { IHotTopic } from '@cc98/api'

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { navigate } from '@reach/router'
+import { navigate, goback } from '@/utils/history'
 import { css } from 'emotion'
 
 import userInstace from '@/containers/user'
@@ -22,7 +22,6 @@ import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 import { PUT } from '@/utils/fetch'
 import { IUser } from '@cc98/api'
 
-const goback = () => window.history.back()
 interface Props {
   info: IUser
 }

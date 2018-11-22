@@ -6,10 +6,7 @@ import { IconButton, Typography, Paper } from '@material-ui/core'
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 
 import { ITopic } from '@cc98/api'
-import { navigate } from '@reach/router'
-
-// FIXME: if history stack is empty ?
-const goback = () => window.history.back()
+import { navigate, goback } from '@/utils/history'
 
 const root = css`
   display: flex;

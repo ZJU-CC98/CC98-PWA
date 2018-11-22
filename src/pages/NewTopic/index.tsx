@@ -1,7 +1,7 @@
 import React from 'react'
 
-import TopicList from '@/components/TopicList'
+import { InfTopicList } from '@/components/TopicList'
 
 import { getNewTopics } from '@/services/topic'
 
-export default () => <TopicList service={getNewTopics} />
+export default () => <InfTopicList service={getNewTopics} />

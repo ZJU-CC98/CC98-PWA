@@ -8,7 +8,7 @@ import { getTracePost, getHotPost, getPost, getAnonymousTracePost } from '@/serv
 import { getUsersInfo } from '@/services/user'
 import { IPost, IAward, ITopic, IUser } from '@cc98/api'
 import { TempAward } from './index'
-import { navigate } from '@reach/router'
+import { navigate } from '@/utils/history'
 
 interface Props {
   topicInfo: ITopic

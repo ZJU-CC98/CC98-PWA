@@ -10,7 +10,7 @@ import {
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-import TopicList from '@/components/TopicList'
+import { InfTopicList } from '@/components/TopicList'
 
 import { IUser } from '@cc98/api'
 import { getUsersRecentTopics } from '@/services/topic'
@@ -29,7 +29,7 @@ const RecentTopics: React.FunctionComponent<Props> = ({ info }) => (
       <Typography variant="subtitle1">发表主题</Typography>
     </ExpansionPanelSummary>
     <ExpansionPanelDetails>
-      <TopicList
+      <InfTopicList
         service={(from: number) => getUsersRecentTopics(info.id, from)}
         place="usercenter"
       />

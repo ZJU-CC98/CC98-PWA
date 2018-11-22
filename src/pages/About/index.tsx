@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { css } from 'emotion'
-import { navigate } from '@reach/router'
+import { navigate } from '@/utils/history'
 import Deturium from '@/assets/developTeam/Deturium.jpg'
 import Dearkano from '@/assets/developTeam/Dearkano.jpg'
 import AsukaSong from '@/assets/developTeam/AsukaSong.jpg'

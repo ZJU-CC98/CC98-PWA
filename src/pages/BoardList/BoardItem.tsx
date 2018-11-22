@@ -1,5 +1,5 @@
 import React from 'react'
-import { navigate } from '@reach/router'
+import { navigate } from '@/utils/history'
 import { css } from 'react-emotion'
 
 import Button from '@material-ui/core/Button'

@@ -1,7 +1,7 @@
 import React from 'react'
 // import { css } from 'emotion'
 import styled from 'react-emotion'
-import { navigate } from '@reach/router'
+import { navigate } from '@/utils/history'
 
 import { ListItem, ListItemText, ListItemSecondaryAction } from '@material-ui/core'
 
@@ -11,6 +11,8 @@ import { ITopic } from '@cc98/api'
 
 import dayjs from 'dayjs'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+
+// FIXME: refactor，获取版面名逻辑
 
 interface Props {
   data: ITopic

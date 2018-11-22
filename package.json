@@ -8,6 +8,7 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.dev.js --progress --hot",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
     "bundle-analyze": "cross-env NODE_ENV=production webpack --config config/webpack.bundle-analyze.js",
+    "type-check": "tsc --noEmit",
     "beautify-all": "yarn run prettier --config .prettierrc --write 'src/**/*.{ts,tsx}'",
     "lint:ts": "tslint -c tslint.json --project tsconfig.json 'src/**/*.{ts,tsx}'",
     "lint:ts-fix": "tslint -c tslint.json --project tsconfig.json 'src/**/*.{ts,tsx}' --fix"

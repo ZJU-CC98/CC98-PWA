@@ -13,10 +13,12 @@ const Item = styled(ListItem)`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  width: 100%;
 `
 
 const TitleArea = styled.div`
   max-width: 80%;
+  flex-grow: 1;
 `
 
 const InfoArea = styled.div`
@@ -42,6 +44,7 @@ const SubTitle = styled(Typography)`
 const Info = SubTitle
 
 /**
+ * 布局：
  * title           info1
  * subtitle        info2
  */
@@ -73,9 +76,11 @@ export const TopicItem: React.FunctionComponent<ItemProps> = ({
   </Item>
 )
 
+export type Place = 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search' | 'hot'
+
 interface Props {
   data: ITopic
-  place?: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
+  place: Place
 }
 
 export default ({ data, place }: Props) => {
@@ -98,9 +103,15 @@ export default ({ data, place }: Props) => {
       subtitle = boardName
       break
 
+    case 'hot':
+      if (!boardName) {
+        getBoardName()
+      }
+      info1 = boardName
+      break
+
     case 'newtopic':
       info1 = dayjs(data.time).fromNow()
-
     case 'follow':
     case 'search':
       if (!boardName) {
@@ -110,7 +121,6 @@ export default ({ data, place }: Props) => {
       break
 
     // case 'inboard':
-    // case undefined:
   }
 
   return (

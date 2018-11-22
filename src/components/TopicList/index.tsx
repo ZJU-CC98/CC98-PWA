@@ -4,6 +4,7 @@ import useInfList, { Service as InfService } from '@/hooks/useInfList'
 import useFetcher, { Service as FinService } from '@/hooks/useFetcher'
 
 import TopicList from './TopicList'
+import { Place } from './TopicListItem'
 
 import InfiniteList from '@/components/InfiniteList'
 import LoadingCircle from '@/components/LoadingCircle'
@@ -12,8 +13,7 @@ import { ITopic } from '@cc98/api'
 
 interface InfProps {
   service: InfService<ITopic[]>
-  // TODO: remove
-  place?: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
+  place: Place
 }
 
 const InfTopicList: React.FunctionComponent<InfProps> = ({ service, place }) => {
@@ -30,7 +30,7 @@ const InfTopicList: React.FunctionComponent<InfProps> = ({ service, place }) => 
 interface FinProps {
   service: FinService<ITopic[]>
   noLoading?: boolean
-  place?: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
+  place: Place
 }
 
 const FinTopicList: React.FunctionComponent<FinProps> = ({ service, noLoading, place }) => {

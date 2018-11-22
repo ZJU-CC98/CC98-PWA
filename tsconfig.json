@@ -5,6 +5,7 @@
     "allowJs": false,
     "target": "es6",
     "jsx": "preserve",
+    "noEmitOnError": true,
     "sourceMap": false,
     "baseUrl": "./",
     "rootDir": "src",

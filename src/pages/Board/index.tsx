@@ -60,7 +60,7 @@ export default ({ id }: Props) => {
 
       <Tags boardTags={boardTags} onChange={onTagChange} />
 
-      <FinTopicList service={() => getTopTopics(id)} place="inboard" />
+      <FinTopicList service={() => getTopTopics(id)} place="inboard" noLoading />
 
       <InfTopicList
         key={`${tagIDs[0]}-${tagIDs[1]}`}

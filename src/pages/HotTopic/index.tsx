@@ -59,9 +59,9 @@ export default () => {
 
       {current === 'day' && <HotTopicList service={getHotTopics} />}
 
-      {current === 'week' && <FinTopicList service={getWeeklyHotTopics} />}
-      {current === 'month' && <FinTopicList service={getMonthlyHotTopics} />}
-      {current === 'history' && <FinTopicList service={getHistoryHotTopics} />}
+      {current === 'week' && <FinTopicList service={getWeeklyHotTopics} place="hot" />}
+      {current === 'month' && <FinTopicList service={getMonthlyHotTopics} place="hot" />}
+      {current === 'history' && <FinTopicList service={getHistoryHotTopics} place="hot" />}
     </>
   )
 }

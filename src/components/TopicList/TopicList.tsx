@@ -3,7 +3,7 @@ import { css } from 'emotion'
 
 import { List } from '@material-ui/core'
 
-import TopicListItem from './TopicListItem'
+import TopicListItem, { Place } from './TopicListItem'
 
 import { ITopic } from '@cc98/api'
 
@@ -13,7 +13,7 @@ const list = css`
 
 interface Props {
   topics: ITopic[]
-  place?: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
+  place: Place
 }
 
 const TopicList: React.FunctionComponent<Props> = ({ topics, place }) => (

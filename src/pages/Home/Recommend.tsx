@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { navigate } from '@/utils/history'
-import { css } from 'emotion'
 
 import {
   List,
@@ -23,11 +22,7 @@ import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
-const RecommendList = css`
-  && {
-    padding-left: 15px;
-  }
-`
+
 const styles = (theme: Theme) => ({
   root: {
     maxWidth: 400,
@@ -82,7 +77,7 @@ export default withStyles(styles, { withTheme: true })((props: Props) => {
 
   return (
     data && (
-      <List className={RecommendList}>
+      <List>
         <ListItem key="head">
           <ListItemIcon>
             <Event />

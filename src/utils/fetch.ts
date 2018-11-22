@@ -136,7 +136,7 @@ export async function POST<T = any>(url: string, options: POSTOptions = {}) {
 
 type PUTOptions = POSTOptions
 
-export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
+export async function PUT<T = void>(url: string, options: PUTOptions = {}) {
   const headers: Record<string, string> = {}
 
   if (!options.noAuthorization) {
@@ -161,7 +161,7 @@ export async function PUT<T = any>(url: string, options: PUTOptions = {}) {
 
 type DELETEOptions = GETOptions
 
-export async function DELETE<T = any>(url: string, options: DELETEOptions = {}) {
+export async function DELETE<T = void>(url: string, options: DELETEOptions = {}) {
   const headers: Record<string, string> = {}
 
   if (!options.noAuthorization) {

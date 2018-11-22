@@ -55,6 +55,8 @@ interface State {
   logInFail: boolean
 }
 
+// TODO: refactor with hooks
+
 class LogIn extends React.Component<{}, State> {
   state: State = {
     formField: {

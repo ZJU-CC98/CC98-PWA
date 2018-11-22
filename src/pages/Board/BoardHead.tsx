@@ -1,165 +1,104 @@
 import React, { useState } from 'react'
-
 import { navigate } from '@/utils/history'
 import { css } from 'emotion'
 
 import {
-  Button,
   Typography,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
+  IconButton,
 } from '@material-ui/core'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Favorite from '@material-ui/icons/Favorite'
+import EditIcon from '@material-ui/icons/Edit'
 
-import { StyleRules, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+import FixButton from '@/components/FixButton'
 
-import { customBoard } from '@/services/board'
 import { IBoard } from '@cc98/api'
+import { customBoard } from '@/services/board'
 
 interface Props {
   data: IBoard
-  classes: ClassNameMap
 }
 
-const styles: StyleRules = {
-  root: {
-    width: '100%',
-  },
-  expanded: {
-    marginTop: '0.5rem',
-    marginBottom: '0.5rem',
-  },
-  summaryRoot: {
-    height: '0.8rem',
-  },
-}
-const boardHeader = css`
-  width: 100%;
-  position: sticky;
-  top: 0px;
-  z-index: 1105;
+const root = css`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #fff;
+  width: 100%;
 `
-const boardTitle = css`
-  && {
-    text-align: center;
-    font-size: 1.8rem;
-    flex-grow: 2;
-    display: flex;
-  }
-`
-const boardMessage = css`
+
+const header = css`
   display: flex;
-  font-size: 1rem;
-  align-items: center;
   justify-content: space-between;
-  width: 100%;
-  height: 100px;
-`
-const boardTopicNumber = css`
-  font-size: 1rem;
-  margin-right: 1rem;
-`
-const followBtnStyle = css`
-  && {
-    width: 1.5rem;
-    height: 0.8rem;
-    margin-right: 0.4rem;
-  }
-`
-const boardMasters = css`
-  display: flex;
-  width: 100%;
-  padding-left: 1.5rem;
-`
-const toolButton = css`
-  margin-right: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  height: 100%;
+  align-items: center;
+  padding: 16px 10px 10px 24px;
 `
 
-export default withStyles(styles)((props: Props) => {
-  const { classes, data } = props
+const panel = css`
+  width: 100%;
+`
+
+export default ({ data }: Props) => {
   const [state, setState] = useState({
     isFollowed: data.isUserCustomBoard,
-    buttonMessage: data.isUserCustomBoard ? '取关' : '关注',
-    disabled: false,
+    loading: false,
   })
-  const { isFollowed, buttonMessage, disabled } = state
-  const { id } = data
+
+  const { isFollowed, loading } = state
+
   async function handleClick() {
-    setState({ buttonMessage: '...', disabled: true, ...state })
-    const response = await customBoard(data.id, isFollowed ? 0 : 1)
-    response.fail().succeed(mes =>
+    if (loading) {
+      return
+    }
+
+    setState({
+      ...state,
+      loading: false,
+    })
+
+    const res = await customBoard(data.id, isFollowed ? 0 : 1)
+    res.fail().succeed(_ =>
       setState({
         isFollowed: !isFollowed,
-        buttonMessage: isFollowed ? '关注' : '取关',
-        disabled: false,
+        loading: true,
       })
     )
   }
 
   return (
-    <div className={boardHeader}>
-      <div className={boardMessage}>
-        <Button color="primary" className={boardTitle}>
-          {data.name}
-        </Button>
-        <div className={boardTopicNumber}>
-          {data.todayCount}/{data.topicCount}
+    <div className={root}>
+      <div className={header}>
+        <div>
+          <Typography variant="h5" color="primary">
+            {data.name}
+          </Typography>
+          <Typography variant="subtitle2" color="textSecondary">
+            {`${data.todayCount} / ${data.topicCount}`}
+          </Typography>
         </div>
-        <div className={toolButton}>
-          <Button
-            className={followBtnStyle}
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              navigate(`/compose/${id}/newpost`)
-            }}
-          >
-            发帖
-          </Button>
-          <Button
-            className={followBtnStyle}
-            onClick={handleClick}
-            disabled={disabled}
-            variant="outlined"
-          >
-            {buttonMessage}
-          </Button>
-        </div>
+
+        <IconButton onClick={handleClick}>
+          <Favorite color={isFollowed ? 'secondary' : 'disabled'} />
+        </IconButton>
       </div>
 
-      <ExpansionPanel classes={{ root: classes.root, expanded: classes.expanded }}>
-        <ExpansionPanelSummary
-          classes={{ root: classes.summaryRoot }}
-          expandIcon={<ExpandMoreIcon />}
-        >
-          <Typography>
-            <Button color="primary">版面公告</Button>
+      <ExpansionPanel className={panel}>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="subtitle2" color="primary">
+            版面描述
           </Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>{data.description}</ExpansionPanelDetails>
+        <ExpansionPanelDetails>
+          <Typography>{data.description}</Typography>
+        </ExpansionPanelDetails>
       </ExpansionPanel>
-      <div className={boardMasters}>
-        <Button size="small" color="primary">
-          版主:
-        </Button>{' '}
-        {data.boardMasters.map(master => (
-          <Button key={master} size="small" color="primary">
-            {master}
-          </Button>
-        ))}
-      </div>
+
+      {/* FIXME: 不知道哪里来的透明度，先当 feature 再说 */}
+      <FixButton onClick={() => navigate(`/compose/${data.id}/newpost`)}>
+        <EditIcon />
+      </FixButton>
     </div>
   )
-})
+}

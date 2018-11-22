@@ -1,83 +1,125 @@
-import React from 'react'
-// import { css } from 'emotion'
+import React, { useState } from 'react'
 import styled from 'react-emotion'
 import { navigate } from '@/utils/history'
 
-import { ListItem, ListItemText, ListItemSecondaryAction } from '@material-ui/core'
-
-import { StyleRules, withStyles } from '@material-ui/core/styles'
+import { ListItem, Typography } from '@material-ui/core'
 
 import { ITopic } from '@cc98/api'
+import { getBoardNameById } from '@/services/board'
 
 import dayjs from 'dayjs'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
-// FIXME: refactor，获取版面名逻辑
+const Item = styled(ListItem)`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`
+
+const TitleArea = styled.div`
+  max-width: 80%;
+`
+
+const InfoArea = styled.div`
+  width: 70px;
+  flex-shrink: 0;
+  text-align: right;
+`
+
+const Title = styled(Typography)`
+  /* 多行截断，兼容性不好 */
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  line-height: 1.25;
+`
+
+const SubTitle = styled(Typography)`
+  margin-top: 3px;
+`
+
+const Info = SubTitle
+
+/**
+ * title           info1
+ * subtitle        info2
+ */
+interface ItemProps {
+  title: string
+  subtitle: string
+  info1: string
+  info2: string
+  onClick: () => void
+}
+
+export const TopicItem: React.FunctionComponent<ItemProps> = ({
+  onClick,
+  title,
+  subtitle,
+  info1,
+  info2,
+}) => (
+  <Item button divider onClick={onClick}>
+    <TitleArea>
+      <Title variant="subtitle1">{title}</Title>
+      <SubTitle color="textSecondary">{subtitle}</SubTitle>
+    </TitleArea>
+
+    <InfoArea>
+      <Info color="textSecondary">{info1}</Info>
+      <Info color="textSecondary">{info2}</Info>
+    </InfoArea>
+  </Item>
+)
 
 interface Props {
   data: ITopic
   place?: 'inboard' | 'newtopic' | 'usercenter' | 'follow' | 'search'
-  classes: ClassNameMap
 }
 
-const styles: StyleRules = {
-  root: {
-    width: '100%',
-  },
-  primary: {
-    fontSize: '0.875rem',
-    opacity: 0.54,
-    textAlign: 'right',
-  },
-  secondary: {
-    textAlign: 'right',
-  },
-}
+export default ({ data, place }: Props) => {
+  const [boardName, setBoardName] = useState('')
 
-const Text = styled.span`
-  display: block;
-  max-width: 80%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`
-export default withStyles(styles)((props: Props) => {
-  const { data, place, classes } = props
+  function getBoardName() {
+    getBoardNameById(data.boardId).then(boardName => setBoardName(boardName))
+  }
+
   const title = data.title
-  const userName = `${data.userName ? data.userName : '匿名'}`
-  const time = dayjs(data.lastPostTime).fromNow()
-  const createTime = dayjs(data.time).fromNow()
-  const reply = `回复:${data.replyCount}`
-  const boardName = data.boardName as string
-  let text1 = userName
-  let text2 = reply
+  let subtitle = data.userName ? data.userName : '[匿名]'
+  let info1 = dayjs(data.lastPostTime).fromNow()
+  let info2 = `回帖: ${data.replyCount}`
+
   switch (place) {
-    case 'inboard':
-      break
     case 'usercenter':
-      text1 = boardName
+      if (!boardName) {
+        getBoardName()
+      }
+      subtitle = boardName
       break
+
     case 'newtopic':
+      info1 = dayjs(data.time).fromNow()
+
     case 'follow':
     case 'search':
-      text2 = boardName
+      if (!boardName) {
+        getBoardName()
+      }
+      info2 = boardName
       break
+
+    // case 'inboard':
+    // case undefined:
   }
 
   return (
-    <ListItem onClick={() => navigate(`/topic/${data.id}`)} button divider>
-      <ListItemText
-        classes={{ root: classes.root }}
-        primary={<Text>{title}</Text>}
-        secondary={text1}
-      />
-      <ListItemSecondaryAction>
-        <ListItemText
-          classes={{ primary: classes.primary, secondary: classes.secondary }}
-          primary={place === 'newtopic' ? createTime : time}
-          secondary={text2}
-        />
-      </ListItemSecondaryAction>
-    </ListItem>
+    <TopicItem
+      onClick={() => navigate(`/topic/${data.id}`)}
+      title={title}
+      subtitle={subtitle}
+      info1={info1}
+      info2={info2}
+    />
   )
-})
+}

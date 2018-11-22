@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import useFetcher from '@/hooks/useFetcher'
+import { FinTopicList } from '@/components/TopicList'
 
 import { List, Tab, Tabs } from '@material-ui/core'
 
@@ -18,7 +19,7 @@ interface Props {
   service: typeof getHotTopics
 }
 
-export const TopicList: React.FunctionComponent<Props> = ({ service }) => {
+export const HotTopicList: React.FunctionComponent<Props> = ({ service }) => {
   const [topics] = useFetcher(service)
 
   if (topics === null) {
@@ -27,8 +28,8 @@ export const TopicList: React.FunctionComponent<Props> = ({ service }) => {
 
   return (
     <List>
-      {topics.map(info => (
-        <HotTopicItem key={info.id} info={info} />
+      {topics.map(data => (
+        <HotTopicItem key={data.id} data={data} />
       ))}
     </List>
   )
@@ -56,10 +57,11 @@ export default () => {
         <Tab value="history" label="历史上的今天" />
       </Tabs>
 
-      {current === 'day' && <TopicList service={getHotTopics} />}
-      {current === 'week' && <TopicList service={getWeeklyHotTopics} />}
-      {current === 'month' && <TopicList service={getMonthlyHotTopics} />}
-      {current === 'history' && <TopicList service={getHistoryHotTopics} />}
+      {current === 'day' && <HotTopicList service={getHotTopics} />}
+
+      {current === 'week' && <FinTopicList service={getWeeklyHotTopics} />}
+      {current === 'month' && <FinTopicList service={getMonthlyHotTopics} />}
+      {current === 'history' && <FinTopicList service={getHistoryHotTopics} />}
     </>
   )
 }

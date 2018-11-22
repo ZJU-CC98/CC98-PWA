@@ -9,6 +9,9 @@ import { getUserInfoById } from '@/services/user'
 
 import User from './User'
 interface Props {
+  /**
+   * 来自路由
+   */
   id: string | undefined
 }
 

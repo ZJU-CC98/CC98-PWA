@@ -9,11 +9,12 @@ export function getTopTopics(id: string) {
 }
 
 /**
+ * 获取版面内帖子
  * @param id 版面id
- * @param from 帖子组起始位置
- * @param size 一次取的数量
- * @param tag1 如果有tag1，则传一个tag1值，-1为默认
- * @param tag2 如果有tag2，则传一个tag2值，-1为默认
+ * @param from 起始位置
+ * @param size 请求数量
+ * @param tag1 默认 -1
+ * @param tag2 默认 -1
  */
 export function getTopicsInBoard(id: string, from: number, size: number, tag1 = -1, tag2 = -1) {
   if (tag1 === -1 && tag2 === -1) {
@@ -103,28 +104,28 @@ export function getHotTopics() {
  * 获取本周热门
  */
 export function getWeeklyHotTopics() {
-  return GET<IHotTopic[]>('topic/hot-weekly')
+  return GET<ITopic[]>('topic/hot-weekly')
 }
 
 /**
  * 获取本月热门
  */
 export function getMonthlyHotTopics() {
-  return GET<IHotTopic[]>('topic/hot-monthly')
+  return GET<ITopic[]>('topic/hot-monthly')
 }
 
 /**
  * 获取历史热门
  */
 export function getHistoryHotTopics() {
-  return GET<IHotTopic[]>('topic/hot-history')
+  return GET<ITopic[]>('topic/hot-history')
 }
 
 /**
  * 获取一个用户近期发的帖子
  */
 export function getUsersRecentTopics(id: number, from: number) {
-  return GET<ITopic[]>(`user/${id}/recent-topic?from=${from}&size=10`)
+  return GET<ITopic[]>(`user/${id}/recent-topic?from=${from}&size=20`)
 }
 
 export function postNewTopic(

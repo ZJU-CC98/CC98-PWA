@@ -1,59 +1,32 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { navigate } from '@/utils/history'
-import styled from 'react-emotion'
+
+import { TopicItem } from '@/components/TopicList/TopicListItem'
 
 import { IHotTopic } from '@cc98/api'
-import { ListItem, ListItemText } from '@material-ui/core'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import { StyleRules, withStyles } from '@material-ui/core/styles'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+import { getBoardNameById } from '@/services/board'
 
 interface Props {
   /**
    * 帖子信息
    */
-  info: IHotTopic
-  classes: ClassNameMap
+  data: IHotTopic
 }
 
-const styles: StyleRules = {
-  root: {
-    width: '100%',
-  },
-  primary: {
-    fontSize: '0.875rem',
-    opacity: 0.54,
-    textAlign: 'right',
-  },
-  secondary: {
-    textAlign: 'right',
-  },
-}
+export default ({ data }: Props) => {
+  const [boardName, setBoardName] = useState('')
 
-const Text = styled.span`
-  display: block;
-  max-width: 80%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`
+  useEffect(() => {
+    getBoardNameById(data.boardId).then(boardName => setBoardName(boardName))
+  }, [])
 
-export default withStyles(styles)(({ info, classes }: Props) => (
-  // TODO:
-  // useState(boardName)
-
-  <ListItem divider button onClick={() => navigate(`/topic/${info.id}`)}>
-    <ListItemText
-      classes={{ root: classes.root }}
-      primary={<Text>{info.title}</Text>}
-      secondary={info.authorName ? info.authorName : '匿名'}
+  return (
+    <TopicItem
+      onClick={() => navigate(`/topic/${data.id}`)}
+      title={data.title}
+      subtitle={data.authorName ? data.authorName : '[匿名]'}
+      info1={boardName}
+      info2={`回贴:${data.replyCount}`}
     />
-    <ListItemSecondaryAction>
-      <ListItemText
-        classes={{ primary: classes.primary, secondary: classes.secondary }}
-        primary={info.boardName}
-        secondary={`回复:${info.replyCount}`}
-      />
-    </ListItemSecondaryAction>
-  </ListItem>
-))
+  )
+}

@@ -9,7 +9,6 @@ import { Container } from '@cc98/state'
 import reverse from 'lodash-es/reverse'
 
 import userInstace from '@/containers/user'
-import user from '@/model/user'
 
 interface IMap<T> {
   [key: string]: T
@@ -56,7 +55,6 @@ export class Detail extends Container<State> {
         state.id = id
         state.isEnd[id] = data.length < 20
       })
-      user.getInfo(id)
     })
   }
 

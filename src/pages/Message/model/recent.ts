@@ -5,7 +5,6 @@
 import { GET } from '@/utils/fetch'
 import { IRecentMessage } from '@cc98/api'
 import { Container } from '@cc98/state'
-import user from '@/model/user'
 
 interface State {
   recentList: IRecentMessage[]
@@ -35,7 +34,6 @@ export default class MessageStore extends Container<State> {
         state.recentListLoading = false
         if (data.length < 20) state.recentListEnd = true
       })
-      user.getInfos(data.map(item => item.userId))
     })
   }
 
@@ -46,7 +44,6 @@ export default class MessageStore extends Container<State> {
     )
     res.fail().succeed(data => {
       this.saveRecentList(data)
-      user.getInfos(data.map(item => item.userId))
     })
   }
 

@@ -3,7 +3,6 @@
  * @date 2018-10-26
  */
 import React from 'react'
-import { Subscribe } from '@cc98/state'
 import { IMessageContent } from '@cc98/api'
 import styled, { css } from 'react-emotion'
 
@@ -11,9 +10,7 @@ import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/cor
 
 import useGlobalContainer from '@/hooks/useContainer'
 import userInstace from '@/containers/user'
-import user, { UserInfoStore } from '@/model/user'
-
-import avatar from '@/assets/9.png'
+import useUserId from '@/hooks/useUserId'
 
 import dayjs from 'dayjs'
 
@@ -79,7 +76,7 @@ interface Props {
 }
 
 // TODO: 消息气泡
-const renderItem = (message: IMessageContent, userAvatar = avatar, isCurrSend: boolean) =>
+const renderItem = (message: IMessageContent, userAvatar: string, isCurrSend: boolean) =>
   !isCurrSend ? (
     <ListItem>
       <ListItemAvatar className={AvatarClass}>
@@ -108,14 +105,7 @@ export default ({ message }: Props) => {
     state: { myInfo },
   } = useGlobalContainer(userInstace)
 
-  return (
-    <Subscribe to={[user]}>
-      {({ state }: UserInfoStore) =>
-        renderItem(
-          message,
-          state[message.senderId] && state[message.senderId].portraitUrl,
-          !!myInfo && myInfo.id === message.senderId
-        )}
-    </Subscribe>
-  )
+  const { portraitUrl } = useUserId(message.senderId)
+
+  return renderItem(message, portraitUrl, myInfo!.id === message.senderId)
 }

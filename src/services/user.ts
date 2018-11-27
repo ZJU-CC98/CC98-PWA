@@ -23,10 +23,18 @@ export function getUsersInfo(query: string) {
   return GET<IUser[]>(`user?${query}`)
 }
 
-export function unFollowUser(id: number) {
-  return DELETE(`/me/followee/${id}`)
-}
-
+/**
+ * 关注一个用户
+ * @param id 用户 ID
+ */
 export function followUser(id: number) {
   return PUT(`/me/followee/${id}`)
+}
+
+/**
+ * 取关一个用户
+ * @param id 用户 ID
+ */
+export function unFollowUser(id: number) {
+  return DELETE(`/me/followee/${id}`)
 }

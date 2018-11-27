@@ -19,16 +19,22 @@ const wrapper = css`
   width: 100%;
 `
 
+const detail = css`
+  && {
+    padding: 0 8px 24px 8px;
+  }
+`
+
 interface Props {
   info: IUser
 }
 
 const RecentTopics: React.FunctionComponent<Props> = ({ info }) => (
-  <ExpansionPanel className={wrapper} defaultExpanded={true}>
+  <ExpansionPanel className={wrapper} defaultExpanded={false}>
     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
       <Typography variant="subtitle1">发表主题</Typography>
     </ExpansionPanelSummary>
-    <ExpansionPanelDetails>
+    <ExpansionPanelDetails className={detail}>
       <InfTopicList
         service={(from: number) => getUsersRecentTopics(info.id, from)}
         place="usercenter"

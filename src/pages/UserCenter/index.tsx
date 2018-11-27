@@ -5,17 +5,34 @@ import userInstance from '@/containers/user'
 
 import useFetcher from '@/hooks/useFetcher'
 
+import { IUser } from '@cc98/api'
 import { getUserInfoById } from '@/services/user'
 
-import User from './User'
+import UserAvatar from './UserAvatar'
+import UserDetail from './UserDetail'
+import UserRecentTopics from './UserRecentTopics'
+
 interface Props {
+  info: IUser
+  isUserCenter: boolean
+}
+
+const UserCenter: React.FunctionComponent<Props> = ({ info, isUserCenter }) => (
+  <>
+    <UserAvatar info={info} isUserCenter={isUserCenter} />
+    <UserDetail info={info} />
+    <UserRecentTopics info={info} />
+  </>
+)
+
+interface WrapperProps {
   /**
    * 来自路由
    */
   id: string | undefined
 }
 
-const UserCenter: React.FunctionComponent<Props> = props => {
+const Wrapper: React.FunctionComponent<WrapperProps> = props => {
   const {
     state: { myInfo },
   } = useGlobalContainer(userInstance)
@@ -25,10 +42,10 @@ const UserCenter: React.FunctionComponent<Props> = props => {
   )
 
   if (!props.id) {
-    return myInfo && <User info={myInfo} isUserCenter={true} />
+    return myInfo && <UserCenter info={myInfo} isUserCenter={true} />
   }
 
-  return userInfo && <User info={userInfo} isUserCenter={false} />
+  return userInfo && <UserCenter info={userInfo} isUserCenter={false} />
 }
 
-export default UserCenter
+export default Wrapper

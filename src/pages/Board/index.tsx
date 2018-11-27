@@ -8,7 +8,7 @@ import useFetcher from '@/hooks/useFetcher'
 import { InfTopicList, FinTopicList } from '@/components/TopicList'
 
 import BoardHead from './BoardHead'
-import Tags from './Tags'
+import BoardTags from './BoardTags'
 
 import { getBoard, getBoardTags } from '@/services/board'
 import { getTopicsInBoard, getTopTopics } from '@/services/topic'
@@ -58,7 +58,7 @@ export default ({ id }: Props) => {
     <div className={root}>
       {board && <BoardHead data={board} />}
 
-      <Tags boardTags={boardTags} onChange={onTagChange} />
+      <BoardTags boardTags={boardTags} onChange={onTagChange} />
 
       <FinTopicList service={() => getTopTopics(id)} place="inboard" noLoading />
 

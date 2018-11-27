@@ -1,9 +1,15 @@
 import React, { useEffect, useRef } from 'react'
+import { css } from 'emotion'
 
 import LoadingCircle from '@/components/LoadingCircle'
 
 import { debounce } from 'lodash-es'
 import { bindURL } from '@/router'
+
+const root = css`
+  display: flex;
+  flex-direction: column;
+`
 
 interface Props {
   /**
@@ -69,11 +75,11 @@ const InfiniteList: React.FunctionComponent<Props> = props => {
   )
 
   return (
-    <>
+    <div className={root}>
       {loadingPosition === 'top' && Loading}
       {children}
       {loadingPosition === 'bottom' && Loading}
-    </>
+    </div>
   )
 }
 

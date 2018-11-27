@@ -11,10 +11,10 @@ import {
 } from '@material-ui/core'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Favorite from '@material-ui/icons/Favorite'
+import FavoriteIcon from '@material-ui/icons/Favorite'
 import EditIcon from '@material-ui/icons/Edit'
 
-import FixButton from '@/components/FixButton'
+import FixFab from '@/components/FixFab'
 
 import { IBoard } from '@cc98/api'
 import { customBoard } from '@/services/board'
@@ -80,7 +80,7 @@ export default ({ data }: Props) => {
         </div>
 
         <IconButton onClick={handleClick}>
-          <Favorite color={isFollowed ? 'secondary' : 'disabled'} />
+          <FavoriteIcon color={isFollowed ? 'secondary' : 'disabled'} />
         </IconButton>
       </div>
 
@@ -95,10 +95,9 @@ export default ({ data }: Props) => {
         </ExpansionPanelDetails>
       </ExpansionPanel>
 
-      {/* FIXME: 不知道哪里来的透明度，先当 feature 再说 */}
-      <FixButton onClick={() => navigate(`/compose/${data.id}/newpost`)}>
+      <FixFab onClick={() => navigate(`/compose/${data.id}/newpost`)}>
         <EditIcon />
-      </FixButton>
+      </FixFab>
     </div>
   )
 }

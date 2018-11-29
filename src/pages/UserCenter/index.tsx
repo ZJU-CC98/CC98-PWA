@@ -9,6 +9,7 @@ import { IUser } from '@cc98/api'
 import { getUserInfoById } from '@/services/user'
 
 import UserAvatar from './UserAvatar'
+import UserSignature from './UserSignature'
 import UserDetail from './UserDetail'
 import UserRecentTopics from './UserRecentTopics'
 
@@ -21,6 +22,7 @@ const UserCenter: React.FunctionComponent<Props> = ({ info, isUserCenter }) => (
   <>
     <UserAvatar info={info} isUserCenter={isUserCenter} />
     <UserDetail info={info} />
+    <UserSignature info={info} />
     <UserRecentTopics info={info} />
   </>
 )

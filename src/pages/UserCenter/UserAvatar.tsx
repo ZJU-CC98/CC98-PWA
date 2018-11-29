@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { navigate } from '@/utils/history'
-import { css } from 'emotion'
+import styled from 'styled-components'
 
-import {
-  Avatar,
-  IconButton,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  Typography,
-} from '@material-ui/core'
+import useToggle from '@/hooks/useToggle'
+
+import { Avatar, IconButton, Typography } from '@material-ui/core'
+
+import ExpandPanel from './ExpandPanel'
 
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import EditIcon from '@material-ui/icons/Edit'
@@ -17,24 +15,25 @@ import ChatIcon from '@material-ui/icons/Chat'
 import { followUser, unFollowUser } from '@/services/user'
 import { IUser } from '@cc98/api'
 
-interface Props {
-  info: IUser
-  isUserCenter: boolean
-}
-
-const wrapper = css`
+const WrapperDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  margin: 24px;
+  margin-bottom: 0;
 `
 
-const avatarInfo = css`
+const AvatarDiv = styled.div`
   display: flex;
   align-items: center;
 `
 
-const avatar = css`
+const ButtonDiv = styled.div`
+  margin-right: -10px;
+`
+
+const AvatarS = styled(Avatar)`
   && {
     width: 70px;
     height: 70px;
@@ -42,71 +41,43 @@ const avatar = css`
   }
 `
 
+interface Props {
+  info: IUser
+  isUserCenter: boolean
+}
+
 const UserAvatar: React.FunctionComponent<Props> = ({ info, isUserCenter }) => {
-  const [state, setState] = useState({
-    isFollowing: info.isFollowing,
-    loading: false,
+  const [isFollowing, toggleFunc] = useToggle(info.isFollowing, {
+    trueFunc: () => unFollowUser(info.id),
+    falseFunc: () => followUser(info.id),
   })
 
-  const { isFollowing, loading } = state
-
-  async function handleFollowClick() {
-    if (loading) {
-      return
-    }
-
-    setState({
-      ...state,
-      loading: false,
-    })
-
-    const res = await (isFollowing ? unFollowUser(info.id) : followUser(info.id))
-
-    res.fail().succeed(_ =>
-      setState({
-        isFollowing: !isFollowing,
-        loading: true,
-      })
-    )
-  }
-
-  const iconButtons = isUserCenter ? (
+  const buttonsJSX = isUserCenter ? (
     <IconButton onClick={() => navigate('/userCenter/edit')}>
       <EditIcon />
     </IconButton>
   ) : (
     <>
-      <IconButton onClick={handleFollowClick}>
+      <IconButton onClick={toggleFunc}>
         <FavoriteIcon color={isFollowing ? 'secondary' : 'disabled'} />
       </IconButton>
-      {/* TODO: 私信 */}
       <IconButton>
-        <ChatIcon />
+        <ChatIcon /> {/* TODO: 私信 */}
       </IconButton>
     </>
   )
 
   return (
-    <div className={wrapper}>
-      <div className={avatarInfo}>
-        <Avatar className={avatar} src={info.portraitUrl} />
-        <Typography variant="h6">{info.name}</Typography>
-      </div>
-      <div>{iconButtons}</div>
-    </div>
+    <ExpandPanel expanded>
+      <WrapperDiv>
+        <AvatarDiv>
+          <AvatarS src={info.portraitUrl} />
+          <Typography variant="h6">{info.name}</Typography>
+        </AvatarDiv>
+        <ButtonDiv>{buttonsJSX}</ButtonDiv>
+      </WrapperDiv>
+    </ExpandPanel>
   )
 }
 
-const root = css`
-  && {
-    padding: 24px;
-  }
-`
-
-export default (props: Props) => (
-  <ExpansionPanel expanded>
-    <ExpansionPanelDetails className={root}>
-      <UserAvatar {...props} />
-    </ExpansionPanelDetails>
-  </ExpansionPanel>
-)
+export default UserAvatar

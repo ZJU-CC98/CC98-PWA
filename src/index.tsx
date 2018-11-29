@@ -10,6 +10,10 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.locale(zh, null, false)
 dayjs.extend(relativeTime)
 
+// // https://material-ui.com/css-in-js/basics/#migration-for-material-ui-core-users
+// import { install } from '@material-ui/styles'
+// install()
+
 injectGlobal`
   * {
     box-sizing: border-box;

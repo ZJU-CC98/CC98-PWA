@@ -3,7 +3,7 @@
  * @date 2018-10-26
  */
 import React from 'react'
-import styled from 'react-emotion'
+import styled from 'styled-components'
 import { navigate } from '@/utils/history'
 import { IRecentMessage } from '@cc98/api'
 

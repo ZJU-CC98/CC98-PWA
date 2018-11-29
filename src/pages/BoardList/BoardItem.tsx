@@ -1,6 +1,6 @@
 import React from 'react'
 import { navigate } from '@/utils/history'
-import { css } from 'react-emotion'
+import { css } from 'emotion'
 
 import Button from '@material-ui/core/Button'
 

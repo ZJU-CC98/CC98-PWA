@@ -12,18 +12,7 @@
     ["transform-imports", {
       "@material-ui/core": { "transform": "@material-ui/core/${member}" },
       "lodash-es": { "transform": "lodash-es/${member}" }
-    }]
-  ],
-  "env": {
-    "development": {
-      "plugins": [
-        ["emotion", { "sourceMap": true, "autoLabel": true }]
-      ]
-    },
-    "production": {
-      "plugins": [
-        ["emotion", { "hoist": true }]
-      ]
-    }
-  }
+    }],
+    ["babel-plugin-styled-components", { "ssr": false }]
+  ]
 }

@@ -4,7 +4,8 @@
  */
 import React from 'react'
 import { IMessageContent } from '@cc98/api'
-import styled, { css } from 'react-emotion'
+import styled from 'styled-components'
+import { css } from 'emotion'
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 

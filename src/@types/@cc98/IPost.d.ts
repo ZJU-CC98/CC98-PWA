@@ -52,19 +52,17 @@ declare module '@cc98/api' {
      */
     lastUpdateTime: any
     /**
-     * 赞同数
+     * 赞数量
      */
     likeCount: number
     /**
-     * 反对数量
+     * 踩数量
      */
     dislikeCount: number
     /**
-     * 0 none
-     * 1 like
-     * 2 dislike
+     * 赞/踩状态
      */
-    likeState: 0 | 1 | 2
+    likeState: ILikeState
     /**
      * 总楼层数
      */

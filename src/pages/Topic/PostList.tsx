@@ -1,19 +1,18 @@
 import React from 'react'
 
-import useInfList from '@/hooks/useInfList'
+import useInfList, { Service } from '@/hooks/useInfList'
 
 import InfiniteList from '@/components/InfiniteList'
 import PostItem from './PostItem'
 
-import { getPost } from '@/services/post'
-import { IPost, ITopic } from '@cc98/api'
+import { IPost } from '@cc98/api'
 
 interface Props {
-  topicInfo: ITopic
+  service: Service<IPost[]>
 }
 
-export default ({ topicInfo }: Props) => {
-  const [posts, state, callback] = useInfList((from: number) => getPost(topicInfo.id, from), {
+export default ({ service }: Props) => {
+  const [posts, state, callback] = useInfList(service, {
     step: 10,
   })
   const { isLoading, isEnd } = state

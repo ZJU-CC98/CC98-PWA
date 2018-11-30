@@ -65,6 +65,6 @@ export default ({ postInfo, userInfo }: Props) => (
       </div>
     </AvatarArea>
 
-    <Floor>{postInfo.isHot ? '热' : `${postInfo.floor}L`}</Floor>
+    <Floor>{postInfo.isHot ? 'hot' : `${postInfo.floor}L`}</Floor>
   </FlexDiv>
 )

@@ -64,7 +64,7 @@ const PostHead: React.FunctionComponent<Props> = ({ topicInfo }) => {
 
   useEffect(() => {
     getBoardNameById(topicInfo.boardId).then(boardName => setBoardName(boardName))
-  })
+  }, [])
 
   return (
     <Wrapper>

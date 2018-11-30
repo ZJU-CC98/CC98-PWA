@@ -5,9 +5,11 @@ import useFetcher from '@/hooks/useFetcher'
 import LoadingCircle from '@/components/LoadingCircle'
 
 import PostHead from './PostHead'
+import PostListHot from './PostListHot'
 import PostList from './PostList'
 
 import { getTopicInfo } from '@/services/topic'
+import { getPost, getTracePost, getAnonymousTracePost, getHotPost } from '@/services/post'
 
 import { navigate } from '@/utils/history'
 
@@ -20,7 +22,7 @@ interface Props {
   postId?: string
 }
 
-export default ({ topicId }: Props) => {
+export default ({ topicId, userId, postId }: Props) => {
   if (!topicId) {
     return
   }
@@ -39,10 +41,20 @@ export default ({ topicId }: Props) => {
     return <LoadingCircle />
   }
 
+  // 根据 URL 参数选择获取 post 的 service
+  const postService = userId
+    ? (from: number) => getTracePost(topicInfo.id, parseInt(userId, 10), from)
+    : postId
+    ? (from: number) => getAnonymousTracePost(topicInfo.id, parseInt(postId, 10), from)
+    : (from: number) => getPost(topicInfo.id, from)
+
+  const hotPostService = () => getHotPost(topicInfo.id)
+
   return (
     <>
       <PostHead topicInfo={topicInfo} />
-      <PostList topicInfo={topicInfo} />
+      {!userId && !postId && <PostListHot service={hotPostService} />}
+      <PostList service={postService} />
     </>
   )
 }

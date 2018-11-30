@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Paper, Typography } from '@material-ui/core'
+import { Paper, Typography, Divider } from '@material-ui/core'
 
 import Header from './Header'
 import Actions from './Actions'
+import Awards from './Awards'
 
 import { IPost, IUser } from '@cc98/api'
 
@@ -53,6 +54,9 @@ export default ({ postInfo }: Props) => {
       <Header postInfo={postInfo} userInfo={userInfo} />
       <Content>{content}</Content>
       <Actions postInfo={postInfo} />
+      {postInfo.awards.length !== 0 && <Awards awards={postInfo.awards} />}
+
+      <Divider />
     </Wrapper>
   )
 }

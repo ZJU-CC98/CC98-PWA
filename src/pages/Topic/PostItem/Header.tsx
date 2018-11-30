@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Avatar, IconButton, Typography } from '@material-ui/core'
+import { Avatar, Typography } from '@material-ui/core'
 
 import { IPost, IUser } from '@cc98/api'
 
@@ -32,11 +32,10 @@ const SubTitle = styled(Typography).attrs({
   color: 'textSecondary',
 })``
 
-const Floor = styled(IconButton)`
-  && {
-    font-size: 1.2;
-  }
-`
+const Floor = styled(Typography).attrs({
+  variant: 'button',
+  color: 'textSecondary',
+})``
 
 interface Props {
   /**
@@ -66,6 +65,6 @@ export default ({ postInfo, userInfo }: Props) => (
       </div>
     </AvatarArea>
 
-    <Floor>{postInfo.isHot ? '热' : `${postInfo.floor}`}</Floor>
+    <Floor>{postInfo.isHot ? '热' : `${postInfo.floor}L`}</Floor>
   </FlexDiv>
 )

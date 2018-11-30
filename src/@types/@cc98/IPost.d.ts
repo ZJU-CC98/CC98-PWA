@@ -9,8 +9,12 @@ declare module '@cc98/api' {
      * 帖子内容
      */
     content: string
-
-    contentType: number
+    /**
+     * 内容类型
+     * 0 UBB
+     * 1 markdown
+     */
+    contentType: 0 | 1
     /**
      * 楼层数
      */
@@ -55,8 +59,12 @@ declare module '@cc98/api' {
      * 反对数量
      */
     dislikeCount: number
-
-    likeState: number
+    /**
+     * 0 none
+     * 1 like
+     * 2 dislike
+     */
+    likeState: 0 | 1 | 2
     /**
      * 总楼层数
      */

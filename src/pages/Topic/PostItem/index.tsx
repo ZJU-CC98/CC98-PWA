@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Paper, Typography } from '@material-ui/core'
 
 import Header from './Header'
+import Actions from './Actions'
 
 import { IPost, IUser } from '@cc98/api'
 
@@ -21,7 +22,10 @@ const Wrapper = styled(Paper).attrs({
 const Content = styled(Typography).attrs({
   component: 'div',
 })`
-  margin: 8px 16px;
+  && {
+    margin: 12px 16px;
+    margin-bottom: 4px;
+  }
 `
 
 interface Props {
@@ -42,11 +46,13 @@ export default ({ postInfo }: Props) => {
 
   const userInfo = null as IUser | null
 
+  const content = postInfo.contentType === 0 ? UBB(postInfo.content) : postInfo.content
+
   return (
     <Wrapper>
       <Header postInfo={postInfo} userInfo={userInfo} />
-
-      <Content>{postInfo.contentType === 0 ? UBB(postInfo.content) : 'md'}</Content>
+      <Content>{content}</Content>
+      <Actions postInfo={postInfo} />
     </Wrapper>
   )
 }

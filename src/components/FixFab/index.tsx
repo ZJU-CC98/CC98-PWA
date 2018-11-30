@@ -16,6 +16,12 @@ const FabS = styled(Fab).attrs({
   }
 `
 
-const FixFab: React.FunctionComponent = ({ children }) => <FabS>{children}</FabS>
+interface Props {
+  onClick: () => void
+}
+
+const FixFab: React.FunctionComponent<Props> = ({ onClick, children }) => (
+  <FabS onClick={onClick}>{children}</FabS>
+)
 
 export default FixFab

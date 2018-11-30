@@ -50,7 +50,7 @@ export function getTopicsInBoard(id: string, from: number, size: number, tag1 = 
 /**
  * 获取帖子基本信息
  */
-export function getTopicInfo(id: string) {
+export function getTopicInfo(id: number | string) {
   return GET<ITopic>(`topic/${id}`)
 }
 

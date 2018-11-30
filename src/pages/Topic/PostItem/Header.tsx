@@ -1,55 +1,71 @@
 import React from 'react'
+import styled from 'styled-components'
 
-import { css } from 'emotion'
-import { navigate } from '@/utils/history'
+import { Avatar, IconButton, Typography } from '@material-ui/core'
 
-import { CardHeader, Avatar, IconButton } from '@material-ui/core'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import { IPost, IUser } from '@cc98/api'
 
+import { navigate } from '@/utils/history'
+import dayjs from 'dayjs'
+
+const FlexDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 16px;
+`
+
+const AvatarArea = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const AvatarS = styled(Avatar)`
+  && {
+    margin-right: 12px;
+  }
+`
+
+const Title = styled(Typography)``
+
+const SubTitle = styled(Typography).attrs({
+  color: 'textSecondary',
+})``
+
+const Floor = styled(IconButton)`
+  && {
+    font-size: 1.2;
+  }
+`
+
 interface Props {
-  classes: ClassNameMap
+  /**
+   * 帖子信息
+   */
   postInfo: IPost
+  /**
+   * 用户信息
+   */
   userInfo: IUser | null
 }
 
-const cursorStyle = css`
-  cursor: pointer;
-`
-const postOptionStyle = css`
-  display: flex;
-  justify-content: center;
-`
-
-export default (props: Props) => {
-  const { classes, postInfo, userInfo } = props
-
-  return (
-    <CardHeader
-      classes={{ action: classes.headerAction }}
-      avatar={
-        <Avatar
-          className={cursorStyle}
-          onClick={() => {
-            navigate(`/user/${postInfo.userId}`)
-          }}
-          src={userInfo ? userInfo.portraitUrl : undefined}
-        >
-          匿
-        </Avatar>
-      }
-      title={
-        <div className={cursorStyle}>
+export default ({ postInfo, userInfo }: Props) => (
+  <FlexDiv>
+    <AvatarArea>
+      <AvatarS
+        onClick={() => navigate(`/user/${postInfo.userId}`)}
+        src={userInfo ? userInfo.portraitUrl : undefined}
+      >
+        匿
+      </AvatarS>
+      <div>
+        <Title>
           {postInfo.isAnonymous ? `匿名${postInfo.userName.toUpperCase()}` : postInfo.userName}
-        </div>}
-      subheader={new Date(postInfo.time).toLocaleString()}
-      action={[
-        <IconButton key="floor" classes={{ root: classes.iconRoot }}>
-          <Avatar classes={{ root: postInfo.isHot ? classes.hotFloor : classes.floor }}>
-            {postInfo.isHot ? '热' : `${postInfo.floor}`}
-          </Avatar>
-        </IconButton>,
-      ]}
-    />
-  )
-}
+        </Title>
+        <SubTitle>{dayjs(postInfo.time).format('YYYY/MM/DD HH:mm')}</SubTitle>
+      </div>
+    </AvatarArea>
+
+    <Floor>{postInfo.isHot ? '热' : `${postInfo.floor}`}</Floor>
+  </FlexDiv>
+)

@@ -1,9 +1,13 @@
 import React from 'react'
-import { css } from 'emotion'
+import styled from 'styled-components'
 
-import { FormControl, MenuItem, Select } from '@material-ui/core'
+import { MenuItem, Select } from '@material-ui/core'
 
 import { ITagGroup } from '@cc98/api'
+
+const WrapperDiv = styled.div`
+  margin-left: 24px;
+`
 
 interface SelectProps {
   tagGroup: ITagGroup
@@ -11,7 +15,7 @@ interface SelectProps {
 }
 
 const TagSelect: React.FunctionComponent<SelectProps> = ({ tagGroup, onChange }) => (
-  <FormControl>
+  <WrapperDiv>
     <Select value={-1} onChange={event => onChange(parseInt(event.target.value, 10))}>
       <MenuItem key={0} value={-1}>
         全部
@@ -22,11 +26,13 @@ const TagSelect: React.FunctionComponent<SelectProps> = ({ tagGroup, onChange })
         </MenuItem>
       ))}
     </Select>
-  </FormControl>
+  </WrapperDiv>
 )
 
-const wrapper = css`
+const FlexDiv = styled.div`
   display: flex;
+  align-self: flex-start;
+  margin-top: 8px;
 `
 
 interface Props {
@@ -35,7 +41,7 @@ interface Props {
 }
 
 const Tags: React.FunctionComponent<Props> = ({ boardTags, onChange }) => (
-  <div className={wrapper}>
+  <FlexDiv>
     {boardTags &&
       boardTags.map((tagGroup, index) => (
         <TagSelect
@@ -44,7 +50,7 @@ const Tags: React.FunctionComponent<Props> = ({ boardTags, onChange }) => (
           onChange={(tagID: number) => onChange(tagID, index)}
         />
       ))}
-  </div>
+  </FlexDiv>
 )
 
 export default Tags

@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { Avatar, Typography } from '@material-ui/core'
+import Whatshot from '@material-ui/icons/Whatshot'
+import red from '@material-ui/core/colors/red'
 
 import { IPost, IUser } from '@cc98/api'
 
@@ -37,6 +39,10 @@ const Floor = styled(Typography).attrs({
   color: 'textSecondary',
 })``
 
+const HotIcon = styled(Whatshot)`
+  color: ${red[400]};
+`
+
 interface Props {
   /**
    * 帖子信息
@@ -45,17 +51,21 @@ interface Props {
   /**
    * 用户信息
    */
-  userInfo: IUser | null
+  userInfo: IUser | undefined
+  /**
+   * 是否热帖
+   */
+  isHot?: boolean
 }
 
-export default ({ postInfo, userInfo }: Props) => (
+export default ({ postInfo, userInfo, isHot }: Props) => (
   <FlexDiv>
     <AvatarArea>
       <AvatarS
         onClick={() => navigate(`/user/${postInfo.userId}`)}
-        src={userInfo ? userInfo.portraitUrl : undefined}
+        src={userInfo && userInfo.portraitUrl}
       >
-        匿
+        {postInfo.isAnonymous && '匿'}
       </AvatarS>
       <div>
         <Title>
@@ -65,6 +75,6 @@ export default ({ postInfo, userInfo }: Props) => (
       </div>
     </AvatarArea>
 
-    <Floor>{postInfo.isHot ? 'hot' : `${postInfo.floor}L`}</Floor>
+    <Floor>{isHot ? <HotIcon /> : `${postInfo.floor}L`}</Floor>
   </FlexDiv>
 )

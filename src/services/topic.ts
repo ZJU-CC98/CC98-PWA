@@ -42,7 +42,9 @@ export function getTopicsInBoard(id: string, from: number, size: number, tag1 = 
     topics: ITopic[]
   }
 
-  return GET<Topics>(`topic/search/board/${id}/tag`, { params }).then(res =>
+  return GET<Topics>(`topic/search/board/${id}/tag`, {
+    params,
+  }).then(res =>
     Promise.resolve(res.map(topics => topics.topics))
   )
 }
@@ -70,14 +72,24 @@ export function getNewTopics(from: number) {
  * 获取关注版面的帖子
  */
 export function getFollowBoardsTopics(from: number) {
-  return GET<ITopic[]>(`me/custom-board/topic?from=${from}&size=20`)
+  return GET<ITopic[]>('me/custom-board/topic', {
+    params: {
+      from: `${from}`,
+      size: '20',
+    },
+  })
 }
 
 /**
  * 获取关注用户的帖子
  */
 export function getFollowUsersTopics(from: number) {
-  return GET<ITopic[]>(`me/followee/topic?from=${from}&size=20`)
+  return GET<ITopic[]>('me/followee/topic', {
+    params: {
+      from: `${from}`,
+      size: '20',
+    },
+  })
 }
 
 /**
@@ -128,6 +140,7 @@ export function getUsersRecentTopics(id: number, from: number) {
   return GET<ITopic[]>(`user/${id}/recent-topic?from=${from}&size=20`)
 }
 
+// FIXME:
 export function postNewTopic(
   boardId: string,
   title: string,

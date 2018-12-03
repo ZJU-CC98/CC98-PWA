@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import useInfList, { Service } from '@/hooks/useInfList'
 
@@ -6,22 +6,57 @@ import InfiniteList from '@/components/InfiniteList'
 import PostItem from './PostItem'
 
 import { IPost } from '@cc98/api'
+import { getUsersInfoByIds, IUserMap } from '@/services/user'
 
 interface Props {
   service: Service<IPost[]>
 }
 
-export default ({ service }: Props) => {
+export function useUserMap() {
+  const [userMap, setUserMap] = useState<IUserMap>({})
+
+  const updateUserMap = async (list: IPost[]) => {
+    const res = await getUsersInfoByIds(
+      list.map(p => p.userId).filter(id => id)
+    )
+    res
+      .fail()
+      .succeed(users => {
+        users.forEach(user => {
+          userMap[user.id] = user
+        })
+
+        setUserMap(userMap)
+      })
+  }
+
+  return [userMap, updateUserMap] as [typeof userMap, typeof updateUserMap]
+}
+
+const PostList: React.FunctionComponent<Props> = ({ service, children }) => {
+  const [userMap, updateUserMap] = useUserMap()
+
   const [posts, state, callback] = useInfList(service, {
     step: 10,
+    success: updateUserMap,
   })
   const { isLoading, isEnd } = state
 
   return (
     <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
-      {posts.map((info: IPost) => (
-        <PostItem key={info.id} postInfo={info} />
-      ))}
+      {posts.map((info: IPost, index: number) => index === 0
+        ? (
+          <>
+            <PostItem key={info.id} postInfo={info} userInfo={userMap[info.userId]} />
+            {children/** <PostListHot /> */}
+          </>
+        )
+        : (
+          <PostItem key={info.id} postInfo={info} userInfo={userMap[info.userId]} />
+        )
+      )}
     </InfiniteList>
   )
 }
+
+export default PostList

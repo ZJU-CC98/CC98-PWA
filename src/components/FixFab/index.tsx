@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-// @material-ui/core@3.6.0 Fab 没有从 index.d.ts 导出
-import Fab from '@material-ui/core/Fab'
+import { Fab } from '@material-ui/core'
 
 const FabS = styled(Fab).attrs({
   size: 'small',

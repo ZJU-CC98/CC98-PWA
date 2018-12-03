@@ -3,7 +3,9 @@ declare module '@cc98/api' {
     allowedViewers: any
 
     awardInfo: any
-
+    /**
+     * 风评
+     */
     awards: IAward[]
     /**
      * 帖子内容
@@ -11,8 +13,8 @@ declare module '@cc98/api' {
     content: string
     /**
      * 内容类型
-     * 0 UBB
-     * 1 markdown
+     * UBB 0
+     * markdown 1
      */
     contentType: 0 | 1
     /**
@@ -95,9 +97,5 @@ declare module '@cc98/api' {
      * 用户名
      */
     userName: string
-    /**
-     * 是否热帖
-     */
-    isHot?: boolean
   }
 }

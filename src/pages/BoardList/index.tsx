@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { css } from 'emotion'
+import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
 
@@ -15,7 +15,7 @@ import { IBoard } from '@cc98/api'
 
 import { throttle } from 'lodash-es'
 
-const searchInput = css`
+const SearchInputDiv = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -28,19 +28,19 @@ interface Props {
 }
 
 const SearchInput: React.FunctionComponent<Props> = ({ value, onChange }) => (
-  <div className={searchInput}>
+  <SearchInputDiv>
     <IconButton>
       <SearchIcon color="primary" />
     </IconButton>
     <TextField fullWidth placeholder="搜索版面" value={value} onChange={onChange} />
-  </div>
+  </SearchInputDiv>
 )
 
-const wrapStyle = css`
+const WrapperDiv = styled.div`
   margin: 0 10px;
 `
 
-const empty = css`
+const EmptyDiv = styled.div`
   height: 120px;
 `
 
@@ -67,16 +67,17 @@ export default () => {
     <>
       <SearchInput value={searchTerm} onChange={onSearchTermChange} />
       {searchTerm ? (
-        <div className={wrapStyle}>
+        <WrapperDiv>
           {filteredBoards.map(board => (
             <BoardItem key={board.id} data={board} />
           ))}
-        </div>
+        </WrapperDiv>
       ) : (
         <>
           {boardList &&
-            boardList.map(boardGroup => <BoardGroup key={boardGroup.id} data={boardGroup} />)}
-          <div className={empty} />
+            boardList.map(boardGroup => <BoardGroup key={boardGroup.id} data={boardGroup} />)
+          }
+          <EmptyDiv />
         </>
       )}
     </>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
+import styled from 'styled-components'
 import { navigate } from '@/utils/history'
-import { css } from 'emotion'
 
 import {
   Typography,
@@ -23,21 +23,23 @@ interface Props {
   data: IBoard
 }
 
-const root = css`
+const FlexDiv = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
 `
 
-const header = css`
+const HeaderDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px 10px 10px 24px;
 `
 
-const panel = css`
-  width: 100%;
+const ExpansionPanelS = styled(ExpansionPanel)`
+  && {
+    width: 100%;
+  }
 `
 
 export default ({ data }: Props) => {
@@ -68,8 +70,8 @@ export default ({ data }: Props) => {
   }
 
   return (
-    <div className={root}>
-      <div className={header}>
+    <FlexDiv>
+      <HeaderDiv>
         <div>
           <Typography variant="h5" color="primary">
             {data.name}
@@ -82,9 +84,9 @@ export default ({ data }: Props) => {
         <IconButton onClick={handleClick}>
           <FavoriteIcon color={isFollowed ? 'secondary' : 'disabled'} />
         </IconButton>
-      </div>
+      </HeaderDiv>
 
-      <ExpansionPanel className={panel}>
+      <ExpansionPanelS>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant="subtitle2" color="primary">
             版面描述
@@ -93,11 +95,11 @@ export default ({ data }: Props) => {
         <ExpansionPanelDetails>
           <Typography>{data.description}</Typography>
         </ExpansionPanelDetails>
-      </ExpansionPanel>
+      </ExpansionPanelS>
 
       <FixFab onClick={() => navigate(`/compose/${data.id}/newpost`)}>
         <EditIcon />
       </FixFab>
-    </div>
+    </FlexDiv>
   )
 }

@@ -37,24 +37,28 @@ interface Props {
   /**
    * 用户信息
    */
-  // userInfo: IUser | null
+  userInfo: IUser | undefined
+  /**
+   * 是否热帖
+   */
+  isHot?: boolean
 }
 
-export default ({ postInfo }: Props) => {
+export default ({ postInfo, userInfo, isHot }: Props) => {
   if (postInfo.isDeleted) {
     return null
   }
 
-  const userInfo = null as IUser | null
-
-  const content = postInfo.contentType === 0 ? UBB(postInfo.content) : postInfo.content
+  const content = postInfo.contentType === 0
+    ? UBB(postInfo.content)
+    : postInfo.content // TODO: md support
 
   return (
     <Wrapper>
-      <Header postInfo={postInfo} userInfo={userInfo} />
+      <Header postInfo={postInfo} userInfo={userInfo} isHot={isHot} />
       <Content>{content}</Content>
       <Actions postInfo={postInfo} />
-      {postInfo.awards.length !== 0 && <Awards awards={postInfo.awards} />}
+      <Awards awards={postInfo.awards} />
 
       <Divider />
     </Wrapper>

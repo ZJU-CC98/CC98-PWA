@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-
-import { css } from 'emotion'
+import styled from 'styled-components'
 import { navigate } from '@/utils/history'
 
 import useFetcher from '@/hooks/useFetcher'
@@ -10,24 +9,25 @@ import { InfTopicList, FinTopicList } from '@/components/TopicList'
 import BoardHead from './BoardHead'
 import BoardTags from './BoardTags'
 
-import { getBoard, getBoardTags } from '@/services/board'
+import { getBoardInfo, getBoardTags } from '@/services/board'
 import { getTopicsInBoard, getTopTopics } from '@/services/topic'
 
-const root = css`
-  && {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
+const WrapperDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `
 
 interface Props {
+  /**
+   * 版面 ID
+   */
   id: string
 }
 
 export default ({ id }: Props) => {
-  const [board] = useFetcher(() => getBoard(id), {
+  const [board] = useFetcher(() => getBoardInfo(id), {
     fail: err => {
       if (err.status === 403) {
         navigate('/error/403')
@@ -55,7 +55,7 @@ export default ({ id }: Props) => {
   }
 
   return (
-    <div className={root}>
+    <WrapperDiv>
       {board && <BoardHead data={board} />}
 
       <BoardTags boardTags={boardTags} onChange={onTagChange} />
@@ -67,6 +67,6 @@ export default ({ id }: Props) => {
         service={(from: number) => getTopicsInBoard(id, from, 20, tagIDs[0], tagIDs[1])}
         place="inboard"
       />
-    </div>
+    </WrapperDiv>
   )
 }

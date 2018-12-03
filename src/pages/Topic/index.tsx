@@ -15,7 +15,7 @@ import { navigate } from '@/utils/history'
 
 interface Props {
   // 帖子 ID
-  topicId?: string
+  topicId: string
   // 追踪非匿名帖子
   userId?: string
   // 追踪匿名帖子
@@ -23,10 +23,6 @@ interface Props {
 }
 
 export default ({ topicId, userId, postId }: Props) => {
-  if (!topicId) {
-    return
-  }
-
   const [topicInfo] = useFetcher(() => getTopicInfo(topicId), {
     fail: err => {
       if (err.status === 403) {
@@ -53,8 +49,9 @@ export default ({ topicId, userId, postId }: Props) => {
   return (
     <>
       <PostHead topicInfo={topicInfo} />
-      {!userId && !postId && <PostListHot service={hotPostService} />}
-      <PostList service={postService} />
+      <PostList service={postService}>
+        {!userId && !postId && <PostListHot service={hotPostService} />}
+      </PostList>
     </>
   )
 }

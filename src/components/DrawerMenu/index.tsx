@@ -22,9 +22,18 @@ import Whatshot from '@material-ui/icons/Whatshot'
 import UserInfo from './UserInfo'
 
 interface ItemProps {
+  /**
+   * 图标
+   */
   // tslint:disable-next-line:no-any
   icon: React.ReactElement<any>
+  /**
+   * 文字
+   */
   text: string
+  /**
+   * 单击回调
+   */
   onClick: () => void
 }
 

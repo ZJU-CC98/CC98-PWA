@@ -5,7 +5,11 @@ import { ITopic, IHotTopic } from '@cc98/api'
  * 根据id获取某个版面的置顶帖子
  */
 export function getTopTopics(id: string) {
-  return GET<ITopic[]>(`topic/toptopics?boardid=${id}`)
+  return GET<ITopic[]>('topic/toptopics', {
+    params: {
+      boardid: id,
+    },
+  })
 }
 
 /**
@@ -42,15 +46,15 @@ export function getTopicsInBoard(id: string, from: number, size: number, tag1 = 
     topics: ITopic[]
   }
 
-  return GET<Topics>(`topic/search/board/${id}/tag`, { params }).then(res =>
-    Promise.resolve(res.map(topics => topics.topics))
-  )
+  return GET<Topics>(`topic/search/board/${id}/tag`, {
+    params,
+  }).then(res => Promise.resolve(res.map(topics => topics.topics)))
 }
 
 /**
  * 获取帖子基本信息
  */
-export function getTopicInfo(id: string) {
+export function getTopicInfo(id: number | string) {
   return GET<ITopic>(`topic/${id}`)
 }
 
@@ -70,14 +74,24 @@ export function getNewTopics(from: number) {
  * 获取关注版面的帖子
  */
 export function getFollowBoardsTopics(from: number) {
-  return GET<ITopic[]>(`me/custom-board/topic?from=${from}&size=20`)
+  return GET<ITopic[]>('me/custom-board/topic', {
+    params: {
+      from: `${from}`,
+      size: '20',
+    },
+  })
 }
 
 /**
  * 获取关注用户的帖子
  */
 export function getFollowUsersTopics(from: number) {
-  return GET<ITopic[]>(`me/followee/topic?from=${from}&size=20`)
+  return GET<ITopic[]>('me/followee/topic', {
+    params: {
+      from: `${from}`,
+      size: '20',
+    },
+  })
 }
 
 /**
@@ -125,9 +139,27 @@ export function getHistoryHotTopics() {
  * 获取一个用户近期发的帖子
  */
 export function getUsersRecentTopics(id: number, from: number) {
-  return GET<ITopic[]>(`user/${id}/recent-topic?from=${from}&size=20`)
+  return GET<ITopic[]>(`user/${id}/recent-topic`, {
+    params: {
+      from: `${from}`,
+      size: '20',
+    },
+  })
 }
 
+/**
+ * 获取用户近期发的帖子
+ */
+export function getMyRecentTopics(from: number) {
+  return GET<ITopic[]>('me/recent-topic', {
+    params: {
+      from: `${from}`,
+      size: '20',
+    },
+  })
+}
+
+// FIXME:
 export function postNewTopic(
   boardId: string,
   title: string,

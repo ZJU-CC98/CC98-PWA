@@ -1,5 +1,5 @@
 import React from 'react'
-import { css } from 'emotion'
+import styled from 'styled-components'
 
 import stateInstance from '@/containers/state'
 
@@ -9,18 +9,27 @@ import MenuIcon from '@material-ui/icons/Menu'
 
 import version from '@/version'
 
-const grow = css`
-  flex-grow: 1;
-`
-
-const icon = css`
+const IconButtonS = styled(IconButton).attrs({
+  color: 'inherit',
+})`
   && {
     margin-left: -12px;
     margin-right: 5px;
   }
 `
 
-const button = css`
+const MainText = styled(Typography).attrs({
+  color: 'inherit',
+})`
+  && {
+    flex-grow: 1;
+  }
+`
+
+const Version = styled(Button).attrs({
+  color: 'inherit',
+  size: 'small',
+})`
   && {
     margin-right: -12px;
   }
@@ -29,17 +38,12 @@ const button = css`
 const TopBar: React.FunctionComponent = () => (
   <AppBar position="fixed">
     <Toolbar>
-      <IconButton className={icon} color="inherit" onClick={stateInstance.OPEN_DRAWER}>
+      <IconButtonS onClick={stateInstance.OPEN_DRAWER}>
         <MenuIcon />
-      </IconButton>
+      </IconButtonS>
 
-      <Typography className={grow} color="inherit">
-        CC98
-      </Typography>
-
-      <Button className={button} color="inherit" size="small">
-        {version}
-      </Button>
+      <MainText>CC98</MainText>
+      <Version>{version}</Version>
     </Toolbar>
   </AppBar>
 )

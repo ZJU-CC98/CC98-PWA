@@ -1,4 +1,10 @@
 declare module '@cc98/api' {
+  type NONE = 0
+  type LIKE = 1
+  type DISLIKE = 2
+
+  export type ILikeState = NONE | LIKE | DISLIKE
+
   export interface ILike {
     /**
      * 踩 数量
@@ -8,6 +14,9 @@ declare module '@cc98/api' {
      * 赞 数量
      */
     likeCount: number
-    likeState: number
+    /**
+     * 赞/踩状态
+     */
+    likeState: ILikeState
   }
 }

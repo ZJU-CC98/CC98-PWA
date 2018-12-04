@@ -37,7 +37,7 @@ interface Props {
 const RecentTopics: React.FunctionComponent<Props> = ({ info }) => (
   <ExpandPanel defaultExpanded title="用户资料">
     <ListDiv>
-      <ListItem name="性别" value={info.gender === 0 ? '男' : '女'} />
+      <ListItem name="性别" value={info.gender === 1 ? '男' : '女'} />
       <ListItem name="发帖" value={info.postCount} />
       <ListItem name="财富值" value={info.wealth} />
       <ListItem name="被删贴数" value={info.deleteCount} />

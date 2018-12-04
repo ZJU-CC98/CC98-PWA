@@ -5,7 +5,6 @@
 import React from 'react'
 import { Subscribe } from '@cc98/state'
 
-import Editor from '@/components/Editor'
 import InfiniteList from '@/components/InfiniteList'
 import store, { Detail } from '@/pages/Message/model/detail'
 
@@ -50,7 +49,7 @@ export default ({ id }: Props) => {
               </InfiniteList>
             </List>
           </RootRef>
-          <Editor sendCallBack={store.sendMessage} />
+          {/* <Editor sendCallBack={store.sendMessage} /> */}
         </>
       )}
     </Subscribe>

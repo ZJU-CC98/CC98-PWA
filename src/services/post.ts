@@ -1,5 +1,5 @@
 import { POST, PUT, GET } from '@/utils/fetch'
-import { IPost } from '@cc98/api'
+import { IPost, ILike } from '@cc98/api'
 
 /**
  * 获取一个帖子的10层楼
@@ -9,20 +9,6 @@ export function getPost(id: number, from: number) {
     params: {
       from: `${from}`,
       size: '10',
-    },
-  })
-}
-
-/**
- * 用户评分 +1或-1
- */
-export function rate(id: number, value: number, reason: string) {
-  const url = `/post/${id}/rating`
-
-  return PUT(url, {
-    params: {
-      value,
-      reason,
     },
   })
 }
@@ -58,8 +44,45 @@ export function getAnonymousTracePost(topicId: number, postId: number, from: num
 /**
  * 获取热评
  */
-export function getHotPost(id: number) {
-  return GET<IPost[]>(`topic/${id}/hot-post`)
+export function getHotPost(topicId: number) {
+  return GET<IPost[]>(`topic/${topicId}/hot-post`)
+}
+
+/**
+ * 获取赞/踩状态
+ */
+export function getLikeState(topicId: number) {
+  return GET<ILike>(`post/${topicId}/like`)
+}
+
+/**
+ * 赞
+ */
+export function putLike(topicId: number) {
+  return PUT(`post/${topicId}/like`, {
+    params: '1',
+  })
+}
+
+/**
+ * 踩
+ */
+export function putDislike(topicId: number) {
+  return PUT(`post/${topicId}/like`, {
+    params: '2',
+  })
+}
+
+/**
+ * 用户评分 +1或-1
+ */
+export function rate(id: number, value: 1 | -1, reason: string) {
+  return PUT(`post/${id}/rating`, {
+    params: {
+      value,
+      reason,
+    },
+  })
 }
 
 /**

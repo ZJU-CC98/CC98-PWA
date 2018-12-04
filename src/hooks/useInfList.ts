@@ -6,7 +6,7 @@ import { FetchError } from '@/utils/fetch'
 
 export type Service<T> = (from: number) => Promise<Try<T, FetchError>>
 
-interface InfListProps {
+interface InfListState {
   isLoading: boolean
   isEnd: boolean
   from: number
@@ -26,13 +26,13 @@ interface Options<T> {
    */
   fail?: (err: FetchError) => void
   /**
-   * 对 callback 取得的数据进行一定的变换
+   * Try success callback
    */
-  map?: (data: T[]) => T[] | void
+  success?: (data: T[]) => void
 }
 
 export default function useInfList<T>(service: Service<T[]>, options: Options<T> = {}) {
-  const [state, setState] = useState<InfListProps>({
+  const [state, setState] = useState<InfListState>({
     isLoading: false,
     isEnd: false,
     from: 0,
@@ -52,8 +52,9 @@ export default function useInfList<T>(service: Service<T[]>, options: Options<T>
           options.fail && options.fail(err)
         })
         .succeed(list => {
-          setList(prevList => prevList.concat((options.map && options.map(list)) || list))
+          options.success && options.success(list)
 
+          setList(prevList => prevList.concat(list))
           setState({
             isLoading: false,
             isEnd: list.length !== (options.step || 20),

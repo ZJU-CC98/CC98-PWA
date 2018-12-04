@@ -1,55 +1,80 @@
 import React from 'react'
+import styled from 'styled-components'
 
-import { css } from 'emotion'
-import { navigate } from '@/utils/history'
+import { Avatar, Typography } from '@material-ui/core'
+import Whatshot from '@material-ui/icons/Whatshot'
+import red from '@material-ui/core/colors/red'
 
-import { CardHeader, Avatar, IconButton } from '@material-ui/core'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import { IPost, IUser } from '@cc98/api'
 
-interface Props {
-  classes: ClassNameMap
-  postInfo: IPost
-  userInfo: IUser | null
-}
+import { navigate } from '@/utils/history'
+import dayjs from 'dayjs'
 
-const cursorStyle = css`
-  cursor: pointer;
-`
-const postOptionStyle = css`
+const FlexDiv = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 16px;
 `
 
-export default (props: Props) => {
-  const { classes, postInfo, userInfo } = props
+const AvatarArea = styled.div`
+  display: flex;
+  align-items: center;
+`
 
-  return (
-    <CardHeader
-      classes={{ action: classes.headerAction }}
-      avatar={
-        <Avatar
-          className={cursorStyle}
-          onClick={() => {
-            navigate(`/user/${postInfo.userId}`)
-          }}
-          src={userInfo ? userInfo.portraitUrl : undefined}
-        >
-          匿
-        </Avatar>
-      }
-      title={
-        <div className={cursorStyle}>
-          {postInfo.isAnonymous ? `匿名${postInfo.userName.toUpperCase()}` : postInfo.userName}
-        </div>}
-      subheader={new Date(postInfo.time).toLocaleString()}
-      action={[
-        <IconButton key="floor" classes={{ root: classes.iconRoot }}>
-          <Avatar classes={{ root: postInfo.isHot ? classes.hotFloor : classes.floor }}>
-            {postInfo.isHot ? '热' : `${postInfo.floor}`}
-          </Avatar>
-        </IconButton>,
-      ]}
-    />
-  )
+const AvatarS = styled(Avatar)`
+  && {
+    margin-right: 12px;
+  }
+`
+
+const Title = styled(Typography)``
+
+const SubTitle = styled(Typography).attrs({
+  color: 'textSecondary',
+})``
+
+const Floor = styled(Typography).attrs({
+  variant: 'button',
+  color: 'textSecondary',
+})``
+
+const HotIcon = styled(Whatshot)`
+  color: ${red[400]};
+`
+
+interface Props {
+  /**
+   * 帖子信息
+   */
+  postInfo: IPost
+  /**
+   * 用户信息
+   */
+  userInfo: IUser | undefined
+  /**
+   * 是否热帖
+   */
+  isHot?: boolean
 }
+
+export default ({ postInfo, userInfo, isHot }: Props) => (
+  <FlexDiv>
+    <AvatarArea>
+      <AvatarS
+        onClick={() => navigate(`/user/${postInfo.userId}`)}
+        src={userInfo && userInfo.portraitUrl}
+      >
+        {postInfo.isAnonymous && '匿'}
+      </AvatarS>
+      <div>
+        <Title>
+          {postInfo.isAnonymous ? `匿名${postInfo.userName.toUpperCase()}` : postInfo.userName}
+        </Title>
+        <SubTitle>{dayjs(postInfo.time).format('YYYY/MM/DD HH:mm')}</SubTitle>
+      </div>
+    </AvatarArea>
+
+    <Floor>{isHot ? <HotIcon /> : `${postInfo.floor}L`}</Floor>
+  </FlexDiv>
+)

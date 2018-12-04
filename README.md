@@ -11,7 +11,7 @@ CC98 Forum PWA version.
 
 - ​@material-ui/core@3
 
-- emotion
+- styled-component@4
 
 - webpack@4
 

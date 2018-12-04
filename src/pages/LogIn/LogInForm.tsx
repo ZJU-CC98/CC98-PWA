@@ -1,6 +1,6 @@
 import React from 'react'
 import { navigate } from '@/utils/history'
-import { css } from 'emotion'
+import styled from 'styled-components'
 
 import {
   Button,
@@ -16,18 +16,18 @@ import userInstance from '@/containers/user'
 
 import snowball from '@/assets/snowball.png'
 
-const root = css`
+const WrapperDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `
 
-const snowBallImg = css`
+const SnowballImg = styled.img`
   width: 100px;
   margin-bottom: 30px;
 `
 
-const form = css`
+const FormDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,12 +36,22 @@ const form = css`
   height: 105px;
 `
 
-const button = css`
-  margin-top: 35px;
+const LogInButton = styled(Button).attrs({
+  variant: 'contained',
+  color: 'primary',
+})`
+  && {
+    margin-top: 35px;
+  }
 `
 
-const buttonProgress = css`
-  margin-left: 15px;
+const ButtonProgress = styled(CircularProgress).attrs({
+  size: 20,
+  color: 'secondary',
+})`
+  && {
+    margin-left: 15px;
+  }
 `
 
 interface FormField {
@@ -110,12 +120,12 @@ class LogIn extends React.Component<{}, State> {
     const { formField, loading, logInFail } = this.state
 
     return (
-      <div className={root}>
-        <img src={snowball} className={snowBallImg} />
+      <WrapperDiv>
+        <SnowballImg src={snowball} />
 
         <Typography variant="h6">登录</Typography>
 
-        <div className={form}>
+        <FormDiv>
           <FormControl fullWidth>
             <InputLabel htmlFor="username">用户名</InputLabel>
             <Input
@@ -133,15 +143,13 @@ class LogIn extends React.Component<{}, State> {
               onChange={this.handleChange('password')}
             />
           </FormControl>
-        </div>
+        </FormDiv>
 
-        <div className={button}>
-          <Button variant="contained" color="primary" disabled={loading} onClick={this.logIn}>
-            {logInFail ? 'Retry' : 'LogIn'}
-            {loading && <CircularProgress size={20} color="secondary" className={buttonProgress} />}
-          </Button>
-        </div>
-      </div>
+        <LogInButton disabled={loading} onClick={this.logIn}>
+          {logInFail ? 'Retry' : 'LogIn'}
+          {loading && <ButtonProgress />}
+        </LogInButton>
+      </WrapperDiv>
     )
   }
 }

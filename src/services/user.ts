@@ -1,6 +1,12 @@
 import { IUser } from '@cc98/api'
 import { GET, PUT, DELETE } from '@/utils/fetch'
 
+export interface IUserMap {
+  [key: string]: IUser
+}
+
+const GLOBAL_USER_CACHE: IUserMap = {}
+
 /**
  * @description 通过用户id获取用户信息
  * @param {number} id 用户id
@@ -19,7 +25,12 @@ export function getUserInfoByName(name: string) {
   return GET<IUser>(`/user/name/${name}`)
 }
 
-export function getUsersInfo(query: string) {
+/**
+ * @description 通过用户id批量获取用户信息
+ */
+export function getUsersInfoByIds(ids: number[]) {
+  const query = ids.map(id => `id=${id}`).join('&')
+
   return GET<IUser[]>(`user?${query}`)
 }
 
@@ -37,4 +48,13 @@ export function followUser(id: number) {
  */
 export function unFollowUser(id: number) {
   return DELETE(`/me/followee/${id}`)
+}
+
+/**
+ * 修改个人资料
+ */
+export function modifyMyInfo(newInfo: IUser) {
+  return PUT('me', {
+    params: newInfo,
+  })
 }

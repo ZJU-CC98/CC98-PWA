@@ -6,6 +6,8 @@ declare module '@cc98/api' {
     name: string
     /**
      * 用户性别
+     * 男：1
+     * 女：0
      */
     gender: 0 | 1
     /**

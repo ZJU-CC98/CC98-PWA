@@ -5,7 +5,6 @@
 import React from 'react'
 import { IMessageContent } from '@cc98/api'
 import styled from 'styled-components'
-import { css } from 'emotion'
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 
@@ -15,7 +14,7 @@ import useUserId from '@/hooks/useUserId'
 
 import dayjs from 'dayjs'
 
-const AvatarClass = css`
+const ListItemAvatarS = styled(ListItemAvatar)`
   align-self: flex-start;
 `
 
@@ -80,9 +79,9 @@ interface Props {
 const renderItem = (message: IMessageContent, userAvatar: string, isCurrSend: boolean) =>
   !isCurrSend ? (
     <ListItem>
-      <ListItemAvatar className={AvatarClass}>
+      <ListItemAvatarS>
         <Avatar src={userAvatar} />
-      </ListItemAvatar>
+      </ListItemAvatarS>
       <MessageRoot>
         <MessageContentLeft>{message.content}</MessageContentLeft>
         <MessageDate right>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
@@ -95,9 +94,9 @@ const renderItem = (message: IMessageContent, userAvatar: string, isCurrSend: bo
         <MessageContentRight>{message.content}</MessageContentRight>
         <MessageDate>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
       </MessageRoot>
-      <ListItemAvatar className={AvatarClass}>
+      <ListItemAvatarS>
         <Avatar src={userAvatar} />
-      </ListItemAvatar>
+      </ListItemAvatarS>
     </ListItem>
   )
 

@@ -1,18 +1,18 @@
 import React from 'react'
-import { css } from 'emotion'
+import styled from 'styled-components'
 
 import { CircularProgress } from '@material-ui/core'
 
-const loading = css`
+const WrapperDiv = styled.div`
   display: flex;
   justify-content: center;
   padding: 15px 0;
 `
 
 const LoadingCircle: React.FunctionComponent = () => (
-  <div className={loading}>
+  <WrapperDiv>
     <CircularProgress />
-  </div>
+  </WrapperDiv>
 )
 
 export default LoadingCircle

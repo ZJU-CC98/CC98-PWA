@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { css, cx } from 'emotion'
+import styled from 'styled-components'
 
 import { Typography, Collapse, IconButton } from '@material-ui/core'
 
@@ -9,11 +9,11 @@ import BoardItem from './BoardItem'
 
 import { IBoardGroup } from '@cc98/api'
 
-const root = css`
+const WrapperDiv = styled.div`
   margin-bottom: 20px;
 `
 
-const header = css`
+const HeaderDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,14 +21,10 @@ const header = css`
   padding-right: 15px;
 `
 
-const body = css`
+const BodyDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin: 0 12px 10px 12px;
-`
-
-const expandOpen = css`
-  transform: rotate(180deg);
 `
 
 interface Props {
@@ -42,24 +38,25 @@ export default (props: Props) => {
   const { data } = props
 
   return (
-    <div className={root}>
-      <div className={header} onClick={() => setIsExpanded(!isExpanded)}>
+    <WrapperDiv>
+      <HeaderDiv onClick={() => setIsExpanded(!isExpanded)}>
         <Typography variant="subtitle1" color="primary">
           {data.name}
         </Typography>
 
         <IconButton color="primary">
-          <ExpandMoreIcon className={cx({ [expandOpen]: isExpanded })} />
+          {/* 因为简单就内联了 */}
+          <ExpandMoreIcon style={{ transform: isExpanded ? 'rotate(180deg)' : undefined }} />
         </IconButton>
-      </div>
+      </HeaderDiv>
 
       <Collapse in={isExpanded} timeout="auto">
-        <div className={body}>
+        <BodyDiv>
           {data.boards.map(board => (
             <BoardItem key={board.id} data={board} />
           ))}
-        </div>
+        </BodyDiv>
       </Collapse>
-    </div>
+    </WrapperDiv>
   )
 }

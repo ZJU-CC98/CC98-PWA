@@ -1,169 +1,146 @@
 import React, { useState } from 'react'
+import styled from 'styled-components'
 
-import { css } from 'emotion'
-import { navigate } from '@/utils/history'
+import { IconButton, Typography, Menu, MenuItem } from '@material-ui/core'
 
-import DislikeIcon from '@material-ui/icons/ThumbDown'
-import LikeIcon from '@material-ui/icons/ThumbUp'
+import ThumbUpIcon from '@material-ui/icons/ThumbUp'
+import ThumbDownIcon from '@material-ui/icons/ThumbDown'
+import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Quote from '@material-ui/icons/RotateLeft'
-import { CardActions, Divider, IconButton, Menu, MenuItem } from '@material-ui/core'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
-import copy from 'copy-to-clipboard'
-import toast from '../../Compose/Toast'
-import Utils from './PostUtils'
-import { IPost } from '@cc98/api'
+import { IPost, ILikeState } from '@cc98/api'
+import { putLike, putDislike } from '@/services/post'
+
+import { navigate } from '@/utils/history'
+import copy2Clipboard from 'copy-to-clipboard'
+
+// @babel/plugin-transform-typescript does not support const enums
+enum LikeState {
+  NONE = 0,
+  LIKE = 1,
+  DISLIKE = 2,
+}
 
 interface Props {
-  classes: ClassNameMap
+  /**
+   * 帖子信息
+   */
   postInfo: IPost
-  isTrace: boolean
-  openDialog: (info: IPost) => void
-  setPosts: <T extends Partial<IPost>>(postId: number, postUpdate: T) => void
-  setQuote: (content: string) => void
 }
 
-const likeStateMap = ['none', 'like', 'dislike']
-const likeButton = {
-  clicked: css`
-    color: #dd5e5c;
-  `,
-  unclicked: css`
-    color: inherit;
-  `,
-}
-const dislikeButton = {
-  clicked: css`
-    color: #6464ff;
-  `,
-  unclicked: css`
-    color: inherit;
-  `,
-}
+const ActionDiv = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+`
 
-export default (props: Props) => {
-  const { classes, postInfo, setPosts, setQuote, openDialog, isTrace } = props
-  const [anchorEl, setAnchorEl] = useState(null)
-  const open = Boolean(anchorEl)
+const Count = styled(Typography).attrs({
+  color: 'textSecondary',
+})`
+  && {
+    margin-left: -2px;
+    margin-right: 12px;
+  }
+`
+
+const DividerCol = styled.span`
+  margin: 0 4px;
+  /* FIXME: remove hardcode color */
+  border: solid thin rgba(0, 0, 0, 0.54);
+  height: 1rem;
+`
+
+const IconActions = ({ postInfo }: Props) => {
+  const [likeState, setLikeState] = useState(postInfo.likeState)
+
+  const handleLikeIcons = (newLikeState: ILikeState) => () => {
+    const putService = newLikeState === 1 ? putLike : putDislike
+
+    putService(postInfo.id).then(res =>
+      res.fail().succeed(_ => {
+        const nextState = newLikeState === likeState ? LikeState.NONE : newLikeState
+
+        // TODO: maybe should use getLikeState service ?
+        if (newLikeState === LikeState.LIKE) {
+          postInfo.likeCount += likeState === LikeState.LIKE ? -1 : 1
+        } else if (newLikeState === LikeState.DISLIKE) {
+          postInfo.dislikeCount += likeState === LikeState.DISLIKE ? -1 : 1
+        }
+
+        setLikeState(nextState)
+      })
+    )
+  }
 
   return (
-    <CardActions classes={{ root: classes.actionsRoot }}>
-      <IconButton
-        classes={{ root: classes.action }}
-        disableRipple={true}
-        onClick={async () => {
-          const res = await Utils.dislike(postInfo.id)
-          setPosts(postInfo.id, res)
-        }}
-      >
-        <DislikeIcon
-          fontSize="small"
-          className={
-            likeStateMap[postInfo.likeState] === 'dislike'
-              ? dislikeButton.clicked
-              : dislikeButton.unclicked
-          }
-        />
-        <span
-          key="dislikeIcon"
-          style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity: 0.54 }}
-        >
-          {postInfo.dislikeCount}
-        </span>
+    <ActionDiv>
+      <IconButton onClick={handleLikeIcons(LikeState.DISLIKE)}>
+        <ThumbDownIcon color={likeState === LikeState.DISLIKE ? 'secondary' : 'inherit'} />
       </IconButton>
-      <Divider classes={{ root: classes.hr }} />
-      <IconButton
-        classes={{ root: classes.action }}
-        disableRipple={true}
-        onClick={async () => {
-          const content = Utils.quote(postInfo)
-          // FIXME: 全局状态传递 这里挂window了
-          window.edit = { quoteContent: content }
-          navigate(`/compose/${postInfo.topicId}/quote`)
-        }}
-      >
-        <Quote fontSize="small" />
+      <Count>{postInfo.dislikeCount}</Count>
+      <DividerCol />
+      <IconButton>
+        <RotateLeftIcon />
       </IconButton>
-      <Divider classes={{ root: classes.hr }} />
-
-      <IconButton
-        classes={{ root: classes.action }}
-        disableRipple={true}
-        disableTouchRipple={true}
-        onClick={async () => {
-          const res = await Utils.like(postInfo.id)
-          setPosts(postInfo.id, res)
-        }}
-      >
-        <LikeIcon
-          fontSize="small"
-          className={
-            likeStateMap[postInfo.likeState] === 'like' ? likeButton.clicked : likeButton.unclicked
-          }
-        />
-        <span key="likeIcon" style={{ fontSize: '0.9rem', marginLeft: '0.875rem', opacity: 0.54 }}>
-          {postInfo.likeCount}
-        </span>
+      <DividerCol />
+      <IconButton onClick={handleLikeIcons(LikeState.LIKE)}>
+        <ThumbUpIcon color={likeState === LikeState.LIKE ? 'secondary' : 'inherit'} />
       </IconButton>
-      <Divider classes={{ root: classes.hr }} />
-
-      <IconButton
-        key="option"
-        classes={{ root: classes.iconRoot }}
-        aria-label="More"
-        aria-owns={open ? 'long-menu' : undefined}
-        aria-haspopup="true"
-        // tslint:disable-next-line:no-any
-        onClick={(e: any) => setAnchorEl(e.currentTarget)}
-      >
-        <ExpandMoreIcon fontSize="small" />
-      </IconButton>
-      <Menu
-        id="long-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={() => setAnchorEl(null)}
-        PaperProps={{
-          style: {
-            maxHeight: 48 * 4.5,
-            width: '5rem',
-          },
-        }}
-      >
-        {['评分', isTrace ? '返回' : '追踪', '编辑', '分享'].map(option => (
-          <MenuItem
-            key={option}
-            onClick={() => {
-              if (option === '追踪') {
-                if (!postInfo.isAnonymous) {
-                  navigate(`/topic/${postInfo.topicId}/trace/${postInfo.userId}`)
-                } else {
-                  navigate(`/topic/${postInfo.topicId}/anonymous/trace/${postInfo.id}`)
-                }
-              } else if (option === '返回') {
-                navigate(`/topic/${postInfo.topicId}`)
-              } else if (option === '编辑') {
-                // TODO:
-                navigate(`/compose/${postInfo.id}/edit`)
-              } else if (option === '评分') {
-                openDialog(postInfo)
-              } else if (option === '分享') {
-                // tslint:disable-next-line:max-line-length
-                const url = `https://${document.location && document.location.host}/topic/${
-                  postInfo.topicId
-                }#${postInfo.floor}`
-                copy(url)
-                toast.success({ content: '链接信息已复制到您的剪切板' })
-              }
-              setAnchorEl(null)
-            }}
-            classes={{ root: classes.menuItemRoot }}
-          >
-            {option}
-          </MenuItem>
-        ))}
-      </Menu>
-    </CardActions>
+      <Count>{postInfo.likeCount}</Count>
+    </ActionDiv>
   )
 }
+
+const MoreActions = ({ postInfo }: Props) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+
+  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleTrace = () => {
+    if (postInfo.isAnonymous) {
+      navigate(`/topic/${postInfo.topicId}/anonymous/trace/${postInfo.id}`)
+    } else {
+      navigate(`/topic/${postInfo.topicId}/trace/${postInfo.userId}`)
+    }
+    handleClose()
+  }
+
+  const handleShare = () => {
+    copy2Clipboard(`//${document.location.host}/topic/${postInfo.topicId}#${postInfo.floor}`)
+    // TODO: tips: 链接已复制到剪贴板
+
+    handleClose()
+  }
+
+  return (
+    <>
+      <IconButton onClick={handleOpen}>
+        <ExpandMoreIcon />
+      </IconButton>
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+        <MenuItem onClick={handleTrace}>追踪</MenuItem>
+        <MenuItem>编辑</MenuItem>
+        <MenuItem onClick={handleShare}>分享</MenuItem>
+      </Menu>
+    </>
+  )
+}
+
+const FlexDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export default ({ postInfo }: Props) => (
+  <FlexDiv>
+    <IconActions postInfo={postInfo} />
+    <MoreActions postInfo={postInfo} />
+  </FlexDiv>
+)

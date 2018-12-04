@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { css } from 'emotion'
+import styled from 'styled-components'
 
 import { TextField, IconButton } from '@material-ui/core'
 
 import SearchIcon from '@material-ui/icons/Search'
 
-const searchInput = css`
+const SearchDiv = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -24,12 +24,12 @@ const SearchInput: React.FunctionComponent<Props> = ({ onSearch }) => {
   }
 
   return (
-    <div className={searchInput}>
+    <SearchDiv>
       <TextField fullWidth placeholder="搜索主题" value={value} onChange={onChange} />
       <IconButton onClick={() => onSearch(value)}>
         <SearchIcon color="primary" />
       </IconButton>
-    </div>
+    </SearchDiv>
   )
 }
 

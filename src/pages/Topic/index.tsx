@@ -2,6 +2,9 @@ import React from 'react'
 
 import useFetcher from '@/hooks/useFetcher'
 
+import EditIcon from '@material-ui/icons/Edit'
+
+import FixFab from '@/components/FixFab'
 import LoadingCircle from '@/components/LoadingCircle'
 
 import PostHead from './PostHead'
@@ -52,6 +55,9 @@ export default ({ topicId, userId, postId }: Props) => {
       <PostList service={postService}>
         {!userId && !postId && <PostListHot service={hotPostService} />}
       </PostList>
+      <FixFab>
+        <EditIcon />
+      </FixFab>
     </>
   )
 }

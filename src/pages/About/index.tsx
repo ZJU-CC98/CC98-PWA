@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from 'react'
-import { css } from 'emotion'
+import React from 'react'
+import styled from 'styled-components'
+
+import useFetcher from '@/hooks/useFetcher'
+
 import { navigate } from '@/utils/history'
-import Deturium from '@/assets/developTeam/Deturium.jpg'
-import Dearkano from '@/assets/developTeam/Dearkano.jpg'
-import AsukaSong from '@/assets/developTeam/AsukaSong.jpg'
-import adddna from '@/assets/developTeam/adddna.jpg'
-import Tsukiko15 from '@/assets/developTeam/Tsukiko15.jpg'
-import c708423 from '@/assets/developTeam/c708423.jpg'
 
 import {
   Table,
   TableRow,
   TableBody,
   TableCell,
-  Card,
   Avatar,
   CardHeader,
   Divider,
@@ -21,105 +17,96 @@ import {
 } from '@material-ui/core'
 
 import { getSiteInfo } from '@/services/global'
-import { ISite } from '@cc98/api'
 
-const headStyle = css`
+const Title = styled(Typography).attrs({
+  align: 'center',
+  variant: 'h6',
+})`
   && {
     margin-top: 16px;
     margin-bottom: 16px;
   }
 `
-export default () => {
-  const [data, setData] = useState<ISite | null>(null)
-  useEffect(() => {
-    ; (async () => {
-      const res = await getSiteInfo()
-      res.fail().succeed(setData)
-    })()
-  }, [])
-  const rows = data
-    ? [
-        { name: '今日帖数', data: data.todayCount },
-        { name: '论坛总主题数', data: data.maxPostCount },
-        { name: '论坛总回复数', data: data.postCount },
-        { name: '总用户数', data: data.userCount },
-        { name: '最新加入用户', data: data.lastUserName },
-    ]
-    : []
+
+const SiteInfo = () => {
+  const [info] = useFetcher(getSiteInfo)
+
+  if (info === null) {
+    return null
+  }
+
+  const rows = [
+    { name: '今日帖数', data: info.todayCount },
+    { name: '论坛总主题数', data: info.maxPostCount },
+    { name: '论坛总回复数', data: info.postCount },
+    { name: '总用户数', data: info.userCount },
+    { name: '最新加入用户', data: info.lastUserName },
+  ]
 
   return (
     <>
-      <Typography className={headStyle} align="center" variant="h6">
-        论坛统计
-      </Typography>
+      <Title>论坛统计</Title>
       <Divider />
+
       <Table>
         <TableBody>
           {rows.map(row => (
             <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {row.data}
-              </TableCell>
+              <TableCell>{row.name}</TableCell>
+              <TableCell>{row.data}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-
-      <Typography className={headStyle} align="center" variant="h6">
-        开发组
-      </Typography>
-      <Divider />
-      <Card elevation={0}>
-        <CardHeader
-          onClick={() => navigate('/user/530817')}
-          avatar={<Avatar src={Deturium} />}
-          title="Deturium"
-          subheader="项目背锅人"
-        />
-      </Card>
-      <Card elevation={0}>
-        <CardHeader
-          onClick={() => navigate('/user/556551')}
-          avatar={<Avatar src={Dearkano} />}
-          title="Dearkano"
-          subheader="苦力"
-        />
-      </Card>
-      <Card elevation={0}>
-        <CardHeader
-          onClick={() => navigate('/user/569380')}
-          avatar={<Avatar src={AsukaSong} />}
-          title="AsukaSong"
-          subheader="高级 Webpack 配置工程师"
-        />
-      </Card>
-      <Card elevation={0}>
-        <CardHeader
-          onClick={() => navigate('/user/405730')}
-          avatar={<Avatar src={Tsukiko15} />}
-          title="Tsukiko15"
-          subheader="后端开发"
-        />
-      </Card>
-      <Card elevation={0}>
-        <CardHeader
-          onClick={() => navigate('/user/559244')}
-          avatar={<Avatar src={adddna} />}
-          title="adddna"
-          subheader="低级前端开发"
-        />
-      </Card>
-      <Card elevation={0}>
-        <CardHeader
-          onClick={() => navigate('/user/558467')}
-          avatar={<Avatar src={c708423} />}
-          title="c708423"
-          subheader="前端开发"
-        />
-      </Card>
     </>
   )
 }
+
+interface DevCardProps {
+  name: string
+  description: string
+  userId: number
+}
+
+const CardHeaderS = styled(CardHeader)`
+  && {
+    width: 48%;
+  }
+`
+
+const DevCard = ({ name, description, userId }: DevCardProps) => (
+  <CardHeaderS
+    avatar={<Avatar src={`https://github.com/${name}.png?s=200`} />}
+    title={name}
+    subheader={description}
+    onClick={() => navigate(`/user/${userId}`)}
+  />
+)
+
+const CardFlexDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`
+
+const DevTeam = () => (
+  <>
+    <Title>开发组</Title>
+    <Divider />
+
+    <CardFlexDiv>
+      <DevCard name="Deturium" description="项目背锅人" userId={530817} />
+      <DevCard name="Dearkano" description="苦力" userId={556551} />
+      <DevCard name="AsukaSong" description="高级 Webpack 配置工程师" userId={569380} />
+      <DevCard name="Tsukiko15" description="后端开发" userId={405730} />
+      <DevCard name="adddna" description="低级前端开发" userId={559244} />
+      <DevCard name="c708423" description="前端开发" userId={558467} />
+    </CardFlexDiv>
+  </>
+)
+
+export default () => (
+  <>
+    <SiteInfo />
+    <DevTeam />
+  </>
+)

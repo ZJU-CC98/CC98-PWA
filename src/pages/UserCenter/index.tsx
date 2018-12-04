@@ -23,7 +23,7 @@ const UserCenter: React.FunctionComponent<Props> = ({ info, isUserCenter }) => (
     <UserAvatar info={info} isUserCenter={isUserCenter} />
     <UserDetail info={info} />
     <UserSignature info={info} />
-    <UserRecentTopics info={info} />
+    <UserRecentTopics info={info} isUserCenter={isUserCenter} />
   </>
 )
 

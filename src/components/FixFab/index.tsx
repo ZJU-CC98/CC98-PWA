@@ -16,7 +16,7 @@ const FabS = styled(Fab).attrs({
 `
 
 interface Props {
-  onClick: () => void
+  onClick?: () => void
 }
 
 const FixFab: React.FunctionComponent<Props> = ({ onClick, children }) => (

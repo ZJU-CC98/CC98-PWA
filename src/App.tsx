@@ -13,6 +13,7 @@ import TopBar from '@/components/TopBar'
 import DrawerMenu from '@/components/DrawerMenu'
 import BackGround from '@/components/BackGround'
 import Router from './router'
+import GlobalStyle from './GloablStyle'
 
 const App = () => (
   <BackGround>
@@ -32,6 +33,7 @@ const Root = () => {
       <MuiThemeProvider theme={theme === 'light' ? light : dark}>
         <App />
       </MuiThemeProvider>
+      <GlobalStyle />
     </Provider>
   )
 }

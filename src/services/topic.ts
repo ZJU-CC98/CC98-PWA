@@ -5,7 +5,11 @@ import { ITopic, IHotTopic } from '@cc98/api'
  * 根据id获取某个版面的置顶帖子
  */
 export function getTopTopics(id: string) {
-  return GET<ITopic[]>(`topic/toptopics?boardid=${id}`)
+  return GET<ITopic[]>('topic/toptopics', {
+    params: {
+      boardid: id,
+    },
+  })
 }
 
 /**
@@ -44,9 +48,7 @@ export function getTopicsInBoard(id: string, from: number, size: number, tag1 = 
 
   return GET<Topics>(`topic/search/board/${id}/tag`, {
     params,
-  }).then(res =>
-    Promise.resolve(res.map(topics => topics.topics))
-  )
+  }).then(res => Promise.resolve(res.map(topics => topics.topics)))
 }
 
 /**
@@ -137,7 +139,24 @@ export function getHistoryHotTopics() {
  * 获取一个用户近期发的帖子
  */
 export function getUsersRecentTopics(id: number, from: number) {
-  return GET<ITopic[]>(`user/${id}/recent-topic?from=${from}&size=20`)
+  return GET<ITopic[]>(`user/${id}/recent-topic`, {
+    params: {
+      from: `${from}`,
+      size: '20',
+    },
+  })
+}
+
+/**
+ * 获取用户近期发的帖子
+ */
+export function getMyRecentTopics(from: number) {
+  return GET<ITopic[]>('me/recent-topic', {
+    params: {
+      from: `${from}`,
+      size: '20',
+    },
+  })
 }
 
 // FIXME:

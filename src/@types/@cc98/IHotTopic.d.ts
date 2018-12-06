@@ -37,8 +37,8 @@ declare module '@cc98/api' {
      */
     title: string
     /**
+     * 帖子类型
      * 0 普通帖子  1 校园活动  2 学术信息
-     * FIXME: 不确定
      */
     type: number
   }

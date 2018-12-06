@@ -1,7 +1,7 @@
 import React from 'react'
 // https://reach.tech/router/api/Router
 import { Location, WindowLocation } from '@reach/router'
-import MyRouter, { ILocation } from './MyRouter'
+import Router, { ILocation } from './Router'
 
 import './gesture'
 
@@ -12,7 +12,7 @@ const _ROUTER_CACHE: WindowLocation[] = []
 
 // 最大缓存页面数
 // TODO: 加入 setting 配置
-const MAX_CACHE_SIZE = 0
+const MAX_CACHE_SIZE = 3
 
 const CacheRouter: React.FunctionComponent<ILocation> = ({ location }) => {
   if (_ROUTER_CACHE.length > MAX_CACHE_SIZE) {
@@ -30,7 +30,7 @@ const CacheRouter: React.FunctionComponent<ILocation> = ({ location }) => {
           key={backLoc.href}
           style={{ display: backLoc.href === location.href ? 'block' : 'none' }}
         >
-          <MyRouter location={backLoc} />
+          <Router location={backLoc} />
         </div>
       ))}
     </>

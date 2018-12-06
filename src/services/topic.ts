@@ -1,4 +1,4 @@
-import { POST, GET } from '@/utils/fetch'
+import { GET } from '@/utils/fetch'
 import { ITopic, IHotTopic } from '@cc98/api'
 
 /**
@@ -155,38 +155,6 @@ export function getMyRecentTopics(from: number) {
     params: {
       from: `${from}`,
       size: '20',
-    },
-  })
-}
-
-// FIXME:
-export function postNewTopic(
-  boardId: string,
-  title: string,
-  topicType: string,
-  content: string,
-  tags: string[]
-) {
-  let postTag = {}
-  let i = 0
-  if (tags) {
-    for (const iterator of tags) {
-      i = i + 1
-      postTag = {
-        [`tag${i}`]: iterator,
-        ...postTag,
-      }
-    }
-  }
-
-  return POST<string>(`/board/${boardId}/topic`, {
-    params: {
-      content,
-      title,
-      topicType,
-      contentType: 0,
-      type: 0,
-      ...postTag,
     },
   })
 }

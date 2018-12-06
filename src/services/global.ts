@@ -1,18 +1,19 @@
 import { GET, POST } from '@/utils/fetch'
-import { ISignIn } from '@cc98/api'
+import { ISignIn, ISite } from '@cc98/api'
 
 /**
  * 获取全站基本信息
  */
 export function getSiteInfo() {
-  return GET('config/global')
+  return GET<ISite>('config/global')
 }
 
 /**
  * 获取全站主页信息
  */
 export function getHomeInfo() {
-  return GET('config/index')
+  // FIXME:
+  return GET<any>('config/index')
 }
 
 /**

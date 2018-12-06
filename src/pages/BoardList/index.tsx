@@ -75,8 +75,7 @@ export default () => {
       ) : (
         <>
           {boardList &&
-            boardList.map(boardGroup => <BoardGroup key={boardGroup.id} data={boardGroup} />)
-          }
+            boardList.map(boardGroup => <BoardGroup key={boardGroup.id} data={boardGroup} />)}
           <EmptyDiv />
         </>
       )}

@@ -56,7 +56,7 @@ export default ({ topicId, userId, postId }: Props) => {
         {!userId && !postId && <PostListHot service={hotPostService} />}
       </PostList>
       <FixFab>
-        <EditIcon />
+        <EditIcon onClick={() => navigate('/edit')} />
       </FixFab>
     </>
   )

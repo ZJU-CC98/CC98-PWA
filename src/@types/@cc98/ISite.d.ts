@@ -17,7 +17,7 @@ declare module '@cc98/api' {
      */
     birthdayActivitySetting: string
     /**
-     *
+     * 是否维护中
      */
     isMaintaining: boolean
     /**

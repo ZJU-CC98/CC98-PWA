@@ -70,7 +70,7 @@ interface GETOptions {
   }
 }
 
-export async function GET<T = any>(url: string, options: GETOptions = {}) {
+export async function GET<T>(url: string, options: GETOptions = {}) {
   const headers: Record<string, string> = {}
 
   if (!options.noAuthorization) {
@@ -111,7 +111,7 @@ interface POSTOptions {
   params?: any
 }
 
-export async function POST<T = any>(url: string, options: POSTOptions = {}) {
+export async function POST<T = void>(url: string, options: POSTOptions = {}) {
   const headers: Record<string, string> = {}
 
   if (!options.noAuthorization) {

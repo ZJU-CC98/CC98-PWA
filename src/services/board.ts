@@ -17,11 +17,9 @@ export async function getBoardsInfo() {
   }
 
   const res = await GET<IBoardGroup[]>('/board/all')
-  res
-    .fail()
-    .succeed(data => {
-      setLocalStorage('boardsInfo', data, 3600 * 24 * 7)
-    })
+  res.fail().succeed(data => {
+    setLocalStorage('boardsInfo', data, 3600 * 24 * 7)
+  })
 
   return res
 }
@@ -30,7 +28,7 @@ export async function getBoardsInfo() {
  * 获取单个版面信息
  */
 export function getBoardInfo(id: string) {
-  return GET(`board/${id}`)
+  return GET<IBoard>(`board/${id}`)
 }
 
 /**
@@ -47,15 +45,13 @@ export async function getBoardNameById(id: number) {
   let name = '版面不存在'
 
   const res = await getBoardsInfo()
-  res
-    .fail()
-    .succeed(boards => {
-      for (const baseBoard of boards) {
-        for (const childBoard of baseBoard.boards) {
-          if (id === childBoard.id) name = childBoard.name
-        }
+  res.fail().succeed(boards => {
+    for (const baseBoard of boards) {
+      for (const childBoard of baseBoard.boards) {
+        if (id === childBoard.id) name = childBoard.name
       }
-    })
+    }
+  })
 
   return name
 }

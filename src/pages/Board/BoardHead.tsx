@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { navigate } from '@/utils/history'
 
 import {
   Typography,
@@ -12,9 +11,6 @@ import {
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FavoriteIcon from '@material-ui/icons/Favorite'
-import EditIcon from '@material-ui/icons/Edit'
-
-import FixFab from '@/components/FixFab'
 
 import { IBoard } from '@cc98/api'
 import { customBoard } from '@/services/board'
@@ -96,10 +92,6 @@ export default ({ data }: Props) => {
           <Typography>{data.description}</Typography>
         </ExpansionPanelDetails>
       </ExpansionPanelS>
-
-      <FixFab onClick={() => navigate(`/compose/${data.id}/newpost`)}>
-        <EditIcon />
-      </FixFab>
     </FlexDiv>
   )
 }

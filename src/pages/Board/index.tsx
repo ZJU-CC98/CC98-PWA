@@ -4,7 +4,10 @@ import { navigate } from '@/utils/history'
 
 import useFetcher from '@/hooks/useFetcher'
 
+import EditIcon from '@material-ui/icons/Edit'
+
 import { InfTopicList, FinTopicList } from '@/components/TopicList'
+import FixFab from '@/components/FixFab'
 
 import BoardHead from './BoardHead'
 import BoardTags from './BoardTags'
@@ -35,9 +38,9 @@ export default ({ id }: Props) => {
         navigate('/error/401')
       }
     },
-    success: data => {
+    success: board => {
       // 外网不可见的版面
-      if (data.internalState === 1) {
+      if (board.internalState === 1) {
         navigate('/error/401')
       }
     },
@@ -56,7 +59,14 @@ export default ({ id }: Props) => {
 
   return (
     <WrapperDiv>
-      {board && <BoardHead data={board} />}
+      {board && (
+        <>
+          <BoardHead data={board} />
+          <FixFab onClick={() => navigate('/edit')}>
+            <EditIcon />
+          </FixFab>
+        </>
+      )}
 
       <BoardTags boardTags={boardTags} onChange={onTagChange} />
 

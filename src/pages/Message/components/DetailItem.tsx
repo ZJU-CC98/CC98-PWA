@@ -8,7 +8,7 @@ import styled from 'styled-components'
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 
-import useGlobalContainer from '@/hooks/useContainer'
+import useContainer from '@/hooks/useContainer'
 import userInstace from '@/containers/user'
 import useUserId from '@/hooks/useUserId'
 
@@ -103,7 +103,7 @@ const renderItem = (message: IMessageContent, userAvatar: string, isCurrSend: bo
 export default ({ message }: Props) => {
   const {
     state: { myInfo },
-  } = useGlobalContainer(userInstace)
+  } = useContainer(userInstace)
 
   const { portraitUrl } = useUserId(message.senderId)
 

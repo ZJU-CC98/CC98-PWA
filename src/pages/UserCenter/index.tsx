@@ -1,6 +1,6 @@
 import React from 'react'
 
-import useGlobalContainer from '@/hooks/useContainer'
+import useContainer from '@/hooks/useContainer'
 import userInstance from '@/containers/user'
 
 import useFetcher from '@/hooks/useFetcher'
@@ -37,7 +37,7 @@ interface WrapperProps {
 const Wrapper: React.FunctionComponent<WrapperProps> = props => {
   const {
     state: { myInfo },
-  } = useGlobalContainer(userInstance)
+  } = useContainer(userInstance)
 
   const [userInfo] = useFetcher(
     props.id ? () => getUserInfoById(parseInt(props.id as string, 10)) : null

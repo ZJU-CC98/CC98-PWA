@@ -22,7 +22,7 @@ declare module '@cc98/api' {
      */
     floor: number
     /**
-     * 用户 ID
+     * post ID
      */
     id: number
     /**

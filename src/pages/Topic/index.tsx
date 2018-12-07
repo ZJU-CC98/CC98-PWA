@@ -15,6 +15,7 @@ import { getTopicInfo } from '@/services/topic'
 import { getPost, getTracePost, getAnonymousTracePost, getHotPost } from '@/services/post'
 
 import { navigate } from '@/utils/history'
+import { EditorUtils } from '@/global/editor'
 
 interface Props {
   // 帖子 ID
@@ -56,7 +57,7 @@ export default ({ topicId, userId, postId }: Props) => {
         {!userId && !postId && <PostListHot service={hotPostService} />}
       </PostList>
       <FixFab>
-        <EditIcon onClick={() => navigate('/edit')} />
+        <EditIcon onClick={() => EditorUtils.replyTopic(topicInfo.id)} />
       </FixFab>
     </>
   )

@@ -6,13 +6,15 @@ import Signalr from './Signalr'
 import Theme from './Theme'
 import Proxy from './Proxy'
 
+import useContainer from '@/hooks/useContainer'
+import userInstance from '@/containers/user'
+
 import proxtList from '@/config/proxy'
 
 const Setting: React.FunctionComponent = () => {
-  // FIXME:
-  const username = 'u63'
-  const isLogIn = false
-  const isDev = proxtList.indexOf(username) !== -1
+  const { myInfo, isLogIn } = useContainer(userInstance).state
+
+  const isDev = isLogIn && myInfo && proxtList.indexOf(myInfo.name) !== -1
 
   return (
     <List>

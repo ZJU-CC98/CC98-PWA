@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { goback } from '@/utils/history'
 import styled from 'styled-components'
 
-import useGlobalContainer from '@/hooks/useContainer'
+import useContainer from '@/hooks/useContainer'
 import userInstace from '@/containers/user'
 
 import { IconButton, Typography, Button, TextField } from '@material-ui/core'
@@ -62,7 +62,7 @@ const SubmitButton = styled(Button).attrs({
 const FormBody = () => {
   const {
     state: { myInfo },
-  } = useGlobalContainer(userInstace)
+  } = useContainer(userInstace)
 
   const [info, setInfo] = useState(myInfo)
 

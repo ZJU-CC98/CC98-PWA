@@ -11,6 +11,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { IPost, ILikeState } from '@cc98/api'
 import { putLike, putDislike } from '@/services/post'
 
+import { EditorUtils } from '@/global/editor'
+import userInstance from '@/containers/user'
+
 import { navigate } from '@/utils/history'
 import copy2Clipboard from 'copy-to-clipboard'
 
@@ -80,7 +83,11 @@ const IconActions = ({ postInfo }: Props) => {
       <Count>{postInfo.dislikeCount}</Count>
       <DividerCol />
       <IconButton>
-        <RotateLeftIcon />
+        <RotateLeftIcon
+          onClick={() => {
+            EditorUtils.quotePost(postInfo.topicId, `[quote]${postInfo.content}[/quote]\n`)
+          }}
+        />
       </IconButton>
       <DividerCol />
       <IconButton onClick={handleLikeIcons(LikeState.LIKE)}>
@@ -112,11 +119,13 @@ const MoreActions = ({ postInfo }: Props) => {
   }
 
   const handleShare = () => {
-    copy2Clipboard(`//${document.location.host}/topic/${postInfo.topicId}#${postInfo.floor}`)
+    copy2Clipboard(`https://${document.location.host}/topic/${postInfo.topicId}#${postInfo.floor}`)
     // TODO: tips: 链接已复制到剪贴板
-
     handleClose()
   }
+
+  const myInfo = userInstance.state.myInfo
+  const isMyPost = postInfo.userId === (myInfo && myInfo.id)
 
   return (
     <>
@@ -125,7 +134,16 @@ const MoreActions = ({ postInfo }: Props) => {
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem onClick={handleTrace}>追踪</MenuItem>
-        <MenuItem>编辑</MenuItem>
+        {isMyPost && (
+          <MenuItem
+            onClick={() => {
+              EditorUtils.editorPost(postInfo.id, postInfo.content)
+              handleClose()
+            }}
+          >
+            编辑
+          </MenuItem>
+        )}
         <MenuItem onClick={handleShare}>分享</MenuItem>
       </Menu>
     </>

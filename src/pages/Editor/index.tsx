@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import useEditorHandler from './useEditorHandler'
+import useContainer from '@/hooks/useContainer'
+import editorInstance from '@/containers/editor'
 
 import MainContent from './MainContent'
 import Attachments from './Attachments'
@@ -19,14 +20,14 @@ const FixBottomDiv = styled.div`
 `
 
 export default () => {
-  const handler = useEditorHandler()
+  const editor = useContainer(editorInstance)
 
   return (
     <WrapperDiv>
-      <MainContent handler={handler} />
-      <Attachments handler={handler} />
+      <MainContent editor={editor} />
+      <Attachments editor={editor} />
       <FixBottomDiv>
-        <ToolBox handler={handler} />
+        <ToolBox editor={editor} />
       </FixBottomDiv>
     </WrapperDiv>
   )

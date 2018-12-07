@@ -1,12 +1,12 @@
 import React from 'react'
 
-import useGlobalContainer from '@/hooks/useContainer'
+import useContainer from '@/hooks/useContainer'
 import settingInstance from '@/containers/setting'
 
 import { ListItem, ListItemText, Switch } from '@material-ui/core'
 
 export default () => {
-  const { state, TOGGLE_SIGNALR } = useGlobalContainer(settingInstance)
+  const { state, TOGGLE_SIGNALR } = useContainer(settingInstance)
 
   return (
     <ListItem button>

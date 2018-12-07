@@ -27,32 +27,30 @@ export class Container<State extends object = {}> {
       | ((prevState: Readonly<State>) => Pick<State, K> | State | null)
       | (Pick<State, K> | State | null),
     callback?: () => void
-  ): Promise<void> {
-    return Promise.resolve().then(() => {
-      let nextState: Pick<State, K> | State | null
+  ) {
+    let nextState: Pick<State, K> | State | null
 
-      if (typeof updater === 'function') {
-        nextState = (updater as Function)(this.state)
-      } else {
-        nextState = updater
+    if (typeof updater === 'function') {
+      nextState = (updater as Function)(this.state)
+    } else {
+      nextState = updater
+    }
+
+    // (v == null) equal to (v === null || v === undefined)
+    // this will prevent broadcast
+    if (nextState == null) {
+      if (callback) callback()
+      return Promise.resolve()
+    }
+
+    this.state = Object.assign({}, this.state, nextState)
+
+    const promises = this._listeners.map(listener => listener())
+
+    return Promise.all(promises).then(() => {
+      if (callback) {
+        return callback()
       }
-
-      // (v == null) equal to (v === null || v === undefined)
-      // this will prevent broadcast
-      if (nextState == null) {
-        if (callback) callback()
-        return
-      }
-
-      this.state = Object.assign({}, this.state, nextState)
-
-      const promises = this._listeners.map(listener => listener())
-
-      return Promise.all(promises).then(() => {
-        if (callback) {
-          return callback()
-        }
-      })
     })
   }
 }
@@ -61,7 +59,7 @@ export class Container<State extends object = {}> {
  * 注入一个全局 Container
  * @param containerInstance 全局 container 实例
  */
-export default function useGlobalContainer<T extends Container>(containerInstance: T) {
+export default function useContainer<T extends Container>(containerInstance: T) {
   const forceUpdate = useState(null)[1]
 
   useEffect(() => {

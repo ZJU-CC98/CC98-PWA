@@ -4,7 +4,7 @@ import { Router, RouteComponentProps, WindowLocation } from '@reach/router'
 
 import BoardList from '@/pages/BoardList'
 import Board from '@/pages/Board'
-import Edit from '@/pages/Edit'
+import Editor from '@/pages/Editor'
 import Home from '@/pages/Home'
 import HotTopic from '@/pages/HotTopic'
 import MessageDetail from '@/pages/Message/Detail'
@@ -61,7 +61,7 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
     <Route path="/userCenter/edit" component={UserCenterEdit} />
     <Route path="/user/:id" component={UserCenter} />
 
-    <Route path="/edit" component={Edit} />
+    <Route path="/editor" component={Editor} />
 
     <Route path="/setting" component={Setting} />
     <Route path="/messageList" component={MessageList} />

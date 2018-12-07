@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { IEditorHandler } from './useEditorHandler'
+import { EditorContainer } from '@/containers/editor'
 
 import { Badge } from '@material-ui/core'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -21,17 +21,17 @@ const AttachDiv = styled.div`
 `
 
 interface Props {
-  handler: IEditorHandler
+  editor: EditorContainer
 }
 
-export default ({ handler }: Props) => (
+export default ({ editor }: Props) => (
   <WrapperDiv>
-    {handler.attachments.map((attach, index) => (
+    {editor.state.attachments.map((attach, index) => (
       <AttachDiv key={index}>
         <Badge
           color="secondary"
           badgeContent={<ClearIcon fontSize="small" />}
-          onClick={() => handler.detach(index)}
+          onClick={() => editor.detach(index)}
         >
           {UBB(attach)}
         </Badge>

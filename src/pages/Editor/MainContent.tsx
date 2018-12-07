@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { IEditorHandler } from './useEditorHandler'
+import { EditorContainer } from '@/containers/editor'
 
 import { InputBase } from '@material-ui/core'
 
@@ -18,19 +18,19 @@ const InputArea = styled(InputBase).attrs({
 `
 
 interface Props {
-  handler: IEditorHandler
+  editor: EditorContainer
 }
 
-export default ({ handler }: Props) => {
-  const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    handler.replace(event.target.value)
+export default ({ editor }: Props) => {
+  const handlerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    editor.replace(event.target.value)
   }
 
   return (
     <InputArea
-      value={handler.mainContent}
+      value={editor.state.mainContent}
       placeholder="CC98 干杯~ (￣ε(#￣) Σ"
-      onChange={onChange}
+      onChange={handlerChange}
     />
   )
 }

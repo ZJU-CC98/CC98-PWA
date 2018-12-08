@@ -5,11 +5,11 @@ import { IContext } from '@cc98/context'
 import React from 'react'
 
 const handler: IGeneralTagHandler<React.ReactNode> = {
-  isRecursive: true,
+  isRecursive: false,
 
   match: /[acf]:/i,
 
-  render(node: TagNode, context: IContext, children: React.ReactNode[]) {
+  render(node: TagNode, context: IContext) {
     const tagName = node.tagData.__tagName__
     const mahjongType = tagName[0]
     const mahjongID = tagName.slice(2)

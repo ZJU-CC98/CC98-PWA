@@ -5,11 +5,11 @@ import { IContext } from '@cc98/context'
 import React from 'react'
 
 const handler: IGeneralTagHandler<React.ReactNode> = {
-  isRecursive: true,
+  isRecursive: false,
 
   match: /em\d{2}/i,
 
-  render(node: TagNode, context: IContext, children: React.ReactNode[]) {
+  render(node: TagNode, context: IContext) {
     const emID = node.tagData.__tagName__.slice(2)
 
     const url = `${context.imgBaseURL}/em/em${emID}.gif`

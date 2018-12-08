@@ -5,7 +5,7 @@ CC98 Forum PWA version.
 
 ## 项目技术栈
 
-- react@latest
+- react@16.7.0-alpha.2
 
 - @reach/router
 

@@ -6,7 +6,7 @@ import ExpandPanel from './ExpandPanel'
 
 import { IUser } from '@cc98/api'
 
-import UBB from '@cc98/ubb-react'
+import UBB from '@/UBB'
 
 const TypographyS = styled(Typography)`
   margin: 0 12px;

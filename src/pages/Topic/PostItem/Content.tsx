@@ -5,7 +5,7 @@ import { Typography } from '@material-ui/core'
 
 import { IPost } from '@cc98/api'
 
-import UBB from '@cc98/ubb-react'
+import UBB from '@/UBB'
 import remark from 'remark'
 import remark2react from 'remark-react'
 
@@ -21,6 +21,11 @@ const TypographyS = styled(Typography).attrs({
   && {
     margin: 12px 16px;
     margin-bottom: 4px;
+
+    /* for <img> in markdown */
+    img {
+      max-width: 100%;
+    }
   }
 `
 

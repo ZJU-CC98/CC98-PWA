@@ -6,7 +6,7 @@ import { EditorContainer } from '@/containers/editor'
 import { Badge } from '@material-ui/core'
 import ClearIcon from '@material-ui/icons/Clear'
 
-import UBB from '@cc98/ubb-react'
+import UBB from '@/UBB'
 
 const WrapperDiv = styled.div`
   display: flex;

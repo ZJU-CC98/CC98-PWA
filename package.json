@@ -15,21 +15,20 @@
   },
   "dependencies": {
     "@aspnet/signalr": "^1.0.4",
-    "@cc98/ubb-react": "^1.0.1",
+    "@cc98/ubb-core": "1.1.0",
     "@material-ui/core": "^3.6.1",
     "@material-ui/icons": "^3.0.1",
-    "@material-ui/styles": "^3.0.0-alpha.2",
     "@reach/router": "^1.2.1",
     "copy-to-clipboard": "^3.0.8",
     "dayjs": "^1.7.7",
-    "emotion": "^9.2.12",
     "lodash-es": "^4.17.11",
     "prop-types": "^15.6.2",
     "react": "^16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",
-    "remark": "^10.0.0",
+    "remark": "^10.0.1",
     "remark-react": "^5.0.0",
-    "styled-components": "^4.1.2"
+    "styled-components": "^4.1.2",
+    "url-parse": "^1.4.4"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",
@@ -43,6 +42,7 @@
     "@types/react": "^16.7.13",
     "@types/react-dom": "^16.0.11",
     "@types/styled-components": "4.0.3",
+    "@types/url-parse": "^1.4.1",
     "babel-loader": "^8.0.4",
     "babel-plugin-styled-components": "^1.9.2",
     "babel-plugin-transform-imports": "^1.5.1",
@@ -54,16 +54,16 @@
     "html-webpack-plugin": "^4.0.0-beta.4",
     "husky": "^1.2.0",
     "lint-staged": "^8.1.0",
-    "prettier": "^1.15.1",
+    "prettier": "^1.15.3",
     "prettier-tslint": "^0.4.0",
     "style-loader": "^0.23.1",
     "terser-webpack-plugin": "^1.1.0",
     "tslint": "^5.11.0",
-    "tslint-config-airbnb": "^5.11.0",
-    "tslint-consistent-codestyle": "^1.13.3",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-consistent-codestyle": "^1.14.1",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-lines-between-class-members": "^1.3.1",
-    "tslint-microsoft-contrib": "^5.2.1",
+    "tslint-microsoft-contrib": "^6.0.0",
     "tslint-react": "^3.6.0",
     "typescript": "^3.2.2",
     "url-loader": "^1.1.2",
@@ -82,7 +82,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "tsc --noEmit && lint-staged"
     }
   }
 }

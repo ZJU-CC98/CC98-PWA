@@ -1,0 +1,123 @@
+.ubb-root {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* specificTagHandlers */
+
+.ubb-tag-b {
+  font-weight: bold;
+}
+
+
+.ubb-tag-center {
+  text-align: center;
+}
+
+
+.ubb-tag-code {
+  list-style: none;
+  counter-reset: li;
+  padding: 0;
+  font-family: Consolas, Monaco;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.ubb-tag-code-line {
+  counter-increment: li;
+}
+
+.ubb-tag-code-line::before {
+  content: counter(li);
+  display: inline-flex;
+  width: 50px;
+  margin: 0 10px;
+  justify-content: center;
+  /* FIXME: hardcode color */
+  background-color: #ebebeb;
+}
+
+
+.ubb-tag-del {
+  text-decoration: line-through;
+}
+
+
+.ubb-tag-english {
+  font-family: Arial;
+}
+
+
+.ubb-tag-i {
+  font-style: italic;
+}
+
+
+.ubb-tag-img {
+  max-width: 100%;
+}
+
+
+.ubb-tag-left {
+  text-align: left;
+}
+
+
+.ubb-tag-quote-container {
+  padding: 10px;
+  /* background-color: #f5faff; */
+  border: 1px solid #cccccc;
+  max-height: 270px;
+  overflow-y: scroll;
+}
+
+.ubb-tag-quote-item {
+  margin-top: 1.2em;
+}
+
+
+.ubb-tag-right {
+  text-align: right;
+}
+
+
+.ubb-tag-sandbox {
+  max-width: 100%;
+  border: none;
+}
+
+
+.ubb-tag-table {
+  border-collapse: collapse;
+}
+
+.ubb-tag-td,
+.ubb-tag-th {
+  /* TODO: theme */
+  border: 1px solid rgb(0, 0, 0);
+}
+
+
+.ubb-tag-u {
+  text-decoration: underline;
+}
+
+
+/* generalTagHandlers */
+
+.ubb-tag-ac,
+.ubb-tag-em,
+.ubb-tag-ms {
+  width: 60px;
+}
+
+
+.ubb-tag-mahjong {
+  width: 32px;
+}
+
+
+.ubb-tag-tb {
+  width: 30px;
+}

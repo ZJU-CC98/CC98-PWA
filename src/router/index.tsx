@@ -12,7 +12,7 @@ const _ROUTER_CACHE: WindowLocation[] = []
 
 // 最大缓存页面数
 // TODO: 加入 setting 配置
-const MAX_CACHE_SIZE = 3
+const MAX_CACHE_SIZE = 0
 
 const CacheRouter: React.FunctionComponent<ILocation> = ({ location }) => {
   if (_ROUTER_CACHE.length > MAX_CACHE_SIZE) {

@@ -1,20 +1,33 @@
 import { IUser } from '@cc98/api'
 import { GET, PUT, DELETE } from '@/utils/fetch'
+import { Try, Success } from '@/utils/fp/Try'
+import { FetchError } from '@/utils/fetch'
 
 export interface IUserMap {
   [key: string]: IUser
 }
 
-const GLOBAL_USER_CACHE: IUserMap = {}
-
+const _USER_CACHE: IUserMap = {} as {
+  [key: number]: IUser
+}
 /**
  * @description 通过用户id获取用户信息
  * @param {number} id 用户id
  */
 export function getUserInfoById(id: number) {
-  // TODO: cache
+  if (_USER_CACHE[id]) {
+    return Promise.resolve(Try.of<IUser, FetchError>(Success.of(_USER_CACHE[id])))
+  }
 
-  return GET<IUser>(`/user/${id}`)
+  return GET<IUser>(`user/${id}`).then(res =>
+    Promise.resolve(
+      res.map(user => {
+        _USER_CACHE[user.id] = user
+
+        return user
+      })
+    )
+  )
 }
 
 /**
@@ -22,11 +35,11 @@ export function getUserInfoById(id: number) {
  * @param {string} name 用户名
  */
 export function getUserInfoByName(name: string) {
-  return GET<IUser>(`/user/name/${name}`)
+  return GET<IUser>(`user/name/${name}`)
 }
 
 /**
- * @description 通过用户id批量获取用户信息
+ * @description 通过 用户ID 批量获取用户信息
  */
 export function getUsersInfoByIds(ids: number[]) {
   const query = ids.map(id => `id=${id}`).join('&')
@@ -39,7 +52,7 @@ export function getUsersInfoByIds(ids: number[]) {
  * @param id 用户 ID
  */
 export function followUser(id: number) {
-  return PUT(`/me/followee/${id}`)
+  return PUT(`me/followee/${id}`)
 }
 
 /**
@@ -47,7 +60,7 @@ export function followUser(id: number) {
  * @param id 用户 ID
  */
 export function unFollowUser(id: number) {
-  return DELETE(`/me/followee/${id}`)
+  return DELETE(`me/followee/${id}`)
 }
 
 /**

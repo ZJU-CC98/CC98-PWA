@@ -1,18 +1,18 @@
-/**
- * @author dongyansong
- * @date 2018-10-26
- */
 import React from 'react'
-import { IMessageContent } from '@cc98/api'
 import styled from 'styled-components'
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 
+import useFetcher from '@/hooks/useFetcher'
 import useContainer from '@/hooks/useContainer'
 import userInstace from '@/containers/user'
-import useUserId from '@/hooks/useUserId'
+
+import { IMessageContent, IUser } from '@cc98/api'
+
+import { getUserInfoById } from '@/services/user'
 
 import dayjs from 'dayjs'
+import { navigate } from '@/utils/history'
 
 const ListItemAvatarS = styled(ListItemAvatar)`
   align-self: flex-start;
@@ -46,7 +46,7 @@ const MessageContentLeft = styled(MessageContent)`
     border-width: 0.5em 0.5em 0.5em 0;
     border-color: transparent;
     border-right-color: #eee;
-    left: -0.5em;
+    left: -0.4em;
     position: absolute;
     top: 1em;
   }
@@ -59,14 +59,14 @@ const MessageContentRight = styled(MessageContent)`
     border-width: 0.5em 0 0.5em 0.5em;
     border-color: transparent;
     border-left-color: #eee;
-    right: -0.5em;
+    right: -0.4em;
     position: absolute;
     top: 1em;
   }
 `
 
 const MessageDate = styled.span<{ right?: boolean }>`
-  color: #666;
+  color: #aaa;
   font-size: 0.7em;
   align-self: ${props => (props.right ? 'flex-end' : '')};
 `
@@ -76,11 +76,11 @@ interface Props {
 }
 
 // TODO: 消息气泡
-const renderItem = (message: IMessageContent, userAvatar: string, isCurrSend: boolean) =>
+const renderItem = (message: IMessageContent, userInfo: IUser, isCurrSend: boolean) =>
   !isCurrSend ? (
     <ListItem>
       <ListItemAvatarS>
-        <Avatar src={userAvatar} />
+        <Avatar src={userInfo.portraitUrl} onClick={() => navigate(`/user/${userInfo.id}`)} />
       </ListItemAvatarS>
       <MessageRoot>
         <MessageContentLeft>{message.content}</MessageContentLeft>
@@ -95,7 +95,7 @@ const renderItem = (message: IMessageContent, userAvatar: string, isCurrSend: bo
         <MessageDate>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
       </MessageRoot>
       <ListItemAvatarS>
-        <Avatar src={userAvatar} />
+        <Avatar src={userInfo.portraitUrl} />
       </ListItemAvatarS>
     </ListItem>
   )
@@ -105,7 +105,10 @@ export default ({ message }: Props) => {
     state: { myInfo },
   } = useContainer(userInstace)
 
-  const { portraitUrl } = useUserId(message.senderId)
+  const [userInfo] = useFetcher(() => getUserInfoById(message.senderId))
+  if (userInfo === null || myInfo === null) {
+    return null
+  }
 
-  return renderItem(message, portraitUrl, myInfo!.id === message.senderId)
+  return renderItem(message, userInfo, myInfo.id === message.senderId)
 }

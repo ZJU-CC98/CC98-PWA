@@ -66,7 +66,7 @@ interface GETOptions {
    * URL 参数
    */
   params?: {
-    [key: string]: string
+    [key: string]: string | number
   }
 }
 
@@ -184,8 +184,8 @@ export async function DELETE<T = void>(url: string, options: DELETEOptions = {})
 /**
  * just like $.param
  */
-export function encodeParams(params: { [key: string]: string }) {
+export function encodeParams(params: { [key: string]: string | number }) {
   return Object.keys(params)
-    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(`${params[key]}`))
     .join('&')
 }

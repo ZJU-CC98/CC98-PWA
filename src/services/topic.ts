@@ -24,22 +24,22 @@ export function getTopicsInBoard(id: string, from: number, size: number, tag1 = 
   if (tag1 === -1 && tag2 === -1) {
     return GET<ITopic[]>(`board/${id}/topic`, {
       params: {
-        from: `${from}`,
-        size: `${size}`,
+        from,
+        size,
       },
     })
   }
 
-  const params: { [key: string]: string } = {}
+  const params: { [key: string]: string | number } = {}
 
   if (tag1 !== -1) {
-    params.tag1 = `${tag1}`
+    params.tag1 = tag1
   }
   if (tag2 !== -1) {
-    params.tag2 = `${tag2}`
+    params.tag2 = tag2
   }
-  params.from = `${from}`
-  params.size = `${size}`
+  params.from = from
+  params.size = size
 
   interface Topics {
     count: number
@@ -64,8 +64,8 @@ export function getTopicInfo(id: number | string) {
 export function getNewTopics(from: number) {
   return GET<ITopic[]>('topic/new', {
     params: {
-      from: `${from}`,
-      size: '20',
+      from,
+      size: 20,
     },
   })
 }
@@ -76,8 +76,8 @@ export function getNewTopics(from: number) {
 export function getFollowBoardsTopics(from: number) {
   return GET<ITopic[]>('me/custom-board/topic', {
     params: {
-      from: `${from}`,
-      size: '20',
+      from,
+      size: 20,
     },
   })
 }
@@ -88,8 +88,8 @@ export function getFollowBoardsTopics(from: number) {
 export function getFollowUsersTopics(from: number) {
   return GET<ITopic[]>('me/followee/topic', {
     params: {
-      from: `${from}`,
-      size: '20',
+      from,
+      size: 20,
     },
   })
 }
@@ -101,8 +101,8 @@ export function searchTopics(keyword: string, from: number) {
   return GET<ITopic[]>('topic/search', {
     params: {
       keyword: `${keyword}`,
-      from: `${from}`,
-      size: '20',
+      from,
+      size: 20,
     },
   })
 }
@@ -141,8 +141,8 @@ export function getHistoryHotTopics() {
 export function getUsersRecentTopics(id: number, from: number) {
   return GET<ITopic[]>(`user/${id}/recent-topic`, {
     params: {
-      from: `${from}`,
-      size: '20',
+      from,
+      size: 20,
     },
   })
 }
@@ -153,8 +153,8 @@ export function getUsersRecentTopics(id: number, from: number) {
 export function getMyRecentTopics(from: number) {
   return GET<ITopic[]>('me/recent-topic', {
     params: {
-      from: `${from}`,
-      size: '20',
+      from,
+      size: 20,
     },
   })
 }

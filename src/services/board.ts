@@ -38,22 +38,28 @@ export async function getBoardTags(id: string) {
   return GET<ITagGroup[]>(`board/${id}/tag`)
 }
 
+// global var for getBoardNameById
+let _hasMap = false
+const _BoardNameCacheMap = {} as {
+  [key: number]: string
+}
 /**
  * 通过版面Id获取版面名称
  */
 export async function getBoardNameById(id: number) {
-  let name = '版面不存在'
-
-  const res = await getBoardsInfo()
-  res.fail().succeed(boards => {
-    for (const baseBoard of boards) {
-      for (const childBoard of baseBoard.boards) {
-        if (id === childBoard.id) name = childBoard.name
+  if (!_hasMap) {
+    const res = await getBoardsInfo()
+    res.fail().succeed(boards => {
+      for (const baseBoard of boards) {
+        for (const childBoard of baseBoard.boards) {
+          _BoardNameCacheMap[childBoard.id] = childBoard.name
+        }
       }
-    }
-  })
+      _hasMap = true
+    })
+  }
 
-  return name
+  return _BoardNameCacheMap[id] || '版面不存在'
 }
 
 /**

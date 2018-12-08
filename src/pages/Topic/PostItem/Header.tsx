@@ -28,7 +28,7 @@ const AvatarS = styled(Avatar)`
   }
 `
 
-const Title = styled(Typography)``
+const Title = Typography
 
 const SubTitle = styled(Typography).attrs({
   color: 'textSecondary',
@@ -68,6 +68,7 @@ export default ({ postInfo, userInfo, isHot }: Props) => (
         {postInfo.isAnonymous && '匿'}
       </AvatarS>
       <div>
+        {/* {isHot && <a href={`#${postInfo.floor}`} />} */}
         <Title>
           {postInfo.isAnonymous ? `匿名${postInfo.userName.toUpperCase()}` : postInfo.userName}
         </Title>

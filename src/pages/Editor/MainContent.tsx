@@ -23,7 +23,7 @@ interface Props {
 
 export default ({ editor }: Props) => {
   const handlerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    editor.replace(event.target.value)
+    editor.replaceMainContent(event.target.value)
   }
 
   return (

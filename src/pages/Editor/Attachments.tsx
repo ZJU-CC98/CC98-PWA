@@ -31,7 +31,7 @@ export default ({ editor }: Props) => (
         <Badge
           color="secondary"
           badgeContent={<ClearIcon fontSize="small" />}
-          onClick={() => editor.detach(index)}
+          onClick={() => editor.detachAttachment(index)}
         >
           {UBB(attach)}
         </Badge>

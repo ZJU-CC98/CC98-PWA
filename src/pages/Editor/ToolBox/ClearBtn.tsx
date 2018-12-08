@@ -11,7 +11,7 @@ interface Props {
 
 export default ({ editor }: Props) => {
   function clickHandler() {
-    editor.reset()
+    editor.resetAllInput()
   }
 
   return (

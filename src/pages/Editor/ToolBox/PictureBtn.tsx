@@ -15,7 +15,7 @@ export default ({ editor }: Props) => {
   function clickHandler() {
     uploadPicture().then(res =>
       res.fail().succeed(picURL => {
-        editor.attach(`[img]${picURL}[/img]`)
+        editor.attachAttachment(`[img]${picURL}[/img]`)
       })
     )
   }

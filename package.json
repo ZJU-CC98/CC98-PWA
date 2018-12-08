@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@aspnet/signalr": "^1.0.4",
-    "@cc98/state": "^1.0.0",
     "@cc98/ubb-react": "^1.0.1",
     "@material-ui/core": "^3.6.1",
     "@material-ui/icons": "^3.0.1",
@@ -28,8 +27,6 @@
     "prop-types": "^15.6.2",
     "react": "^16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",
-    "react-swipeable-views": "^0.13.0",
-    "react-swipeable-views-utils": "^0.13.0",
     "remark": "^10.0.0",
     "remark-react": "^5.0.0",
     "styled-components": "^4.1.2"

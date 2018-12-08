@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { navigate } from '@/utils/history'
 import styled from 'styled-components'
 
@@ -59,40 +59,33 @@ interface FormField {
   password: string
 }
 
-interface State {
-  formField: FormField
+interface LogInState {
   loading: boolean
   logInFail: boolean
 }
 
-// TODO: refactor with hooks
+const LogIn: React.FunctionComponent = () => {
+  const [formField, setFormField] = useState<FormField>({
+    username: '',
+    password: '',
+  })
 
-class LogIn extends React.Component<{}, State> {
-  state: State = {
-    formField: {
-      username: '',
-      password: '',
-    },
-
+  const [logInState, setLogInState] = useState<LogInState>({
     loading: false,
     logInFail: false,
-  }
+  })
 
-  handleChange = (field: keyof FormField) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      formField: {
-        ...this.state.formField,
-        [field]: event.target.value,
-      },
+  const handleChange = (field: keyof FormField) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormField({
+      ...formField,
+      [field]: event.target.value,
     })
   }
 
-  logIn = async () => {
-    const {
-      formField: { username, password },
-    } = this.state
+  const logIn = async () => {
+    const { username, password } = formField
 
-    this.setState({
+    setLogInState({
       loading: true,
       logInFail: false,
     })
@@ -102,7 +95,7 @@ class LogIn extends React.Component<{}, State> {
     token
       .fail(() => {
         setTimeout(() => {
-          this.setState({
+          setLogInState({
             loading: false,
             logInFail: true,
           })
@@ -116,42 +109,36 @@ class LogIn extends React.Component<{}, State> {
       })
   }
 
-  render() {
-    const { formField, loading, logInFail } = this.state
+  const { logInFail, loading } = logInState
 
-    return (
-      <WrapperDiv>
-        <SnowballImg src={snowball} />
+  return (
+    <WrapperDiv>
+      <SnowballImg src={snowball} />
 
-        <Typography variant="h6">登录</Typography>
+      <Typography variant="h6">登录</Typography>
 
-        <FormDiv>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="username">用户名</InputLabel>
-            <Input
-              id="username"
-              value={formField.username}
-              onChange={this.handleChange('username')}
-            />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="password">密码</InputLabel>
-            <Input
-              id="password"
-              type="password"
-              value={formField.password}
-              onChange={this.handleChange('password')}
-            />
-          </FormControl>
-        </FormDiv>
+      <FormDiv>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="username">用户名</InputLabel>
+          <Input id="username" value={formField.username} onChange={handleChange('username')} />
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="password">密码</InputLabel>
+          <Input
+            id="password"
+            type="password"
+            value={formField.password}
+            onChange={handleChange('password')}
+          />
+        </FormControl>
+      </FormDiv>
 
-        <LogInButton disabled={loading} onClick={this.logIn}>
-          {logInFail ? 'Retry' : 'LogIn'}
-          {loading && <ButtonProgress />}
-        </LogInButton>
-      </WrapperDiv>
-    )
-  }
+      <LogInButton disabled={loading} onClick={logIn}>
+        {logInFail ? 'Retry' : 'LogIn'}
+        {loading && <ButtonProgress />}
+      </LogInButton>
+    </WrapperDiv>
+  )
 }
 
 export default LogIn

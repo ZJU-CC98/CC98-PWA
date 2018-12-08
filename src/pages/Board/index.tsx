@@ -15,7 +15,7 @@ import BoardTags from './BoardTags'
 import { getBoardInfo, getBoardTags } from '@/services/board'
 import { getTopicsInBoard, getTopTopics } from '@/services/topic'
 
-import { EditorUtils } from '@/global/editor'
+import editorInstance from '@/containers/editor'
 
 const WrapperDiv = styled.div`
   display: flex;
@@ -64,7 +64,7 @@ export default ({ id }: Props) => {
       {board && (
         <>
           <BoardHead data={board} />
-          <FixFab onClick={() => EditorUtils.postTpoic()}>
+          <FixFab onClick={() => editorInstance.toPostTpoic(board.id)}>
             <EditIcon />
           </FixFab>
         </>

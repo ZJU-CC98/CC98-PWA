@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import LoadingCircle from '@/components/LoadingCircle'
 
 import { debounce } from 'lodash-es'
+
+// TODO: move to utils
 import { bindURL } from '@/router'
 
 const WrapperDiv = styled.div`
@@ -48,14 +50,17 @@ const InfiniteList: React.FunctionComponent<Props> = props => {
         if (isLoading || isEnd) {
           return
         }
-        // loadingDom 出现在可视区域
-        const distance =
-          loadingDom.current && window.innerHeight - loadingDom.current.getBoundingClientRect().top
-        if (distance === null || distance < 0) {
+        if (loadingDom.current === null) {
           return
         }
 
-        callback()
+        // loadingDom 出现在可视区域
+        const { top, bottom } = loadingDom.current.getBoundingClientRect()
+        const inViewport = bottom > 0 && window.innerHeight - top > 0
+
+        if (inViewport) {
+          callback()
+        }
       }, window.location.href),
 
       250

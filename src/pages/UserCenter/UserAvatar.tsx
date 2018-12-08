@@ -1,8 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { navigate } from '@/utils/history'
 import styled from 'styled-components'
-
-import useToggle from '@/hooks/useToggle'
 
 import { Avatar, IconButton, Typography } from '@material-ui/core'
 
@@ -47,10 +45,17 @@ interface Props {
 }
 
 const UserAvatar: React.FunctionComponent<Props> = ({ info, isUserCenter }) => {
-  const [isFollowing, toggleFunc] = useToggle(info.isFollowing, {
-    trueFunc: () => unFollowUser(info.id),
-    falseFunc: () => followUser(info.id),
-  })
+  const [isFollowing, setIsFollowing] = useState(info.isFollowing)
+  const toggleFunc = () => {
+    if (isFollowing) {
+      // TODO: check return & loading
+      unFollowUser(info.id)
+      setIsFollowing(false)
+    } else {
+      followUser(info.id)
+      setIsFollowing(true)
+    }
+  }
 
   const buttonsJSX = isUserCenter ? (
     <IconButton onClick={() => navigate('/userCenter/edit')}>
@@ -62,7 +67,7 @@ const UserAvatar: React.FunctionComponent<Props> = ({ info, isUserCenter }) => {
         <FavoriteIcon color={isFollowing ? 'secondary' : 'disabled'} />
       </IconButton>
       <IconButton>
-        <ChatIcon /> {/* TODO: 私信 */}
+        <ChatIcon onClick={() => navigate(`/messageDetail/${info.id}`)} />
       </IconButton>
     </>
   )

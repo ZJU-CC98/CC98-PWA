@@ -29,6 +29,10 @@ interface Options<T> {
    * Try success callback
    */
   success?: (data: T[]) => void
+  /**
+   * 翻转列表
+   */
+  reverse?: boolean
 }
 
 export default function useInfList<T>(service: Service<T[]>, options: Options<T> = {}) {
@@ -52,14 +56,19 @@ export default function useInfList<T>(service: Service<T[]>, options: Options<T>
           options.fail && options.fail(err)
         })
         .succeed(list => {
-          options.success && options.success(list)
+          if (options && options.reverse) {
+            setList(prevList => list.reverse().concat(prevList))
+          } else {
+            setList(prevList => prevList.concat(list))
+          }
 
-          setList(prevList => prevList.concat(list))
           setState({
             isLoading: false,
             isEnd: list.length !== (options.step || 20),
             from: state.from += list.length,
           })
+
+          options.success && options.success(list)
         })
     })
   }

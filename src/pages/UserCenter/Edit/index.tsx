@@ -48,7 +48,7 @@ const FormItem = styled(TextField).attrs({
   && {
     margin-bottom: 20px;
   }
-`
+` as typeof TextField // FIXME: @types/styled-components
 
 const SubmitButton = styled(Button).attrs({
   variant: 'contained',

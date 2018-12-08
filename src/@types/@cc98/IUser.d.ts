@@ -27,7 +27,7 @@ declare module '@cc98/api' {
      */
     signatureCode: string
     /**
-     * id
+     * 用户 ID
      */
     id: number
     /**

@@ -1,7 +1,3 @@
-/**
- * @author dongyansong
- * @date 2018-10-26
- */
 import React from 'react'
 import styled from 'styled-components'
 import { navigate } from '@/utils/history'
@@ -17,7 +13,9 @@ import {
   ListItemText,
 } from '@material-ui/core'
 
-import useUserId from '@/hooks/useUserId'
+import useFetcher from '@/hooks/useFetcher'
+
+import { getUserInfoById } from '@/services/user'
 
 const Text = styled.span`
   display: block;
@@ -34,7 +32,11 @@ interface Props {
 const navigateToDetail = (userId: number) => navigate(`/messageDetail/${userId}`)
 
 export default ({ message }: Props) => {
-  const { name, portraitUrl } = useUserId(message.userId)
+  const [userInfo] = useFetcher(() => getUserInfoById(message.userId))
+  if (userInfo === null) {
+    return null
+  }
+  const { name, portraitUrl } = userInfo
 
   return (
     <ListItem button onClick={() => navigateToDetail(message.userId)}>

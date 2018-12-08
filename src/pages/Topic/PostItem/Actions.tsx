@@ -11,11 +11,12 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { IPost, ILikeState } from '@cc98/api'
 import { putLike, putDislike } from '@/services/post'
 
-import { EditorUtils } from '@/global/editor'
+import editorInstance from '@/containers/editor'
 import userInstance from '@/containers/user'
 
 import { navigate } from '@/utils/history'
 import copy2Clipboard from 'copy-to-clipboard'
+import dayjs from 'dayjs'
 
 // @babel/plugin-transform-typescript does not support const enums
 enum LikeState {
@@ -85,7 +86,15 @@ const IconActions = ({ postInfo }: Props) => {
       <IconButton>
         <RotateLeftIcon
           onClick={() => {
-            EditorUtils.quotePost(postInfo.topicId, `[quote]${postInfo.content}[/quote]\n`)
+            const { floor, userName, time, topicId, content } = postInfo
+            const formatTime = dayjs(time).format('YYYY-MM-DD HH:mm')
+
+            editorInstance.toQuotePost(
+              postInfo.topicId,
+              // TODO: WTF!
+              // tslint:disable-next-line
+              `[quote]引用自${floor}楼${userName}在${formatTime}的发言：[color=blue][url=/topic/${topicId}#${floor}]>查看原帖<[/url][/color][/b]\n${content}[/quote]\n`
+            )
           }}
         />
       </IconButton>
@@ -137,7 +146,7 @@ const MoreActions = ({ postInfo }: Props) => {
         {isMyPost && (
           <MenuItem
             onClick={() => {
-              EditorUtils.editorPost(postInfo.id, postInfo.content)
+              editorInstance.toEditorPost(postInfo.id, postInfo.content)
               handleClose()
             }}
           >

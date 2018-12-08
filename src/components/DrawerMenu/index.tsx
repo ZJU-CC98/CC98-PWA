@@ -75,8 +75,8 @@ const DrawerMenu: React.FunctionComponent = () => {
         {user.isLogIn && (
           <>
             <Item icon={<Book />} text="关注" onClick={jump('/myFollow')} />
-            <Item icon={<SpeakerNotes />} text="私信" onClick={jump('/messageList')} />
             <Item icon={<Search />} text="搜索" onClick={jump('/search')} />
+            <Item icon={<SpeakerNotes />} text="私信" onClick={jump('/messageList')} />
             <Item icon={<ExitToApp />} text="登出" onClick={LOG_OUT} />
           </>
         )}

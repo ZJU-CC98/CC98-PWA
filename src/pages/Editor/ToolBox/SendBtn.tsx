@@ -5,17 +5,18 @@ import { EditorContainer } from '@/containers/editor'
 import { IconButton } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
 
-import { EditorGlobal } from '@/global/editor'
-
 interface Props {
   editor: EditorContainer
 }
 
 export default ({ editor }: Props) => {
   function clickHandler() {
-    const content = `${editor.state.mainContent}\n${editor.state.attachments.join('')}`
+    let attachments = editor.state.attachments.join('')
+    if (attachments) {
+      attachments = `'\n${attachments}`
+    }
 
-    EditorGlobal.onSendCallBack(content)
+    editor.state.onSendCallBack(editor.state.mainContent + attachments)
   }
 
   return (

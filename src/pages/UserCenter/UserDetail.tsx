@@ -43,7 +43,7 @@ const RecentTopics: React.FunctionComponent<Props> = ({ info }) => (
       <ListItem name="被删贴数" value={info.deleteCount} />
       <ListItem name="威望" value={info.prestige} />
       <ListItem name="风评" value={info.popularity} />
-      <ListItem name="生日" value={dayjs(info.birthday).format('YYYY/MM/DD')} />
+      <ListItem name="生日" value={info.birthday && dayjs(info.birthday).format('YYYY/MM/DD')} />
       <ListItem name="QQ" value={info.qq} />
       <ListItem name="注册时间" value={dayjs(info.registerTime).format('YYYY-MM-DD HH:mm')} />
       <ListItem name="最后登录" value={dayjs(info.lastLogOnTime).format('YYYY-MM-DD HH:mm')} />

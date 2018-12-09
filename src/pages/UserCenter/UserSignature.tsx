@@ -9,7 +9,10 @@ import { IUser } from '@cc98/api'
 import UBB from '@/UBB'
 
 const TypographyS = styled(Typography)`
-  margin: 0 12px;
+  && {
+    width: 100%;
+    margin: 0 12px;
+  }
 `
 
 interface Props {

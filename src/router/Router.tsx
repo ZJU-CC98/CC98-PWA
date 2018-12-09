@@ -75,4 +75,4 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
   </Router>
 )
 
-export default MyRouter
+export default React.memo(({ location }: ILocation) => <MyRouter location={location} />)

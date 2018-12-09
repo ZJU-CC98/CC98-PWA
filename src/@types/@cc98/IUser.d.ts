@@ -13,7 +13,7 @@ declare module '@cc98/api' {
     /**
      * 用户生日
      */
-    birthday: string
+    birthday: string | null
     /**
      * 用户个人简介图片
      */

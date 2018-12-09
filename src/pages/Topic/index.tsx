@@ -53,8 +53,10 @@ export default ({ topicId, userId, postId }: Props) => {
   return (
     <>
       <PostHead topicInfo={topicInfo} />
-      <PostList service={postService}>
-        {!userId && !postId && <PostListHot service={hotPostService} />}
+      <PostList isTrace={Boolean(userId) || Boolean(postId)} service={postService}>
+        {!userId && !postId && (
+          <PostListHot isTrace={Boolean(userId) || Boolean(postId)} service={hotPostService} />
+        )}
       </PostList>
       <FixFab>
         <EditIcon onClick={() => editorInstance.toReplyTopic(topicInfo.id)} />

@@ -10,6 +10,8 @@ const LayoutCenter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: ${window.screen.height}px;
+  width: ${window.screen.width}px;
 `
 
 export default LayoutCenter

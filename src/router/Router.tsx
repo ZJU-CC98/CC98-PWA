@@ -40,7 +40,10 @@ const Route: React.FunctionComponent<
 export interface ILocation {
   location: WindowLocation
 }
-const FadeTransitionRouter = (props: any) => (
+
+const FadeTransitionRouter: React.FunctionComponent<
+  ILocation & { children: JSX.Element[] }
+> = props => (
   <Location>
     {({ location }) => (
       <TransitionGroup className="transition-group">

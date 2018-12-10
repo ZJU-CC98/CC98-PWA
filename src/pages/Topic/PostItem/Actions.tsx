@@ -30,10 +30,6 @@ interface Props {
    * 帖子信息
    */
   postInfo: IPost
-  /**
-   * 是否追踪
-   */
-  isTrace: boolean
 }
 
 const ActionDiv = styled.div`
@@ -111,10 +107,8 @@ const IconActions = ({ postInfo }: Props) => {
   )
 }
 
-const MoreActions = ({ postInfo, isTrace }: Props) => {
+const MoreActions = ({ postInfo }: Props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-  // 判断是否是追踪
-  // const isTrace = document.location && document.location.href.indexOf('trace') !== -1
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -125,24 +119,16 @@ const MoreActions = ({ postInfo, isTrace }: Props) => {
   }
 
   const handleTrace = () => {
-    if (isTrace) {
-      navigate(`/topic/${postInfo.topicId}`)
+    if (postInfo.isAnonymous) {
+      navigate(`/topic/${postInfo.topicId}/anonymous/trace/${postInfo.id}`)
     } else {
-      if (postInfo.isAnonymous) {
-        navigate(`/topic/${postInfo.topicId}/anonymous/trace/${postInfo.id}`)
-      } else {
-        navigate(`/topic/${postInfo.topicId}/trace/${postInfo.userId}`)
-      }
+      navigate(`/topic/${postInfo.topicId}/trace/${postInfo.userId}`)
     }
     handleClose()
   }
 
   const handleShare = () => {
-    if (document.location) {
-      copy2Clipboard(
-        `https://${document.location.host}/topic/${postInfo.topicId}#${postInfo.floor}`
-      )
-    }
+    copy2Clipboard(`https://${document.location.host}/topic/${postInfo.topicId}#${postInfo.floor}`)
     // TODO: tips: 链接已复制到剪贴板
     handleClose()
   }
@@ -156,7 +142,7 @@ const MoreActions = ({ postInfo, isTrace }: Props) => {
         <ExpandMoreIcon />
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={handleTrace}>{isTrace ? '返回' : '追踪'}</MenuItem>
+        <MenuItem onClick={handleTrace}>追踪</MenuItem>
         {isMyPost && (
           <MenuItem
             onClick={() => {
@@ -179,9 +165,9 @@ const FlexDiv = styled.div`
   align-items: center;
 `
 
-export default ({ postInfo, isTrace }: Props) => (
+export default ({ postInfo }: Props) => (
   <FlexDiv>
-    <IconActions postInfo={postInfo} isTrace={isTrace} />
-    <MoreActions postInfo={postInfo} isTrace={isTrace} />
+    <IconActions postInfo={postInfo} />
+    <MoreActions postInfo={postInfo} />
   </FlexDiv>
 )

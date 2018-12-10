@@ -73,6 +73,12 @@ export default ({ postInfo, userInfo, isHot }: Props) => (
           {postInfo.isAnonymous ? `匿名${postInfo.userName.toUpperCase()}` : postInfo.userName}
         </Title>
         <SubTitle>{dayjs(postInfo.time).format('YYYY/MM/DD HH:mm')}</SubTitle>
+        <SubTitle>
+          {postInfo.lastUpdateTime &&
+            `由 ${postInfo.lastUpdateAuthor || '匿名'} 编辑于 ${dayjs(
+              postInfo.lastUpdateTime
+            ).format('YYYY/MM/DD HH:mm')}`}
+        </SubTitle>
       </div>
     </AvatarArea>
 

@@ -32,9 +32,13 @@ interface Props {
    * 是否热帖
    */
   isHot?: boolean
+  /**
+   * 是否追踪
+   */
+  isTrace: boolean
 }
 
-export default ({ postInfo, userInfo, isHot }: Props) => {
+export default ({ postInfo, userInfo, isHot, isTrace }: Props) => {
   if (postInfo.isDeleted) {
     return null
   }
@@ -43,7 +47,7 @@ export default ({ postInfo, userInfo, isHot }: Props) => {
     <Wrapper>
       <Header postInfo={postInfo} userInfo={userInfo} isHot={isHot} />
       <Content postInfo={postInfo} />
-      <Actions postInfo={postInfo} />
+      <Actions postInfo={postInfo} isTrace={isTrace} />
       <Awards awards={postInfo.awards} />
 
       <Divider />

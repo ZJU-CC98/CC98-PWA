@@ -1,7 +1,6 @@
 import React from 'react'
 // https://reach.tech/router/api/Router
-import { Router, RouteComponentProps, WindowLocation, Location } from '@reach/router'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { Router, RouteComponentProps, WindowLocation } from '@reach/router'
 
 import BoardList from '@/pages/BoardList'
 import Board from '@/pages/Board'
@@ -41,24 +40,8 @@ export interface ILocation {
   location: WindowLocation
 }
 
-const FadeTransitionRouter: React.FunctionComponent<
-  ILocation & { children: JSX.Element[] }
-> = props => (
-  <Location>
-    {({ location }) => (
-      <TransitionGroup className="transition-group">
-        <CSSTransition key={location.key} classNames="fade" timeout={500}>
-          <Router location={location} className="router">
-            {props.children}
-          </Router>
-        </CSSTransition>
-      </TransitionGroup>
-    )}
-  </Location>
-)
-
 const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
-  <FadeTransitionRouter location={location}>
+  <Router location={location}>
     <Route path="/" component={Home} />
     <Route path="/about" component={About} />
 
@@ -89,7 +72,7 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
     <Route path="/error/403" component={Page403} />
     <Route path="/error/404" component={Page404} />
     <Route default component={Page404} />
-  </FadeTransitionRouter>
+  </Router>
 )
 
 export default React.memo(({ location }: ILocation) => <MyRouter location={location} />)

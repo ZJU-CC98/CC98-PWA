@@ -10,30 +10,27 @@ import { getUsersInfoByIds, IUserMap } from '@/services/user'
 
 interface Props {
   service: Service<IPost[]>
+  isTrace: boolean
 }
 
 export function useUserMap() {
   const [userMap, setUserMap] = useState<IUserMap>({})
 
   const updateUserMap = async (list: IPost[]) => {
-    const res = await getUsersInfoByIds(
-      list.map(p => p.userId).filter(id => id)
-    )
-    res
-      .fail()
-      .succeed(users => {
-        users.forEach(user => {
-          userMap[user.id] = user
-        })
-
-        setUserMap(userMap)
+    const res = await getUsersInfoByIds(list.map(p => p.userId).filter(id => id))
+    res.fail().succeed(users => {
+      users.forEach(user => {
+        userMap[user.id] = user
       })
+
+      setUserMap(userMap)
+    })
   }
 
   return [userMap, updateUserMap] as [typeof userMap, typeof updateUserMap]
 }
 
-const PostList: React.FunctionComponent<Props> = ({ service, children }) => {
+const PostList: React.FunctionComponent<Props> = ({ service, isTrace, children }) => {
   const [userMap, updateUserMap] = useUserMap()
 
   const [posts, state, callback] = useInfList(service, {
@@ -44,15 +41,24 @@ const PostList: React.FunctionComponent<Props> = ({ service, children }) => {
 
   return (
     <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
-      {posts.map((info: IPost, index: number) => index === 0
-        ? (
+      {posts.map((info: IPost, index: number) =>
+        index === 0 ? (
           <>
-            <PostItem key={info.id} postInfo={info} userInfo={userMap[info.userId]} />
+            <PostItem
+              key={info.id}
+              isTrace={isTrace}
+              postInfo={info}
+              userInfo={userMap[info.userId]}
+            />
             {children/** <PostListHot /> */}
           </>
-        )
-        : (
-          <PostItem key={info.id} postInfo={info} userInfo={userMap[info.userId]} />
+        ) : (
+          <PostItem
+            key={info.id}
+            isTrace={isTrace}
+            postInfo={info}
+            userInfo={userMap[info.userId]}
+          />
         )
       )}
     </InfiniteList>

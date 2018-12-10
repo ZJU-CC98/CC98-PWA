@@ -36,16 +36,4 @@ export default createGlobalStyle`
   div {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
-  .fade-enter {
-  opacity: 0;
-  z-index: 1;
-  }
-  .fade-enter.fade-enter-active {
-  opacity: 1;
-  transition: opacity 450ms ease-in;
-  }
-  .transition-group {
-  flex: 1;
-  position: relative;
-  }
 `

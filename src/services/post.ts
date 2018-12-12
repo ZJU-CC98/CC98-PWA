@@ -14,6 +14,18 @@ export function getPost(id: number, from: number) {
 }
 
 /**
+ * 获取一个帖子的单独一层
+ */
+export function getSinglePost(id: number, from: number) {
+  return GET<IPost[]>(`topic/${id}/post`, {
+    params: {
+      from,
+      size: 1,
+    },
+  })
+}
+
+/**
  * 追踪非匿名板块的用户
  */
 export function getTracePost(topicId: number, userId: number, from: number) {

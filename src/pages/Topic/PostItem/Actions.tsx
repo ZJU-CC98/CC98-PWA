@@ -18,6 +18,8 @@ import { navigate } from '@/utils/history'
 import copy2Clipboard from 'copy-to-clipboard'
 import dayjs from 'dayjs'
 
+import Judge from './Judge'
+
 // @babel/plugin-transform-typescript does not support const enums
 enum LikeState {
   NONE = 0,
@@ -34,6 +36,10 @@ interface Props {
    * 是否追踪
    */
   isTrace: boolean
+  /**
+   * 评分
+   */
+  refresh: () => void
 }
 
 const ActionDiv = styled.div`
@@ -111,8 +117,9 @@ const IconActions = ({ postInfo }: Props) => {
   )
 }
 
-const MoreActions = ({ postInfo, isTrace }: Props) => {
+const MoreActions = ({ postInfo, isTrace, refresh }: Props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const [open, setOpen] = useState(false)
   // 判断是否是追踪
   // const isTrace = document.location && document.location.href.indexOf('trace') !== -1
 
@@ -147,11 +154,21 @@ const MoreActions = ({ postInfo, isTrace }: Props) => {
     handleClose()
   }
 
+  const handleJudge = () => {
+    handleJudgeOpen()
+    handleClose()
+  }
+
+  const handleJudgeOpen = () => setOpen(true)
+
+  const handleJudgeClose = () => setOpen(false)
+
   const myInfo = userInstance.state.myInfo
   const isMyPost = postInfo.userId === (myInfo && myInfo.id)
 
   return (
     <>
+      {open && <Judge currentPost={postInfo} handleClose={handleJudgeClose} refresh={refresh} />}
       <IconButton onClick={handleOpen}>
         <ExpandMoreIcon />
       </IconButton>
@@ -167,6 +184,7 @@ const MoreActions = ({ postInfo, isTrace }: Props) => {
             编辑
           </MenuItem>
         )}
+        <MenuItem onClick={handleJudge}>评分</MenuItem>
         <MenuItem onClick={handleShare}>分享</MenuItem>
       </Menu>
     </>
@@ -179,9 +197,9 @@ const FlexDiv = styled.div`
   align-items: center;
 `
 
-export default ({ postInfo, isTrace }: Props) => (
+export default ({ postInfo, isTrace, refresh }: Props) => (
   <FlexDiv>
-    <IconActions postInfo={postInfo} isTrace={isTrace} />
-    <MoreActions postInfo={postInfo} isTrace={isTrace} />
+    <IconActions postInfo={postInfo} isTrace={isTrace} refresh={refresh} />
+    <MoreActions postInfo={postInfo} isTrace={isTrace} refresh={refresh} />
   </FlexDiv>
 )

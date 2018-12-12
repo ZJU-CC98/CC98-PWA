@@ -16,6 +16,7 @@ import { StyleRules, withStyles } from '@material-ui/core/styles'
 
 import { PUT } from '@/utils/fetch'
 import { IPost } from '@cc98/api'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
 const styles: StyleRules = {
   avatar: {
@@ -30,6 +31,7 @@ interface Props {
   currentPost: IPost
   handleClose: () => void
   refresh: () => void
+  classes: ClassNameMap
 }
 interface State {
   value: number
@@ -37,7 +39,7 @@ interface State {
 }
 
 export default withStyles(styles)(
-  class extends React.Component<Props & { classes: ClassNameMap }, State> {
+  class extends React.Component<Props, State> {
     state: State = {
       value: 1,
       text: '',
@@ -60,6 +62,7 @@ export default withStyles(styles)(
           reason: this.state.text,
         },
       })
+      // TODO: 错误的五种or更多情况下的toast提示
       request.fail().succeed(() => {
         handleClose()
         refresh()

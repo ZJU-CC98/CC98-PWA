@@ -55,9 +55,9 @@ const PostList: React.FunctionComponent<Props> = ({ service, isTrace, children }
         ) : (
           <PostItem
             key={info.id}
-            isTrace={isTrace}
             postInfo={info}
             userInfo={userMap[info.userId]}
+            isTrace={isTrace}
           />
         )
       )}

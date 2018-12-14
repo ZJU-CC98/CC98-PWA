@@ -50,13 +50,14 @@ export default ({ topicId, userId, postId }: Props) => {
 
   const hotPostService = () => getHotPost(topicInfo.id)
 
+  // 是否出于追踪状态
+  const isTrace = !!userId || !!postId
+
   return (
     <>
       <PostHead topicInfo={topicInfo} />
-      <PostList isTrace={Boolean(userId) || Boolean(postId)} service={postService}>
-        {!userId && !postId && (
-          <PostListHot isTrace={Boolean(userId) || Boolean(postId)} service={hotPostService} />
-        )}
+      <PostList service={postService} isTrace={isTrace}>
+        {!userId && !postId && <PostListHot service={hotPostService} isTrace={isTrace} />}
       </PostList>
       <FixFab>
         <EditIcon onClick={() => editorInstance.toReplyTopic(topicInfo.id)} />

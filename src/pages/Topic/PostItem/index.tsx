@@ -58,7 +58,7 @@ export default ({ postInfo, userInfo, isHot, isTrace }: Props) => {
     <Wrapper>
       <Header postInfo={currentPost} userInfo={userInfo} isHot={isHot} />
       <Content postInfo={currentPost} />
-      <Actions postInfo={currentPost} isTrace={isTrace} refresh={refreshPost} />
+      <Actions postInfo={currentPost} isTrace={isTrace} refreshPost={refreshPost} />
       <Awards key={currentPost.awards.length} awards={currentPost.awards} />
 
       <Divider />

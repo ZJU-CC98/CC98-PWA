@@ -14,6 +14,8 @@ const WrapperDiv = styled.div<{
   display: flex;
   flex-direction: ${props => (props.reverse ? 'column-reverse' : 'column')};
   width: 100%;
+  height: 100%;
+  overflow-y: auto;
 `
 
 interface Props {
@@ -31,12 +33,17 @@ interface Props {
   // tslint:disable-next-line
   callback: Function
   /**
-   * 是否翻转（包括数据和 Loading 位置）
+   * 是否翻转列表（且 Loading 将出现在上面）
    */
   reverse?: boolean
+  /**
+   * 是否相对一个定高容器滚动（需要组件外层容器定高）
+   */
+  inFixedContainer?: boolean
 }
 
 const InfiniteList: React.FunctionComponent<Props> = props => {
+  const wrapperDom = useRef<HTMLDivElement>(null)
   const loadingDom = useRef<HTMLDivElement>(null)
   // 保证 bindFunc 取到最新的值
   const refProps = useRef(props)
@@ -48,43 +55,63 @@ const InfiniteList: React.FunctionComponent<Props> = props => {
   useEffect(() => {
     const bindFunc = debounce(
       bindURL(() => {
-        const { isEnd, isLoading, callback } = refProps.current
+        const { isEnd, isLoading, callback, inFixedContainer = false } = refProps.current
         if (isLoading || isEnd) {
           return
         }
-        if (loadingDom.current === null) {
+        if (loadingDom.current === null || wrapperDom.current === null) {
           return
         }
 
-        // loadingDom 出现在可视区域
-        const { top, bottom } = loadingDom.current.getBoundingClientRect()
-        const inViewport = bottom > 0 && window.innerHeight - top > 0
+        // 判断 loadingDom 是否出现在容器内部
+        let isInViewport: boolean
+        const loadingRect = loadingDom.current.getBoundingClientRect()
 
-        if (inViewport) {
+        if (inFixedContainer) {
+          // 相对 wrapperDom
+          const wrapperRect = wrapperDom.current.getBoundingClientRect()
+          isInViewport =
+            loadingRect.top < wrapperRect.bottom && loadingRect.bottom > wrapperRect.top
+        } else {
+          // 相对 windows
+          isInViewport = loadingRect.top < window.innerHeight && loadingRect.bottom > 0
+        }
+
+        if (isInViewport) {
           callback()
         }
       }, window.location.href),
       250
     )
-    window.addEventListener('scroll', bindFunc)
 
-    return () => {
-      window.removeEventListener('scroll', bindFunc)
+    const { inFixedContainer = false } = refProps.current
+
+    if (inFixedContainer) {
+      if (!wrapperDom.current) {
+        return
+      }
+      wrapperDom.current.onscroll = bindFunc
+    } else {
+      window.addEventListener('scroll', bindFunc)
+
+      return () => {
+        window.removeEventListener('scroll', bindFunc)
+      }
     }
   }, [])
 
   const { isEnd, reverse = false, children } = props
 
-  const loading = isEnd ? null : (
-    <div ref={loadingDom}>
-      <LoadingCircle />
-    </div>
-  )
-
   return (
-    <WrapperDiv reverse={reverse}>
+    // FIXME: waiting @types/styled-components to upgrade
+    // @ts-ignore https://www.styled-components.com/docs/advanced#refs
+    <WrapperDiv ref={wrapperDom} reverse={reverse}>
       {children}
-      {loading}
+      {!isEnd && (
+        <div ref={loadingDom}>
+          <LoadingCircle />
+        </div>
+      )}
     </WrapperDiv>
   )
 }

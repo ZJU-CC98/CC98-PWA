@@ -14,6 +14,10 @@ import { getUserInfoById } from '@/services/user'
 import dayjs from 'dayjs'
 import { navigate } from '@/utils/history'
 
+const ListItemS = styled(ListItem)`
+  flex-shrink: 0;
+`
+
 const ListItemAvatarS = styled(ListItemAvatar)`
   align-self: flex-start;
 `
@@ -78,7 +82,7 @@ interface Props {
 // TODO: 消息气泡
 const renderItem = (message: IMessageContent, userInfo: IUser, isCurrSend: boolean) =>
   !isCurrSend ? (
-    <ListItem>
+    <ListItemS>
       <ListItemAvatarS>
         <Avatar src={userInfo.portraitUrl} onClick={() => navigate(`/user/${userInfo.id}`)} />
       </ListItemAvatarS>
@@ -86,9 +90,9 @@ const renderItem = (message: IMessageContent, userInfo: IUser, isCurrSend: boole
         <MessageContentLeft>{message.content}</MessageContentLeft>
         <MessageDate right>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
       </MessageRoot>
-    </ListItem>
+    </ListItemS>
   ) : (
-    <ListItem>
+    <ListItemS>
       <ListItemText />
       <MessageRoot>
         <MessageContentRight>{message.content}</MessageContentRight>
@@ -97,7 +101,7 @@ const renderItem = (message: IMessageContent, userInfo: IUser, isCurrSend: boole
       <ListItemAvatarS>
         <Avatar src={userInfo.portraitUrl} />
       </ListItemAvatarS>
-    </ListItem>
+    </ListItemS>
   )
 
 export default ({ message }: Props) => {

@@ -13,15 +13,14 @@ import DetailItem from './components/DetailItem'
 
 import { getMessageContent } from '@/services/message'
 
-const WrapperDiv = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
-  width: 100%;
-`
-
-const EndDiv = styled.div`
-  height: 60px;
+const ListS = styled(List)`
+  && {
+    width: 100%;
+    position: absolute;
+    top: 56px;
+    bottom: 60px;
+    padding: 8px 0;
+  }
 `
 
 interface Props {
@@ -42,20 +41,24 @@ export default ({ id }: Props) => {
   const { isLoading, isEnd } = state
 
   return (
-    <WrapperDiv>
-      <List>
-        <InfiniteList reverse isEnd={isEnd} isLoading={isLoading} callback={callback}>
+    <>
+      <ListS>
+        <InfiniteList
+          reverse
+          inFixedContainer
+          isEnd={isEnd}
+          isLoading={isLoading}
+          callback={callback}
+        >
           {list.map(item => (
             <DetailItem key={item.id} message={item} />
           ))}
         </InfiniteList>
-      </List>
-
-      <EndDiv />
+      </ListS>
 
       <FixFab>
         <EditIcon />
       </FixFab>
-    </WrapperDiv>
+    </>
   )
 }

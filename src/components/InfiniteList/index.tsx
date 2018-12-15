@@ -14,7 +14,7 @@ const WrapperDiv = styled.div<{
   display: flex;
   flex-direction: ${props => (props.reverse ? 'column-reverse' : 'column')};
   width: 100%;
-  height: 100%;
+  max-height: 100%;
   overflow-y: auto;
 `
 

@@ -11,12 +11,7 @@ interface Props {
 
 export default ({ editor }: Props) => {
   function clickHandler() {
-    let attachments = editor.state.attachments.join('')
-    if (attachments) {
-      attachments = `'\n${attachments}`
-    }
-
-    editor.state.onSendCallBack(editor.state.mainContent + attachments)
+    editor.state.onSendCallBack(editor.fullContent)
   }
 
   return (

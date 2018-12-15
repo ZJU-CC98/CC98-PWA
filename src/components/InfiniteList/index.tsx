@@ -8,19 +8,21 @@ import { debounce } from 'lodash-es'
 // TODO: move to utils
 import { bindURL } from '@/router'
 
-const WrapperDiv = styled.div`
+const WrapperDiv = styled.div<{
+  reverse: boolean
+}>`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${props => (props.reverse ? 'column-reverse' : 'column')};
   width: 100%;
 `
 
 interface Props {
   /**
-   * 列表正在加载中，回调不会重复触发
+   * 新数据加载中，回调不会重复触发
    */
   isLoading: boolean
   /**
-   * 列表已加载完成，不需要再触发回调
+   * 已全部加载完成，不需要再触发回调
    */
   isEnd: boolean
   /**
@@ -29,9 +31,9 @@ interface Props {
   // tslint:disable-next-line
   callback: Function
   /**
-   * loadingCircle 的位置
+   * 是否翻转（包括数据和 Loading 位置）
    */
-  loadingPosition?: 'top' | 'bottom'
+  reverse?: boolean
 }
 
 const InfiniteList: React.FunctionComponent<Props> = props => {
@@ -62,7 +64,6 @@ const InfiniteList: React.FunctionComponent<Props> = props => {
           callback()
         }
       }, window.location.href),
-
       250
     )
     window.addEventListener('scroll', bindFunc)
@@ -72,19 +73,18 @@ const InfiniteList: React.FunctionComponent<Props> = props => {
     }
   }, [])
 
-  const { isEnd, loadingPosition = 'bottom', children } = props
+  const { isEnd, reverse = false, children } = props
 
-  const Loading = isEnd ? null : (
+  const loading = isEnd ? null : (
     <div ref={loadingDom}>
       <LoadingCircle />
     </div>
   )
 
   return (
-    <WrapperDiv>
-      {loadingPosition === 'top' && Loading}
+    <WrapperDiv reverse={reverse}>
       {children}
-      {loadingPosition === 'bottom' && Loading}
+      {loading}
     </WrapperDiv>
   )
 }

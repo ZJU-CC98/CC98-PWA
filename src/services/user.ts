@@ -1,33 +1,21 @@
 import { IUser } from '@cc98/api'
 import { GET, PUT, DELETE } from '@/utils/fetch'
-import { Try, Success } from '@/utils/fp/Try'
+import { Try } from '@/utils/fp/Try'
 import { FetchError } from '@/utils/fetch'
 
-export interface IUserMap {
-  [key: string]: IUser
-}
-
-const _USER_CACHE: IUserMap = {} as {
-  [key: number]: IUser
+const _USER_CACHE = {} as {
+  [key: number]: Promise<Try<IUser, FetchError>>
 }
 /**
  * @description 通过用户id获取用户信息
  * @param {number} id 用户id
  */
 export function getUserInfoById(id: number) {
-  if (_USER_CACHE[id]) {
-    return Promise.resolve(Try.of<IUser, FetchError>(Success.of(_USER_CACHE[id])))
+  if (!_USER_CACHE[id]) {
+    _USER_CACHE[id] = GET<IUser>(`user/${id}`)
   }
 
-  return GET<IUser>(`user/${id}`).then(res =>
-    Promise.resolve(
-      res.map(user => {
-        _USER_CACHE[user.id] = user
-
-        return user
-      })
-    )
-  )
+  return _USER_CACHE[id]
 }
 
 /**

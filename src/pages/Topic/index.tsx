@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
 
@@ -16,6 +17,10 @@ import { getPost, getTracePost, getAnonymousTracePost, getHotPost } from '@/serv
 
 import { navigate } from '@/utils/history'
 import editorInstance from '@/containers/editor'
+
+const EndPlaceholder = styled.div`
+  height: 64px;
+`
 
 interface Props {
   // 帖子 ID
@@ -62,6 +67,7 @@ export default ({ topicId, userId, postId }: Props) => {
       <FixFab>
         <EditIcon onClick={() => editorInstance.toReplyTopic(topicInfo.id)} />
       </FixFab>
+      <EndPlaceholder />
     </>
   )
 }

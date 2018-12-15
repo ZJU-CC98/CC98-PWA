@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-// import styled from 'styled-components'
+import React from 'react'
+import styled from 'styled-components'
 
 import useInfList from '@/hooks/useInfList'
 import InfiniteList from '@/components/InfiniteList'
@@ -13,6 +13,17 @@ import DetailItem from './components/DetailItem'
 
 import { getMessageContent } from '@/services/message'
 
+const WrapperDiv = styled.div`
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+  width: 100%;
+`
+
+const EndDiv = styled.div`
+  height: 60px;
+`
+
 interface Props {
   /**
    * 联系人id (from url)
@@ -24,43 +35,27 @@ interface Props {
  * 私信-会话列表
  */
 export default ({ id }: Props) => {
-  const [hadScroll, setHadScroll] = useState(false)
-
-  const service = (from: number) => getMessageContent(parseInt(id, 10), from)
+  const service = (from: number) => getMessageContent(parseInt(id, 10), from, 10)
   const [list, state, callback] = useInfList(service, {
-    reverse: true,
     step: 10,
-    success: () => {
-      if (hadScroll) {
-        return
-      }
-      setHadScroll(true)
-
-      // FIXME: Is there another way to do this ?
-      setTimeout(
-        () =>
-          window.scrollTo({
-            top: 2333,
-            behavior: 'smooth',
-          }),
-        750
-      )
-    },
   })
   const { isLoading, isEnd } = state
 
   return (
-    <>
+    <WrapperDiv>
       <List>
-        <InfiniteList isEnd={isEnd} isLoading={isLoading} callback={callback} loadingPosition="top">
+        <InfiniteList reverse isEnd={isEnd} isLoading={isLoading} callback={callback}>
           {list.map(item => (
             <DetailItem key={item.id} message={item} />
           ))}
         </InfiniteList>
       </List>
+
+      <EndDiv />
+
       <FixFab>
         <EditIcon />
       </FixFab>
-    </>
+    </WrapperDiv>
   )
 }

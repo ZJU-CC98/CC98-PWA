@@ -152,6 +152,7 @@ const MoreActions = ({ postInfo, isTrace, refreshPost }: Props) => {
   }
 
   const myInfo = userInstance.state.myInfo
+  // FIXME: 心灵之约 内无效。。。
   const isMyPost = postInfo.userId === (myInfo && myInfo.id)
 
   return (

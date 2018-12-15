@@ -54,6 +54,18 @@ export class EditorContainer extends Container<State> {
   }
 
   /**
+   * 获取完整内容（包括 mainContent & attachments）
+   */
+  get fullContent() {
+    let attachments = this.state.attachments.join('')
+    if (attachments) {
+      attachments = `'\n${attachments}`
+    }
+
+    return this.state.mainContent + attachments
+  }
+
+  /**
    * 追加主文本内容
    */
   appendMainContent(str: string) {

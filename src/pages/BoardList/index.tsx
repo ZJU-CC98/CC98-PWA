@@ -41,7 +41,7 @@ const WrapperDiv = styled.div`
 `
 
 const EmptyDiv = styled.div`
-  height: 120px;
+  height: 100px;
 `
 
 export default () => {

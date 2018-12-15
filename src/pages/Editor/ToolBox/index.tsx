@@ -6,6 +6,7 @@ import { EditorContainer } from '@/containers/editor'
 import PictureBtn from './PictureBtn'
 import StickerBtn from './StickerBtn'
 import ClearBtn from './ClearBtn'
+import PreviewBtn from './PreviewBtn'
 import SendBtn from './SendBtn'
 
 const WrapperDiv = styled.div`
@@ -25,6 +26,7 @@ export default ({ editor }: Props) => (
     </div>
     <div>
       <ClearBtn editor={editor} />
+      <PreviewBtn editor={editor} />
       <SendBtn editor={editor} />
     </div>
   </WrapperDiv>

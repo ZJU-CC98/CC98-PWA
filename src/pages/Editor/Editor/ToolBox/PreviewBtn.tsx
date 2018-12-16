@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { EditorContainer } from '@/containers/editor'
+import { EditorContainer } from '../EditorContainer'
 
-import { IconButton, Dialog } from '@material-ui/core'
+import { IconButton, Dialog, Typography } from '@material-ui/core'
 import TransformIcon from '@material-ui/icons/Transform'
 import CloseIcon from '@material-ui/icons/Close'
 
@@ -15,9 +15,13 @@ const PreviewHeader = styled.div`
   bottom: 12px;
 `
 
-const PreviewBody = styled.div`
-  margin: 44px 20px;
-  margin-bottom: 60px;
+const PreviewBody = styled(Typography).attrs({
+  component: 'div',
+})`
+  && {
+    margin: 44px 20px;
+    margin-bottom: 60px;
+  }
 `
 
 interface PreviewProps {

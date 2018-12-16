@@ -16,7 +16,7 @@ export function getRecentMessage(from: number) {
 /**
  * 获取私信内容
  */
-export function getMessageContent(userId: number, from: number, size: number) {
+export function getMessageContent(userId: number | string, from: number, size: number) {
   return GET<IMessageContent[]>(`message/user/${userId}`, {
     params: {
       from,

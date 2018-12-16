@@ -34,7 +34,7 @@ interface Props {
  * 私信-会话列表
  */
 export default ({ id }: Props) => {
-  const service = (from: number) => getMessageContent(parseInt(id, 10), from, 10)
+  const service = (from: number) => getMessageContent(id, from, 10)
   const [list, state, callback] = useInfList(service, {
     step: 10,
   })

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { EditorContainer } from '@/containers/editor'
+import { EditorContainer } from '../EditorContainer'
 
 import { IconButton } from '@material-ui/core'
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'

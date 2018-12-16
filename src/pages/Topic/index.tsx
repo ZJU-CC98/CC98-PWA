@@ -16,7 +16,6 @@ import { getTopicInfo } from '@/services/topic'
 import { getPost, getTracePost, getAnonymousTracePost, getHotPost } from '@/services/post'
 
 import { navigate } from '@/utils/history'
-import editorInstance from '@/containers/editor'
 
 const EndPlaceholder = styled.div`
   height: 64px;
@@ -65,7 +64,7 @@ export default ({ topicId, userId, postId }: Props) => {
         {!userId && !postId && <PostListHot service={hotPostService} isTrace={isTrace} />}
       </PostList>
       <FixFab>
-        <EditIcon onClick={() => editorInstance.toReplyTopic(topicInfo.id)} />
+        <EditIcon onClick={() => navigate(`/editor/replyTopic/${topicInfo.id}`)} />
       </FixFab>
       <EndPlaceholder />
     </>

@@ -11,7 +11,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { IPost, ILikeState } from '@cc98/api'
 import { putLike, putDislike } from '@/services/post'
 
-import editorInstance from '@/containers/editor'
 import userInstance from '@/containers/user'
 
 import { navigate } from '@/utils/history'
@@ -81,12 +80,15 @@ const IconActions: React.FunctionComponent<Props> = ({ postInfo, refreshPost }) 
     const { floor, userName, time, topicId, content } = postInfo
     const formatTime = dayjs(time).format('YYYY-MM-DD HH:mm')
 
-    editorInstance.toQuotePost(
-      postInfo.topicId,
-      // TODO: WTF!
-      // tslint:disable-next-line
-      `[quote]引用自${floor}楼${userName}在${formatTime}的发言：[color=blue][url=/topic/${topicId}#${floor}]>查看原帖<[/url][/color][/b]\n${content}[/quote]\n`
-    )
+    // TODO:
+    navigate(`/editor/replyTopic/${postInfo.topicId}`)
+
+    // editorInstance.toReplyTopic(
+    //   postInfo.topicId,
+
+    // tslint:disable-next-line
+    //   `[quote]引用自${floor}楼${userName}在${formatTime}的发言：[color=blue][url=/topic/${topicId}#${floor}]>查看原帖<[/url][/color][/b]\n${content}[/quote]\n`
+    // )
   }
 
   return (
@@ -168,7 +170,7 @@ const MoreActions = ({ postInfo, isTrace, refreshPost }: Props) => {
         {isMyPost && (
           <MenuItem
             onClick={() => {
-              editorInstance.toEditorPost(postInfo.id, postInfo.content)
+              navigate(`/editor/edit/${postInfo.id}`)
               handleClose()
             }}
           >

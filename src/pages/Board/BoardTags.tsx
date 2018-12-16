@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { MenuItem, Select } from '@material-ui/core'
@@ -14,20 +14,30 @@ interface SelectProps {
   onChange: (tagID: number) => void
 }
 
-const TagSelect: React.FunctionComponent<SelectProps> = ({ tagGroup, onChange }) => (
-  <WrapperDiv>
-    <Select value={-1} onChange={event => onChange(parseInt(event.target.value, 10))}>
-      <MenuItem key={0} value={-1}>
-        全部
-      </MenuItem>
-      {tagGroup.tags.map(t => (
-        <MenuItem key={t.id} value={t.id}>
-          {t.name}
+const TagSelect: React.FunctionComponent<SelectProps> = ({ tagGroup, onChange }) => {
+  const [tag, setTag] = useState(-1)
+
+  const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const tag = parseInt(event.target.value, 10)
+    setTag(tag)
+    onChange(tag)
+  }
+
+  return (
+    <WrapperDiv>
+      <Select value={tag} onChange={selectChange}>
+        <MenuItem key={0} value={-1}>
+          全部
         </MenuItem>
-      ))}
-    </Select>
-  </WrapperDiv>
-)
+        {tagGroup.tags.map(t => (
+          <MenuItem key={t.id} value={t.id}>
+            {t.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </WrapperDiv>
+  )
+}
 
 const FlexDiv = styled.div`
   display: flex;

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { EditorContainer } from '@/containers/editor'
+import { EditorContainer } from '../EditorContainer'
 
 import { IconButton } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -11,7 +11,7 @@ interface Props {
 
 export default ({ editor }: Props) => {
   function clickHandler() {
-    editor.resetAllInput()
+    editor.clearAll()
   }
 
   return (

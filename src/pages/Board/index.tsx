@@ -15,8 +15,6 @@ import BoardTags from './BoardTags'
 import { getBoardInfo, getBoardTags } from '@/services/board'
 import { getTopicsInBoard, getTopTopics } from '@/services/topic'
 
-import editorInstance from '@/containers/editor'
-
 const WrapperDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -64,7 +62,7 @@ export default ({ id }: Props) => {
       {board && (
         <>
           <BoardHead data={board} />
-          <FixFab onClick={() => editorInstance.toPostTpoic(board.id)}>
+          <FixFab onClick={() => navigate(`/editor/postTopic/${board.id}`)}>
             <EditIcon />
           </FixFab>
         </>

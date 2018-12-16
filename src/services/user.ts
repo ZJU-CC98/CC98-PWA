@@ -1,22 +1,13 @@
 import { IUser } from '@cc98/api'
 import { GET, PUT, DELETE } from '@/utils/fetch'
-import { Try } from '@/utils/fp/Try'
-import { FetchError } from '@/utils/fetch'
 
-const _USER_CACHE = {} as {
-  [key: number]: Promise<Try<IUser, FetchError>>
-}
+import { memoize } from 'lodash-es'
+
 /**
  * @description 通过用户id获取用户信息
  * @param {number} id 用户id
  */
-export function getUserInfoById(id: number) {
-  if (!_USER_CACHE[id]) {
-    _USER_CACHE[id] = GET<IUser>(`user/${id}`)
-  }
-
-  return _USER_CACHE[id]
-}
+export const getUserInfoById = memoize((id: string | number) => GET<IUser>(`user/${id}`))
 
 /**
  * @description 通过用户名获取用户信息

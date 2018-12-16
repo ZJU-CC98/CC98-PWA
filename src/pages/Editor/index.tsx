@@ -1,34 +1,41 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import useContainer from '@/hooks/useContainer'
-import editorInstance from '@/containers/editor'
-
-import MainContent from './MainContent'
-import Attachments from './Attachments'
-import ToolBox from './ToolBox'
+import MetaInfo from './MetaInfo'
+import Editor, { EditorContainer } from './Editor'
 
 const WrapperDiv = styled.div`
-  margin: 8px;
+  margin: 8px 12px;
 `
 
-const FixBottomDiv = styled.div`
-  position: fixed;
-  left: 8px;
-  right: 8px;
-  bottom: 12px;
-`
+interface Props {
+  /**
+   * 发布帖子
+   */
+  boardId?: string
+  /**
+   * 回复帖子
+   */
+  topicId?: string
+  /**
+   * 编辑帖子
+   */
+  postId?: string
+}
 
-export default () => {
-  const editor = useContainer(editorInstance)
+export default (props: Props) => {
+  const { boardId, topicId, postId } = props
+
+  const editor = new EditorContainer()
+
+  const onSendCallback = () => {
+    alert(editor.fullContent)
+  }
 
   return (
     <WrapperDiv>
-      <MainContent editor={editor} />
-      <Attachments editor={editor} />
-      <FixBottomDiv>
-        <ToolBox editor={editor} />
-      </FixBottomDiv>
+      <MetaInfo />
+      <Editor editor={editor} onSendCallback={onSendCallback} />
     </WrapperDiv>
   )
 }

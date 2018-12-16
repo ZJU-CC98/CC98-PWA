@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { EditorContainer } from '@/containers/editor'
+import { EditorContainer } from '../EditorContainer'
 
 import PictureBtn from './PictureBtn'
 import StickerBtn from './StickerBtn'
@@ -16,9 +16,10 @@ const WrapperDiv = styled.div`
 
 interface Props {
   editor: EditorContainer
+  onSendCallback: () => void
 }
 
-export default ({ editor }: Props) => (
+export default ({ editor, onSendCallback }: Props) => (
   <WrapperDiv>
     <div>
       <PictureBtn editor={editor} />
@@ -27,7 +28,7 @@ export default ({ editor }: Props) => (
     <div>
       <ClearBtn editor={editor} />
       <PreviewBtn editor={editor} />
-      <SendBtn editor={editor} />
+      <SendBtn onSendCallback={onSendCallback} />
     </div>
   </WrapperDiv>
 )

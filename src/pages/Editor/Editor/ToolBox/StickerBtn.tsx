@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { EditorContainer } from '@/containers/editor'
+import { EditorContainer } from '../EditorContainer'
 
 import { IconButton } from '@material-ui/core'
-import SendIcon from '@material-ui/icons/Send'
+import TagFacesIcon from '@material-ui/icons/TagFaces'
 
 interface Props {
   editor: EditorContainer
@@ -11,12 +11,12 @@ interface Props {
 
 export default ({ editor }: Props) => {
   function clickHandler() {
-    editor.state.onSendCallBack(editor.fullContent)
+    // TODO:
   }
 
   return (
     <IconButton>
-      <SendIcon onClick={clickHandler} />
+      <TagFacesIcon onClick={clickHandler} />
     </IconButton>
   )
 }

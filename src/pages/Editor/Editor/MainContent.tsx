@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { EditorContainer } from '@/containers/editor'
+import { EditorContainer } from './EditorContainer'
 
 import { InputBase } from '@material-ui/core'
 
@@ -9,11 +9,13 @@ const InputArea = styled(InputBase).attrs({
   fullWidth: true,
   multiline: true,
   autoFocus: true,
-  rows: 4,
-  rowsMax: 7,
+  rows: 6,
+  rowsMax: 12,
 })`
   && {
-    padding: 12px;
+    margin-top: 8px;
+    padding: 12px 8px;
+    border: 1.5px solid #ccc;
   }
 `
 

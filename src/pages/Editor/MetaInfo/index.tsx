@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import useContainer from '@/hooks/useContainer'
+import { MetaInfoContainer } from './MetaInfoContainer'
+
 import { InputBase } from '@material-ui/core'
 
 const InputArea = styled(InputBase).attrs({
@@ -13,13 +16,18 @@ const InputArea = styled(InputBase).attrs({
   }
 `
 
-export default () => {
-  const a = 1
+export { MetaInfoContainer }
 
-  return (
-    <InputArea
-      // value={}
-      placeholder="标题"
-    />
-  )
+interface Props {
+  container: MetaInfoContainer
+}
+
+export default ({ container }: Props) => {
+  useContainer(container)
+
+  const onTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    container.setTitle(event.target.value)
+  }
+
+  return <InputArea value={container.state.title} placeholder="标题" onChange={onTitleChange} />
 }

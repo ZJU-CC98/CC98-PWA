@@ -15,7 +15,6 @@ import userInstance from '@/containers/user'
 
 import { navigate } from '@/utils/history'
 import copy2Clipboard from 'copy-to-clipboard'
-import dayjs from 'dayjs'
 
 import Judge from './Judge'
 
@@ -77,18 +76,7 @@ const IconActions: React.FunctionComponent<Props> = ({ postInfo, refreshPost }) 
   }
 
   const handleQuote = () => {
-    const { floor, userName, time, topicId, content } = postInfo
-    const formatTime = dayjs(time).format('YYYY-MM-DD HH:mm')
-
-    // TODO:
-    navigate(`/editor/replyTopic/${postInfo.topicId}`)
-
-    // editorInstance.toReplyTopic(
-    //   postInfo.topicId,
-
-    // tslint:disable-next-line
-    //   `[quote]引用自${floor}楼${userName}在${formatTime}的发言：[color=blue][url=/topic/${topicId}#${floor}]>查看原帖<[/url][/color][/b]\n${content}[/quote]\n`
-    // )
+    navigate(`/editor/replyTopic/${postInfo.topicId}/quote/${postInfo.id}`)
   }
 
   return (

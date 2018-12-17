@@ -4,9 +4,6 @@ import styled from 'styled-components'
 import useInfList from '@/hooks/useInfList'
 import InfiniteList from '@/components/InfiniteList'
 
-import FixFab from '@/components/FixFab'
-import EditIcon from '@material-ui/icons/Edit'
-
 import { List } from '@material-ui/core'
 
 import DetailItem from './components/DetailItem'
@@ -18,7 +15,7 @@ const ListS = styled(List)`
     width: 100%;
     position: absolute;
     top: 56px;
-    bottom: 60px;
+    bottom: 80px;
     padding: 8px 0;
   }
 `
@@ -56,9 +53,7 @@ export default ({ id }: Props) => {
         </InfiniteList>
       </ListS>
 
-      <FixFab>
-        <EditIcon />
-      </FixFab>
+      {/* TODO: reply input */}
     </>
   )
 }

@@ -10,7 +10,7 @@ export default () => {
 
   return (
     <ListItem button>
-      <ListItemText primary="暗色主题" />
+      <ListItemText primary="夜间模式" secondary="使用暗色主题" />
       <Switch checked={state.theme === 'dark'} onChange={TOGGLE_THEME} />
     </ListItem>
   )

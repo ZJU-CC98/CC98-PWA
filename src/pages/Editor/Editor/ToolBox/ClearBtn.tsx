@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { EditorContainer } from '@/containers/editor'
+import { EditorContainer } from '../EditorContainer'
 
 import { IconButton } from '@material-ui/core'
-import TagFacesIcon from '@material-ui/icons/TagFaces'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 interface Props {
   editor: EditorContainer
@@ -11,12 +11,12 @@ interface Props {
 
 export default ({ editor }: Props) => {
   function clickHandler() {
-    // TODO:
+    editor.clearAll()
   }
 
   return (
     <IconButton>
-      <TagFacesIcon onClick={clickHandler} />
+      <DeleteIcon onClick={clickHandler} />
     </IconButton>
   )
 }

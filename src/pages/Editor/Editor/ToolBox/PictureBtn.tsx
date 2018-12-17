@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { EditorContainer } from '@/containers/editor'
+import { EditorContainer } from '../EditorContainer'
 
 import { IconButton } from '@material-ui/core'
-import PhotoIcon from '@material-ui/icons/Photo'
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
 
 import { uploadPicture } from '@/services/editor'
 
@@ -22,7 +22,7 @@ export default ({ editor }: Props) => {
 
   return (
     <IconButton>
-      <PhotoIcon onClick={clickHandler} />
+      <AddPhotoAlternateIcon onClick={clickHandler} />
     </IconButton>
   )
 }

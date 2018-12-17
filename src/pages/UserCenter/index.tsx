@@ -31,7 +31,7 @@ interface WrapperProps {
   /**
    * 来自路由
    */
-  id: string | undefined
+  id?: string
 }
 
 const Wrapper: React.FunctionComponent<WrapperProps> = props => {
@@ -39,9 +39,7 @@ const Wrapper: React.FunctionComponent<WrapperProps> = props => {
     state: { myInfo },
   } = useContainer(userInstance)
 
-  const [userInfo] = useFetcher(
-    props.id ? () => getUserInfoById(parseInt(props.id as string, 10)) : null
-  )
+  const [userInfo] = useFetcher(props.id ? () => getUserInfoById(props.id as string) : null)
 
   if (!props.id) {
     return myInfo && <UserCenter info={myInfo} isUserCenter={true} />

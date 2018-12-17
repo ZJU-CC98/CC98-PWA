@@ -5,8 +5,12 @@ import useInfList, { Service } from '@/hooks/useInfList'
 import InfiniteList from '@/components/InfiniteList'
 import PostItem from './PostItem'
 
-import { IPost } from '@cc98/api'
-import { getUsersInfoByIds, IUserMap } from '@/services/user'
+import { IPost, IUser } from '@cc98/api'
+import { getUsersInfoByIds } from '@/services/user'
+
+interface IUserMap {
+  [key: number]: IUser
+}
 
 interface Props {
   service: Service<IPost[]>
@@ -55,9 +59,9 @@ const PostList: React.FunctionComponent<Props> = ({ service, isTrace, children }
         ) : (
           <PostItem
             key={info.id}
-            isTrace={isTrace}
             postInfo={info}
             userInfo={userMap[info.userId]}
+            isTrace={isTrace}
           />
         )
       )}

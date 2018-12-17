@@ -18,7 +18,7 @@ export default () => {
 
   return (
     <ListItem button>
-      <ListItemText primary="使用代理" />
+      <ListItemText primary="使用代理" secondary="仅面向开发使用" />
       <Switch disabled={!isDev} checked={state.useProxy} onChange={TOGGLE_PROXY} />
     </ListItem>
   )

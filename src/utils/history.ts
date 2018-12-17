@@ -19,7 +19,7 @@ export function go(delta?: number | undefined) {
  * 路由回退
  */
 export function goback() {
-  // if (noCache) {
+  // if (forceRefresh) {
   //   // ROUTER_CACHE
   // }
 

@@ -116,9 +116,8 @@ declare module '@cc98/api' {
     levelTitle: string
     /**
      * 用户版主头衔信息
-     * FIXME: BoardMasterTitle[]
      */
-    boardMasterTitles: any
+    boardMasterTitles: IBoardMasterTitle[]
     /**
      * 被删除的数量
      */

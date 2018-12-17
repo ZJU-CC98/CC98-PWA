@@ -10,8 +10,8 @@ export default () => {
 
   return (
     <ListItem button>
-      <ListItemText primary="开启实时通知" />
-      <Switch checked={state.useSignalr} onChange={TOGGLE_SIGNALR} />
+      <ListItemText primary="实时通知" secondary="暂未开发" />
+      <Switch disabled={true} checked={state.useSignalr} onChange={TOGGLE_SIGNALR} />
     </ListItem>
   )
 }

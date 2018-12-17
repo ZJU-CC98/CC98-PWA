@@ -27,10 +27,10 @@ export default ({ service, isTrace }: Props) => {
       {posts.map((info: IPost) => (
         <PostItem
           key={info.id}
-          isTrace={isTrace}
           postInfo={info}
           userInfo={userMap[info.userId]}
           isHot
+          isTrace={isTrace}
         />
       ))}
     </>

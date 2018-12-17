@@ -11,12 +11,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { IPost, ILikeState } from '@cc98/api'
 import { putLike, putDislike } from '@/services/post'
 
-import editorInstance from '@/containers/editor'
 import userInstance from '@/containers/user'
 
 import { navigate } from '@/utils/history'
 import copy2Clipboard from 'copy-to-clipboard'
-import dayjs from 'dayjs'
 
 import Judge from './Judge'
 
@@ -37,9 +35,9 @@ interface Props {
    */
   isTrace: boolean
   /**
-   * 评分
+   * 更新 Post 信息
    */
-  refresh: () => void
+  refreshPost: () => void
 }
 
 const ActionDiv = styled.div`
@@ -64,52 +62,35 @@ const DividerCol = styled.span`
   height: 1rem;
 `
 
-const IconActions = ({ postInfo }: Props) => {
-  const [likeState, setLikeState] = useState(postInfo.likeState)
+const IconActions: React.FunctionComponent<Props> = ({ postInfo, refreshPost }) => {
+  const { likeState } = postInfo
 
-  const handleLikeIcons = (newLikeState: ILikeState) => () => {
+  const handleLike = (newLikeState: ILikeState) => () => {
     const putService = newLikeState === 1 ? putLike : putDislike
 
     putService(postInfo.id).then(res =>
       res.fail().succeed(_ => {
-        const nextState = newLikeState === likeState ? LikeState.NONE : newLikeState
-
-        // TODO: maybe should use getLikeState service ?
-        if (newLikeState === LikeState.LIKE) {
-          postInfo.likeCount += likeState === LikeState.LIKE ? -1 : 1
-        } else if (newLikeState === LikeState.DISLIKE) {
-          postInfo.dislikeCount += likeState === LikeState.DISLIKE ? -1 : 1
-        }
-
-        setLikeState(nextState)
+        refreshPost()
       })
     )
   }
 
+  const handleQuote = () => {
+    navigate(`/editor/replyTopic/${postInfo.topicId}/quote/${postInfo.id}`)
+  }
+
   return (
     <ActionDiv>
-      <IconButton onClick={handleLikeIcons(LikeState.DISLIKE)}>
+      <IconButton onClick={handleLike(LikeState.DISLIKE)}>
         <ThumbDownIcon color={likeState === LikeState.DISLIKE ? 'secondary' : 'inherit'} />
       </IconButton>
       <Count>{postInfo.dislikeCount}</Count>
       <DividerCol />
       <IconButton>
-        <RotateLeftIcon
-          onClick={() => {
-            const { floor, userName, time, topicId, content } = postInfo
-            const formatTime = dayjs(time).format('YYYY-MM-DD HH:mm')
-
-            editorInstance.toQuotePost(
-              postInfo.topicId,
-              // TODO: WTF!
-              // tslint:disable-next-line
-              `[quote]引用自${floor}楼${userName}在${formatTime}的发言：[color=blue][url=/topic/${topicId}#${floor}]>查看原帖<[/url][/color][/b]\n${content}[/quote]\n`
-            )
-          }}
-        />
+        <RotateLeftIcon onClick={handleQuote} />
       </IconButton>
       <DividerCol />
-      <IconButton onClick={handleLikeIcons(LikeState.LIKE)}>
+      <IconButton onClick={handleLike(LikeState.LIKE)}>
         <ThumbUpIcon color={likeState === LikeState.LIKE ? 'secondary' : 'inherit'} />
       </IconButton>
       <Count>{postInfo.likeCount}</Count>
@@ -117,16 +98,12 @@ const IconActions = ({ postInfo }: Props) => {
   )
 }
 
-const MoreActions = ({ postInfo, isTrace, refresh }: Props) => {
+const MoreActions = ({ postInfo, isTrace, refreshPost }: Props) => {
+  // 控制 Menu 的显示
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-  const [open, setOpen] = useState(false)
-  // 判断是否是追踪
-  // const isTrace = document.location && document.location.href.indexOf('trace') !== -1
-
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
-
   const handleClose = () => {
     setAnchorEl(null)
   }
@@ -154,21 +131,25 @@ const MoreActions = ({ postInfo, isTrace, refresh }: Props) => {
     handleClose()
   }
 
+  // 控制 评分 的显示
+  const [showJudge, setShowJudge] = useState(false)
+  const judgeOpen = () => setShowJudge(true)
+  const judgeClose = () => setShowJudge(false)
+
   const handleJudge = () => {
-    handleJudgeOpen()
+    judgeOpen()
     handleClose()
   }
 
-  const handleJudgeOpen = () => setOpen(true)
-
-  const handleJudgeClose = () => setOpen(false)
-
   const myInfo = userInstance.state.myInfo
+  // FIXME: 心灵之约 内无效。。。
   const isMyPost = postInfo.userId === (myInfo && myInfo.id)
 
   return (
     <>
-      {open && <Judge currentPost={postInfo} handleClose={handleJudgeClose} refresh={refresh} />}
+      {showJudge && (
+        <Judge postInfo={postInfo} handleClose={judgeClose} refreshPost={refreshPost} />
+      )}
       <IconButton onClick={handleOpen}>
         <ExpandMoreIcon />
       </IconButton>
@@ -177,7 +158,7 @@ const MoreActions = ({ postInfo, isTrace, refresh }: Props) => {
         {isMyPost && (
           <MenuItem
             onClick={() => {
-              editorInstance.toEditorPost(postInfo.id, postInfo.content)
+              navigate(`/editor/edit/${postInfo.id}`)
               handleClose()
             }}
           >
@@ -197,9 +178,9 @@ const FlexDiv = styled.div`
   align-items: center;
 `
 
-export default ({ postInfo, isTrace, refresh }: Props) => (
+export default ({ postInfo, isTrace, refreshPost }: Props) => (
   <FlexDiv>
-    <IconActions postInfo={postInfo} isTrace={isTrace} refresh={refresh} />
-    <MoreActions postInfo={postInfo} isTrace={isTrace} refresh={refresh} />
+    <IconActions postInfo={postInfo} isTrace={isTrace} refreshPost={refreshPost} />
+    <MoreActions postInfo={postInfo} isTrace={isTrace} refreshPost={refreshPost} />
   </FlexDiv>
 )

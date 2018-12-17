@@ -24,7 +24,12 @@ const HeaderDiv = styled.div`
 const BodyDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 0 12px 10px 12px;
+  margin: 0 12px;
+  margin-bottom: 10px;
+`
+
+const ItemDiv = styled.div`
+  width: 33%;
 `
 
 interface Props {
@@ -53,7 +58,9 @@ export default (props: Props) => {
       <Collapse in={isExpanded} timeout="auto">
         <BodyDiv>
           {data.boards.map(board => (
-            <BoardItem key={board.id} data={board} />
+            <ItemDiv>
+              <BoardItem key={board.id} data={board} />
+            </ItemDiv>
           ))}
         </BodyDiv>
       </Collapse>

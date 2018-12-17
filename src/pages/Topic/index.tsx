@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
 
@@ -15,7 +16,10 @@ import { getTopicInfo } from '@/services/topic'
 import { getPost, getTracePost, getAnonymousTracePost, getHotPost } from '@/services/post'
 
 import { navigate } from '@/utils/history'
-import editorInstance from '@/containers/editor'
+
+const EndPlaceholder = styled.div`
+  height: 64px;
+`
 
 interface Props {
   // 帖子 ID
@@ -50,17 +54,19 @@ export default ({ topicId, userId, postId }: Props) => {
 
   const hotPostService = () => getHotPost(topicInfo.id)
 
+  // 是否出于追踪状态
+  const isTrace = !!userId || !!postId
+
   return (
     <>
       <PostHead topicInfo={topicInfo} />
-      <PostList isTrace={Boolean(userId) || Boolean(postId)} service={postService}>
-        {!userId && !postId && (
-          <PostListHot isTrace={Boolean(userId) || Boolean(postId)} service={hotPostService} />
-        )}
+      <PostList service={postService} isTrace={isTrace}>
+        {!userId && !postId && <PostListHot service={hotPostService} isTrace={isTrace} />}
       </PostList>
       <FixFab>
-        <EditIcon onClick={() => editorInstance.toReplyTopic(topicInfo.id)} />
+        <EditIcon onClick={() => navigate(`/editor/replyTopic/${topicInfo.id}`)} />
       </FixFab>
+      <EndPlaceholder />
     </>
   )
 }

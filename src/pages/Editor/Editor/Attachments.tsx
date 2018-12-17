@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { EditorContainer } from '@/containers/editor'
+import { EditorContainer } from './EditorContainer'
 
 import { Badge } from '@material-ui/core'
 import ClearIcon from '@material-ui/icons/Clear'

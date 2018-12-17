@@ -1,28 +1,44 @@
-import { Try, Success } from '@/utils/fp/Try'
-import { FetchError, GET, PUT, DELETE } from '@/utils/fetch'
+import { GET, PUT, DELETE } from '@/utils/fetch'
 
 import { IBoardGroup, IBoard, ITagGroup } from '@cc98/api'
 
-import { getLocalStorage, setLocalStorage } from '@/utils/storage'
+import { cacheService } from './utils'
 
 /**
- * @description 获取所有版面信息
+ * 获取所有版面信息
  */
-export async function getBoardsInfo() {
-  const cache = getLocalStorage('boardsInfo') as IBoardGroup[] | undefined
+export const getBoardsInfo = cacheService(
+  () => GET<IBoardGroup[]>('board/all'),
+  'boardsInfo',
+  3600 * 24 * 7
+)
 
-  // TODO: use cache utils
-  if (cache) {
-    return Promise.resolve(Try.of<IBoardGroup[], FetchError>(Success.of(cache)))
+/**
+ * 通过版面Id获取版面名称
+ */
+export const getBoardNameById = (() => {
+  // cache
+  let _hasMap = false
+  const _BoardNameCacheMap: {
+    [key: number]: string
+  } = {}
+
+  return async (id: number) => {
+    if (!_hasMap) {
+      const res = await getBoardsInfo()
+      res.fail().succeed(boards => {
+        for (const baseBoard of boards) {
+          for (const childBoard of baseBoard.boards) {
+            _BoardNameCacheMap[childBoard.id] = childBoard.name
+          }
+        }
+        _hasMap = true
+      })
+    }
+
+    return _BoardNameCacheMap[id] || '版面不存在'
   }
-
-  const res = await GET<IBoardGroup[]>('/board/all')
-  res.fail().succeed(data => {
-    setLocalStorage('boardsInfo', data, 3600 * 24 * 7)
-  })
-
-  return res
-}
+})()
 
 /**
  * 获取单个版面信息
@@ -36,30 +52,6 @@ export function getBoardInfo(id: string) {
  */
 export async function getBoardTags(id: string) {
   return GET<ITagGroup[]>(`board/${id}/tag`)
-}
-
-// global var for getBoardNameById
-let _hasMap = false
-const _BoardNameCacheMap = {} as {
-  [key: number]: string
-}
-/**
- * 通过版面Id获取版面名称
- */
-export async function getBoardNameById(id: number) {
-  if (!_hasMap) {
-    const res = await getBoardsInfo()
-    res.fail().succeed(boards => {
-      for (const baseBoard of boards) {
-        for (const childBoard of baseBoard.boards) {
-          _BoardNameCacheMap[childBoard.id] = childBoard.name
-        }
-      }
-      _hasMap = true
-    })
-  }
-
-  return _BoardNameCacheMap[id] || '版面不存在'
 }
 
 /**

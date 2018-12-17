@@ -62,7 +62,7 @@ export default ({ postInfo, userInfo, isHot }: Props) => (
   <FlexDiv>
     <AvatarArea>
       <AvatarS
-        onClick={() => navigate(`/user/${postInfo.userId}`)}
+        onClick={() => !postInfo.isAnonymous && navigate(`/user/${postInfo.userId}`)}
         src={userInfo && userInfo.portraitUrl}
       >
         {postInfo.isAnonymous && '匿'}

@@ -14,9 +14,9 @@ interface InfListState {
 
 interface Options<T> {
   /**
-   * 第一次加载的时候触发 callback
+   * 初始 from，默认 0
    */
-  initRequest?: boolean
+  initFrom?: number
   /**
    * 步长，默认 20
    */
@@ -29,17 +29,13 @@ interface Options<T> {
    * Try success callback
    */
   success?: (data: T[]) => void
-  /**
-   * 翻转列表
-   */
-  reverse?: boolean
 }
 
 export default function useInfList<T>(service: Service<T[]>, options: Options<T> = {}) {
   const [state, setState] = useState<InfListState>({
     isLoading: false,
     isEnd: false,
-    from: 0,
+    from: (options && options.initFrom) || 0,
   })
 
   const [list, setList] = useState<T[]>([])
@@ -56,11 +52,7 @@ export default function useInfList<T>(service: Service<T[]>, options: Options<T>
           options.fail && options.fail(err)
         })
         .succeed(list => {
-          if (options && options.reverse) {
-            setList(prevList => list.reverse().concat(prevList))
-          } else {
-            setList(prevList => prevList.concat(list))
-          }
+          setList(prevList => prevList.concat(list))
 
           setState({
             isLoading: false,
@@ -74,9 +66,7 @@ export default function useInfList<T>(service: Service<T[]>, options: Options<T>
   }
 
   useEffect(() => {
-    if (options.initRequest === undefined || options.initRequest === true) {
-      callback()
-    }
+    callback()
   }, [])
 
   return [list, state, callback] as [typeof list, typeof state, typeof callback]

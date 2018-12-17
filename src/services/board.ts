@@ -50,7 +50,7 @@ export function getBoardInfo(id: string) {
 /**
  * 获取某个版面的标签组
  */
-export async function getBoardTags(id: string) {
+export async function getBoardTags(id: string | number) {
   return GET<ITagGroup[]>(`board/${id}/tag`)
 }
 

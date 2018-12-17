@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
 
-import { Fab } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 
 import EditIcon from '@material-ui/icons/Edit'
 import ReverseArrow from '@material-ui/icons/RotateRight'
@@ -30,12 +30,6 @@ import { navigate } from '@/utils/history'
 const EndPlaceholder = styled.div`
   height: 64px;
 `
-const Center = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 1rem;
-`
 
 interface Props {
   // 帖子 ID
@@ -45,15 +39,18 @@ interface Props {
   // 追踪匿名帖子
   postId?: string
   // 是否逆向
-  reverse?: boolean
+  reverse?: 'reverse'
   // 刷新
-  refresh?: number
+  refresh?: string
 }
 
 export default ({ topicId, userId, postId, reverse, refresh }: Props) => {
   const [topicInfo] = useFetcher(() => getTopicInfo(topicId), {
     fail: navigateHandler,
   })
+
+  // 用于刷新
+  const [postListKey, setPostListKey] = useState(0)
 
   if (!topicInfo) {
     return <LoadingCircle />
@@ -63,32 +60,27 @@ export default ({ topicId, userId, postId, reverse, refresh }: Props) => {
   const postService = reverse
     ? (from: number) => getReversePost(topicInfo.id, from, topicInfo.replyCount)
     : userId
-    ? (from: number) => getTracePost(topicInfo.id, parseInt(userId, 10), from)
+    ? (from: number) => getTracePost(topicInfo.id, userId, from)
     : postId
-    ? (from: number) => getAnonymousTracePost(topicInfo.id, parseInt(postId, 10), from)
+    ? (from: number) => getAnonymousTracePost(topicInfo.id, postId, from)
     : (from: number) => getPost(topicInfo.id, from)
 
   const hotPostService = () => getHotPost(topicInfo.id)
 
-  // 是否出于追踪状态
+  // 是否处于追踪状态
   const isTrace = !!userId || !!postId
   // 是否处于反转状态
   const isReverse = !!reverse
-  const rsh = refresh || 1
 
   return (
     <>
       <PostHead topicInfo={topicInfo} />
       {isReverse && (
-        <Center>
-          <Fab size="small" color="primary">
-            <ReverseArrow
-              onClick={() => navigate(`/topic/${topicInfo.id}/reverse/true/${rsh + 1}`)}
-            />
-          </Fab>
-        </Center>
+        <Button fullWidth color="primary" onClick={() => setPostListKey(postListKey + 1)}>
+          <ReverseArrow />
+        </Button>
       )}
-      <PostList service={postService} isTrace={isTrace} isReverse={isReverse}>
+      <PostList key={postListKey} service={postService} isTrace={isTrace}>
         {!isTrace && <PostListHot service={hotPostService} isTrace={isTrace} />}
       </PostList>
       <FixFab bottom={65}>
@@ -96,7 +88,7 @@ export default ({ topicId, userId, postId, reverse, refresh }: Props) => {
           onClick={() =>
             isReverse
               ? navigate(`/topic/${topicInfo.id}`)
-              : navigate(`/topic/${topicInfo.id}/reverse/true/${rsh}`)
+              : navigate(`/topic/${topicInfo.id}/reverse`)
           }
         />
       </FixFab>

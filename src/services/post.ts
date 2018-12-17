@@ -20,11 +20,12 @@ export function getPost(id: number, from: number) {
 }
 
 /**
- * 逆向获取
+ * 逆向获取帖子
  */
 export function getReversePost(id: number, from: number, total: number) {
   const realFrom = total - from - 10 - 1 > 0 ? total - from - 10 - 1 : 0
   const realSize = from === total - 1 ? 0 : 10
+
   return GET<IPost[]>(`topic/${id}/post`, {
     params: {
       from: realFrom,
@@ -48,7 +49,7 @@ export function getSinglePost(id: number, from: number) {
 /**
  * 追踪非匿名板块的用户
  */
-export function getTracePost(topicId: number, userId: number, from: number) {
+export function getTracePost(topicId: number, userId: number | string, from: number) {
   return GET<IPost[]>('post/topic/user', {
     params: {
       topicId,
@@ -62,7 +63,7 @@ export function getTracePost(topicId: number, userId: number, from: number) {
 /**
  * 追踪匿名板块用户
  */
-export function getAnonymousTracePost(topicId: number, postId: number, from: number) {
+export function getAnonymousTracePost(topicId: number, postId: number | string, from: number) {
   return GET<IPost[]>('post/topic/anonymous/user', {
     params: {
       topicId,

@@ -15,7 +15,7 @@ interface Init {
   editor: {
     initContent: string
   }
-  boardId: number
+  boardId: number | undefined
 }
 
 import { Props } from './index'
@@ -32,7 +32,7 @@ export default function useInit(props: Props): Init | null {
     title: '',
     type: 0,
   })
-  const [retBoardId, setRetBoardId] = useState(0)
+  const [retBoardId, setRetBoardId] = useState<number | undefined>(undefined)
 
   if (ok) {
     return {
@@ -46,6 +46,13 @@ export default function useInit(props: Props): Init | null {
 
   // 发帖
   if (boardId) {
+    setRetBoardId(parseInt(boardId, 10))
+    setOk(true)
+
+    return null
+  }
+
+  if (topicId) {
     setOk(true)
 
     return null

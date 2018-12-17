@@ -74,7 +74,7 @@ export default ({ topicId, userId, postId, reverse, refresh }: Props) => {
   const isTrace = !!userId || !!postId
   // 是否处于反转状态
   const isReverse = !!reverse
-  let rsh = refresh || 1
+  const rsh = refresh || 1
 
   return (
     <>
@@ -83,13 +83,13 @@ export default ({ topicId, userId, postId, reverse, refresh }: Props) => {
         <Center>
           <Fab size="small" color="primary">
             <ReverseArrow
-              onClick={() => navigate(`/topic/${topicInfo.id}/reverse/true/${++rsh}`)}
+              onClick={() => navigate(`/topic/${topicInfo.id}/reverse/true/${rsh + 1}`)}
             />
           </Fab>
         </Center>
       )}
       <PostList service={postService} isTrace={isTrace} isReverse={isReverse}>
-        {!userId && !postId && <PostListHot service={hotPostService} isTrace={isTrace} />}
+        {!isTrace && <PostListHot service={hotPostService} isTrace={isTrace} />}
       </PostList>
       <FixFab bottom={65}>
         <ReverseArrow

@@ -11,7 +11,7 @@ interface Props {
   nowTag?: number
 }
 
-const Taglistbox = styled.div`
+const TagListDiv = styled.div`
   background-color: #fff;
   margin-bottom: 2px;
   padding: 3px;
@@ -42,24 +42,22 @@ export default ({ tags, tagChange, nowTag }: Props) => {
   // FIXME: 这里的tag滑动可能导致goback
 
   return (
-    <>
-      <Taglistbox style={{ flex: 1, flexDirection: 'column' }}>
-        <Scrollbox>
-          <Insidebox>
-            {tags.map(tag => (
-              <Chip
-                style={{ marginRight: '20px' }}
-                label={tag.name}
-                onClick={() => {
-                  tagChange(tag)
-                }}
-                color={nowTag === tag.id ? 'primary' : 'default'}
-              />
-            ))}
-          </Insidebox>
-        </Scrollbox>
-      </Taglistbox>
-    </>
+    <TagListDiv style={{ flex: 1, flexDirection: 'column' }}>
+      <Scrollbox>
+        <Insidebox>
+          {tags.map(tag => (
+            <Chip
+              style={{ marginRight: '20px' }}
+              label={tag.name}
+              onClick={() => {
+                tagChange(tag)
+              }}
+              color={nowTag === tag.id ? 'primary' : 'default'}
+            />
+          ))}
+        </Insidebox>
+      </Scrollbox>
+    </TagListDiv>
   )
 }
 // class ScrollTag extends React.Component<Props, State> {

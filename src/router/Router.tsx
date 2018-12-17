@@ -19,9 +19,11 @@ import UserCenterEdit from '@/pages/UserCenter/Edit'
 import About from '@/pages/About'
 
 import LogIn from '@/pages/LogIn'
+import Page400 from '@/pages/Error/400'
 import Page401 from '@/pages/Error/401'
 import Page403 from '@/pages/Error/403'
 import Page404 from '@/pages/Error/404'
+import Page500 from '@/pages/Error/500'
 
 const Route: React.FunctionComponent<
   RouteComponentProps & {
@@ -72,9 +74,11 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
     <Route path="/messageDetail/:id" component={MessageDetail} />
 
     <Route path="/logIn" component={LogIn} />
+    <Route path="/error/400" component={Page400} />
     <Route path="/error/401" component={Page401} />
     <Route path="/error/403" component={Page403} />
     <Route path="/error/404" component={Page404} />
+    <Route path="/error/500" component={Page500} />
     <Route default component={Page404} />
   </Router>
 )

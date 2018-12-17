@@ -16,6 +16,9 @@ import Setting from '@/pages/Setting'
 import Topic from '@/pages/Topic'
 import UserCenter from '@/pages/UserCenter'
 import UserCenterEdit from '@/pages/UserCenter/Edit'
+import Help from '@/pages/Help'
+import PWAHelp from '@/pages/Help/pwa'
+import VPNHelp from '@/pages/Help/vpn'
 import About from '@/pages/About'
 
 import LogIn from '@/pages/LogIn'
@@ -46,7 +49,10 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
   <Router location={location}>
     <Route path="/" component={Home} />
 
-    <Route path="/about" component={About} />
+    <Route path="/help" component={Help} />
+    <Route path="/help/pwa" component={PWAHelp} />
+    <Route path="/help/vpn" component={VPNHelp} />
+    <Route path="/help/about" component={About} />
 
     <Route path="/hotTopics" component={HotTopic} />
     <Route path="/newTopics" component={NewTopic} />

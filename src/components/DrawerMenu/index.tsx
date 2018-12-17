@@ -15,7 +15,7 @@ import FiberNew from '@material-ui/icons/FiberNew'
 import HomeIcon from '@material-ui/icons/Home'
 import Search from '@material-ui/icons/Search'
 import Settings from '@material-ui/icons/Settings'
-import Subject from '@material-ui/icons/Subject'
+import Help from '@material-ui/icons/Help'
 import SpeakerNotes from '@material-ui/icons/SpeakerNotes'
 import Whatshot from '@material-ui/icons/Whatshot'
 
@@ -81,7 +81,7 @@ const DrawerMenu: React.FunctionComponent = () => {
           </>
         )}
         <Item icon={<Settings />} text="设置" onClick={jump('/setting')} />
-        <Item icon={<Subject />} text="关于" onClick={jump('/about')} />
+        <Item icon={<Help />} text="帮助" onClick={jump('/help')} />
       </ListS>
     </Drawer>
   )

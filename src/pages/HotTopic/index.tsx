@@ -14,13 +14,16 @@ import {
   getMonthlyHotTopics,
   getHistoryHotTopics,
 } from '@/services/topic'
+import { notificationHandler } from '@/services/utils/errorHandler'
 
 interface Props {
   service: typeof getHotTopics
 }
 
 export const HotTopicList: React.FunctionComponent<Props> = ({ service }) => {
-  const [topics] = useFetcher(service)
+  const [topics] = useFetcher(service, {
+    fail: notificationHandler,
+  })
 
   if (topics === null) {
     return <LoadingCircle />

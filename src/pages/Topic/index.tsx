@@ -14,6 +14,7 @@ import PostList from './PostList'
 
 import { getTopicInfo } from '@/services/topic'
 import { getPost, getTracePost, getAnonymousTracePost, getHotPost } from '@/services/post'
+import { navigateHandler } from '@/services/utils/errorHandler'
 
 import { navigate } from '@/utils/history'
 
@@ -32,15 +33,7 @@ interface Props {
 
 export default ({ topicId, userId, postId }: Props) => {
   const [topicInfo] = useFetcher(() => getTopicInfo(topicId), {
-    fail: err => {
-      if (err.status === 403) {
-        navigate('/error/403')
-      } else if (err.status === 401) {
-        navigate('/error/401')
-      } else if (err.status === 404) {
-        navigate('/error/404')
-      }
-    },
+    fail: navigateHandler,
   })
 
   if (!topicInfo) {

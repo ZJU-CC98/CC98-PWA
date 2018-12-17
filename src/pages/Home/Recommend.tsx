@@ -9,6 +9,7 @@ import { List, ListItem, ListItemText, ListItemIcon, Divider, Avatar } from '@ma
 import Event from '@material-ui/icons/Event'
 
 import { getHomeInfo } from '@/services/global'
+import { notificationHandler } from '@/services/utils/errorHandler'
 import { IRecommendationReading } from '@cc98/api'
 
 const AvatarS = styled(Avatar)`
@@ -24,8 +25,9 @@ const ListItemTextS = styled(ListItemText)`
 `
 
 export default () => {
-  // FIXME: fix any
-  const [data] = useFetcher(getHomeInfo)
+  const [data] = useFetcher(getHomeInfo, {
+    fail: notificationHandler,
+  })
 
   if (data === null) {
     return null

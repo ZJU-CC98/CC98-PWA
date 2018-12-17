@@ -14,6 +14,7 @@ import BoardTags from './BoardTags'
 
 import { getBoardInfo, getBoardTags } from '@/services/board'
 import { getTopicsInBoard, getTopTopics } from '@/services/topic'
+import { navigateHandler } from '@/services/utils/errorHandler'
 
 const WrapperDiv = styled.div`
   display: flex;
@@ -31,13 +32,7 @@ interface Props {
 
 export default ({ id }: Props) => {
   const [board] = useFetcher(() => getBoardInfo(id), {
-    fail: err => {
-      if (err.status === 403) {
-        navigate('/error/403')
-      } else if (err.status === 401) {
-        navigate('/error/401')
-      }
-    },
+    fail: navigateHandler,
     success: board => {
       // 外网不可见的版面
       if (board.internalState === 1) {

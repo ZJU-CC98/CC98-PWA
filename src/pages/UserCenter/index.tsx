@@ -12,6 +12,7 @@ import UserAvatar from './UserAvatar'
 import UserSignature from './UserSignature'
 import UserDetail from './UserDetail'
 import UserRecentTopics from './UserRecentTopics'
+import { navigate } from '../../utils/history'
 
 interface Props {
   info: IUser
@@ -41,8 +42,10 @@ const Wrapper: React.FunctionComponent<WrapperProps> = props => {
 
   const [userInfo] = useFetcher(props.id ? () => getUserInfoById(props.id as string) : null)
 
-  if (!props.id) {
-    return myInfo && <UserCenter info={myInfo} isUserCenter={true} />
+  if (!props.id && myInfo) {
+    return <UserCenter info={myInfo} isUserCenter={true} />
+  } else if (!myInfo) {
+    navigate('/error/401')
   }
 
   return userInfo && <UserCenter info={userInfo} isUserCenter={false} />

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import img404 from '@/assets/404.png'
+import img500 from '@/assets/500.gif'
 import Button from '@material-ui/core/Button'
 
 import LayoutCenter from '@/components/LayoutCenter'
@@ -26,12 +26,12 @@ const Body = styled.div`
   justify-content: center;
   align-items: center;
 `
-const Page404: React.FunctionComponent = () => (
+const Page500: React.FunctionComponent = () => (
   <LayoutCenter>
     <Body>
-      <Img src={img404} alt="404" onClick={goback} />
+      <Img src={img500} alt="500" onClick={goback} />
       <Message>糟糕！好像出错了！</Message>
-      <Message>页面不存在！</Message>
+      <Message>服务器内部错误！</Message>
       <Button variant="contained" color="primary" onClick={goback}>
         返回
       </Button>
@@ -39,4 +39,4 @@ const Page404: React.FunctionComponent = () => (
   </LayoutCenter>
 )
 
-export default Page404
+export default Page500

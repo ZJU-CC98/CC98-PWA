@@ -11,6 +11,7 @@ import BoardGroup from './BoardGroup'
 import BoardItem from './BoardItem'
 
 import { getBoardsInfo } from '@/services/board'
+import { navigateHandler } from '@/services/utils/errorHandler'
 import { IBoard } from '@cc98/api'
 
 import { throttle } from 'lodash-es'
@@ -52,6 +53,7 @@ export default () => {
         boards.map(baseBoard => baseBoard.boards).reduce((prev, cur) => cur.concat(prev))
       )
     },
+    fail: navigateHandler,
   })
 
   // 版面搜索

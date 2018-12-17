@@ -9,6 +9,8 @@ import { Place } from './TopicListItem'
 import InfiniteList from '@/components/InfiniteList'
 import LoadingCircle from '@/components/LoadingCircle'
 
+import { navigateHandler } from '@/services/utils/errorHandler'
+
 import { ITopic } from '@cc98/api'
 
 interface InfProps {
@@ -17,7 +19,7 @@ interface InfProps {
 }
 
 const InfTopicList: React.FunctionComponent<InfProps> = ({ service, place }) => {
-  const [topics, state, callback] = useInfList(service)
+  const [topics, state, callback] = useInfList(service, { fail: navigateHandler })
   const { isLoading, isEnd } = state
 
   return (
@@ -34,7 +36,7 @@ interface FinProps {
 }
 
 const FinTopicList: React.FunctionComponent<FinProps> = ({ service, noLoading, place }) => {
-  const [topics] = useFetcher(service)
+  const [topics] = useFetcher(service, { fail: navigateHandler })
 
   if (topics === null) {
     return noLoading ? null : <LoadingCircle />

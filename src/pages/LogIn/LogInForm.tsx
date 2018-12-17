@@ -14,6 +14,8 @@ import {
 
 import userInstance from '@/containers/user'
 
+import { loginHandler } from '@/services/utils/errorHandler'
+
 import snowball from '@/assets/snowball.png'
 
 const WrapperDiv = styled.div`
@@ -93,7 +95,7 @@ const LogIn: React.FunctionComponent = () => {
     const token = await userInstance.LOG_IN(username, password)
 
     token
-      .fail(() => {
+      .fail(err => {
         setTimeout(() => {
           setLogInState({
             loading: false,
@@ -102,7 +104,7 @@ const LogIn: React.FunctionComponent = () => {
           // tslint:disable-next-line:align
         }, 2000)
 
-        // TODO: 错误提示
+        loginHandler(err)
       })
       .succeed(_ => {
         setTimeout(() => navigate('/'), 1500)

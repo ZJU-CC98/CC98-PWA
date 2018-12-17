@@ -43,6 +43,7 @@ export interface ILocation {
 const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
   <Router location={location}>
     <Route path="/" component={Home} />
+
     <Route path="/about" component={About} />
 
     <Route path="/hotTopics" component={HotTopic} />

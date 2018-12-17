@@ -1,14 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import {
-  Button,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-} from '@material-ui/core'
+import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
 
 import { IAward } from '@cc98/api'
 
@@ -68,15 +61,13 @@ const Awards = ({ awards }: Props) => {
           <CellRight>{award.reason}</CellRight>
         </TableRowS>
       ))}
-      {showExpanded && !expanded && <TableRowS >
-        <CellShowMore
-          colSpan={SHOW_AWARDS_NUM}
-          onClick={() => setExpanded(true)}
-        >
+      {showExpanded && !expanded && (
+        <TableRowS>
+          <CellShowMore colSpan={SHOW_AWARDS_NUM} onClick={() => setExpanded(true)}>
             展开剩余{awards.length - SHOW_AWARDS_NUM}个评分
-        </CellShowMore>
-      </TableRowS>
-      }
+          </CellShowMore>
+        </TableRowS>
+      )}
     </>
   )
 }
@@ -90,9 +81,7 @@ const AwardsTable: React.FunctionComponent = ({ children }) => (
         <CellRight>理由</CellRight>
       </TableRowS>
     </TableHead>
-    <TableBody>
-      {children}
-    </TableBody>
+    <TableBody>{children}</TableBody>
   </Table>
 )
 

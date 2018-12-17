@@ -15,6 +15,7 @@ interface IUserMap {
 interface Props {
   service: Service<IPost[]>
   isTrace: boolean
+  isReverse: boolean
 }
 
 export function useUserMap() {
@@ -34,7 +35,7 @@ export function useUserMap() {
   return [userMap, updateUserMap] as [typeof userMap, typeof updateUserMap]
 }
 
-const PostList: React.FunctionComponent<Props> = ({ service, isTrace, children }) => {
+const PostList: React.FunctionComponent<Props> = ({ service, isTrace, isReverse, children }) => {
   const [userMap, updateUserMap] = useUserMap()
 
   const [posts, state, callback] = useInfList(service, {
@@ -46,7 +47,7 @@ const PostList: React.FunctionComponent<Props> = ({ service, isTrace, children }
   return (
     <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
       {posts.map((info: IPost, index: number) =>
-        index === 0 ? (
+        info.floor === 1 ? (
           <>
             <PostItem
               key={info.id}

@@ -14,6 +14,20 @@ export function getPost(id: number, from: number) {
 }
 
 /**
+ * 逆向获取
+ */
+export function getReversePost(id: number, from: number, total: number) {
+  const realFrom = total - from - 10 - 1 > 0 ? total - from - 10 - 1 : 0
+  const realSize = from === total - 1 ? 0 : 10
+  return GET<IPost[]>(`topic/${id}/post`, {
+    params: {
+      from: realFrom,
+      size: realSize,
+    },
+  }).then(res => Promise.resolve(res.map(data => data.reverse())))
+}
+
+/**
  * 获取一个帖子的单独一层
  */
 export function getSinglePost(id: number, from: number) {

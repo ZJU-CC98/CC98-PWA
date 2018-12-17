@@ -12,7 +12,7 @@ import UserAvatar from './UserAvatar'
 import UserSignature from './UserSignature'
 import UserDetail from './UserDetail'
 import UserRecentTopics from './UserRecentTopics'
-import { navigate } from '../../utils/history'
+import { navigate } from '@/utils/history'
 
 interface Props {
   info: IUser

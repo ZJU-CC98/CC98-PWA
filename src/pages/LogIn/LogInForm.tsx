@@ -136,7 +136,7 @@ const LogIn: React.FunctionComponent = () => {
       </FormDiv>
 
       <LogInButton disabled={loading} onClick={logIn}>
-        {logInFail ? 'Retry' : 'LogIn'}
+        {logInFail ? '重试' : '登录'}
         {loading && <ButtonProgress />}
       </LogInButton>
     </WrapperDiv>

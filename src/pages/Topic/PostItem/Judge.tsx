@@ -13,6 +13,8 @@ import {
   TextField,
 } from '@material-ui/core'
 
+import { rateHandler } from '@/services/utils/errorHandler'
+
 import { PUT } from '@/utils/fetch'
 import { IPost } from '@cc98/api'
 
@@ -67,8 +69,7 @@ const Judge: React.FunctionComponent<Props> = ({ postInfo, handleClose, refreshP
       },
     })
 
-    // TODO: Toast
-    res.fail().succeed(() => {
+    res.fail(rateHandler).succeed(() => {
       handleClose()
       refreshPost()
     })

@@ -33,12 +33,6 @@ interface Props {
 export default ({ id }: Props) => {
   const [board] = useFetcher(() => getBoardInfo(id), {
     fail: navigateHandler,
-    success: board => {
-      // 外网不可见的版面
-      if (board.internalState === 1) {
-        navigate('/error/401')
-      }
-    },
   })
 
   const [boardTags] = useFetcher(() => getBoardTags(id))

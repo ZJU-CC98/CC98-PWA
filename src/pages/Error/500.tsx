@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import img500 from '@/assets/401.png'
-import { Button, Typography } from '@material-ui/core'
+import ErrorImage from './ErrorImage'
 
+import { Button, Typography } from '@material-ui/core'
 import LayoutCenter from '@/components/LayoutCenter'
 
 import { goback } from '@/utils/history'
@@ -22,7 +22,7 @@ const Body = styled.div`
 const Page500: React.FunctionComponent = () => (
   <LayoutCenter>
     <Body>
-      <Img src={img500} alt="500" onClick={goback} />
+      <ErrorImage status="500" />
       <Typography variant="h5">糟糕！好像出错了！</Typography>
       <Typography variant="subheading">服务器内部错误！</Typography>
       <Button variant="contained" color="primary" onClick={goback}>

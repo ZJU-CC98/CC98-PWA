@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import img500 from '@/assets/401.png'
-import Button from '@material-ui/core/Button'
+import img400 from '@/assets/401.png'
 
+import Button from '@material-ui/core/Button'
 import LayoutCenter from '@/components/LayoutCenter'
 
 import { goback } from '@/utils/history'
@@ -26,12 +26,13 @@ const Body = styled.div`
   justify-content: center;
   align-items: center;
 `
-const Page500: React.FunctionComponent = () => (
+
+const Page400: React.FunctionComponent = () => (
   <LayoutCenter>
     <Body>
-      <Img src={img500} alt="500" onClick={goback} />
+      <Img src={img400} alt="400" onClick={goback} />
       <Message>糟糕！好像出错了！</Message>
-      <Message>服务器内部错误！</Message>
+      <Message>您的操作出现了问题！</Message>
       <Button variant="contained" color="primary" onClick={goback}>
         返回
       </Button>
@@ -39,4 +40,4 @@ const Page500: React.FunctionComponent = () => (
   </LayoutCenter>
 )
 
-export default Page500
+export default Page400

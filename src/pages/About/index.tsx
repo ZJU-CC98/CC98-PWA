@@ -76,7 +76,7 @@ const CardHeaderS = styled(CardHeader)`
 
 const DevCard = ({ name, description, userId }: DevCardProps) => (
   <CardHeaderS
-    avatar={<Avatar src={`https://github.com/${name}.png?s=200`} />}
+    avatar={<Avatar src={`https://github.com/${name}.png?s=100`} />}
     title={name}
     subheader={description}
     onClick={() => navigate(`/user/${userId}`)}

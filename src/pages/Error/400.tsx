@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import img400 from '@/assets/401.png'
+import ErrorImage from './ErrorImage'
 
 import { Button, Typography } from '@material-ui/core'
 import LayoutCenter from '@/components/LayoutCenter'
@@ -23,7 +23,7 @@ const Body = styled.div`
 const Page400: React.FunctionComponent = () => (
   <LayoutCenter>
     <Body>
-      <Img src={img400} alt="400" onClick={goback} />
+      <ErrorImage status="400" />
       <Typography variant="h5">糟糕！好像出错了！</Typography>
       <Typography variant="subheading">您的操作出现了问题！</Typography>
       <Button variant="contained" color="primary" onClick={goback}>

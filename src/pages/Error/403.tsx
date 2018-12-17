@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import img401 from '@/assets/401.png'
+import ErrorImage from './ErrorImage'
 
 import { Button, Typography } from '@material-ui/core'
 import LayoutCenter from '@/components/LayoutCenter'
@@ -24,7 +24,7 @@ const Body = styled.div`
 const Page403: React.FunctionComponent = () => (
   <LayoutCenter>
     <Body>
-      <Img src={img401} alt="403" onClick={goback} />
+      <ErrorImage status="403" />
       <Typography variant="h5">糟糕！好像出错了！</Typography>
       <Typography variant="subheading">您没有权限访问此网页，代理无法访问部分版面!</Typography>
       <Button variant="contained" color="primary" onClick={goback}>

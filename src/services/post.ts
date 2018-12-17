@@ -2,6 +2,12 @@ import { GET, PUT } from '@/utils/fetch'
 import { IPost, ILike } from '@cc98/api'
 
 /**
+ * 获取单个帖子的编辑信息权限
+ */
+export function getSinglePostById(id: number) {
+  return GET<IPost>(`post/${id}/original`)
+}
+/**
  * 获取一个帖子的10层楼
  */
 export function getPost(id: number, from: number) {

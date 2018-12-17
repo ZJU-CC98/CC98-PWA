@@ -13,7 +13,7 @@ import {
   editorPost,
 } from '@/services/editor'
 
-import { goback } from '@/utils/history'
+import { goback, navigate } from '@/utils/history'
 import dayjs from 'dayjs'
 
 const WrapperDiv = styled.div`
@@ -49,14 +49,19 @@ export default (props: Props) => {
   }
 
   const editor = new EditorContainer(initContent)
-  const onSendCallback = chooseSendCallback(props, editor)
 
   // TODO:
-  const container = new MetaInfoContainer()
+  const metaContainer = new MetaInfoContainer(props)
+  const onSendCallback = chooseSendCallback(props, editor, metaContainer)
 
   return (
     <WrapperDiv>
-      <MetaInfo container={container} />
+      <MetaInfo
+        container={metaContainer}
+        boardId={props.boardId}
+        postId={props.postId}
+        topicId={props.topicId}
+      />
       <Editor editor={editor} onSendCallback={onSendCallback} />
     </WrapperDiv>
   )
@@ -105,7 +110,11 @@ function useInitContent(props: Props): string | null {
 /**
  * 选择合适的回调
  */
-function chooseSendCallback(props: Props, editor: EditorContainer): () => void {
+function chooseSendCallback(
+  props: Props,
+  editor: EditorContainer,
+  metaInfo: MetaInfoContainer
+): () => void {
   const { boardId, topicId, postId } = props
 
   // return () => {
@@ -116,16 +125,16 @@ function chooseSendCallback(props: Props, editor: EditorContainer): () => void {
   if (boardId) {
     return () => {
       const topicParams: ITopicParams = {
-        title: '',
-        type: 0,
-
+        title: metaInfo.state.title,
+        type: metaInfo.state.type,
+        tag1: metaInfo.state.tag1,
+        tag2: metaInfo.state.tag2,
         content: editor.fullContent,
         contentType: 0,
       }
-
       postTopic(boardId, topicParams).then(res =>
-        res.fail().succeed(() => {
-          //
+        res.fail().succeed(data => {
+          navigate(`/topic/${data}`)
         })
       )
     }
@@ -152,8 +161,11 @@ function chooseSendCallback(props: Props, editor: EditorContainer): () => void {
   // 编辑帖子
   if (postId) {
     return () => {
-      const postParams: IPostParams = {
-        title: '',
+      const postParams: ITopicParams = {
+        title: metaInfo.state.title,
+        type: metaInfo.state.type,
+        tag1: metaInfo.state.tag1,
+        tag2: metaInfo.state.tag2,
         content: editor.fullContent,
         contentType: 0,
       }

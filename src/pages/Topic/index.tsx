@@ -37,6 +37,8 @@ export default ({ topicId, userId, postId }: Props) => {
         navigate('/error/403')
       } else if (err.status === 401) {
         navigate('/error/401')
+      } else if (err.status === 404) {
+        navigate('/error/404')
       }
     },
   })

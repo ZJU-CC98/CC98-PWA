@@ -46,7 +46,12 @@ export default (props: Props) => {
   const editor = new EditorContainer(init.editor.initContent)
   const metaContainer = new MetaInfoContainer(init.metaInfo)
 
-  const onSendCallback = chooseSendCallback(props, editor, metaContainer)
+  const onSendCallback = chooseSendCallback(
+    props,
+    init.boardId !== undefined,
+    editor,
+    metaContainer
+  )
 
   return (
     <WrapperDiv>
@@ -61,6 +66,7 @@ export default (props: Props) => {
  */
 function chooseSendCallback(
   props: Props,
+  isFirstFloor: boolean,
   editor: EditorContainer,
   metaInfo: MetaInfoContainer
 ): () => void {
@@ -104,14 +110,28 @@ function chooseSendCallback(
     }
   }
 
-  // 编辑帖子
+  // 编辑主题帖子
+  if (postId && isFirstFloor) {
+    return () => {
+      const topicParams: ITopicParams = {
+        ...metaInfo.state,
+        content: editor.fullContent,
+        contentType: 0,
+      }
+
+      // editorPost(postId, topicParams).then(res =>
+      //   res.fail().succeed(() => {
+      //     goback()
+      //   })
+      // )
+    }
+  }
+
+  // 编辑普通帖子
   if (postId) {
     return () => {
-      const postParams: ITopicParams = {
-        title: metaInfo.state.title,
-        type: metaInfo.state.type,
-        tag1: metaInfo.state.tag1,
-        tag2: metaInfo.state.tag2,
+      const postParams: IPostParams = {
+        title: '',
         content: editor.fullContent,
         contentType: 0,
       }

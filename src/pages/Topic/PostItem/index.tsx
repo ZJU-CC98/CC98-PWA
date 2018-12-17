@@ -36,10 +36,10 @@ interface Props {
   /**
    * 是否追踪
    */
-  isTrace: boolean
+  isTrace?: boolean
 }
 
-export default ({ postInfo, userInfo, isHot, isTrace }: Props) => {
+export default ({ postInfo, userInfo, isHot, isTrace = false }: Props) => {
   if (postInfo.isDeleted) {
     return null
   }

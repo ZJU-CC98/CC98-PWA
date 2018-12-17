@@ -52,6 +52,7 @@ export default function useInit(props: Props): Init | null {
     return null
   }
 
+  // 回复帖子
   if (topicId) {
     setOk(true)
 
@@ -66,7 +67,7 @@ export default function useInit(props: Props): Init | null {
         const formatTime = dayjs(time).format('YYYY-MM-DD HH:mm')
         setInitContent(
           // tslint:disable-next-line
-          `[quote]引用自${floor}楼${userName}在${formatTime}的发言：[color=blue][url=/topic/${topicId}#${floor}]>查看原帖<[/url][/color][/b]\n${content}[/quote]\n`
+          `[quote][b]引用自${floor}楼${userName}在${formatTime}的发言：[color=blue][url=/topic/${topicId}#${floor}]>查看原帖<[/url][/color][/b]\n${content}[/quote]\n`
         )
         setOk(true)
       })

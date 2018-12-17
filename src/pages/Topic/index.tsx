@@ -40,11 +40,9 @@ interface Props {
   postId?: string
   // 是否逆向
   reverse?: 'reverse'
-  // 刷新
-  refresh?: string
 }
 
-export default ({ topicId, userId, postId, reverse, refresh }: Props) => {
+export default ({ topicId, userId, postId, reverse }: Props) => {
   const [topicInfo] = useFetcher(() => getTopicInfo(topicId), {
     fail: navigateHandler,
   })
@@ -81,7 +79,7 @@ export default ({ topicId, userId, postId, reverse, refresh }: Props) => {
         </Button>
       )}
       <PostList key={postListKey} service={postService} isTrace={isTrace}>
-        {!isTrace && <PostListHot service={hotPostService} isTrace={isTrace} />}
+        {!isTrace && <PostListHot service={hotPostService} />}
       </PostList>
       <FixFab bottom={65}>
         <ReverseArrow

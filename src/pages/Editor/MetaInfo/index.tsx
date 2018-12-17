@@ -32,16 +32,17 @@ interface Props {
    * 楼层 ID
    */
   postId?: string
+  topicId?: string
 }
 
-export default ({ container, boardId, postId }: Props) => {
+export default ({ container, boardId, postId, topicId }: Props) => {
   useContainer(container)
   // 编辑帖子帖子是主题和发新帖的情况都要进行meta的编辑
   let boardTags: ITagGroup[] | null = null
   if (boardId) {
     ; [boardTags] = useFetcher(() => getBoardTags(boardId))
   }
-  if (postId) {
+  if (postId && !topicId) {
     const [postinfo] = useFetcher(() => getSinglePostById(Number(postId)))
     if (postinfo && postinfo.floor === 1) {
       ; [boardTags] = useFetcher(() => getBoardTags(String(postinfo.boardId)))

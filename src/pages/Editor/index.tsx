@@ -56,7 +56,12 @@ export default (props: Props) => {
 
   return (
     <WrapperDiv>
-      <MetaInfo container={metaContainer} boardId={props.boardId} postId={props.postId} />
+      <MetaInfo
+        container={metaContainer}
+        boardId={props.boardId}
+        postId={props.postId}
+        topicId={props.topicId}
+      />
       <Editor editor={editor} onSendCallback={onSendCallback} />
     </WrapperDiv>
   )
@@ -156,8 +161,11 @@ function chooseSendCallback(
   // 编辑帖子
   if (postId) {
     return () => {
-      const postParams: IPostParams = {
-        title: '',
+      const postParams: ITopicParams = {
+        title: metaInfo.state.title,
+        type: metaInfo.state.type,
+        tag1: metaInfo.state.tag1,
+        tag2: metaInfo.state.tag2,
         content: editor.fullContent,
         contentType: 0,
       }

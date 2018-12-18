@@ -16,6 +16,10 @@ interface State {
    * 是否开启实时通知
    */
   useSignalr: boolean
+  /**
+   * 缓存页数
+   */
+  cachePages: number
 }
 
 class SettingContainer extends Container<State> {
@@ -26,6 +30,7 @@ class SettingContainer extends Container<State> {
       theme: 'light',
       useProxy: false,
       useSignalr: false,
+      cachePages: 3,
     }
 
     const setting = getLocalStorage('setting') as State | null
@@ -67,6 +72,12 @@ class SettingContainer extends Container<State> {
       }),
       this.SYNC_SETTING
     )
+  }
+
+  CHANGE_CACHE = (val: number) => {
+    this.setState({
+      cachePages: val,
+    })
   }
 }
 

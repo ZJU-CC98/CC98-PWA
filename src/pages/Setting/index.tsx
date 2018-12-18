@@ -5,6 +5,7 @@ import { List } from '@material-ui/core'
 import Signalr from './Signalr'
 import Theme from './Theme'
 import Proxy from './Proxy'
+import Cache from './Cache'
 
 import useContainer from '@/hooks/useContainer'
 import userInstance from '@/containers/user'
@@ -20,6 +21,7 @@ const Setting: React.FunctionComponent = () => {
     <List>
       <Signalr />
       <Theme />
+      <Cache />
       {isDev && <Proxy />}
     </List>
   )

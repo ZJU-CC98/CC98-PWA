@@ -23,10 +23,20 @@ export function getPost(id: number, from: number) {
  * 逆向获取帖子
  */
 export function getReversePost(id: number, from: number, total: number) {
-  console.log(from)
-  console.log(total)
+  const floor = total + 1
+  /**
+   * case ex 34L  floor = 34 from = 0
+   * 请求 realFrom = 25 size = 10 -> floor = 34 from = 10
+   *     realFrom = 15 size = 10 -> floor = 34 from = 20
+   *     realFrom = 5 size = 10 -> floor = 34 from = 30
+   *     1 < floor - from < 9  realFrom = 0 size = floor - from + 1
+   *     floor = from + 1
+   */
   const realFrom = total - from - 9 > 0 ? total - from - 9 : 0
-  const realSize = from !== 0 && from === total ? 0 : 10
+  let realSize = from !== 0 && from === total ? 0 : 10
+  if (floor - from > 1 && floor - from < 9) {
+    realSize = floor - from
+  }
 
   return GET<IPost[]>(`topic/${id}/post`, {
     params: {

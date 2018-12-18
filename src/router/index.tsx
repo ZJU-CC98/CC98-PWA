@@ -19,7 +19,7 @@ interface State {
 class RouterCacheContainer extends Container<State> {
   state: State = {
     locations: [],
-    MAX_CACHE_SIZE: settingInstance.state.cachePages,
+    MAX_CACHE_SIZE: settingInstance.state.routerCacheSize,
   }
 
   /**

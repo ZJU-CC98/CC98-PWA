@@ -19,7 +19,7 @@ interface State {
   /**
    * 缓存页数
    */
-  cachePages: number
+  routerCacheSize: number
 }
 
 class SettingContainer extends Container<State> {
@@ -30,7 +30,7 @@ class SettingContainer extends Container<State> {
       theme: 'light',
       useProxy: false,
       useSignalr: false,
-      cachePages: 3,
+      routerCacheSize: 3,
     }
 
     const setting = getLocalStorage('setting') as State | null
@@ -74,9 +74,9 @@ class SettingContainer extends Container<State> {
     )
   }
 
-  CHANGE_CACHE = (val: number) => {
+  CHANGE_CACHE = (size: number) => {
     this.setState({
-      cachePages: val,
+      routerCacheSize: size,
     })
   }
 }

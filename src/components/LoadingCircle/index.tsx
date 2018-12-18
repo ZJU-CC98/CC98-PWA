@@ -8,13 +8,10 @@ const WrapperDiv = styled.div`
   justify-content: center;
   padding: 15px 0;
 `
-interface Props {
-  size?: number
-}
 
-const LoadingCircle: React.FunctionComponent<Props> = ({ size }) => (
+const LoadingCircle: React.FunctionComponent = () => (
   <WrapperDiv>
-    <CircularProgress size={size || 40} />
+    <CircularProgress />
   </WrapperDiv>
 )
 

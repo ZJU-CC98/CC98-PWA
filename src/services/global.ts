@@ -13,6 +13,7 @@ export function getSiteInfo() {
  */
 export function getHomeInfo() {
   // FIXME:
+  // tslint:disable-next-line:no-any
   return GET<any>('config/index')
 }
 

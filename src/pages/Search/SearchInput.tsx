@@ -25,7 +25,12 @@ const SearchInput: React.FunctionComponent<Props> = ({ onSearch }) => {
 
   return (
     <SearchDiv>
-      <TextField fullWidth placeholder="搜索主题" value={value} onChange={onChange} />
+      <TextField
+        fullWidth
+        placeholder="搜索主题（限制10s一次）"
+        value={value}
+        onChange={onChange}
+      />
       <IconButton onClick={() => onSearch(value)}>
         <SearchIcon color="primary" />
       </IconButton>

@@ -7,12 +7,11 @@ import {
   ExpansionPanelDetails,
   ExpansionPanelSummary,
   IconButton,
+  CircularProgress,
 } from '@material-ui/core'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FavoriteIcon from '@material-ui/icons/Favorite'
-
-import LoadingCircle from '@/components/LoadingCircle'
 
 import { IBoard } from '@cc98/api'
 import { customBoard } from '@/services/board'
@@ -49,6 +48,10 @@ export default ({ data }: Props) => {
   const { isFollowed, loading } = state
 
   async function handleClick() {
+    if (loading) {
+      return
+    }
+
     setState({
       ...state,
       loading: true,
@@ -79,7 +82,7 @@ export default ({ data }: Props) => {
 
         <IconButton onClick={handleClick}>
           {state.loading ? (
-            <LoadingCircle size={20} />
+            <CircularProgress size={20} />
           ) : (
             <FavoriteIcon color={isFollowed ? 'secondary' : 'disabled'} />
           )}

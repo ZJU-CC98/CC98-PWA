@@ -58,8 +58,8 @@ export default (props: Props) => {
       <Collapse in={isExpanded} timeout="auto">
         <BodyDiv>
           {data.boards.map(board => (
-            <ItemDiv>
-              <BoardItem key={board.id} data={board} />
+            <ItemDiv key={board.id}>
+              <BoardItem data={board} />
             </ItemDiv>
           ))}
         </BodyDiv>

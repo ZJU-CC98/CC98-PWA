@@ -15,20 +15,30 @@ import { navigateHandler } from '@/services/utils/errorHandler'
 
 import { ITopic } from '@cc98/api'
 
-interface InfProps {
-  service: InfService<ITopic[]>
-  place: Place
-}
 const Img = styled.img`
   width: 60%;
   max-width: 600px;
 `
-const Center = styled.div`
+const CenterDiv = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
 `
+
+/**
+ * 空列表占位，表示 InfList 什么都没有
+ */
+const EmtpyList = () => (
+  <CenterDiv>
+    <Img src={img404} />
+  </CenterDiv>
+)
+
+interface InfProps {
+  service: InfService<ITopic[]>
+  place: Place
+}
 
 const InfTopicList: React.FunctionComponent<InfProps> = ({ service, place }) => {
   const [topics, state, callback] = useInfList(service, { fail: navigateHandler })
@@ -36,11 +46,7 @@ const InfTopicList: React.FunctionComponent<InfProps> = ({ service, place }) => 
 
   return (
     <>
-      {place === 'search' && topics.length === 0 && !isLoading && (
-        <Center>
-          <Img src={img404} />
-        </Center>
-      )}
+      {!isLoading && topics.length === 0 && <EmtpyList />}
       <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
         <TopicList topics={topics} place={place} />
       </InfiniteList>

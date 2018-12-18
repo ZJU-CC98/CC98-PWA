@@ -2,4 +2,4 @@
  * 版本号
  */
 
-export default 'v0.18.5-alpha'
+export default 'v0.18.6-alpha'

@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { navigate } from '@/utils/history'
 import styled from 'styled-components'
 
-import { Avatar, IconButton, Typography } from '@material-ui/core'
-import LoadingCircle from '@/components/LoadingCircle'
+import { Avatar, IconButton, Typography, CircularProgress } from '@material-ui/core'
 
 import ExpandPanel from './ExpandPanel'
 
@@ -49,6 +48,9 @@ const UserAvatar: React.FunctionComponent<Props> = ({ info, isUserCenter }) => {
   const [isFollowing, setIsFollowing] = useState(info.isFollowing)
   const [isLoading, setIsLoading] = useState(false)
   const toggleFunc = async () => {
+    if (isLoading) {
+      return
+    }
     setIsLoading(true)
     if (isFollowing) {
       const res = await unFollowUser(info.id)
@@ -77,7 +79,7 @@ const UserAvatar: React.FunctionComponent<Props> = ({ info, isUserCenter }) => {
     <>
       <IconButton onClick={toggleFunc}>
         {isLoading ? (
-          <LoadingCircle size={20} />
+          <CircularProgress size={20} />
         ) : (
           <FavoriteIcon color={isFollowing ? 'secondary' : 'disabled'} />
         )}

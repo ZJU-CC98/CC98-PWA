@@ -39,10 +39,10 @@ interface Props {
   // 追踪匿名帖子
   postId?: string
   // 是否逆向
-  reverse?: string
+  isReverse?: boolean
 }
 
-export default ({ topicId, userId, postId, reverse }: Props) => {
+const Topic = ({ topicId, userId, postId, isReverse = false }: Props) => {
   const [topicInfo] = useFetcher(() => getTopicInfo(topicId), {
     fail: navigateHandler,
   })
@@ -55,7 +55,7 @@ export default ({ topicId, userId, postId, reverse }: Props) => {
   }
 
   // 根据 URL 参数选择获取 post 的 service
-  const postService = reverse
+  const postService = isReverse
     ? (from: number) => getReversePost(topicInfo.id, from, topicInfo.replyCount)
     : userId
     ? (from: number) => getTracePost(topicInfo.id, userId, from)
@@ -67,8 +67,6 @@ export default ({ topicId, userId, postId, reverse }: Props) => {
 
   // 是否处于追踪状态
   const isTrace = !!userId || !!postId
-  // 是否处于反转状态
-  const isReverse = !!reverse
 
   return (
     <>
@@ -97,3 +95,10 @@ export default ({ topicId, userId, postId, reverse }: Props) => {
     </>
   )
 }
+
+/**
+ * 逆序 Topic
+ */
+const TopicReverse = (props: Props) => <Topic isReverse {...props} />
+
+export { Topic as default, TopicReverse }

@@ -12,7 +12,7 @@ export default () => {
 
   const onSearch = throttle((value: string) => {
     setSearchTerm(value)
-  }, 1000)
+  }, 1000 * 10)
 
   return (
     <>

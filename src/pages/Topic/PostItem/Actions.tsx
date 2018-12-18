@@ -37,11 +37,11 @@ interface Props {
   /**
    * 用户信息
    */
-  userInfo: IUser | undefined
+  userInfo?: IUser
   /**
    * 是否追踪
    */
-  isTrace: boolean
+  isTrace?: boolean
   /**
    * 更新 Post 信息
    */
@@ -149,6 +149,7 @@ const MoreActions = ({ postInfo, isTrace, refreshPost, userInfo }: Props) => {
     handleClose()
   }
 
+  // FIXME: 不接受每次都这样请求，写一个新的 service
   const [childBoards, setChildBoards] = useState<IBoard[]>([])
   useFetcher(getBoardsInfo, {
     success: boards => {
@@ -206,12 +207,7 @@ const FlexDiv = styled.div`
 
 export default ({ postInfo, isTrace, refreshPost, userInfo }: Props) => (
   <FlexDiv>
-    <IconActions
-      postInfo={postInfo}
-      userInfo={userInfo}
-      isTrace={isTrace}
-      refreshPost={refreshPost}
-    />
+    <IconActions postInfo={postInfo} refreshPost={refreshPost} />
     <MoreActions
       postInfo={postInfo}
       userInfo={userInfo}

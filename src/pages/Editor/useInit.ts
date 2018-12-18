@@ -58,6 +58,7 @@ export default function useInit(props: Props): Init | null {
 
     return null
   }
+
   // 引用某楼层
   if (topicId && postId) {
     getOriginalPost(postId).then(res =>
@@ -83,7 +84,7 @@ export default function useInit(props: Props): Init | null {
         if (postInfo.floor !== 1) {
           setOk(true)
 
-          return null
+          return
         }
 
         // 编辑主题

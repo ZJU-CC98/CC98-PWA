@@ -1,26 +1,23 @@
 import React from 'react'
-import { MenuItem, Select, OutlinedInput } from '@material-ui/core'
 
-const typeNum = [{ id: 0, name: '普通' }, { id: 1, name: '校园活动' }, { id: 2, name: '学术信息' }]
+import { MenuItem, Select } from '@material-ui/core'
+
+const PostType = [{ id: 0, name: '普通' }, { id: 1, name: '校园活动' }, { id: 2, name: '学术信息' }]
+
 interface Props {
-  nowType: number
-  typeChange: (id: number) => void
+  value: number
+  onChange: (id: number) => void
 }
-export default ({ nowType, typeChange }: Props) => {
+
+export default ({ value, onChange }: Props) => {
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    typeChange(Number(e.target.value))
+    onChange(parseInt(e.target.value, 10))
   }
 
   return (
-    <Select
-      value={nowType}
-      onChange={handleSelect}
-      fullWidth
-      input={<OutlinedInput labelWidth={60} name="topictype" id="filled-type" />}
-    >
-      {typeNum.map(item => (
+    <Select value={value} onChange={handleSelect}>
+      {PostType.map(item => (
         <MenuItem key={item.id} value={item.id}>
-          {' '}
           {item.name}
         </MenuItem>
       ))}

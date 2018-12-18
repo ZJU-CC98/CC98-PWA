@@ -10,6 +10,13 @@
 }
 
 
+.ubb-tag-bili {
+  width: 80%;
+  margin-left: 10%;
+  border: none;
+}
+
+
 .ubb-tag-center {
   text-align: center;
 }
@@ -103,6 +110,7 @@
   text-decoration: underline;
 }
 
+
 .ubb-tag-upload {
   display: inline-flex;
   justify-content: space-around;
@@ -128,12 +136,12 @@
 }
 
 
-.ubb-tag-tb {
-  width: 30px;
-}
-
-
 .ubb-tag-needreply {
   padding: 6px 15px;
   margin: 6px 0;
+}
+
+
+.ubb-tag-tb {
+  width: 30px;
 }

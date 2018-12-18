@@ -18,7 +18,7 @@ import UBB from '@/UBB'
 
 const UBBPreview = styled(Typography)`
   && {
-    min-height: 110px;
+    min-height: 160px;
   }
 `
 

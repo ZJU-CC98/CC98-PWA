@@ -1,12 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import useFetcher from '@/hooks/useFetcher'
 import useContainer from '@/hooks/useContainer'
 import { MetaInfoContainer } from './MetaInfoContainer'
+
+import { InputBase, FormLabel } from '@material-ui/core'
+
 import ScrollTag from './ScrollTag'
 import SelectType from './SelectType'
-import { InputBase } from '@material-ui/core'
-import useFetcher from '@/hooks/useFetcher'
 
 import { getBoardTags } from '@/services/board'
 
@@ -14,12 +16,21 @@ const InputArea = styled(InputBase).attrs({
   fullWidth: true,
 })`
   && {
-    margin-top: 8px;
     padding: 4px 8px;
     border: 1.5px solid #ccc;
   }
 `
+
 export { MetaInfoContainer }
+
+const SelectDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  margin-bottom: 8px;
+`
+
+const TagSelectDiv = styled.div``
 
 interface Props {
   container: MetaInfoContainer
@@ -44,22 +55,32 @@ export default ({ container, boardId }: Props) => {
 
   return (
     <>
+      <SelectDiv>
+        <div>
+          <FormLabel>类型：</FormLabel>
+          <SelectType value={container.state.type} onChange={type => container.setType(type)} />
+        </div>
+
+        <TagSelectDiv>
+          <FormLabel>标签：</FormLabel>
+          {boardTags[0] && (
+            <ScrollTag
+              tags={boardTags[0].tags}
+              value={container.state.tag1}
+              onChange={tag => container.setTag1(tag)}
+            />
+          )}
+          {boardTags[1] && (
+            <ScrollTag
+              tags={boardTags[1].tags}
+              value={container.state.tag2}
+              onChange={tag => container.setTag2(tag)}
+            />
+          )}
+        </TagSelectDiv>
+      </SelectDiv>
+
       <InputArea value={container.state.title} placeholder="标题" onChange={onTitleChange} />
-      <SelectType nowType={container.state.type} typeChange={type => container.setType(type)} />
-      {boardTags[0] && (
-        <ScrollTag
-          tags={boardTags[0].tags}
-          nowTag={container.state.tag1}
-          tagChange={tag => container.setTag1(tag.id)}
-        />
-      )}
-      {boardTags[1] && (
-        <ScrollTag
-          tags={boardTags[1].tags}
-          nowTag={container.state.tag2}
-          tagChange={tag => container.setTag2(tag.id)}
-        />
-      )}
     </>
   )
 }

@@ -17,7 +17,6 @@ import img from './img'
 import left from './left'
 import noubb from './noubb'
 import quote from './quote'
-import quotex from './quotex'
 import right from './right'
 import sandbox from './sandbox'
 import size from './size'
@@ -50,7 +49,7 @@ const tagHandlers: IHandlerHub<React.ReactNode>['specificTagHandlers'] = {
   left,
   noubb,
   quote,
-  quotex,
+  quotex: quote,
   right,
   sandbox,
   size,

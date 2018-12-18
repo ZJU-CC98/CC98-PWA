@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 
 import MetaInfo, { MetaInfoContainer } from './MetaInfo'
@@ -9,6 +9,7 @@ import useInit from './useInit'
 import { ITopicParams, IPostParams, postTopic, replyTopic, editorPost } from '@/services/editor'
 
 import { goback, navigate } from '@/utils/history'
+import snackbar from '@/utils/snackbar'
 
 const WrapperDiv = styled.div`
   margin: 8px 12px;
@@ -36,27 +37,42 @@ export interface Props {
   postId?: string
 }
 
+// hack
+interface MutableRefObject<T> {
+  current: T
+}
+
 export default (props: Props) => {
   const init = useInit(props)
+
+  const isContainerInit = useRef(false)
+  // 此处 @types/react 类型有误
+  const editor = useRef<EditorContainer>(null) as MutableRefObject<EditorContainer>
+  const metaContainer = useRef<MetaInfoContainer>(null) as MutableRefObject<MetaInfoContainer>
+
   if (init === null) {
     // init 还在获取中
     return null
   }
 
-  const editor = new EditorContainer(init.editor.initContent)
-  const metaContainer = new MetaInfoContainer(init.metaInfo)
+  if (!isContainerInit.current) {
+    editor.current = new EditorContainer(init.editor.initContent)
+    metaContainer.current = new MetaInfoContainer(init.metaInfo)
+
+    isContainerInit.current = true
+  }
 
   const onSendCallback = chooseSendCallback(
     props,
     init.boardId !== undefined,
-    editor,
-    metaContainer
+    editor.current,
+    metaContainer.current
   )
 
   return (
     <WrapperDiv>
-      {init.boardId && <MetaInfo container={metaContainer} boardId={init.boardId} />}
-      <Editor editor={editor} onSendCallback={onSendCallback} />
+      {init.boardId && <MetaInfo container={metaContainer.current} boardId={init.boardId} />}
+      <Editor editor={editor.current} onSendCallback={onSendCallback} />
     </WrapperDiv>
   )
 }
@@ -86,7 +102,8 @@ function chooseSendCallback(
       }
       postTopic(boardId, topicParams).then(res =>
         res.fail().succeed(() => {
-          //
+          snackbar.success('发布成功')
+          goback()
         })
       )
     }
@@ -103,7 +120,9 @@ function chooseSendCallback(
 
       replyTopic(topicId, postParams).then(res =>
         res.fail().succeed(() => {
-          // TODO:
+          snackbar.success('回复成功')
+
+          // TODO: 刷新帖子
           navigate(`/topic/${topicId}`)
         })
       )
@@ -119,11 +138,12 @@ function chooseSendCallback(
         contentType: 0,
       }
 
-      // editorPost(postId, topicParams).then(res =>
-      //   res.fail().succeed(() => {
-      //     goback()
-      //   })
-      // )
+      editorPost(postId, topicParams).then(res =>
+        res.fail().succeed(() => {
+          snackbar.success('编辑成功')
+          goback()
+        })
+      )
     }
   }
 
@@ -138,6 +158,7 @@ function chooseSendCallback(
 
       editorPost(postId, postParams).then(res =>
         res.fail().succeed(() => {
+          snackbar.success('编辑成功')
           goback()
         })
       )

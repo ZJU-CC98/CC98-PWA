@@ -1,5 +1,5 @@
 import { GET, POST } from '@/utils/fetch'
-import { ISignIn, ISite } from '@cc98/api'
+import { ISignIn, ISite, IConfig } from '@cc98/api'
 
 /**
  * 获取全站基本信息
@@ -12,9 +12,7 @@ export function getSiteInfo() {
  * 获取全站主页信息
  */
 export function getHomeInfo() {
-  // FIXME:
-  // tslint:disable-next-line:no-any
-  return GET<any>('config/index')
+  return GET<IConfig>('config/index')
 }
 
 /**

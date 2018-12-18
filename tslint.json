@@ -29,6 +29,7 @@
     "no-boolean-literal-compare": true,
     "no-consecutive-blank-lines": [true],
     "no-duplicate-imports": false,
+    "no-increment-decrement": false,
     "no-irregular-whitespace": true,
     "no-shadowed-variable": false,
     "no-trailing-whitespace": true,

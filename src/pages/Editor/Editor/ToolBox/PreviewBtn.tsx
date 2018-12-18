@@ -3,24 +3,22 @@ import styled from 'styled-components'
 
 import { EditorContainer } from '../EditorContainer'
 
-import { IconButton, Dialog, Typography } from '@material-ui/core'
+import {
+  IconButton,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  Typography,
+  Button,
+} from '@material-ui/core'
+
 import TransformIcon from '@material-ui/icons/Transform'
-import CloseIcon from '@material-ui/icons/Close'
 
 import UBB from '@/UBB'
 
-const PreviewHeader = styled.div`
-  position: fixed;
-  right: 16px;
-  bottom: 12px;
-`
-
-const PreviewBody = styled(Typography).attrs({
-  component: 'div',
-})`
+const UBBPreview = styled(Typography)`
   && {
-    margin: 44px 20px;
-    margin-bottom: 60px;
+    min-height: 110px;
   }
 `
 
@@ -31,12 +29,14 @@ interface PreviewProps {
 
 const Preview = ({ content, handleClose }: PreviewProps) => (
   <>
-    <PreviewHeader>
-      <IconButton color="primary" onClick={handleClose}>
-        <CloseIcon />
-      </IconButton>
-    </PreviewHeader>
-    <PreviewBody>{UBB(content)}</PreviewBody>
+    <DialogContent>
+      <UBBPreview component="div">{content ? UBB(content) : '【没有内容】'}</UBBPreview>
+    </DialogContent>
+    <DialogActions>
+      <Button color="primary" onClick={handleClose}>
+        关闭预览
+      </Button>
+    </DialogActions>
   </>
 )
 
@@ -55,7 +55,7 @@ export default ({ editor }: Props) => {
   return (
     <IconButton>
       <TransformIcon onClick={clickHandler} />
-      <Dialog fullScreen open={open}>
+      <Dialog open={open} fullWidth scroll="paper">
         <Preview content={editor.fullContent} handleClose={handleClose} />
       </Dialog>
     </IconButton>

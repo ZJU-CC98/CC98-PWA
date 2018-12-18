@@ -1,72 +1,99 @@
-import React from 'react'
-
-import { EditorContainer } from '../EditorContainer'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { GridList, Paper } from '@material-ui/core'
+import { DialogTitle, DialogContent, Tabs, Tab } from '@material-ui/core'
+
+import { EditorContainer } from '../EditorContainer'
+
+const DialogTitleS = styled(DialogTitle)`
+  && {
+    padding: 12px;
+    padding-top: 0;
+  }
+`
+
+const Img = styled.img`
+  max-width: 25%;
+  padding: 5px;
+`
+
+const FlexDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+`
 
 interface Props {
   editor: EditorContainer
+  handleClose: () => void
 }
-const SquareDiv = styled.div`
-  padding-bottom: 16% !important;
-  height: 0px !important;
-`
-const Root = styled(Paper)`
-  box-shadow: 0px 0px 0px 0px !important;
-`
-const SquareGridList = styled(GridList).attrs({
-  cols: 6,
-})`
-  && {
-    height: 150px;
+
+type StickerType = 'ac' | 'tb' | 'ms' | 'em'
+
+const BaseUrl = 'https://www.cc98.org/static/images'
+
+// TODO: refactor with UBB
+// tslint:disable-next-line
+function getStickerReactNode(type: StickerType, handleFunc: Function) {
+  const stickerArr = []
+
+  const suffix = type === 'em' ? 'gif' : 'png'
+  let start = 1
+  let end = 54
+
+  if (type === 'tb') {
+    end = 33
+  } else if (type === 'em') {
+    start = 0
+    end = 91
   }
-`
-const SquareImg = styled.img`
-  width: 100% !important;
-`
-const acfunEmo = [
-  { url: '/ac/01.png', value: 'ac01' },
-  { url: '/ac/02.png', value: 'ac02' },
-  { url: '/ac/03.png', value: 'ac03' },
-  { url: '/ac/04.png', value: 'ac04' },
-  { url: '/ac/05.png', value: 'ac05' },
-  { url: '/ac/06.png', value: 'ac06' },
-  { url: '/ac/07.png', value: 'ac07' },
-  { url: '/ac/08.png', value: 'ac08' },
-  { url: '/ac/09.png', value: 'ac09' },
-  { url: '/ac/10.png', value: 'ac10' },
-  { url: '/ac/11.png', value: 'ac11' },
-  { url: '/ac/12.png', value: 'ac12' },
-  { url: '/ac/13.png', value: 'ac13' },
-  { url: '/ac/14.png', value: 'ac14' },
-  { url: '/ac/15.png', value: 'ac15' },
-  { url: '/ac/16.png', value: 'ac16' },
-  { url: '/ac/17.png', value: 'ac17' },
-  { url: '/ac/18.png', value: 'ac18' },
-  { url: '/ac/19.png', value: 'ac19' },
-  { url: '/ac/20.png', value: 'ac20' },
-  { url: '/ac/21.png', value: 'ac21' },
-  { url: '/ac/22.png', value: 'ac22' },
-]
-const acBaseUrl = 'https://www.cc98.org/static/images'
-const tileData = acfunEmo.map(k => ({
-  url: acBaseUrl + k.url,
-  value: k.value,
-}))
-export default ({ editor }: Props) => (
-  <Root>
-    <SquareGridList>
-      {tileData.map(tile => (
-        <SquareDiv>
-          <SquareImg
-            src={tile.url}
-            key={tile.value}
-            alt={tile.value}
-            onClick={e => editor.appendMainContent(`[${tile.value}]`)}
-          />
-        </SquareDiv>
-      ))}
-    </SquareGridList>
-  </Root>
-)
+
+  for (let i = start; i <= end; i++) {
+    const number = i < 10 ? `0${i}` : `${i}`
+    const url = type === 'ac' ? `${type}/${number}` : `${type}/${type}${number}`
+
+    stickerArr.push(
+      <Img src={`${BaseUrl}/${url}.${suffix}`} onClick={handleFunc(`${type}${number}`)} />
+    )
+  }
+
+  return stickerArr
+}
+
+export default ({ editor, handleClose }: Props) => {
+  const [type, setType] = useState<StickerType>('ac')
+
+  const handleChange = (_: React.ChangeEvent, value: StickerType) => {
+    setType(value)
+  }
+
+  const handleClick = (stickerCode: string) => (_: React.MouseEvent<HTMLImageElement>) => {
+    editor.appendMainContent(`[${stickerCode}]`)
+    handleClose()
+  }
+
+  const StickerArr = getStickerReactNode(type, handleClick)
+
+  return (
+    <>
+      <DialogTitleS>
+        <Tabs
+          value={type}
+          onChange={handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+          fullWidth
+        >
+          <Tab value="ac" label="AC娘" />
+          <Tab value="ms" label="雀魂" />
+          <Tab value="tb" label="贴吧" />
+          <Tab value="em" label="经典" />
+        </Tabs>
+      </DialogTitleS>
+
+      <DialogContent>
+        <FlexDiv>{StickerArr}</FlexDiv>
+      </DialogContent>
+    </>
+  )
+}

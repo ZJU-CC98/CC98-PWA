@@ -1,23 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { EditorContainer } from '../EditorContainer'
 
-import { IconButton } from '@material-ui/core'
+import { IconButton, Dialog } from '@material-ui/core'
 import TagFacesIcon from '@material-ui/icons/TagFaces'
+
+import StickerBox from './StickerBox'
 
 interface Props {
   editor: EditorContainer
 }
 
 export default ({ editor }: Props) => {
+  const [open, setOpen] = useState(false)
+  const handleClose = () => {
+    setOpen(false)
+  }
+
   function clickHandler() {
-    if (!editor.state.stickerDisplay) editor.showSticker()
-    else editor.hiddenSticker()
+    setOpen(!open)
   }
 
   return (
     <IconButton>
       <TagFacesIcon onClick={clickHandler} />
+      <Dialog open={open} onClose={handleClose} fullWidth scroll="paper">
+        <StickerBox editor={editor} handleClose={handleClose} />
+      </Dialog>
     </IconButton>
   )
 }

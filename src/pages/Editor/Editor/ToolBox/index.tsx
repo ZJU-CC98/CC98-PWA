@@ -8,7 +8,7 @@ import StickerBtn from './StickerBtn'
 import ClearBtn from './ClearBtn'
 import PreviewBtn from './PreviewBtn'
 import SendBtn from './SendBtn'
-import StickerBox from './StickerBox'
+
 const WrapperDiv = styled.div`
   display: flex;
   justify-content: space-between;
@@ -24,7 +24,6 @@ interface Props {
 
 export default ({ editor, onSendCallback }: Props) => (
   <WrapperToolBox>
-    {editor.state.stickerDisplay && <StickerBox editor={editor} />}
     <WrapperDiv>
       <div>
         <PictureBtn editor={editor} />

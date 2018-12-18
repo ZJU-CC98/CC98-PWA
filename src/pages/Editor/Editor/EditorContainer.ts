@@ -9,10 +9,6 @@ interface State {
    * 追加区
    */
   attachments: string[]
-  /**
-   * 显示表情选饿区域
-   */
-  stickerDisplay: boolean
 }
 
 /**
@@ -25,7 +21,6 @@ export class EditorContainer extends Container<State> {
     this.state = {
       mainContent: initContent || '',
       attachments: [],
-      stickerDisplay: false,
     }
   }
 
@@ -76,18 +71,6 @@ export class EditorContainer extends Container<State> {
       prev.attachments.splice(index, 1)
 
       return { attachments: prev.attachments }
-    })
-  }
-
-  showSticker() {
-    this.setState({
-      stickerDisplay: true,
-    })
-  }
-
-  hiddenSticker() {
-    this.setState({
-      stickerDisplay: false,
     })
   }
 

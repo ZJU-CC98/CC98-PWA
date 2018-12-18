@@ -15,7 +15,8 @@ export async function getOriginalPost(postId: number | string) {
 export async function uploadPicture(file: File) {
   const formData = new FormData()
   formData.append('files', file, file.name)
-  const res = POST<string>('file', {
+
+  return POST<string>('file', {
     headers: {
       // Content-Type 置空
     },
@@ -23,8 +24,6 @@ export async function uploadPicture(file: File) {
       body: formData,
     },
   })
-
-  return res
 }
 
 export interface IPostParams {

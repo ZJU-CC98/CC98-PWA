@@ -12,20 +12,19 @@ interface Props {
 }
 
 export default ({ editor }: Props) => {
-  const fileInput = useRef(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   function clickHandler() {
-    // FIXME: 不知道怎么改
-    // @ts-ignore
-    fileInput.current.click()
-    // uploadPicture().then(res =>
-    //   res.fail().succeed(picURL => {
-    //     editor.attachAttachment(`[img]${picURL}[/img]`)
-    //   })
-    // )
+    if (!fileInputRef.current) {
+      return
+    }
+
+    fileInputRef.current.click()
   }
+
   async function choosePicFinish(files: FileList | null) {
     if (!files || files.length === 0) return
-    for (let i = 0; i <= files.length; i = i + 1) {
+    for (let i = 0; i <= files.length; i++) {
       const res = await uploadPicture(files[i])
       res.fail().succeed(data => {
         editor.attachAttachment(`[img]${data[0]}[/img]`)
@@ -36,13 +35,11 @@ export default ({ editor }: Props) => {
   return (
     <IconButton>
       <input
+        style={{ display: 'none' }}
         type="file"
         name="file"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          choosePicFinish(e.target.files)
-        }}
-        style={{ display: 'none' }}
-        ref={fileInput}
+        onChange={e => choosePicFinish(e.target.files)}
+        ref={fileInputRef}
         multiple
         accept="image/*"
       />

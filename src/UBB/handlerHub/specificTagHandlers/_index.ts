@@ -4,6 +4,7 @@ import React from 'react'
 
 import align from './align'
 import b from './b'
+import bili from './bili'
 import center from './center'
 import color from './color'
 import code from './code'
@@ -16,6 +17,7 @@ import img from './img'
 import left from './left'
 import noubb from './noubb'
 import quote from './quote'
+import quotex from './quotex'
 import right from './right'
 import sandbox from './sandbox'
 import size from './size'
@@ -24,16 +26,18 @@ import td from './td'
 import th from './th'
 import tr from './tr'
 import u from './u'
+import upload from './upload'
 import url from './url'
 
 /*
- * TODO: audio, bili, glow?, md, pm, topic, upload, user, video
+ * TODO: audio, glow?, md, pm, topic, user, video
  */
 const tagHandlers: IHandlerHub<React.ReactNode>['specificTagHandlers'] = {
   // register handler here
   // e.g. "b": handler_for_tag_b
   align,
   b,
+  bili,
   center,
   color,
   code,
@@ -46,6 +50,7 @@ const tagHandlers: IHandlerHub<React.ReactNode>['specificTagHandlers'] = {
   left,
   noubb,
   quote,
+  quotex,
   right,
   sandbox,
   size,
@@ -54,6 +59,7 @@ const tagHandlers: IHandlerHub<React.ReactNode>['specificTagHandlers'] = {
   th,
   tr,
   u,
+  upload,
   url,
 }
 

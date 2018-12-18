@@ -103,6 +103,16 @@
   text-decoration: underline;
 }
 
+.ubb-tag-upload {
+  display: inline-flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 1px;
+  padding: 6px 9px;
+  margin: 6px 0;
+}
+
 
 /* generalTagHandlers */
 
@@ -120,4 +130,10 @@
 
 .ubb-tag-tb {
   width: 30px;
+}
+
+
+.ubb-tag-needreply {
+  padding: 6px 15px;
+  margin: 6px 0;
 }

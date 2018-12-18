@@ -11,7 +11,8 @@ interface Props {
 
 export default ({ editor }: Props) => {
   function clickHandler() {
-    // TODO:
+    if (!editor.state.stickerDisplay) editor.showSticker()
+    else editor.hiddenSticker()
   }
 
   return (

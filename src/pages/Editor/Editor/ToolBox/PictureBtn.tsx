@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import { EditorContainer } from '../EditorContainer'
 
@@ -12,16 +12,39 @@ interface Props {
 }
 
 export default ({ editor }: Props) => {
+  const fileInput = useRef(null)
   function clickHandler() {
-    uploadPicture().then(res =>
-      res.fail().succeed(picURL => {
-        editor.attachAttachment(`[img]${picURL}[/img]`)
+    // FIXME: 不知道怎么改
+    fileInput.current.click()
+    // uploadPicture().then(res =>
+    //   res.fail().succeed(picURL => {
+    //     editor.attachAttachment(`[img]${picURL}[/img]`)
+    //   })
+    // )
+  }
+  async function choosePicFinish(files: FileList | null) {
+    if (!files || files.length === 0) return
+    for (let i = 0; i <= files.length; i = i + 1) {
+      const res = await uploadPicture(files[i])
+      res.fail().succeed(data => {
+        editor.attachAttachment(`[img]${data[0]}[/img]`)
       })
-    )
+    }
   }
 
   return (
     <IconButton>
+      <input
+        type="file"
+        name="file"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          choosePicFinish(e.target.files)
+        }}
+        style={{ display: 'none' }}
+        ref={fileInput}
+        multiple
+        accept="image/*"
+      />
       <AddPhotoAlternateIcon onClick={clickHandler} />
     </IconButton>
   )

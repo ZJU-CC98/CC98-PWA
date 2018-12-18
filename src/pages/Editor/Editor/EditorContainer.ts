@@ -9,6 +9,10 @@ interface State {
    * 追加区
    */
   attachments: string[]
+  /**
+   * 显示表情选饿区域
+   */
+  stickerDisplay: boolean
 }
 
 /**
@@ -21,6 +25,7 @@ export class EditorContainer extends Container<State> {
     this.state = {
       mainContent: initContent || '',
       attachments: [],
+      stickerDisplay: false,
     }
   }
 
@@ -30,7 +35,7 @@ export class EditorContainer extends Container<State> {
   get fullContent() {
     let attachments = this.state.attachments.join('')
     if (attachments) {
-      attachments = `'\n${attachments}`
+      attachments = `\n${attachments}`
     }
 
     return this.state.mainContent + attachments
@@ -71,6 +76,18 @@ export class EditorContainer extends Container<State> {
       prev.attachments.splice(index, 1)
 
       return { attachments: prev.attachments }
+    })
+  }
+
+  showSticker() {
+    this.setState({
+      stickerDisplay: true,
+    })
+  }
+
+  hiddenSticker() {
+    this.setState({
+      stickerDisplay: false,
     })
   }
 

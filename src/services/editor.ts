@@ -1,5 +1,3 @@
-import { Try, Success } from '@/utils/fp/Try'
-import { FetchError } from '@/utils/fetch'
 import { GET, POST, PUT } from '@/utils/fetch'
 
 import { IPost } from '@cc98/api'
@@ -14,16 +12,19 @@ export async function getOriginalPost(postId: number | string) {
 /**
  * 上传图片
  */
-export async function uploadPicture() {
-  // TODO: remove mock
-  const mockURLs = [
-    'https://www.cc98.org/static/images/ms/ms19.png',
-    'https://www.cc98.org/static/images/ac/08.png',
-  ]
+export async function uploadPicture(file: File) {
+  const formData = new FormData()
+  formData.append('files', file, file.name)
+  const res = POST<string>('file', {
+    headers: {
+      // Content-Type 置空
+    },
+    requestInit: {
+      body: formData,
+    },
+  })
 
-  const url = mockURLs[Math.random() < 0.5 ? 0 : 1]
-
-  return Promise.resolve(Try.of<string, FetchError>(Success.of(url)))
+  return res
 }
 
 export interface IPostParams {

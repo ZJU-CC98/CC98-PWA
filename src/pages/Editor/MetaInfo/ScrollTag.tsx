@@ -22,8 +22,6 @@ const Scrollbox = styled.div`
   widows: 100%;
   display: flex;
   flex-direction: column;
-  padding: 10px;
-  height: 70px;
   justify-content: space-between;
 `
 

@@ -10,14 +10,14 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-import { IPost, ILikeState, IUser } from '@cc98/api'
+import { IPost, ILikeState, IUser, IBoard } from '@cc98/api'
 import { putLike, putDislike } from '@/services/post'
 
 import userInstance from '@/containers/user'
 
 import { navigate } from '@/utils/history'
 import snackbar from '@/utils/snackbar'
-import { getBoardInfo } from '@/services/board'
+import { getBoardsInfo } from '@/services/board'
 import copy2Clipboard from 'copy-to-clipboard'
 
 import Judge from './Judge'
@@ -149,7 +149,15 @@ const MoreActions = ({ postInfo, isTrace, refreshPost, userInfo }: Props) => {
     handleClose()
   }
 
-  const [board] = useFetcher(() => getBoardInfo(postInfo.boardId.toString()))
+  const [childBoards, setChildBoards] = useState<IBoard[]>([])
+  useFetcher(getBoardsInfo, {
+    success: boards => {
+      setChildBoards(
+        boards.map(baseBoard => baseBoard.boards).reduce((prev, cur) => cur.concat(prev))
+      )
+    },
+  })
+  const board = childBoards.filter(b => b.id === postInfo.boardId)[0]
 
   function isManager() {
     // 本人是管理员允许修改任何帖子

@@ -40,15 +40,20 @@ interface Props {
 }
 
 export default ({ postInfo, userInfo, isHot, isTrace = false }: Props) => {
-  if (postInfo.isDeleted) {
-    return null
-  }
   const [currentPost, setCurrentPost] = useState<IPost>(postInfo)
-
+  if (postInfo.isDeleted) {
+    postInfo.content = '该贴已被my CC98, my home'
+  }
   const refreshPost = async () => {
     const res = await getSinglePost(postInfo.topicId, postInfo.floor - 1)
     res.fail().succeed(data => {
       if (data.length && data.length === 1) {
+        if (data[0].isDeleted) {
+          data[0].content = '该贴已被my CC98, my home'
+          if (userInfo) {
+            userInfo.portraitUrl = ''
+          }
+        }
         setCurrentPost(data[0])
       }
     })
@@ -64,7 +69,10 @@ export default ({ postInfo, userInfo, isHot, isTrace = false }: Props) => {
         isTrace={isTrace}
         refreshPost={refreshPost}
       />
-      <Awards key={currentPost.awards.length} awards={currentPost.awards} />
+      <Awards
+        key={currentPost.awards ? currentPost.awards.length : Date.now()}
+        awards={currentPost.awards}
+      />
 
       <Divider />
     </Wrapper>

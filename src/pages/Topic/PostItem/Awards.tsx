@@ -47,10 +47,10 @@ interface Props {
 const SHOW_AWARDS_NUM = 3
 
 const Awards = ({ awards }: Props) => {
-  const showExpanded = awards.length > SHOW_AWARDS_NUM
+  const showExpanded = awards && awards.length > SHOW_AWARDS_NUM
   const [expanded, setExpanded] = useState(false)
 
-  const showAwards = expanded ? awards : awards.slice(0, SHOW_AWARDS_NUM)
+  const showAwards = expanded ? awards : awards ? awards.slice(0, SHOW_AWARDS_NUM) : []
 
   return (
     <>
@@ -64,7 +64,7 @@ const Awards = ({ awards }: Props) => {
       {showExpanded && !expanded && (
         <TableRowS>
           <CellShowMore colSpan={SHOW_AWARDS_NUM} onClick={() => setExpanded(true)}>
-            展开剩余{awards.length - SHOW_AWARDS_NUM}个评分
+            展开剩余{awards ? awards.length : 0 - SHOW_AWARDS_NUM}个评分
           </CellShowMore>
         </TableRowS>
       )}
@@ -91,7 +91,7 @@ const WrapperDiv = styled.div`
 `
 
 export default ({ awards }: Props) => {
-  if (awards.length === 0) {
+  if (!awards || awards.length === 0) {
     return null
   }
 

@@ -65,12 +65,16 @@ export default ({ postInfo, userInfo, isHot }: Props) => (
         onClick={() => !postInfo.isAnonymous && navigate(`/user/${postInfo.userId}`)}
         src={userInfo && userInfo.portraitUrl}
       >
-        {postInfo.isAnonymous && '匿'}
+        {(postInfo.isAnonymous || postInfo.isDeleted) && '匿'}
       </AvatarS>
       <div>
         {/* {isHot && <a href={`#${postInfo.floor}`} />} */}
         <Title>
-          {postInfo.isAnonymous ? `匿名${postInfo.userName.toUpperCase()}` : postInfo.userName}
+          {postInfo.isDeleted
+            ? '98Deleter'
+            : postInfo.isAnonymous
+            ? `匿名${postInfo.userName.toUpperCase()}`
+            : postInfo.userName}
         </Title>
         <SubTitle>{dayjs(postInfo.time).format('YYYY/MM/DD HH:mm')}</SubTitle>
         <SubTitle>

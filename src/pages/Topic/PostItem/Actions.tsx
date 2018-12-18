@@ -21,6 +21,7 @@ import { getBoardsInfo } from '@/services/board'
 import copy2Clipboard from 'copy-to-clipboard'
 
 import Judge from './Judge'
+import Manage from './Manage'
 
 // @babel/plugin-transform-typescript does not support const enums
 enum LikeState {
@@ -141,11 +142,21 @@ const MoreActions = ({ postInfo, isTrace, refreshPost, userInfo }: Props) => {
 
   // 控制 评分 的显示
   const [showJudge, setShowJudge] = useState(false)
+  const [showManage, setShowManage] = useState(false)
+
   const judgeOpen = () => setShowJudge(true)
   const judgeClose = () => setShowJudge(false)
 
+  const manageOpen = () => setShowManage(true)
+  const manageClose = () => setShowManage(false)
+
   const handleJudge = () => {
     judgeOpen()
+    handleClose()
+  }
+
+  const handleManage = () => {
+    manageOpen()
     handleClose()
   }
 
@@ -170,12 +181,16 @@ const MoreActions = ({ postInfo, isTrace, refreshPost, userInfo }: Props) => {
   }
 
   const myInfo = userInstance.state.myInfo
-  const canEdit = postInfo.userId === (myInfo && myInfo.id) || postInfo.isAnonymous || isManager()
+  const isMaster = isManager()
+  const canEdit = postInfo.userId === (myInfo && myInfo.id) || postInfo.isAnonymous || isMaster
 
   return (
     <>
       {showJudge && (
         <Judge postInfo={postInfo} handleClose={judgeClose} refreshPost={refreshPost} />
+      )}
+      {showManage && (
+        <Manage postInfo={postInfo} handleClose={manageClose} refreshPost={refreshPost} />
       )}
       <IconButton onClick={handleOpen}>
         <ExpandMoreIcon />
@@ -194,6 +209,7 @@ const MoreActions = ({ postInfo, isTrace, refreshPost, userInfo }: Props) => {
         )}
         <MenuItem onClick={handleJudge}>评分</MenuItem>
         <MenuItem onClick={handleShare}>分享</MenuItem>
+        {isMaster && <MenuItem onClick={handleManage}>管理</MenuItem>}
       </Menu>
     </>
   )

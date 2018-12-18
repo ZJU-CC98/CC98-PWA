@@ -1,11 +1,10 @@
 import React from 'react'
-import MenuList from '@material-ui/core/MenuList'
-import MenuItem from '@material-ui/core/MenuItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import Typography from '@material-ui/core/Typography'
+
+import { MenuList, MenuItem, Typography, ListItemIcon } from '@material-ui/core'
 import SubjectIcon from '@material-ui/icons/Subject'
 import SendIcon from '@material-ui/icons/VpnKey'
 import MobileIcon from '@material-ui/icons/MobileFriendly'
+
 import { navigate } from '@/utils/history'
 
 export default () => (

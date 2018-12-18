@@ -173,8 +173,11 @@ export async function DELETE<T = void>(url: string, options: DELETEOptions = {})
     method: 'DELETE',
     headers: new Headers({
       ...headers,
-      ...options.headers,
+      ...(options.headers || {
+        'Content-Type': 'application/json',
+      }),
     }),
+    body: options.params && JSON.stringify(options.params),
     ...options.requestInit,
   }
 

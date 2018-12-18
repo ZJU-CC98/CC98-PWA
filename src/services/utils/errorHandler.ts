@@ -45,3 +45,15 @@ export const rateHandler = (err: FetchError) => {
 }
 
 export const loginHandler = (err: FetchError) => {}
+
+export const manageHandler = (err: FetchError) => {
+  if (err.msg === 'reward_wealth_limited') {
+    snackbar.error('您不能给自己评分')
+  } else if (err.status === 400) {
+    snackbar.error('输入有误')
+  } else if (err.status === 401) {
+    snackbar.error('您的权限不足')
+  } else if (err.status === 500) {
+    snackbar.error('服务器内部错误')
+  }
+}

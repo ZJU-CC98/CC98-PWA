@@ -25,7 +25,7 @@ const Page401: React.FunctionComponent = () => (
     <Body>
       <ErrorImage status="401" />
       <Typography variant="h5">糟糕！好像出错了！</Typography>
-      <Typography variant="subtitle1">您没有权限进入这个版面！</Typography>
+      <Typography variant="subtitle1">您没有登录或没有权限！</Typography>
       <Button variant="contained" color="primary" onClick={goback}>
         返回
       </Button>

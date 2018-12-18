@@ -10,29 +10,23 @@ import { navigate } from '@/utils/history'
 
 export default () => (
   <MenuList>
-    <MenuItem>
+    <MenuItem onClick={() => navigate('/help/vpn')}>
       <ListItemIcon>
         <SendIcon />
       </ListItemIcon>
-      <Typography variant="inherit" onClick={() => navigate('/help/vpn')}>
-        如何在手机使用RVPN连接内网
-      </Typography>
+      <Typography variant="inherit">如何在手机使用RVPN连接内网</Typography>
     </MenuItem>
-    <MenuItem>
+    <MenuItem onClick={() => navigate('/help/pwa')}>
       <ListItemIcon>
         <MobileIcon />
       </ListItemIcon>
-      <Typography variant="inherit" onClick={() => navigate('/help/pwa')}>
-        如何将CC98PWA安装到桌面
-      </Typography>
+      <Typography variant="inherit">如何将CC98PWA安装到桌面</Typography>
     </MenuItem>
-    <MenuItem>
+    <MenuItem onClick={() => navigate('/help/about')}>
       <ListItemIcon>
         <SubjectIcon />
       </ListItemIcon>
-      <Typography variant="inherit" onClick={() => navigate('/help/about')}>
-        论坛统计
-      </Typography>
+      <Typography variant="inherit">论坛统计</Typography>
     </MenuItem>
   </MenuList>
 )

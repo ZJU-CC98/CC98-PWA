@@ -12,6 +12,8 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 
+import LoadingCircle from '@/components/LoadingCircle'
+
 import { IBoard } from '@cc98/api'
 import { customBoard } from '@/services/board'
 
@@ -47,22 +49,20 @@ export default ({ data }: Props) => {
   const { isFollowed, loading } = state
 
   async function handleClick() {
-    if (loading) {
-      return
-    }
-
     setState({
       ...state,
-      loading: false,
+      loading: true,
     })
 
     const res = await customBoard(data.id, isFollowed ? 0 : 1)
-    res.fail().succeed(_ =>
-      setState({
-        isFollowed: !isFollowed,
-        loading: true,
-      })
-    )
+    res
+      .fail(() => setState({ ...state, loading: false }))
+      .succeed(_ =>
+        setState({
+          isFollowed: !isFollowed,
+          loading: false,
+        })
+      )
   }
 
   return (
@@ -78,7 +78,11 @@ export default ({ data }: Props) => {
         </div>
 
         <IconButton onClick={handleClick}>
-          <FavoriteIcon color={isFollowed ? 'secondary' : 'disabled'} />
+          {state.loading ? (
+            <LoadingCircle size={20} />
+          ) : (
+            <FavoriteIcon color={isFollowed ? 'secondary' : 'disabled'} />
+          )}
         </IconButton>
       </HeaderDiv>
 

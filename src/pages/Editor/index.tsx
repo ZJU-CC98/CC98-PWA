@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 
 import MetaInfo, { MetaInfoContainer } from './MetaInfo'
@@ -36,27 +36,42 @@ export interface Props {
   postId?: string
 }
 
+// hack
+interface MutableRefObject<T> {
+  current: T
+}
+
 export default (props: Props) => {
   const init = useInit(props)
+
+  const isContainerInit = useRef(false)
+  // 此处 @types/react 类型有误
+  const editor = useRef<EditorContainer>(null) as MutableRefObject<EditorContainer>
+  const metaContainer = useRef<MetaInfoContainer>(null) as MutableRefObject<MetaInfoContainer>
+
   if (init === null) {
     // init 还在获取中
     return null
   }
 
-  const editor = new EditorContainer(init.editor.initContent)
-  const metaContainer = new MetaInfoContainer(init.metaInfo)
+  if (!isContainerInit.current) {
+    editor.current = new EditorContainer(init.editor.initContent)
+    metaContainer.current = new MetaInfoContainer(init.metaInfo)
+
+    isContainerInit.current = true
+  }
 
   const onSendCallback = chooseSendCallback(
     props,
     init.boardId !== undefined,
-    editor,
-    metaContainer
+    editor.current,
+    metaContainer.current
   )
 
   return (
     <WrapperDiv>
-      {init.boardId && <MetaInfo container={metaContainer} boardId={init.boardId} />}
-      <Editor editor={editor} onSendCallback={onSendCallback} />
+      {init.boardId && <MetaInfo container={metaContainer.current} boardId={init.boardId} />}
+      <Editor editor={editor.current} onSendCallback={onSendCallback} />
     </WrapperDiv>
   )
 }

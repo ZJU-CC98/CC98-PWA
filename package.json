@@ -16,7 +16,7 @@
   "dependencies": {
     "@aspnet/signalr": "^1.0.4",
     "@cc98/ubb-core": "1.1.0",
-    "@material-ui/core": "^3.6.2",
+    "@material-ui/core": "^3.7.0",
     "@material-ui/icons": "^3.0.1",
     "@reach/router": "^1.2.1",
     "copy-to-clipboard": "^3.0.8",

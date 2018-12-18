@@ -20,12 +20,10 @@ const handler: ITagHandler<React.ReactNode> = {
         return <img className="ubb-tag-img" src={node.innerText} />
       default:
         return (
-          <>
-            <div className="ubb-tag-upload">
-              <InsertDriveFile />
-              upload文件，请使用电脑网页版下载
-            </div>
-          </>
+          <div className="ubb-tag-upload">
+            <InsertDriveFile />
+            upload文件，请使用电脑网页版下载
+          </div>
         )
     }
   },

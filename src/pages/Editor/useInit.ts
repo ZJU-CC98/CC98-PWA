@@ -27,6 +27,8 @@ export default function useInit(props: Props): Init | null {
   const { boardId, topicId, postId } = props
   const [ok, setOk] = useState(false)
 
+  console.log(ok)
+
   const [initContent, setInitContent] = useState('')
   const [metaInfo, setMetaInfo] = useState<Init['metaInfo']>({
     title: '',
@@ -58,6 +60,7 @@ export default function useInit(props: Props): Init | null {
 
     return null
   }
+
   // 引用某楼层
   if (topicId && postId) {
     getOriginalPost(postId).then(res =>
@@ -83,7 +86,7 @@ export default function useInit(props: Props): Init | null {
         if (postInfo.floor !== 1) {
           setOk(true)
 
-          return null
+          return
         }
 
         // 编辑主题

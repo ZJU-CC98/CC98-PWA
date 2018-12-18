@@ -9,28 +9,22 @@ const handler: ITagHandler<React.ReactNode> = {
 
   render(node: TagNode, context: IContext) {
     const innerText = node.innerText
-    const tagData: string = node.tagData.bili
-    const partNumber: number = parseInt(tagData, 10) || 1
-
-    const style = {
-      border: 'none',
-      width: '80%',
-      marginLeft: '10%',
-    } as React.CSSProperties
+    const { bili } = node.tagData
+    const partNumber = parseInt(bili, 10) || 1
 
     const props = {
-      border: '0',
+      border: 0,
       frameborder: 'no',
-      framespacing: '0',
-      allowfullscreen: 'true',
+      framespacing: 0,
+      allowfullscreen: true,
     }
 
     return (
       <iframe
+        className="ubb-tag-bili"
         {...props}
         src={`https://player.bilibili.com/player.html?aid=${innerText}&page=${partNumber}`}
         allowFullScreen={true}
-        style={style}
         scrolling="no"
       />
     )

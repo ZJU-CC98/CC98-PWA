@@ -55,7 +55,6 @@ export interface ITopicParams extends IPostParams {
 
 /**
  * 发帖
- * @param boardId 版面 ID
  */
 export async function postTopic(boardId: number | string, topicParams: ITopicParams) {
   return POST(`board/${boardId}/topic`, {
@@ -65,8 +64,6 @@ export async function postTopic(boardId: number | string, topicParams: ITopicPar
 
 /**
  * 回帖
- * @param topicId 帖子 ID
- * @param content 回帖内容
  */
 export async function replyTopic(topicId: number | string, postParams: IPostParams) {
   return POST(`topic/${topicId}/post`, {
@@ -76,8 +73,6 @@ export async function replyTopic(topicId: number | string, postParams: IPostPara
 
 /**
  * 编辑帖子
- * @param postId 回复 ID
- * @param content 回帖内容
  */
 export async function editorPost(topicId: number | string, postParams: IPostParams) {
   return PUT(`post/${topicId}`, {

@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core'
 
 import { manageHandler } from '@/services/utils/errorHandler'
-
 import { operateWealth, deletePost, stopPost, cancelStopPost } from '@/services/manage'
 import { IPost } from '@cc98/api'
 import snackbar from '@/utils/snackbar'
@@ -79,8 +78,10 @@ const Manage: React.FunctionComponent<Props> = ({ postInfo, handleClose, refresh
         break
       case 3:
         res = await stopPost(postInfo.id, value, reason)
+        break
       case 4:
         res = await cancelStopPost(postInfo.boardId, postInfo.userId)
+        break
     }
 
     res &&

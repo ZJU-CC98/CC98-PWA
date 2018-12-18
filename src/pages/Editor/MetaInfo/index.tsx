@@ -28,6 +28,7 @@ const SelectDiv = styled.div`
   justify-content: space-between;
   margin-top: 12px;
   margin-bottom: 8px;
+  padding-left: 4px;
 `
 
 const TagSelectDiv = styled.div``
@@ -62,7 +63,7 @@ export default ({ container, boardId }: Props) => {
         </div>
 
         <TagSelectDiv>
-          <FormLabel>标签：</FormLabel>
+          {boardTags.length !== 0 && <FormLabel>标签：</FormLabel>}
           {boardTags[0] && (
             <ScrollTag
               tags={boardTags[0].tags}

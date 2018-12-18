@@ -3,13 +3,12 @@ import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
 
-import { Button } from '@material-ui/core'
-
-import EditIcon from '@material-ui/icons/Edit'
-import ReverseArrow from '@material-ui/icons/RotateRight'
-
-import FixFab from '@/components/FixFab'
 import LoadingCircle from '@/components/LoadingCircle'
+import FixFab from '@/components/FixFab'
+
+import RotateRightIcon from '@material-ui/icons/RotateRight'
+import SwapVertIcon from '@material-ui/icons/SwapVert'
+import EditIcon from '@material-ui/icons/Edit'
 
 import PostHead from './PostHead'
 import PostListHot from './PostListHot'
@@ -71,16 +70,15 @@ const Topic = ({ topicId, userId, postId, isReverse = false }: Props) => {
   return (
     <>
       <PostHead topicInfo={topicInfo} />
-      {isReverse && (
-        <Button fullWidth color="primary" onClick={() => setPostListKey(postListKey + 1)}>
-          <ReverseArrow />
-        </Button>
-      )}
       <PostList key={postListKey} service={postService} isTrace={isTrace}>
         {!isTrace && <PostListHot service={hotPostService} />}
       </PostList>
+
+      <FixFab bottom={115}>
+        <RotateRightIcon onClick={() => setPostListKey(postListKey + 1)} />
+      </FixFab>
       <FixFab bottom={65}>
-        <ReverseArrow
+        <SwapVertIcon
           onClick={() =>
             isReverse
               ? navigate(`/topic/${topicInfo.id}`)

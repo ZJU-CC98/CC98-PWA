@@ -2,7 +2,7 @@ import { FetchError } from '../../utils/fetch'
 import { navigate } from '@/utils/history'
 import snackbar from '@/utils/snackbar'
 
-export const notificationHandler = (err: FetchError) => {
+export function notificationHandler(err: FetchError) {
   if (err.status === 400) {
     snackbar.error('请求无效')
   } else if (err.status === 401) {
@@ -16,7 +16,7 @@ export const notificationHandler = (err: FetchError) => {
   }
 }
 
-export const navigateHandler = (err: FetchError) => {
+export function navigateHandler(err: FetchError) {
   if (err.status === 400) {
     navigate('/error/400')
   } else if (err.status === 401) {
@@ -30,7 +30,7 @@ export const navigateHandler = (err: FetchError) => {
   }
 }
 
-export const rateHandler = (err: FetchError) => {
+export function rateHandler(err: FetchError) {
   if (err.msg === 'cannot_rate_yourself') {
     snackbar.error('您不能给自己评分')
   } else if (err.msg === 'has_rated_tody') {
@@ -44,9 +44,11 @@ export const rateHandler = (err: FetchError) => {
   }
 }
 
-export const loginHandler = (err: FetchError) => {}
+export function loginHandler(err: FetchError) {
+  // TODO:
+}
 
-export const manageHandler = (err: FetchError) => {
+export function manageHandler(err: FetchError) {
   if (err.msg === 'reward_wealth_limited') {
     snackbar.error('您不能给自己评分')
   } else if (err.status === 400) {

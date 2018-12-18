@@ -49,7 +49,6 @@ interface Props {
 
 const Manage: React.FunctionComponent<Props> = ({ postInfo, handleClose, refreshPost }) => {
   const [point, setPoint] = useState(0)
-
   const handlePointChange = (_: React.ChangeEvent, value: number) => {
     setPoint(value)
   }

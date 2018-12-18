@@ -57,7 +57,6 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
     <Route path="/hotTopics" component={HotTopic} />
     <Route path="/newTopics" component={NewTopic} />
     <Route path="/topic/:topicId" component={Topic} />
-    <Route path="/topic/:topicId/:refresh" component={Topic} />
     <Route path="/topic/:topicId/:reverse" component={Topic} />
     <Route path="/topic/:topicId/anonymous/trace/:postId" component={Topic} />
     <Route path="/topic/:topicId/trace/:userId" component={Topic} />

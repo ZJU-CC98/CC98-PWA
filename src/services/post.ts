@@ -25,7 +25,7 @@ export function getPost(id: number, from: number) {
 export function getReversePost(id: number, from: number, total: number) {
   console.log(from)
   console.log(total)
-  const realFrom = total - from - 10 - 1 > 0 ? total - from - 10 - 1 : 0
+  const realFrom = total - from - 9 > 0 ? total - from - 9 : 0
   const realSize = from !== 0 && from === total ? 0 : 10
 
   return GET<IPost[]>(`topic/${id}/post`, {

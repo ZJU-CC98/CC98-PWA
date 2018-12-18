@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
+import useFetcher from '@/hooks/useFetcher'
+
 import { IconButton, Typography, Menu, MenuItem } from '@material-ui/core'
 
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'
@@ -8,13 +10,14 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-import { IPost, ILikeState } from '@cc98/api'
+import { IPost, ILikeState, IUser } from '@cc98/api'
 import { putLike, putDislike } from '@/services/post'
 
 import userInstance from '@/containers/user'
 
 import { navigate } from '@/utils/history'
 import snackbar from '@/utils/snackbar'
+import { getBoardInfo } from '@/services/board'
 import copy2Clipboard from 'copy-to-clipboard'
 
 import Judge from './Judge'
@@ -31,6 +34,10 @@ interface Props {
    * 帖子信息
    */
   postInfo: IPost
+  /**
+   * 用户信息
+   */
+  userInfo: IUser | undefined
   /**
    * 是否追踪
    */
@@ -99,7 +106,7 @@ const IconActions: React.FunctionComponent<Props> = ({ postInfo, refreshPost }) 
   )
 }
 
-const MoreActions = ({ postInfo, isTrace, refreshPost }: Props) => {
+const MoreActions = ({ postInfo, isTrace, refreshPost, userInfo }: Props) => {
   // 控制 Menu 的显示
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -142,9 +149,19 @@ const MoreActions = ({ postInfo, isTrace, refreshPost }: Props) => {
     handleClose()
   }
 
+  const [board] = useFetcher(() => getBoardInfo(postInfo.boardId.toString()))
+
+  function isManager() {
+    // 本人是管理员允许修改任何帖子
+    if (myInfo && myInfo.privilege === '管理员') return true
+    // 不是管理员包括版主不允许修改管理员的帖子
+    if (userInfo && userInfo.privilege === '管理员') return false
+    // 本人是版主可以修改其他帖子
+    if (myInfo && board && board.boardMasters.indexOf(myInfo.name) !== -1) return true
+  }
+
   const myInfo = userInstance.state.myInfo
-  // FIXME: 心灵之约 内无效。。。
-  const isMyPost = postInfo.userId === (myInfo && myInfo.id)
+  const canEdit = postInfo.userId === (myInfo && myInfo.id) || postInfo.isAnonymous || isManager()
 
   return (
     <>
@@ -156,7 +173,7 @@ const MoreActions = ({ postInfo, isTrace, refreshPost }: Props) => {
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem onClick={handleTrace}>{isTrace ? '返回' : '追踪'}</MenuItem>
-        {isMyPost && (
+        {canEdit && (
           <MenuItem
             onClick={() => {
               navigate(`/editor/edit/${postInfo.id}`)
@@ -179,9 +196,19 @@ const FlexDiv = styled.div`
   align-items: center;
 `
 
-export default ({ postInfo, isTrace, refreshPost }: Props) => (
+export default ({ postInfo, isTrace, refreshPost, userInfo }: Props) => (
   <FlexDiv>
-    <IconActions postInfo={postInfo} isTrace={isTrace} refreshPost={refreshPost} />
-    <MoreActions postInfo={postInfo} isTrace={isTrace} refreshPost={refreshPost} />
+    <IconActions
+      postInfo={postInfo}
+      userInfo={userInfo}
+      isTrace={isTrace}
+      refreshPost={refreshPost}
+    />
+    <MoreActions
+      postInfo={postInfo}
+      userInfo={userInfo}
+      isTrace={isTrace}
+      refreshPost={refreshPost}
+    />
   </FlexDiv>
 )

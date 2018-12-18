@@ -25,7 +25,7 @@ const Page400: React.FunctionComponent = () => (
     <Body>
       <ErrorImage status="400" />
       <Typography variant="h5">糟糕！好像出错了！</Typography>
-      <Typography variant="subheading">您的操作出现了问题！</Typography>
+      <Typography variant="subtitle1">您的操作出现了问题！</Typography>
       <Button variant="contained" color="primary" onClick={goback}>
         返回
       </Button>

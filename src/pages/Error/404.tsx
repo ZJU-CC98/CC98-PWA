@@ -24,7 +24,7 @@ const Page404: React.FunctionComponent = () => (
     <Body>
       <ErrorImage status="404" />
       <Typography variant="h5">糟糕！好像出错了！</Typography>
-      <Typography variant="subheading">页面不存在！</Typography>
+      <Typography variant="subtitle1">页面不存在！</Typography>
       <Button variant="contained" color="primary" onClick={goback}>
         返回
       </Button>

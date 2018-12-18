@@ -11,6 +11,7 @@ import { IconButton, Typography, Button, TextField } from '@material-ui/core'
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 
 import { modifyMyInfo } from '@/services/user'
+import snackbar from '@/utils/snackbar'
 
 const HeaderDiv = styled.div`
   display: flex;
@@ -80,8 +81,7 @@ const FormBody = () => {
   const handleSubmit = () => {
     modifyMyInfo(info).then(res =>
       res.fail().succeed(_ => {
-        // TODO: 提示
-        // console.log('[Modify success]')
+        snackbar.success('修改成功')
         userInstace.FRESH_INFO()
       })
     )

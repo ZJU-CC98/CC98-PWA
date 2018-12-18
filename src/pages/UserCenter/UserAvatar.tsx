@@ -3,6 +3,7 @@ import { navigate } from '@/utils/history'
 import styled from 'styled-components'
 
 import { Avatar, IconButton, Typography } from '@material-ui/core'
+import LoadingCircle from '@/components/LoadingCircle'
 
 import ExpandPanel from './ExpandPanel'
 
@@ -46,14 +47,25 @@ interface Props {
 
 const UserAvatar: React.FunctionComponent<Props> = ({ info, isUserCenter }) => {
   const [isFollowing, setIsFollowing] = useState(info.isFollowing)
-  const toggleFunc = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const toggleFunc = async () => {
+    setIsLoading(true)
     if (isFollowing) {
-      // TODO: check return & loading
-      unFollowUser(info.id)
-      setIsFollowing(false)
+      const res = await unFollowUser(info.id)
+      res
+        .fail(() => setIsLoading(false))
+        .succeed(() => {
+          setIsFollowing(false)
+          setIsLoading(false)
+        })
     } else {
-      followUser(info.id)
-      setIsFollowing(true)
+      const res = await followUser(info.id)
+      res
+        .fail(() => setIsLoading(false))
+        .succeed(() => {
+          setIsFollowing(true)
+          setIsLoading(false)
+        })
     }
   }
 
@@ -64,7 +76,11 @@ const UserAvatar: React.FunctionComponent<Props> = ({ info, isUserCenter }) => {
   ) : (
     <>
       <IconButton onClick={toggleFunc}>
-        <FavoriteIcon color={isFollowing ? 'secondary' : 'disabled'} />
+        {isLoading ? (
+          <LoadingCircle size={20} />
+        ) : (
+          <FavoriteIcon color={isFollowing ? 'secondary' : 'disabled'} />
+        )}
       </IconButton>
       <IconButton>
         <ChatIcon onClick={() => navigate(`/messageDetail/${info.id}`)} />

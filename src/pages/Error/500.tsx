@@ -24,7 +24,7 @@ const Page500: React.FunctionComponent = () => (
     <Body>
       <ErrorImage status="500" />
       <Typography variant="h5">糟糕！好像出错了！</Typography>
-      <Typography variant="subheading">服务器内部错误！</Typography>
+      <Typography variant="subtitle1">服务器内部错误！</Typography>
       <Button variant="contained" color="primary" onClick={goback}>
         返回
       </Button>

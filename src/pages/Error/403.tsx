@@ -26,7 +26,7 @@ const Page403: React.FunctionComponent = () => (
     <Body>
       <ErrorImage status="403" />
       <Typography variant="h5">糟糕！好像出错了！</Typography>
-      <Typography variant="subheading">您没有权限访问此网页，代理无法访问部分版面!</Typography>
+      <Typography variant="subtitle1">您没有权限访问此网页，代理无法访问部分版面!</Typography>
       <Button variant="contained" color="primary" onClick={goback}>
         返回
       </Button>

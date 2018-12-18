@@ -14,6 +14,7 @@ import { putLike, putDislike } from '@/services/post'
 import userInstance from '@/containers/user'
 
 import { navigate } from '@/utils/history'
+import snackbar from '@/utils/snackbar'
 import copy2Clipboard from 'copy-to-clipboard'
 
 import Judge from './Judge'
@@ -127,7 +128,7 @@ const MoreActions = ({ postInfo, isTrace, refreshPost }: Props) => {
         `https://${document.location.host}/topic/${postInfo.topicId}#${postInfo.floor}`
       )
     }
-    // TODO: tips: 链接已复制到剪贴板
+    snackbar.success('分享链接已经成功复制到剪切板')
     handleClose()
   }
 

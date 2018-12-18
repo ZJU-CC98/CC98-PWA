@@ -8,7 +8,7 @@ import useInit from './useInit'
 
 import { ITopicParams, IPostParams, postTopic, replyTopic, editorPost } from '@/services/editor'
 
-import { goback } from '@/utils/history'
+import { goback, navigate } from '@/utils/history'
 
 const WrapperDiv = styled.div`
   margin: 8px 12px;
@@ -104,7 +104,7 @@ function chooseSendCallback(
       replyTopic(topicId, postParams).then(res =>
         res.fail().succeed(() => {
           // TODO:
-          goback()
+          navigate(`/topic/${topicId}/${new Date()}`)
         })
       )
     }

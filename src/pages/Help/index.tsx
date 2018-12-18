@@ -11,20 +11,10 @@ import CopyrightIcon from '@material-ui/icons/Copyright'
 
 import { navigate } from '@/utils/history'
 
-import VPN from './VPN'
-import PWA from './PWA'
+import HowVPN from './HowVPN'
+import HowPWA from './HowPWA'
 import SiteInfo from './SiteInfo'
 import DevTeam from './DevTeam'
-
-export default () => (
-  <Router>
-    <Route path="/" component={Index} />
-    <Route path="VPN" component={VPN} />
-    <Route path="PWA" component={PWA} />
-    <Route path="siteInfo" component={SiteInfo} />
-    <Route path="devTeam" component={DevTeam} />
-  </Router>
-)
 
 const Index = () => (
   <MenuList>
@@ -53,4 +43,14 @@ const Index = () => (
       <Typography variant="inherit">CC98 PWA 开发组</Typography>
     </MenuItem>
   </MenuList>
+)
+
+export default () => (
+  <Router>
+    <Route path="/" component={Index} />
+    <Route path="VPN" component={HowVPN} />
+    <Route path="PWA" component={HowPWA} />
+    <Route path="siteInfo" component={SiteInfo} />
+    <Route path="devTeam" component={DevTeam} />
+  </Router>
 )

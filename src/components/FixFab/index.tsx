@@ -9,7 +9,7 @@ const FabS = styled(Fab).attrs({
 })<{ bottom: number }>`
   && {
     position: fixed;
-    bottom: ${props => (props.bottom ? props.bottom + 'px' : '15px')};
+    bottom: ${props => (props.bottom ? `${props.bottom}px` : '15px')};
     right: 15px;
     z-index: 20;
   }

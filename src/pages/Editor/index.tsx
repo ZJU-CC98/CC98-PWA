@@ -9,6 +9,7 @@ import useInit from './useInit'
 import { ITopicParams, IPostParams, postTopic, replyTopic, editorPost } from '@/services/editor'
 
 import { goback, navigate } from '@/utils/history'
+import snackbar from '@/utils/snackbar'
 
 const WrapperDiv = styled.div`
   margin: 8px 12px;
@@ -101,7 +102,8 @@ function chooseSendCallback(
       }
       postTopic(boardId, topicParams).then(res =>
         res.fail().succeed(() => {
-          //
+          snackbar.success('发布成功')
+          goback()
         })
       )
     }
@@ -118,7 +120,9 @@ function chooseSendCallback(
 
       replyTopic(topicId, postParams).then(res =>
         res.fail().succeed(() => {
-          // TODO:
+          snackbar.success('回复成功')
+
+          // TODO: 刷新帖子
           navigate(`/topic/${topicId}`)
         })
       )
@@ -134,11 +138,12 @@ function chooseSendCallback(
         contentType: 0,
       }
 
-      // editorPost(postId, topicParams).then(res =>
-      //   res.fail().succeed(() => {
-      //     goback()
-      //   })
-      // )
+      editorPost(postId, topicParams).then(res =>
+        res.fail().succeed(() => {
+          snackbar.success('编辑成功')
+          goback()
+        })
+      )
     }
   }
 
@@ -153,6 +158,7 @@ function chooseSendCallback(
 
       editorPost(postId, postParams).then(res =>
         res.fail().succeed(() => {
+          snackbar.success('编辑成功')
           goback()
         })
       )

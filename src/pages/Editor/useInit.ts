@@ -27,8 +27,6 @@ export default function useInit(props: Props): Init | null {
   const { boardId, topicId, postId } = props
   const [ok, setOk] = useState(false)
 
-  console.log(ok)
-
   const [initContent, setInitContent] = useState('')
   const [metaInfo, setMetaInfo] = useState<Init['metaInfo']>({
     title: '',

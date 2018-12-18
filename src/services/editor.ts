@@ -74,8 +74,8 @@ export async function replyTopic(topicId: number | string, postParams: IPostPara
 /**
  * 编辑帖子
  */
-export async function editorPost(topicId: number | string, postParams: IPostParams) {
+export async function editorPost(topicId: number | string, params: ITopicParams | IPostParams) {
   return PUT(`post/${topicId}`, {
-    params: postParams,
+    params,
   })
 }

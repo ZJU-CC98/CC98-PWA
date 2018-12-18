@@ -9,6 +9,8 @@ import FixFab from '@/components/FixFab'
 import RotateRightIcon from '@material-ui/icons/RotateRight'
 import SwapVertIcon from '@material-ui/icons/SwapVert'
 import EditIcon from '@material-ui/icons/Edit'
+import AddIcon from '@material-ui/icons/Add'
+import RemoveIcon from '@material-ui/icons/Remove'
 
 import PostHead from './PostHead'
 import PostListHot from './PostListHot'
@@ -67,27 +69,40 @@ const Topic = ({ topicId, userId, postId, isReverse = false }: Props) => {
   // 是否处于追踪状态
   const isTrace = !!userId || !!postId
 
+  // 控制按钮是否展开
+  const [expand, setExpand] = useState(false)
+
   return (
     <>
       <PostHead topicInfo={topicInfo} />
       <PostList key={postListKey} service={postService} isTrace={isTrace}>
         {!isTrace && <PostListHot service={hotPostService} />}
       </PostList>
-
-      <FixFab bottom={115}>
-        <RotateRightIcon onClick={() => setPostListKey(postListKey + 1)} />
-      </FixFab>
-      <FixFab bottom={65}>
-        <SwapVertIcon
-          onClick={() =>
-            isReverse
-              ? navigate(`/topic/${topicInfo.id}`)
-              : navigate(`/topic/${topicInfo.id}/reverse`)
-          }
-        />
-      </FixFab>
+      {expand && (
+        <>
+          <FixFab bottom={165}>
+            <RotateRightIcon onClick={() => setPostListKey(postListKey + 1)} />
+          </FixFab>
+          <FixFab bottom={115}>
+            <SwapVertIcon
+              onClick={() =>
+                isReverse
+                  ? navigate(`/topic/${topicInfo.id}`)
+                  : navigate(`/topic/${topicInfo.id}/reverse`)
+              }
+            />
+          </FixFab>
+          <FixFab bottom={65}>
+            <EditIcon onClick={() => navigate(`/editor/replyTopic/${topicInfo.id}`)} />
+          </FixFab>
+        </>
+      )}
       <FixFab>
-        <EditIcon onClick={() => navigate(`/editor/replyTopic/${topicInfo.id}`)} />
+        {expand ? (
+          <RemoveIcon onClick={() => setExpand(false)} />
+        ) : (
+          <AddIcon onClick={() => setExpand(true)} />
+        )}
       </FixFab>
       <EndPlaceholder />
     </>

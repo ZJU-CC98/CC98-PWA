@@ -15,6 +15,7 @@ export default ({ editor }: Props) => {
   const fileInput = useRef(null)
   function clickHandler() {
     // FIXME: 不知道怎么改
+    // @ts-ignore
     fileInput.current.click()
     // uploadPicture().then(res =>
     //   res.fail().succeed(picURL => {

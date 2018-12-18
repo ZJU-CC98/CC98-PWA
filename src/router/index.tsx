@@ -4,15 +4,12 @@ import { Location, WindowLocation } from '@reach/router'
 import Router, { ILocation } from './Router'
 
 import useContainer, { Container } from '@/hooks/useContainer'
+import settingInstance from '@/containers/setting'
 
 import './gesture'
 
 interface State {
   locations: WindowLocation[]
-  /**
-   * 最大缓存页面数
-   * TODO: 加入 setting 配置
-   */
   MAX_CACHE_SIZE: number
 }
 
@@ -22,7 +19,7 @@ interface State {
 class RouterCacheContainer extends Container<State> {
   state: State = {
     locations: [],
-    MAX_CACHE_SIZE: 3,
+    MAX_CACHE_SIZE: settingInstance.state.cachePages,
   }
 
   /**

@@ -83,6 +83,7 @@ export default ({ editor, handleClose }: Props) => {
           indicatorColor="primary"
           textColor="primary"
           fullWidth
+          scrollable
         >
           <Tab value="ac" label="AC娘" />
           <Tab value="ms" label="雀魂" />

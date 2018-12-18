@@ -104,7 +104,7 @@ function chooseSendCallback(
       replyTopic(topicId, postParams).then(res =>
         res.fail().succeed(() => {
           // TODO:
-          navigate(`/topic/${topicId}/${new Date()}`)
+          navigate(`/topic/${topicId}`)
         })
       )
     }

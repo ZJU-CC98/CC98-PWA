@@ -40,15 +40,12 @@ interface Props {
   postId?: string
   // 是否逆向
   reverse?: string
-  // 刷新参数
-  refresh?: string
 }
 
-export default ({ topicId, userId, postId, reverse, refresh }: Props) => {
+export default ({ topicId, userId, postId, reverse }: Props) => {
   const [topicInfo] = useFetcher(() => getTopicInfo(topicId), {
     fail: navigateHandler,
   })
-  console.log('refresh params = ' + reverse)
 
   // 用于刷新
   const [postListKey, setPostListKey] = useState(0)

@@ -71,10 +71,25 @@ const DividerCol = styled.span`
   height: 1rem;
 `
 
+/**
+ * 检查是否登录
+ */
+function checkLogIn() {
+  if (!userInstance.state.isLogIn) {
+    snackbar.error('请先登录')
+
+    return false
+  }
+
+  return true
+}
+
 const IconActions: React.FunctionComponent<Props> = ({ postInfo, refreshPost }) => {
   const { likeState } = postInfo
 
   const handleLike = (newLikeState: ILikeState) => () => {
+    if (!checkLogIn()) return
+
     const putService = newLikeState === 1 ? putLike : putDislike
 
     putService(postInfo.id).then(res =>
@@ -85,11 +100,14 @@ const IconActions: React.FunctionComponent<Props> = ({ postInfo, refreshPost }) 
   }
 
   const handleQuote = () => {
-    navigate(`/editor/replyTopic/${postInfo.topicId}/quote/${postInfo.id}`)
-  }
+    if (!checkLogIn()) return
 
-  const cannotHandleQuote = () => {
-    snackbar.error('不能引用已删除的帖子')
+    if (postInfo.isDeleted) {
+      snackbar.error('不能引用已删除的帖子')
+
+      return
+    }
+    navigate(`/editor/replyTopic/${postInfo.topicId}/quote/${postInfo.id}`)
   }
 
   return (
@@ -105,7 +123,7 @@ const IconActions: React.FunctionComponent<Props> = ({ postInfo, refreshPost }) 
       <Count>{postInfo.likeCount}</Count>
       <DividerCol />
       <IconButton>
-        <FormatQuoteIcon onClick={postInfo.isDeleted ? cannotHandleQuote : handleQuote} />
+        <FormatQuoteIcon onClick={handleQuote} />
       </IconButton>
     </ActionDiv>
   )

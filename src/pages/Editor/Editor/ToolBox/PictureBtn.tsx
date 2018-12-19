@@ -24,8 +24,8 @@ export default ({ editor }: Props) => {
 
   async function choosePicFinish(files: FileList | null) {
     if (!files || files.length === 0) return
-    for (let i = 0; i <= files.length; i++) {
-      const res = await uploadPicture(files[i])
+    for (const file of files) {
+      const res = await uploadPicture(file)
       res.fail().succeed(data => {
         editor.attachAttachment(`[img]${data[0]}[/img]`)
       })

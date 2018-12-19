@@ -7,7 +7,7 @@ import { IconButton, Typography, Menu, MenuItem } from '@material-ui/core'
 
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'
 import ThumbDownIcon from '@material-ui/icons/ThumbDown'
-import RotateLeftIcon from '@material-ui/icons/RotateLeft'
+import FormatQuoteIcon from '@material-ui/icons/FormatQuote'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { IPost, ILikeState, IUser, IBoard } from '@cc98/api'
@@ -99,14 +99,14 @@ const IconActions: React.FunctionComponent<Props> = ({ postInfo, refreshPost }) 
       </IconButton>
       <Count>{postInfo.dislikeCount}</Count>
       <DividerCol />
-      <IconButton>
-        <RotateLeftIcon onClick={postInfo.isDeleted ? cannotHandleQuote : handleQuote} />
-      </IconButton>
-      <DividerCol />
       <IconButton onClick={handleLike(LikeState.LIKE)}>
         <ThumbUpIcon color={likeState === LikeState.LIKE ? 'secondary' : 'inherit'} />
       </IconButton>
       <Count>{postInfo.likeCount}</Count>
+      <DividerCol />
+      <IconButton>
+        <FormatQuoteIcon onClick={postInfo.isDeleted ? cannotHandleQuote : handleQuote} />
+      </IconButton>
     </ActionDiv>
   )
 }

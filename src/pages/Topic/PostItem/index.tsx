@@ -42,14 +42,14 @@ interface Props {
 export default ({ postInfo, userInfo, isHot, isTrace = false }: Props) => {
   const [currentPost, setCurrentPost] = useState<IPost>(postInfo)
   if (postInfo.isDeleted) {
-    postInfo.content = '该贴已被my CC98, my home'
+    postInfo.content = '该贴已被 my CC98, my home'
   }
   const refreshPost = async () => {
     const res = await getSinglePost(postInfo.topicId, postInfo.floor - 1)
     res.fail().succeed(data => {
       if (data.length && data.length === 1) {
         if (data[0].isDeleted) {
-          data[0].content = '该贴已被my CC98, my home'
+          data[0].content = '该贴已被 my CC98, my home'
           if (userInfo) {
             userInfo.portraitUrl = ''
           }

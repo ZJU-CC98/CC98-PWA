@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Snackbar } from '@material-ui/core'
+import { Snackbar, Button } from '@material-ui/core'
 import { SnackbarProps } from '@material-ui/core/Snackbar'
 
 import MySnackbarContent from './MySnackbarContent'
@@ -11,6 +11,9 @@ import MySnackbarContent from './MySnackbarContent'
 type ISnackBar = Pick<SnackbarProps, 'autoHideDuration' | 'anchorOrigin'> & {
   message: string
   variant?: 'info' | 'success' | 'error'
+  // tslint:disable-next-line
+  callback?: Function
+  customButton?: string
 }
 
 /**
@@ -30,6 +33,11 @@ const MySnackBar: React.FunctionComponent = () => {
     setSnackBarProps(props)
     setOpen(true)
   }
+  const action = (
+    <Button color="secondary" size="small">
+      lorem ipsum dolorem
+    </Button>
+  )
   snackBarRef = pushSnackBar
 
   return (
@@ -41,11 +49,13 @@ const MySnackBar: React.FunctionComponent = () => {
         horizontal: 'right',
       }}
       // autoHideDuration={2000}
-      {...snackBarProps}
+      message={snackBarProps.message}
     >
       <MySnackbarContent
         variant={snackBarProps.variant || 'info'}
         message={snackBarProps.message}
+        callback={snackBarProps.callback}
+        customButton={snackBarProps.customButton}
         onClose={handleClose}
       />
     </Snackbar>

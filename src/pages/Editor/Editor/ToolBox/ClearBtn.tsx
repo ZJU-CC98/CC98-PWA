@@ -36,7 +36,7 @@ export default ({ editor }: Props) => {
       <DeleteIcon onClick={clickHandler} />
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-          <DialogContentText>清空输入的内容</DialogContentText>
+          <DialogContentText>确认要清空已输入的内容吗？</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

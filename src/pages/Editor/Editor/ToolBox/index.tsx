@@ -32,7 +32,12 @@ export default ({ editor, onSendCallback }: Props) => (
       <div>
         <ClearBtn editor={editor} />
         <PreviewBtn editor={editor} />
-        <SendBtn onSendCallback={onSendCallback} />
+        <SendBtn
+          onSendCallback={() => {
+            onSendCallback()
+            editor.clearAll()
+          }}
+        />
       </div>
     </WrapperDiv>
   </WrapperToolBox>

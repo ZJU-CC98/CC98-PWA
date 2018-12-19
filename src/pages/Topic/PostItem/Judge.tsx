@@ -25,7 +25,6 @@ const TabS = styled(Tab)`
 `
 
 const TextFieldS = styled(TextField).attrs({
-  autoFocus: true,
   fullWidth: true,
 })`
   && {
@@ -72,7 +71,7 @@ const Judge: React.FunctionComponent<Props> = ({ postInfo, handleClose, refreshP
     <Dialog open={true} onClose={handleClose} style={{ zIndex: 1010 }}>
       <DialogTitle>评分</DialogTitle>
       <DialogContent>
-        <DialogContentText>评分需要发帖数达到500以上，您每天有一次评分机会。</DialogContentText>
+        <DialogContentText>评分需要发帖数达到500以上，您每天有一次评分机会</DialogContentText>
         <Tabs value={point} onChange={handlePointChange}>
           <TabS label="+1" value={1} />
           <TabS label="-1" value={-1} />

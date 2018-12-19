@@ -41,7 +41,7 @@ const MySnackBar: React.FunctionComponent = () => {
         vertical: 'top',
         horizontal: 'right',
       }}
-      // autoHideDuration={2000}
+      autoHideDuration={snackBarProps.autoHideDuration || 4000}
       message={snackBarProps.message}
     >
       <MySnackbarContent

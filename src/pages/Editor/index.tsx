@@ -8,7 +8,7 @@ import useInit from './useInit'
 
 import { ITopicParams, IPostParams, postTopic, replyTopic, editorPost } from '@/services/editor'
 
-import { goback, navigate } from '@/utils/history'
+import { goback } from '@/utils/history'
 import snackbar from '@/utils/snackbar'
 
 const WrapperDiv = styled.div`
@@ -37,15 +37,14 @@ export interface Props {
   postId?: string
 }
 
-// hack
-interface MutableRefObject<T> {
-  current: T
-}
-
 export default (props: Props) => {
   const init = useInit(props)
 
   const isContainerInit = useRef(false)
+
+  interface MutableRefObject<T> {
+    current: T
+  }
   // 此处 @types/react 类型有误
   const editor = useRef<EditorContainer>(null) as MutableRefObject<EditorContainer>
   const metaContainer = useRef<MetaInfoContainer>(null) as MutableRefObject<MetaInfoContainer>
@@ -64,7 +63,7 @@ export default (props: Props) => {
 
   const onSendCallback = useMemo(
     () =>
-      chooseSendCallback(props, init.boardId !== undefined, editor.current, metaContainer.current),
+      chooseSendCallback(editor.current, metaContainer.current, props, init.boardId !== undefined),
     []
   )
 
@@ -80,86 +79,102 @@ export default (props: Props) => {
  * 选择合适的回调
  */
 function chooseSendCallback(
-  props: Props,
-  isFirstFloor: boolean,
   editor: EditorContainer,
-  metaInfo: MetaInfoContainer
-): () => Promise<void> {
+  metaInfo: MetaInfoContainer,
+  props: Props,
+  isEditorTopic: boolean
+): () => void {
   const { boardId, topicId, postId } = props
 
+  const stopLoading = () => {
+    editor.setState({ isSending: false })
+  }
+
+  /**
+   * for test
+   */
   // return () => {
-  //   alert(editor.fullContent)
+  //   setTimeout(() => {
+  //     stopLoading()
+  //   }, 2000)
   // }
 
   // 发布帖子
   if (boardId) {
-    return async () => {
+    return () => {
       const topicParams: ITopicParams = {
         ...metaInfo.state,
         content: editor.fullContent,
         contentType: 0,
       }
-      const res = await postTopic(boardId, topicParams)
-      res.fail().succeed(() => {
-        snackbar.success('发布成功')
-        goback()
-      })
+
+      postTopic(boardId, topicParams).then(res =>
+        res
+          .fail(() => {
+            snackbar.error('发布失败')
+            stopLoading()
+          })
+          .succeed(() => {
+            // TODO: 刷新帖子，下同
+            snackbar.success('发布成功')
+            goback()
+          })
+      )
     }
   }
 
   // 回复帖子
   if (topicId) {
-    return async () => {
+    return () => {
       const postParams: IPostParams = {
         title: '',
         content: editor.fullContent,
         contentType: 0,
       }
 
-      const res = await replyTopic(topicId, postParams)
-      res.fail().succeed(() => {
-        snackbar.success('回复成功')
-        // TODO: 刷新帖子
-        navigate(`/topic/${topicId}`, {
-          replace: true,
-        })
-      })
+      replyTopic(topicId, postParams).then(res =>
+        res
+          .fail(() => {
+            snackbar.error('回复失败')
+            stopLoading()
+          })
+          .succeed(() => {
+            snackbar.success('回复成功')
+            goback()
+          })
+      )
     }
   }
 
-  // 编辑主题帖子
-  if (postId && isFirstFloor) {
-    return async () => {
-      const topicParams: ITopicParams = {
-        ...metaInfo.state,
-        content: editor.fullContent,
-        contentType: 0,
-      }
-
-      const res = await editorPost(postId, topicParams)
-      res.fail().succeed(() => {
-        snackbar.success('编辑成功')
-        goback()
-      })
-    }
-  }
-
-  // 编辑普通帖子
+  // 编辑帖子
   if (postId) {
-    return async () => {
-      const postParams: IPostParams = {
-        title: '',
-        content: editor.fullContent,
-        contentType: 0,
-      }
+    return () => {
+      const params: ITopicParams | IPostParams = isEditorTopic
+        ? {
+          ...metaInfo.state,
+          content: editor.fullContent,
+          contentType: 0,
+        }
+        : {
+          title: '',
+          content: editor.fullContent,
+          contentType: 0,
+        }
 
-      const res = await editorPost(postId, postParams)
-      res.fail().succeed(() => {
-        snackbar.success('编辑成功')
-        goback()
-      })
+      editorPost(postId, params).then(res =>
+        res
+          .fail(() => {
+            snackbar.error('编辑失败')
+            stopLoading()
+          })
+          .succeed(() => {
+            snackbar.success('编辑成功')
+            goback()
+          })
+      )
     }
   }
 
-  return async () => undefined
+  // default callback
+  return () => undefined
 }

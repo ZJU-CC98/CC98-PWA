@@ -24,7 +24,6 @@ const TabS = styled(Tab)`
 `
 
 const TextFieldS = styled(TextField).attrs({
-  autoFocus: true,
   fullWidth: true,
 })`
   && {
@@ -83,12 +82,15 @@ const Manage: React.FunctionComponent<Props> = ({ postInfo, handleClose, refresh
         break
     }
 
-    res &&
-      res.fail(manageHandler).succeed(() => {
-        snackbar.success('操作成功')
-        handleClose()
-        refreshPost()
-      })
+    if (!res) {
+      return
+    }
+
+    res.fail(manageHandler).succeed(() => {
+      snackbar.success('操作成功')
+      handleClose()
+      refreshPost()
+    })
   }
 
   return (

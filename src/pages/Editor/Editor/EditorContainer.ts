@@ -9,6 +9,10 @@ interface State {
    * 追加区
    */
   attachments: string[]
+  /**
+   * 正在发布
+   */
+  isSending: boolean
 }
 
 /**
@@ -21,6 +25,7 @@ export class EditorContainer extends Container<State> {
     this.state = {
       mainContent: initContent || '',
       attachments: [],
+      isSending: false,
     }
   }
 

@@ -7,8 +7,8 @@ import InfiniteList from '@/components/InfiniteList'
 import { List } from '@material-ui/core'
 
 import DetailItem from './components/DetailItem'
-
-import { getMessageContent } from '@/services/message'
+import Editor from './Editor'
+import { getMessageContent, sendMessage } from '@/services/message'
 
 const ListS = styled(List)`
   && {
@@ -20,6 +20,12 @@ const ListS = styled(List)`
   }
 `
 
+const FixBottomDiv = styled.div`
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+`
 interface Props {
   /**
    * 联系人id (from url)
@@ -36,6 +42,13 @@ export default ({ id }: Props) => {
     step: 10,
   })
   const { isLoading, isEnd } = state
+  const sendMsg = (content: string) => {
+    sendMessage(id, content).then(res => {
+      res.fail().succeed(id => {
+        callback()
+      })
+    })
+  }
 
   return (
     <>
@@ -52,6 +65,9 @@ export default ({ id }: Props) => {
           ))}
         </InfiniteList>
       </ListS>
+      <FixBottomDiv>
+        <Editor callback={sendMsg} />
+      </FixBottomDiv>
     </>
   )
 }

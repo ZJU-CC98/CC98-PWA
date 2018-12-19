@@ -11,6 +11,7 @@ dayjs.extend(relativeTime)
 
 // global style
 import './style.css'
+import 'typeface-roboto'
 
 // Sentry
 // NOTE: 它的模块有点问题，不要用默认导入

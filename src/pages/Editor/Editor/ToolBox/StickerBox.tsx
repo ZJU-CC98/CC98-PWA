@@ -50,7 +50,7 @@ function getStickerReactNode(type: StickerType, handleFunc: Function) {
 
   for (let i = start; i <= end; i++) {
     const number = i < 10 ? `0${i}` : `${i}`
-    const url = type === 'ac' ? `${type}/${number}` : `${type}/${type}${number}`
+    const url = type === 'ac' ? `${type}-mini/${number}` : `${type}-mini/${type}${number}`
 
     stickerArr.push(
       <Img src={`${BaseUrl}/${url}.${suffix}`} onClick={handleFunc(`${type}${number}`)} />

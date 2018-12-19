@@ -15,7 +15,7 @@ import {
 
 import { rateHandler } from '@/services/utils/errorHandler'
 
-import { PUT } from '@/utils/fetch'
+import { rate } from '@/services/post'
 import { IPost } from '@cc98/api'
 
 const TabS = styled(Tab)`
@@ -49,9 +49,9 @@ interface Props {
 }
 
 const Judge: React.FunctionComponent<Props> = ({ postInfo, handleClose, refreshPost }) => {
-  const [point, setPoint] = useState(1)
+  const [point, setPoint] = useState<1 | -1>(1)
 
-  const handlePointChange = (_: React.ChangeEvent, value: number) => {
+  const handlePointChange = (_: React.ChangeEvent, value: 1 | -1) => {
     setPoint(value)
   }
 
@@ -61,14 +61,7 @@ const Judge: React.FunctionComponent<Props> = ({ postInfo, handleClose, refreshP
   }
 
   const submitJudge = async () => {
-    const url = `/post/${postInfo.id}/rating`
-    const res = await PUT(url, {
-      params: {
-        value: point,
-        reason,
-      },
-    })
-
+    const res = await rate(postInfo.id, point, reason)
     res.fail(rateHandler).succeed(() => {
       handleClose()
       refreshPost()

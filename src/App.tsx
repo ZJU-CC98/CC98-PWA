@@ -10,7 +10,6 @@ import TopBar from '@/components/TopBar'
 import DrawerMenu from '@/components/DrawerMenu'
 import BackGround from '@/components/BackGround'
 import Router from './router'
-import GlobalStyle from './GloablStyle'
 
 const App = () => (
   <BackGround>
@@ -26,12 +25,9 @@ const Root = () => {
   } = useContainer(settingInstance)
 
   return (
-    <>
-      <MuiThemeProvider theme={theme === 'light' ? light : dark}>
-        <App />
-      </MuiThemeProvider>
-      <GlobalStyle />
-    </>
+    <MuiThemeProvider theme={theme === 'light' ? light : dark}>
+      <App />
+    </MuiThemeProvider>
   )
 }
 

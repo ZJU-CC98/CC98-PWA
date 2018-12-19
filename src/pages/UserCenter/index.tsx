@@ -42,10 +42,12 @@ const Wrapper: React.FunctionComponent<WrapperProps> = props => {
 
   const [userInfo] = useFetcher(props.id ? () => getUserInfoById(props.id as string) : null)
 
+  if (!myInfo) {
+    navigate('/error/401')
+  }
+
   if (!props.id && myInfo) {
     return <UserCenter info={myInfo} isUserCenter={true} />
-  } else if (!myInfo) {
-    navigate('/error/401')
   }
 
   return userInfo && <UserCenter info={userInfo} isUserCenter={false} />

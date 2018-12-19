@@ -122,7 +122,9 @@ function chooseSendCallback(
           snackbar.success('回复成功')
 
           // TODO: 刷新帖子
-          navigate(`/topic/${topicId}`)
+          navigate(`/topic/${topicId}`, {
+            replace: true,
+          })
         })
       )
     }

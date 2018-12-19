@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Button, IconButton, SnackbarContent } from '@material-ui/core'
+import { IconButton, SnackbarContent } from '@material-ui/core'
 
 import InfoIcon from '@material-ui/icons/Info'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
@@ -29,9 +29,6 @@ interface Props {
   variant: 'info' | 'success' | 'error'
   message: string
   onClose: () => void
-  // tslint:disable-next-line
-  callback?: Function
-  customButton?: string
 }
 
 const MessageDiv = styled.div`
@@ -43,7 +40,7 @@ const Message = styled.div`
   margin-left: 1rem;
 `
 
-const MySnackbarContent = ({ variant, message, onClose, callback, customButton }: Props) => {
+const MySnackbarContent = ({ variant, message, onClose }: Props) => {
   const Icon = IconMap[variant]
 
   return (
@@ -58,25 +55,9 @@ const MySnackbarContent = ({ variant, message, onClose, callback, customButton }
         </MessageDiv>
       }
       action={
-        <>
-          {callback && (
-            <Button
-              key="callback"
-              color="secondary"
-              size="small"
-              onClick={() => {
-                callback()
-                onClose()
-              }}
-            >
-              {customButton}
-            </Button>
-          )}
-          <IconButton color="inherit" onClick={onClose}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        </>
-      }
+        <IconButton color="inherit" onClick={onClose}>
+          <CloseIcon fontSize="small" />
+        </IconButton>}
     />
   )
 }

@@ -7,8 +7,8 @@ import {
   IconButton,
   Dialog,
   DialogContent,
+  DialogContentText,
   DialogActions,
-  Typography,
   Button,
 } from '@material-ui/core'
 
@@ -16,7 +16,7 @@ import TransformIcon from '@material-ui/icons/Transform'
 
 import UBB from '@/UBB'
 
-const UBBPreview = styled(Typography)`
+const DialogContentTextS = styled(DialogContentText)`
   && {
     min-height: 160px;
   }
@@ -30,7 +30,7 @@ interface PreviewProps {
 const Preview = ({ content, handleClose }: PreviewProps) => (
   <>
     <DialogContent>
-      <UBBPreview component="div">{content ? UBB(content) : '【没有内容】'}</UBBPreview>
+      <DialogContentTextS>{content ? UBB(content) : '【没有内容】'}</DialogContentTextS>
     </DialogContent>
     <DialogActions>
       <Button color="primary" onClick={handleClose}>

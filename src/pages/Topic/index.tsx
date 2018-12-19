@@ -99,9 +99,9 @@ const Topic = ({ topicId, userId, postId, isReverse = false }: Props) => {
       )}
       <FixFab>
         {expand ? (
-          <RemoveIcon onClick={() => setExpand(false)} />
+          <RemoveIcon onTouchStart={() => setExpand(false)} />
         ) : (
-          <AddIcon onClick={() => setExpand(true)} />
+          <AddIcon onTouchStart={() => setExpand(true)} />
         )}
       </FixFab>
       <EndPlaceholder />

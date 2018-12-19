@@ -3,20 +3,26 @@ declare module '@cc98/api' {
     allowedViewers: any
 
     awardInfo: any
-
+    /**
+     * 风评
+     */
     awards: IAward[]
     /**
      * 帖子内容
      */
     content: string
-
-    contentType: number
+    /**
+     * 内容类型
+     * UBB 0
+     * markdown 1
+     */
+    contentType: 0 | 1
     /**
      * 楼层数
      */
     floor: number
     /**
-     * 用户 ID
+     * post ID
      */
     id: number
     /**
@@ -48,15 +54,17 @@ declare module '@cc98/api' {
      */
     lastUpdateTime: any
     /**
-     * 赞同数
+     * 赞数量
      */
     likeCount: number
     /**
-     * 反对数量
+     * 踩数量
      */
     dislikeCount: number
-
-    likeState: number
+    /**
+     * 赞/踩状态
+     */
+    likeState: ILikeState
     /**
      * 总楼层数
      */
@@ -89,9 +97,5 @@ declare module '@cc98/api' {
      * 用户名
      */
     userName: string
-    /**
-     * 是否热帖
-     */
-    isHot?: boolean
   }
 }

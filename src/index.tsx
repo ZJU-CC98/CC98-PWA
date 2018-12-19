@@ -1,64 +1,58 @@
-/* tslint:disable */
-import { injectGlobal } from 'emotion'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import relativeTime from 'dayjs/plugin/relativeTime'
 
+// config day.js
 import dayjs from 'dayjs'
-// @ts-ignore
 import zh from 'dayjs/locale/zh-cn'
-
-// @ts-ignore
+import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.locale(zh, null, false)
-// @ts-ignore
 dayjs.extend(relativeTime)
 
-injectGlobal`
-  * {
-    box-sizing: border-box;
-  }
-  html {
-    height: 100%;
-  }
-  body {
-    margin: 0;
-    height: 100%;
-    /* 禁止 Safari 的双击放大 */
-    touch-action: manipulation;
-    /* 平滑滚动 */
-    scroll-behavior: smooth;
-  }
-  #root {
-    height: 100%;
-  }
-  /* https://stackoverflow.com/questions/2781549/removing-input-background-colour-for-chrome-autocomplete */
-  @keyframes autofill {
-    to {
-      color: #666;
-      background: transparent;
-    }
-  }
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus {
-    animation-name: autofill;
-    animation-fill-mode: both;
-  }
-  /* https://stackoverflow.com/questions/5106934/prevent-grey-overlay-on-touchstart-in-mobile-safari-webview */
-  div {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-`
+// global style
+import './style.css'
+import 'typeface-roboto'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+// Sentry
+// NOTE: 它的模块有点问题，不要用默认导入
+import * as Sentry from '@sentry/browser'
+import version from './version'
 
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', () => {
-//     navigator.serviceWorker.register('/service-worker.js').then(registration => {
-//       console.log('SW registered: ', registration)
-//     }).catch(registrationError => {
-//       console.log('SW registration failed: ', registrationError)
-//     })
-//   })
-// }
+class ErrorBoundary extends React.Component {
+  // tslint:disable-next-line
+  componentDidCatch(err: any, info: any) {
+    Sentry.captureException(err)
+  }
+
+  render() {
+    return this.props.children
+  }
+}
+
+ReactDOM.render(
+  <ErrorBoundary>
+    <App />
+  </ErrorBoundary>,
+  document.getElementById('root')
+)
+
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: 'https://d3350c985001442db70dccbc3d6e99c6@sentry.io/1356614',
+    release: version,
+  })
+}
+
+// service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then(registration => {
+        // console.log('SW registered: ', registration)
+      })
+      .catch(registrationError => {
+        // console.log('SW registration failed: ', registrationError)
+      })
+  })
+}

@@ -1,9 +1,3 @@
-/**
- * @author dongyansong
- * @date 2018-11-05
- */
-import { getLocalStorage } from '@/utils/storage'
-
 export enum HostType {
   Proxy,
   Default,
@@ -21,12 +15,22 @@ const defaultHost: IHost = {
   type: HostType.Default,
 }
 
-const proxy: IHost = {
+const proxyHost: IHost = {
   oauth: 'https://openid1.cc98.vaynetian.com/connect/token',
   api: 'https://api1.cc98.vaynetian.com',
   type: HostType.Proxy,
 }
 
-const host = getLocalStorage('proxy') ? proxy : defaultHost
+/**
+ * 代理设置
+ */
+let host = process.env.PROXY ? proxyHost : defaultHost
 
-export default host
+/**
+ * 切换代理
+ */
+const changeHost = (hostType: HostType) => {
+  host = hostType === HostType.Default ? defaultHost : proxyHost
+}
+
+export { host as default, changeHost }

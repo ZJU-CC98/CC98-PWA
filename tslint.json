@@ -7,53 +7,50 @@
     "tslint-eslint-rules",
     "tslint-lines-between-class-members"
   ],
-  "jsRules": {
-    "import-name": false
-  },
   "rules": {
     "align": [true, "elements", "members", "parameters", "statements"],
-    "prefer-object-spread": true,
     "array-type": [true, "array"],
-    "no-unused-variable": true,
-    "indent": [true, "spaces", 2],
-    "ordered-imports": false,
-    "no-duplicate-imports": false,
+    "arrow-return-shorthand": [true, "multiline"],
     "eofline": true,
+    "function-name": false,
+    "import-name": false,
+    "indent": [true, "spaces", 2],
+    "interface-name": false,
+    "jsx-boolean-value": ["never"],
+    "jsx-no-lambda": false,
+    "jsx-no-multiline-js": false,
+    "lines-between-class-members": true,
     "max-classes-per-file": [true, 1],
     "max-file-line-count": [true, 500],
-    "arrow-return-shorthand": [true, "multiline"],
-    "newline-before-return": true,
-    "no-consecutive-blank-lines": [true],
-    "no-irregular-whitespace": true,
-    "no-trailing-whitespace": true,
-    "lines-between-class-members": true,
-    "semicolon": false,
-    "no-boolean-literal-compare": true,
-    "object-literal-sort-keys": false,
-    "member-ordering": false,
     "member-access": false,
-    "jsx-boolean-value": ["never"],
-    "syntax-preference": [2, "string"],
-    "variable-name": false,
-    "import-name": false,
-    "ter-arrow-parens": [true, "as-needed"],
-    "trailing-comma": [
-      true,
-      {
-        "multiline": {
-          "objects": "always",
-          "arrays": "always",
-          "functions": "never",
-          "typeLiterals": "ignore"
-        },
-        "esSpecCompliant": true
-      }
-    ],
-    "jsx-no-multiline-js": false,
-    "jsx-no-lambda": false,
-    "interface-name": false,
+    "member-ordering": false,
+    "newline-before-return": true,
     "no-any": true,
-    "function-name": false
+    "no-boolean-literal-compare": true,
+    "no-consecutive-blank-lines": [true],
+    "no-duplicate-imports": false,
+    "no-increment-decrement": false,
+    "no-irregular-whitespace": true,
+    "no-shadowed-variable": false,
+    "no-trailing-whitespace": true,
+    "no-unused-variable": true,
+    "object-literal-sort-keys": false,
+    "object-shorthand-properties-first": false,
+    "ordered-imports": false,
+    "prefer-object-spread": true,
+    "semicolon": false,
+    "syntax-preference": [2, "string"],
+    "ter-arrow-parens": [true, "as-needed"],
+    "trailing-comma": [true, {
+      "multiline": {
+        "objects": "always",
+        "arrays": "always",
+        "functions": "never",
+        "typeLiterals": "ignore"
+      },
+      "esSpecCompliant": true
+    }],
+    "variable-name": false
   },
   "rulesDirectory": []
 }

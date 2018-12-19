@@ -1,40 +1,56 @@
 import React from 'react'
 
-import { Subscribe } from '@cc98/state'
+import useContainer from '@/hooks/useContainer'
+import userInstance from '@/containers/user'
 
-import global from '@/model/global'
-import user, { UserInfoStore } from '@/model/user'
+import useFetcher from '@/hooks/useFetcher'
 
-import User from './User'
+import { IUser } from '@cc98/api'
+import { getUserInfoById } from '@/services/user'
+
+import UserAvatar from './UserAvatar'
+import UserSignature from './UserSignature'
+import UserDetail from './UserDetail'
+import UserRecentTopics from './UserRecentTopics'
+import { navigate } from '@/utils/history'
+
 interface Props {
-  id: string | undefined
+  info: IUser
+  isUserCenter: boolean
 }
 
-export default class extends React.Component<Props> {
-  componentDidMount() {
-    const { id } = this.props
-    if (id) user.getInfo(parseInt(id, 10))
-  }
+const UserCenter: React.FunctionComponent<Props> = ({ info, isUserCenter }) => (
+  <>
+    <UserAvatar info={info} isUserCenter={isUserCenter} />
+    <UserDetail info={info} />
+    <UserSignature info={info} />
+    <UserRecentTopics info={info} isUserCenter={isUserCenter} />
+  </>
+)
 
-  render() {
-    if (this.props.id) {
-      const id = parseInt(this.props.id, 10)
-
-      return (
-        <Subscribe to={[user]}>
-          {({ state: userMap }: UserInfoStore) => (
-            userMap[id] ? <User info={userMap[id]} isUserCenter={false} /> : null
-          )}
-        </Subscribe>
-      )
-    }
-
-    return (
-      <Subscribe to={[global]}>
-        {() => (
-          global.state.myInfo ? <User info={global.state.myInfo} isUserCenter={true} /> : null
-        )}
-      </Subscribe>
-    )
-  }
+interface WrapperProps {
+  /**
+   * 来自路由
+   */
+  id?: string
 }
+
+const Wrapper: React.FunctionComponent<WrapperProps> = props => {
+  const {
+    state: { myInfo },
+  } = useContainer(userInstance)
+
+  const [userInfo] = useFetcher(props.id ? () => getUserInfoById(props.id as string) : null)
+
+  if (!myInfo) {
+    navigate('/error/401')
+  }
+
+  if (!props.id && myInfo) {
+    return <UserCenter info={myInfo} isUserCenter={true} />
+  }
+
+  return userInfo && <UserCenter info={userInfo} isUserCenter={false} />
+}
+
+export default Wrapper

@@ -1,18 +1,24 @@
-/**
- * @author dongyansong
- * @date 2018-10-26
- */
 import React from 'react'
-import { Subscribe } from '@cc98/state'
+import styled from 'styled-components'
 
-import Editor from '@/components/Editor'
+import useInfList from '@/hooks/useInfList'
 import InfiniteList from '@/components/InfiniteList'
-import store, { Detail } from '@/pages/Message/model/detail'
 
-import { List, RootRef } from '@material-ui/core'
-import Paper from '@material-ui/core/Paper'
+import { List } from '@material-ui/core'
 
 import DetailItem from './components/DetailItem'
+
+import { getMessageContent } from '@/services/message'
+
+const ListS = styled(List)`
+  && {
+    width: 100%;
+    position: absolute;
+    top: 56px;
+    bottom: 80px;
+    padding: 8px 0;
+  }
+`
 
 interface Props {
   /**
@@ -22,40 +28,30 @@ interface Props {
 }
 
 /**
- * @description 私信 会话列表
- * @author dongyansong
+ * 私信-会话列表
  */
 export default ({ id }: Props) => {
-  const list = React.useRef<HTMLUListElement>()
-
-  React.useEffect(() => {
-    store
-      .init(parseInt(id, 10))
-      .then(() => list.current && window.scrollTo(0, list.current.scrollHeight))
-  }, [])
+  const service = (from: number) => getMessageContent(id, from, 10)
+  const [list, state, callback] = useInfList(service, {
+    step: 10,
+  })
+  const { isLoading, isEnd } = state
 
   return (
-    <Subscribe to={[store]}>
-      {({ state: { messages, isEnd, isLoading } }: Detail) => (
-        <>
-          <Paper>
-            <RootRef rootRef={list}>
-              <List>
-                <InfiniteList
-                  loadingPosition="top"
-                  isEnd={isEnd[id]}
-                  isLoading={isLoading}
-                  callback={store.getList}
-                >
-                  {messages[id] &&
-                    messages[id]!.map(item => <DetailItem key={item.id} message={item} />)}
-                </InfiniteList>
-              </List>
-            </RootRef>
-          </Paper>
-          <Editor sendCallBack={store.sendMessage} />
-        </>
-      )}
-    </Subscribe>
+    <>
+      <ListS>
+        <InfiniteList
+          reverse
+          inFixedContainer
+          isEnd={isEnd}
+          isLoading={isLoading}
+          callback={callback}
+        >
+          {list.map(item => (
+            <DetailItem key={item.id} message={item} />
+          ))}
+        </InfiniteList>
+      </ListS>
+    </>
   )
 }

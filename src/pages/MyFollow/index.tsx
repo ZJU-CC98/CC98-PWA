@@ -1,33 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { Subscribe } from '@cc98/state'
+import { InfTopicList } from '@/components/TopicList'
 
-import { BoardInfoStore } from '@/model/board'
-import { TopicInfoStore } from '@/model/topic'
+import { Tab, Tabs } from '@material-ui/core'
 
-import Component from './Follow'
+import { getFollowBoardsTopics, getFollowUsersTopics } from '@/services/topic'
 
-interface State {
-  topicInstance: TopicInfoStore
-}
-export default class extends React.Component<{}, State> {
-  state: State = {
-    topicInstance: new TopicInfoStore(),
+export default () => {
+  const [current, setCurrent] = useState('board')
+
+  const handleChange = (_: React.ChangeEvent, value: string) => {
+    setCurrent(value)
   }
 
-  render() {
-    const { topicInstance } = this.state
-
-    return (
-      <Subscribe
-        to={[BoardInfoStore, topicInstance]}
+  return (
+    <>
+      <Tabs
+        textColor="primary"
+        indicatorColor="primary"
+        fullWidth
+        value={current}
+        onChange={handleChange}
       >
-        {
-          (data: BoardInfoStore) => data.state.boardData.length !== 0 ?
-            <Component boards={data.state.boardData} topicInstance={topicInstance} /> : null
-        }
-      </Subscribe>
-    )
+        <Tab value="board" label="关注版面" />
+        <Tab value="user" label="关注用户" />
+      </Tabs>
 
-  }
+      {current === 'board' && <InfTopicList service={getFollowBoardsTopics} place="follow" />}
+      {current === 'user' && <InfTopicList service={getFollowUsersTopics} place="follow" />}
+    </>
+  )
 }

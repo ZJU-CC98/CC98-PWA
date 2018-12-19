@@ -1,12 +1,8 @@
-/**
- * @author dongyansong
- * @date 2018-10-26
- */
 import React from 'react'
-import styled from 'react-emotion'
-import { navigate } from '@reach/router'
-import { Subscribe } from '@cc98/state'
+import styled from 'styled-components'
+import { navigate } from '@/utils/history'
 import { IRecentMessage } from '@cc98/api'
+
 import dayjs from 'dayjs'
 
 import {
@@ -17,9 +13,9 @@ import {
   ListItemText,
 } from '@material-ui/core'
 
-import store, { UserInfoStore } from '@/model/user'
+import useFetcher from '@/hooks/useFetcher'
 
-import avatar from '@/assets/9.png'
+import { getUserInfoById } from '@/services/user'
 
 const Text = styled.span`
   display: block;
@@ -35,25 +31,22 @@ interface Props {
 
 const navigateToDetail = (userId: number) => navigate(`/messageDetail/${userId}`)
 
-const renderItem = (message: IRecentMessage, username = '', userAvatar = avatar) => (
-  <ListItem button onClick={() => navigateToDetail(message.userId)}>
-    <ListItemAvatar>
-      <Avatar src={userAvatar} />
-    </ListItemAvatar>
-    <ListItemText primary={username} secondary={<Text>{message.lastContent}</Text>} />
-    <ListItemSecondaryAction>
-      <ListItemText secondary={dayjs(message.time).fromNow()} />
-    </ListItemSecondaryAction>
-  </ListItem>
-)
+export default ({ message }: Props) => {
+  const [userInfo] = useFetcher(() => getUserInfoById(message.userId))
+  if (userInfo === null) {
+    return null
+  }
+  const { name, portraitUrl } = userInfo
 
-export default ({ message }: Props) => (
-  <Subscribe to={[store]}>
-    {({ state }: UserInfoStore) =>
-      renderItem(
-        message,
-        state[message.userId] && state[message.userId].name,
-        state[message.userId] && state[message.userId].portraitUrl
-      )}
-  </Subscribe>
-)
+  return (
+    <ListItem button onClick={() => navigateToDetail(message.userId)}>
+      <ListItemAvatar>
+        <Avatar src={portraitUrl} />
+      </ListItemAvatar>
+      <ListItemText primary={name} secondary={<Text>{message.lastContent}</Text>} />
+      <ListItemSecondaryAction>
+        <ListItemText secondary={dayjs(message.time).fromNow()} />
+      </ListItemSecondaryAction>
+    </ListItem>
+  )
+}

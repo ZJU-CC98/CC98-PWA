@@ -1,32 +1,34 @@
 import React from 'react'
-import { Provider, Subscribe } from '@cc98/state'
+
+import useContainer from '@/hooks/useContainer'
+import settingInstance from '@/containers/setting'
 
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { dark, light } from './theme'
 
-import global, { GlobalContainer } from '@/model/global'
-
 import TopBar from '@/components/TopBar'
+import DrawerMenu from '@/components/DrawerMenu'
 import BackGround from '@/components/BackGround'
 import Router from './router'
 
-const App: React.SFC = () => (
+const App = () => (
   <BackGround>
     <TopBar />
+    <DrawerMenu />
     <Router />
   </BackGround>
 )
 
-const Root: React.SFC = () => (
-  <Provider>
-    <Subscribe to={[global]}>
-      {(g: GlobalContainer) => (
-        <MuiThemeProvider theme={g.state.theme === 'light' ? light : dark}>
-          <App />
-        </MuiThemeProvider>
-      )}
-    </Subscribe>
-  </Provider>
-)
+const Root = () => {
+  const {
+    state: { theme },
+  } = useContainer(settingInstance)
+
+  return (
+    <MuiThemeProvider theme={theme === 'light' ? light : dark}>
+      <App />
+    </MuiThemeProvider>
+  )
+}
 
 export default Root

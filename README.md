@@ -5,13 +5,13 @@ CC98 Forum PWA version.
 
 ## 项目技术栈
 
-- react@latest
+- react@16.7.0-alpha.2
 
 - @reach/router
 
 - ​@material-ui/core@3
 
-- emotion
+- styled-component@4
 
 - webpack@4
 

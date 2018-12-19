@@ -6,12 +6,14 @@ declare module '@cc98/api' {
     name: string
     /**
      * 用户性别
+     * 男：1
+     * 女：0
      */
     gender: 0 | 1
     /**
      * 用户生日
      */
-    birthday: string
+    birthday: string | null
     /**
      * 用户个人简介图片
      */
@@ -25,7 +27,7 @@ declare module '@cc98/api' {
      */
     signatureCode: string
     /**
-     * id
+     * 用户 ID
      */
     id: number
     /**
@@ -114,9 +116,8 @@ declare module '@cc98/api' {
     levelTitle: string
     /**
      * 用户版主头衔信息
-     * FIXME: BoardMasterTitle[]
      */
-    boardMasterTitles: any
+    boardMasterTitles: IBoardMasterTitle[]
     /**
      * 被删除的数量
      */

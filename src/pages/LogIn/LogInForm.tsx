@@ -1,6 +1,6 @@
-import React from 'react'
-import { navigate } from '@reach/router'
-import { css } from 'emotion'
+import React, { useState } from 'react'
+import { navigate } from '@/utils/history'
+import styled from 'styled-components'
 
 import {
   Button,
@@ -12,22 +12,24 @@ import {
   Typography,
 } from '@material-ui/core'
 
-import global from '@/model/global'
+import userInstance from '@/containers/user'
+
+import { loginHandler } from '@/services/utils/errorHandler'
 
 import snowball from '@/assets/snowball.png'
 
-const root = css`
+const WrapperDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `
 
-const snowBallImg = css`
+const SnowballImg = styled.img`
   width: 100px;
   margin-bottom: 30px;
 `
 
-const form = css`
+const FormDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,12 +38,22 @@ const form = css`
   height: 105px;
 `
 
-const button = css`
-  margin-top: 35px;
+const LogInButton = styled(Button).attrs({
+  variant: 'contained',
+  color: 'primary',
+})`
+  && {
+    margin-top: 35px;
+  }
 `
 
-const buttonProgress = css`
-  margin-left: 15px;
+const ButtonProgress = styled(CircularProgress).attrs({
+  size: 20,
+  color: 'secondary',
+})`
+  && {
+    margin-left: 15px;
+  }
 `
 
 interface FormField {
@@ -49,99 +61,86 @@ interface FormField {
   password: string
 }
 
-interface State {
-  formField: FormField
+interface LogInState {
   loading: boolean
   logInFail: boolean
 }
 
-class LogIn extends React.Component<{}, State> {
-  state: State = {
-    formField: {
-      username: '',
-      password: '',
-    },
+const LogIn: React.FunctionComponent = () => {
+  const [formField, setFormField] = useState<FormField>({
+    username: '',
+    password: '',
+  })
 
+  const [logInState, setLogInState] = useState<LogInState>({
     loading: false,
     logInFail: false,
-  }
+  })
 
-  handleChange = (field: keyof FormField) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      formField: {
-        ...this.state.formField,
-        [field]: event.target.value,
-      },
+  const handleChange = (field: keyof FormField) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormField({
+      ...formField,
+      [field]: event.target.value,
     })
   }
 
-  logIn = async () => {
-    const {
-      formField: { username, password },
-    } = this.state
+  const logIn = async () => {
+    const { username, password } = formField
 
-    this.setState({
+    setLogInState({
       loading: true,
       logInFail: false,
     })
 
-    const token = await global.LOG_IN(username, password)
+    const token = await userInstance.LOG_IN(username, password)
 
     token
-      .fail(() => {
+      .fail(err => {
         setTimeout(() => {
-          this.setState({
+          setLogInState({
             loading: false,
             logInFail: true,
           })
           // tslint:disable-next-line:align
         }, 2000)
 
-        // TODO: 错误提示
+        loginHandler(err)
       })
       .succeed(_ => {
         setTimeout(() => navigate('/'), 1500)
       })
   }
 
-  render() {
-    const { formField, loading, logInFail } = this.state
+  const { logInFail, loading } = logInState
 
-    return (
-      <div className={root}>
-        <img src={snowball} className={snowBallImg} />
+  return (
+    <WrapperDiv>
+      <SnowballImg src={snowball} />
 
-        <Typography variant="h6">登录</Typography>
+      <Typography variant="h6">登录</Typography>
 
-        <div className={form}>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="component-simple">用户名</InputLabel>
-            <Input
-              id="component-simple"
-              value={formField.username}
-              onChange={this.handleChange('username')}
-            />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="password">密码</InputLabel>
-            <Input
-              id="password"
-              type="password"
-              value={formField.password}
-              onChange={this.handleChange('password')}
-            />
-          </FormControl>
-        </div>
+      <FormDiv>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="username">用户名</InputLabel>
+          <Input id="username" value={formField.username} onChange={handleChange('username')} />
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="password">密码</InputLabel>
+          <Input
+            id="password"
+            type="password"
+            value={formField.password}
+            onChange={handleChange('password')}
+          />
+        </FormControl>
+      </FormDiv>
 
-        <div className={button}>
-          <Button variant="contained" color="primary" disabled={loading} onClick={this.logIn}>
-            {logInFail ? 'Retry' : 'LogIn'}
-            {loading && <CircularProgress size={20} color="secondary" className={buttonProgress} />}
-          </Button>
-        </div>
-      </div>
-    )
-  }
+      <LogInButton disabled={loading} onClick={logIn}>
+        {logInFail ? '重试' : '登录'}
+        {loading && <ButtonProgress />}
+      </LogInButton>
+    </WrapperDiv>
+  )
 }
 
 export default LogIn

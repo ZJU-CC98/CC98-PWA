@@ -1,115 +1,91 @@
-import React, { useState } from 'react'
+import React from 'react'
+import styled from 'styled-components'
 
-import { css } from 'emotion'
-import { navigate } from '@reach/router'
+import { Avatar, Typography } from '@material-ui/core'
+import Whatshot from '@material-ui/icons/Whatshot'
+import red from '@material-ui/core/colors/red'
 
-import { CardHeader, Avatar, IconButton, Menu, MenuItem } from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 import { IPost, IUser } from '@cc98/api'
 
-interface Props {
-  classes: ClassNameMap
-  postInfo: IPost
-  userInfo: IUser | null
-  isTrace: boolean
-  trace: (topicId: number, userId: number, isTrace: boolean, isAnonymous?: boolean) => void
-  openDialog: (info: IPost) => void
-}
+import { navigate } from '@/utils/history'
+import dayjs from 'dayjs'
 
-const cursorStyle = css`
-  cursor: pointer;
-`
-const postOptionStyle = css`
+const FlexDiv = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 16px;
 `
 
-export default (props: Props) => {
-  const { classes, postInfo, userInfo, isTrace, trace, openDialog } = props
-  const [anchorEl, setAnchorEl] = useState(null)
-  const open = Boolean(anchorEl)
+const AvatarArea = styled.div`
+  display: flex;
+  align-items: center;
+`
 
-  return (
-    <CardHeader
-      classes={{ action: classes.headerAction }}
-      avatar={
-        <Avatar
-          className={cursorStyle}
-          onClick={() => {
-            navigate(`/user/${postInfo.userId}`)
-          }}
-          src={userInfo ? userInfo.portraitUrl : undefined}
-        >
-          匿
-        </Avatar>
-      }
-      title={
-        <div className={cursorStyle}>
-          {postInfo.isAnonymous ? `匿名${postInfo.userName.toUpperCase()}` : postInfo.userName}
-        </div>}
-      subheader={new Date(postInfo.time).toLocaleString()}
-      action={[
-        <IconButton key="floor" classes={{ root: classes.iconRoot }}>
-          <Avatar classes={{ root: postInfo.isHot ? classes.hotFloor : classes.floor }}>
-            {postInfo.isHot ? '热' : `${postInfo.floor}`}
-          </Avatar>
-        </IconButton>,
-        // tslint:disable-next-line:ter-indent
-        <div key="options" className={postOptionStyle}>
-          <IconButton
-            key="option"
-            classes={{ root: classes.iconRoot }}
-            aria-label="More"
-            aria-owns={open ? 'long-menu' : undefined}
-            aria-haspopup="true"
-            // tslint:disable-next-line:no-any
-            onClick={(e: any) => setAnchorEl(e.currentTarget)}
-          >
-            <ExpandMoreIcon fontSize="small" />
-          </IconButton>
-          <Menu
-            id="long-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={() => setAnchorEl(null)}
-            PaperProps={{
-              style: {
-                maxHeight: 48 * 4.5,
-                width: '5rem',
-              },
-            }}
-          >
-            {['评分', isTrace ? '返回' : '追踪', '编辑'].map(option => (
-              <MenuItem
-                key={option}
-                onClick={() => {
-                  if (option === '追踪') {
-                    if (!postInfo.isAnonymous) {
-                      trace(postInfo.topicId, postInfo.userId, true)
-                      navigate(`/topic/${postInfo.topicId}/trace/${postInfo.userId}`)
-                    } else {
-                      trace(postInfo.topicId, postInfo.id, true, true)
-                      navigate(`/topic/${postInfo.topicId}/anonymous/trace/${postInfo.id}`)
-                    }
-                  } else if (option === '返回') {
-                    trace(postInfo.topicId, postInfo.userId, false)
-                    navigate(`/topic/${postInfo.topicId}`)
-                  } else if (option === '编辑') {
-                    // TODO:
-                  } else if (option === '评分') {
-                    openDialog(postInfo)
-                  }
-                  setAnchorEl(null)
-                }}
-                classes={{ root: classes.menuItemRoot }}
-              >
-                {option}
-              </MenuItem>
-            ))}
-          </Menu>
-        </div>,
-      ]}
-    />
-  )
+const AvatarS = styled(Avatar)`
+  && {
+    margin-right: 12px;
+  }
+`
+
+const Title = Typography
+
+const SubTitle = styled(Typography).attrs({
+  color: 'textSecondary',
+})``
+
+const Floor = styled(Typography).attrs({
+  variant: 'button',
+  color: 'textSecondary',
+})``
+
+const HotIcon = styled(Whatshot)`
+  color: ${red[400]};
+`
+
+interface Props {
+  /**
+   * 帖子信息
+   */
+  postInfo: IPost
+  /**
+   * 用户信息
+   */
+  userInfo: IUser | undefined
+  /**
+   * 是否热帖
+   */
+  isHot?: boolean
 }
+
+export default ({ postInfo, userInfo, isHot }: Props) => (
+  <FlexDiv>
+    <AvatarArea>
+      <AvatarS
+        onClick={() => !postInfo.isAnonymous && navigate(`/user/${postInfo.userId}`)}
+        src={userInfo && userInfo.portraitUrl}
+      >
+        {(postInfo.isAnonymous || postInfo.isDeleted) && '匿'}
+      </AvatarS>
+      <div>
+        {/* {isHot && <a href={`#${postInfo.floor}`} />} */}
+        <Title>
+          {postInfo.isDeleted
+            ? '98Deleter'
+            : postInfo.isAnonymous
+            ? `匿名${postInfo.userName.toUpperCase()}`
+            : postInfo.userName}
+        </Title>
+        <SubTitle>{dayjs(postInfo.time).format('YYYY/MM/DD HH:mm')}</SubTitle>
+        <SubTitle>
+          {postInfo.lastUpdateTime &&
+            `由 ${postInfo.lastUpdateAuthor || '匿名'} 编辑于 ${dayjs(
+              postInfo.lastUpdateTime
+            ).format('YYYY/MM/DD HH:mm')}`}
+        </SubTitle>
+      </div>
+    </AvatarArea>
+
+    <Floor>{isHot ? <HotIcon /> : `${postInfo.floor}L`}</Floor>
+  </FlexDiv>
+)

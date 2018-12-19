@@ -1,11 +1,8 @@
-// FIXME:
-
 declare module 'remark'
 declare module 'remark-react'
+
+declare module 'dayjs'
+declare module 'dayjs/locale/zh-cn'
 declare module 'dayjs/plugin/relativeTime'
-declare module 'dayjs' {
-  import { Dayjs } from 'dayjs'
-  interface Dayjs {
-    fromNow(): () => void
-  }
-}
+declare module 'react-swipeable-views-utils'
+declare module 'react-swipeable-views'

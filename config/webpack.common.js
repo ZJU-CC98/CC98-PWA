@@ -59,6 +59,13 @@ module.exports = {
           outputPath: 'static/',
         },
       },
+      {
+        test: /\.(ttf|eot|woff|woff2)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'fonts/[name].[ext]',
+        },
+      },
     ]
   },
 
@@ -79,9 +86,14 @@ module.exports = {
       inject: true,
     }),
 
-    new CopyWebpackPlugin([
-      { from: 'public/manifest.json', to: 'manifest.json' },
-      { from: 'public/icons/', to: 'icons/' },
+    new CopyWebpackPlugin([{
+        from: 'public/manifest.json',
+        to: 'manifest.json'
+      },
+      {
+        from: 'public/icons/',
+        to: 'icons/'
+      },
     ]),
 
     // workbox: https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin
@@ -92,4 +104,3 @@ module.exports = {
     }),
   ],
 }
-

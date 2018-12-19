@@ -1,15 +1,30 @@
-import { debounce } from 'lodash-es'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import styled from 'styled-components'
 
 import LoadingCircle from '@/components/LoadingCircle'
 
+import { debounce } from 'lodash-es'
+
+// TODO: move to utils
+import { bindURL } from '@/router'
+
+const WrapperDiv = styled.div<{
+  reverse: boolean
+}>`
+  display: flex;
+  flex-direction: ${props => (props.reverse ? 'column-reverse' : 'column')};
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+`
+
 interface Props {
   /**
-   * 列表正在加载中，回调不会重复触发
+   * 新数据加载中，回调不会重复触发
    */
   isLoading: boolean
   /**
-   * 列表已加载完成，不需要再触发回调
+   * 已全部加载完成，不需要再触发回调
    */
   isEnd: boolean
   /**
@@ -18,66 +33,87 @@ interface Props {
   // tslint:disable-next-line
   callback: Function
   /**
-   * loadingCircle 的位置
+   * 是否翻转列表（且 Loading 将出现在上面）
    */
-  loadingPosition?: 'top' | 'bottom'
+  reverse?: boolean
+  /**
+   * 是否相对一个定高容器滚动（需要组件外层容器定高）
+   */
+  inFixedContainer?: boolean
 }
 
-class InfiniteList extends React.PureComponent<Props> {
-  /**
-   * 存储 debounce 之后的函数
-   */
-  bindFunc: () => void
-  /**
-   * loading 图标 <CircularProgress />
-   */
-  loadingDom = React.createRef<HTMLDivElement>()
+const InfiniteList: React.FunctionComponent<Props> = props => {
+  const wrapperDom = useRef<HTMLDivElement>(null)
+  const loadingDom = useRef<HTMLDivElement>(null)
+  // 保证 bindFunc 取到最新的值
+  const refProps = useRef(props)
 
-  componentDidMount() {
-    const func = () => {
-      const { isLoading, isEnd, callback } = this.props
-      if (isLoading || isEnd) return
+  useEffect(() => {
+    refProps.current = props
+  })
 
-      // loadingDom 出现在可视区域
-      const distance =
-        this.loadingDom.current &&
-        window.innerHeight - this.loadingDom.current.getBoundingClientRect().top
-      if (distance === null || distance < 0) return
-      callback()
-    }
+  useEffect(() => {
+    const bindFunc = debounce(
+      bindURL(() => {
+        const { isEnd, isLoading, callback, inFixedContainer = false } = refProps.current
+        if (isLoading || isEnd) {
+          return
+        }
+        if (loadingDom.current === null || wrapperDom.current === null) {
+          return
+        }
 
-    this.bindFunc = debounce(func, 250)
-    window.addEventListener('scroll', this.bindFunc)
-  }
+        // 判断 loadingDom 是否出现在容器内部
+        let isInViewport: boolean
+        const loadingRect = loadingDom.current.getBoundingClientRect()
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.bindFunc)
-  }
+        if (inFixedContainer) {
+          // 相对 wrapperDom
+          const wrapperRect = wrapperDom.current.getBoundingClientRect()
+          isInViewport =
+            loadingRect.top < wrapperRect.bottom && loadingRect.bottom > wrapperRect.top
+        } else {
+          // 相对 windows
+          isInViewport = loadingRect.top < window.innerHeight && loadingRect.bottom > 0
+        }
 
-  render() {
-    const { isEnd, loadingPosition = 'bottom', children } = this.props
-
-    return (
-      <>
-        {loadingPosition === 'top' &&
-          !isEnd && (
-            <div ref={this.loadingDom}>
-              <LoadingCircle />
-            </div>
-          )}
-
-        {children}
-
-        {loadingPosition === 'bottom' &&
-          !isEnd && (
-            // TODO: forwordRef
-            <div ref={this.loadingDom}>
-              <LoadingCircle />
-            </div>
-          )}
-      </>
+        if (isInViewport) {
+          callback()
+        }
+      }, window.location.href),
+      250
     )
-  }
+
+    const { inFixedContainer = false } = refProps.current
+
+    if (inFixedContainer) {
+      if (!wrapperDom.current) {
+        return
+      }
+      wrapperDom.current.onscroll = bindFunc
+    } else {
+      window.addEventListener('scroll', bindFunc)
+
+      return () => {
+        window.removeEventListener('scroll', bindFunc)
+      }
+    }
+  }, [])
+
+  const { isEnd, reverse = false, children } = props
+
+  return (
+    // FIXME: waiting @types/styled-components to upgrade
+    // @ts-ignore https://www.styled-components.com/docs/advanced#refs
+    <WrapperDiv ref={wrapperDom} reverse={reverse}>
+      {children}
+      {!isEnd && (
+        <div ref={loadingDom}>
+          <LoadingCircle />
+        </div>
+      )}
+    </WrapperDiv>
+  )
 }
 
 export default InfiniteList

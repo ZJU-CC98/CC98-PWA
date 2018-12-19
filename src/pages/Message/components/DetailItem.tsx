@@ -1,21 +1,24 @@
-/**
- * @author dongyansong
- * @date 2018-10-26
- */
 import React from 'react'
-import { Subscribe } from '@cc98/state'
-import { IMessageContent } from '@cc98/api'
-import dayjs from 'dayjs'
-import styled, { css } from 'react-emotion'
+import styled from 'styled-components'
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 
-import global, { GlobalContainer } from '@/model/global'
-import user, { UserInfoStore } from '@/model/user'
+import useFetcher from '@/hooks/useFetcher'
+import useContainer from '@/hooks/useContainer'
+import userInstace from '@/containers/user'
 
-import avatar from '@/assets/9.png'
+import { IMessageContent, IUser } from '@cc98/api'
 
-const AvatarClass = css`
+import { getUserInfoById } from '@/services/user'
+
+import dayjs from 'dayjs'
+import { navigate } from '@/utils/history'
+
+const ListItemS = styled(ListItem)`
+  flex-shrink: 0;
+`
+
+const ListItemAvatarS = styled(ListItemAvatar)`
   align-self: flex-start;
 `
 
@@ -47,7 +50,7 @@ const MessageContentLeft = styled(MessageContent)`
     border-width: 0.5em 0.5em 0.5em 0;
     border-color: transparent;
     border-right-color: #eee;
-    left: -0.5em;
+    left: -0.4em;
     position: absolute;
     top: 1em;
   }
@@ -60,14 +63,14 @@ const MessageContentRight = styled(MessageContent)`
     border-width: 0.5em 0 0.5em 0.5em;
     border-color: transparent;
     border-left-color: #eee;
-    right: -0.5em;
+    right: -0.4em;
     position: absolute;
     top: 1em;
   }
 `
 
 const MessageDate = styled.span<{ right?: boolean }>`
-  color: #666;
+  color: #aaa;
   font-size: 0.7em;
   align-self: ${props => (props.right ? 'flex-end' : '')};
 `
@@ -77,37 +80,39 @@ interface Props {
 }
 
 // TODO: 消息气泡
-const renderItem = (message: IMessageContent, userAvatar = avatar, isCurrSend: boolean) =>
+const renderItem = (message: IMessageContent, userInfo: IUser, isCurrSend: boolean) =>
   !isCurrSend ? (
-    <ListItem>
-      <ListItemAvatar className={AvatarClass}>
-        <Avatar src={userAvatar} />
-      </ListItemAvatar>
+    <ListItemS>
+      <ListItemAvatarS>
+        <Avatar src={userInfo.portraitUrl} onClick={() => navigate(`/user/${userInfo.id}`)} />
+      </ListItemAvatarS>
       <MessageRoot>
         <MessageContentLeft>{message.content}</MessageContentLeft>
         <MessageDate right>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
       </MessageRoot>
-    </ListItem>
+    </ListItemS>
   ) : (
-    <ListItem>
+    <ListItemS>
       <ListItemText />
       <MessageRoot>
         <MessageContentRight>{message.content}</MessageContentRight>
         <MessageDate>{dayjs(message.time).format('YYYY-MM-DD HH:mm:ss')}</MessageDate>
       </MessageRoot>
-      <ListItemAvatar className={AvatarClass}>
-        <Avatar src={userAvatar} />
-      </ListItemAvatar>
-    </ListItem>
+      <ListItemAvatarS>
+        <Avatar src={userInfo.portraitUrl} />
+      </ListItemAvatarS>
+    </ListItemS>
   )
 
-export default ({ message }: Props) => (
-  <Subscribe to={[user, global]}>
-    {({ state }: UserInfoStore, { state: { myInfo } }: GlobalContainer) =>
-      renderItem(
-        message,
-        state[message.senderId] && state[message.senderId].portraitUrl,
-        !!myInfo && myInfo.id === message.senderId
-      )}
-  </Subscribe>
-)
+export default ({ message }: Props) => {
+  const {
+    state: { myInfo },
+  } = useContainer(userInstace)
+
+  const [userInfo] = useFetcher(() => getUserInfoById(message.senderId))
+  if (userInfo === null || myInfo === null) {
+    return null
+  }
+
+  return renderItem(message, userInfo, myInfo.id === message.senderId)
+}

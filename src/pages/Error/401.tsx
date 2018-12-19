@@ -1,5 +1,5 @@
 import React from 'react'
 
-const Page401: React.SFC = () => <>401</>
+import ErrorPage from './ErrorPage'
 
-export default Page401
+export default () => <ErrorPage errMessage="您没有登录或没有权限" />

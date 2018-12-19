@@ -1,9 +1,12 @@
 import React from 'react'
-import styled from 'react-emotion'
+import styled from 'styled-components'
 
 import { Paper } from '@material-ui/core'
 
-const Background = styled(Paper)`
+const Background = styled(Paper).attrs({
+  square: true,
+  elevation: 0,
+})`
   position: fixed;
   width: 100%;
   height: 100%;
@@ -19,9 +22,9 @@ const Placeholder = styled.div`
   }
 `
 
-const BackGround: React.SFC = ({ children }) => (
+const BackGround: React.FunctionComponent = ({ children }) => (
   <>
-    <Background square elevation={0} />
+    <Background />
     <Placeholder />
     {children}
   </>

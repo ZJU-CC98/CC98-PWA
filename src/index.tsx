@@ -12,8 +12,9 @@ dayjs.extend(relativeTime)
 // global style
 import './style.css'
 
-// 错误捕获
-import Sentry from '@sentry/browser'
+// Sentry
+// NOTE: 它的模块有点问题，不要用默认导入
+import * as Sentry from '@sentry/browser'
 import version from './version'
 
 class ErrorBoundary extends React.Component {

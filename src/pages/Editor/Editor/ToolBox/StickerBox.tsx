@@ -37,7 +37,7 @@ const BaseUrl = 'https://www.cc98.org/static/images'
 function getStickerReactNode(type: StickerType, handleFunc: Function) {
   const stickerArr = []
 
-  const suffix = type === 'em' ? 'gif' : 'png'
+  const suffix = type === 'em' ? 'gif' : type === 'ac' ? 'jpg' : 'png'
   let start = 1
   let end = 54
 
@@ -50,7 +50,12 @@ function getStickerReactNode(type: StickerType, handleFunc: Function) {
 
   for (let i = start; i <= end; i++) {
     const number = i < 10 ? `0${i}` : `${i}`
-    const url = type === 'ac' ? `${type}-mini/${number}` : `${type}-mini/${type}${number}`
+    const url =
+      type === 'ac'
+        ? `${type}-mini/${number}`
+        : type === 'em'
+        ? `${type}/${type}${number}`
+        : `${type}-mini/${type}${number}`
 
     stickerArr.push(
       <Img src={`${BaseUrl}/${url}.${suffix}`} onClick={handleFunc(`${type}${number}`)} />

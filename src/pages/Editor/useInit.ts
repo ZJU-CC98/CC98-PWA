@@ -6,15 +6,25 @@ import { getTopicInfo } from '@/services/topic'
 import dayjs from 'dayjs'
 
 interface Init {
+  /**
+   * MetaInfo Container 初始值
+   */
   metaInfo: {
     title: string
     type: number
     tag1?: number
     tag2?: number
   }
+  /**
+   * Editor Container 初始值
+   */
   editor: {
     initContent: string
   }
+  /**
+   * MetaInfo 的 props 之一
+   * 同时 boardId 有值意味着是 发布/修改主题
+   */
   boardId: number | undefined
 }
 

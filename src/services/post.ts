@@ -34,7 +34,7 @@ export function getReversePost(id: number, from: number, total: number) {
   if (floor - from < 9) {
     realSize = floor - from
   }
-  console.log('from=' + from + ' total = ' + total + ' realsize=' + realSize)
+
   return GET<IPost[]>(`topic/${id}/post`, {
     params: {
       from: realFrom,

@@ -20,7 +20,6 @@ interface Props {
 
 /**
  * image for error page
- * @param props status code
  */
 const ErrorImage: React.FunctionComponent<Props> = props => {
   const [imgSrc, setImgSrc] = useState(img)

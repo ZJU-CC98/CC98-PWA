@@ -1,20 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
 
 import LoadingCircle from '@/components/LoadingCircle'
-import FixFab from '@/components/FixFab'
-
-import RotateRightIcon from '@material-ui/icons/RotateRight'
-import SwapVertIcon from '@material-ui/icons/SwapVert'
-import EditIcon from '@material-ui/icons/Edit'
-import AddIcon from '@material-ui/icons/Add'
-import RemoveIcon from '@material-ui/icons/Remove'
 
 import PostHead from './PostHead'
 import PostListHot from './PostListHot'
 import PostList from './PostList'
+import FixButtons from './FixButtons'
 
 import { getTopicInfo } from '@/services/topic'
 import {
@@ -25,8 +19,6 @@ import {
   getHotPost,
 } from '@/services/post'
 import { navigateHandler } from '@/services/utils/errorHandler'
-
-import { navigate } from '@/utils/history'
 
 const EndPlaceholder = styled.div`
   height: 64px;
@@ -43,7 +35,7 @@ interface Props {
   isReverse?: boolean
 }
 
-const Topic = ({ topicId, userId, postId, isReverse = false }: Props) => {
+const Topic = ({ topicId, userId, postId, isReverse }: Props) => {
   const [topicInfo] = useFetcher(() => getTopicInfo(topicId), {
     fail: navigateHandler,
   })
@@ -56,21 +48,24 @@ const Topic = ({ topicId, userId, postId, isReverse = false }: Props) => {
   }
 
   // 根据 URL 参数选择获取 post 的 service
-  const postService = isReverse
-    ? (from: number) => getReversePost(topicInfo.id, from, topicInfo.replyCount)
-    : userId
-    ? (from: number) => getTracePost(topicInfo.id, userId, from)
-    : postId
-    ? (from: number) => getAnonymousTracePost(topicInfo.id, postId, from)
-    : (from: number) => getPost(topicInfo.id, from)
+  const postService = useMemo(
+    () =>
+      isReverse
+        ? (from: number) => getReversePost(topicInfo.id, from, topicInfo.replyCount)
+        : userId
+        ? (from: number) => getTracePost(topicInfo.id, userId, from)
+        : postId
+        ? (from: number) => getAnonymousTracePost(topicInfo.id, postId, from)
+        : (from: number) => getPost(topicInfo.id, from),
+    []
+  )
 
   const hotPostService = () => getHotPost(topicInfo.id)
 
   // 是否处于追踪状态
   const isTrace = !!userId || !!postId
 
-  // 控制按钮是否展开
-  const [expand, setExpand] = useState(false)
+  const refreshFunc = useCallback(() => setPostListKey(postListKey + 1), [postListKey])
 
   return (
     <>
@@ -78,32 +73,7 @@ const Topic = ({ topicId, userId, postId, isReverse = false }: Props) => {
       <PostList key={postListKey} service={postService} isTrace={isTrace}>
         {!isTrace && <PostListHot service={hotPostService} />}
       </PostList>
-      {expand && (
-        <>
-          <FixFab bottom={165}>
-            <RotateRightIcon onClick={() => setPostListKey(postListKey + 1)} />
-          </FixFab>
-          <FixFab bottom={115}>
-            <SwapVertIcon
-              onClick={() =>
-                isReverse
-                  ? navigate(`/topic/${topicInfo.id}`)
-                  : navigate(`/topic/${topicInfo.id}/reverse`)
-              }
-            />
-          </FixFab>
-          <FixFab bottom={65}>
-            <EditIcon onClick={() => navigate(`/editor/replyTopic/${topicInfo.id}`)} />
-          </FixFab>
-        </>
-      )}
-      <FixFab>
-        {expand ? (
-          <RemoveIcon onTouchStart={() => setExpand(false)} />
-        ) : (
-          <AddIcon onTouchStart={() => setExpand(true)} />
-        )}
-      </FixFab>
+      <FixButtons topicInfo={topicInfo} isReverse={isReverse} refreshFunc={refreshFunc} />
       <EndPlaceholder />
     </>
   )

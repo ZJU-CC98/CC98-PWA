@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useMemo } from 'react'
 import styled from 'styled-components'
 
 import MetaInfo, { MetaInfoContainer } from './MetaInfo'
@@ -62,11 +62,10 @@ export default (props: Props) => {
     isContainerInit.current = true
   }
 
-  const onSendCallback = chooseSendCallback(
-    props,
-    init.boardId !== undefined,
-    editor.current,
-    metaContainer.current
+  const onSendCallback = useMemo(
+    () =>
+      chooseSendCallback(props, init.boardId !== undefined, editor.current, metaContainer.current),
+    []
   )
 
   return (

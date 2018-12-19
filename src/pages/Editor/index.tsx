@@ -84,7 +84,7 @@ function chooseSendCallback(
   isFirstFloor: boolean,
   editor: EditorContainer,
   metaInfo: MetaInfoContainer
-): () => void {
+): () => Promise<void> {
   const { boardId, topicId, postId } = props
 
   // return () => {
@@ -93,76 +93,71 @@ function chooseSendCallback(
 
   // 发布帖子
   if (boardId) {
-    return () => {
+    return async () => {
       const topicParams: ITopicParams = {
         ...metaInfo.state,
         content: editor.fullContent,
         contentType: 0,
       }
-      postTopic(boardId, topicParams).then(res =>
-        res.fail().succeed(() => {
-          snackbar.success('发布成功')
-          goback()
-        })
-      )
+      const res = await postTopic(boardId, topicParams)
+      res.fail().succeed(() => {
+        snackbar.success('发布成功')
+        goback()
+      })
     }
   }
 
   // 回复帖子
   if (topicId) {
-    return () => {
+    return async () => {
       const postParams: IPostParams = {
         title: '',
         content: editor.fullContent,
         contentType: 0,
       }
 
-      replyTopic(topicId, postParams).then(res =>
-        res.fail().succeed(() => {
-          snackbar.success('回复成功')
-
-          // TODO: 刷新帖子
-          navigate(`/topic/${topicId}`)
-        })
-      )
+      const res = await replyTopic(topicId, postParams)
+      res.fail().succeed(() => {
+        snackbar.success('回复成功')
+        // TODO: 刷新帖子
+        navigate(`/topic/${topicId}`)
+      })
     }
   }
 
   // 编辑主题帖子
   if (postId && isFirstFloor) {
-    return () => {
+    return async () => {
       const topicParams: ITopicParams = {
         ...metaInfo.state,
         content: editor.fullContent,
         contentType: 0,
       }
 
-      editorPost(postId, topicParams).then(res =>
-        res.fail().succeed(() => {
-          snackbar.success('编辑成功')
-          goback()
-        })
-      )
+      const res = await editorPost(postId, topicParams)
+      res.fail().succeed(() => {
+        snackbar.success('编辑成功')
+        goback()
+      })
     }
   }
 
   // 编辑普通帖子
   if (postId) {
-    return () => {
+    return async () => {
       const postParams: IPostParams = {
         title: '',
         content: editor.fullContent,
         contentType: 0,
       }
 
-      editorPost(postId, postParams).then(res =>
-        res.fail().succeed(() => {
-          snackbar.success('编辑成功')
-          goback()
-        })
-      )
+      const res = await editorPost(postId, postParams)
+      res.fail().succeed(() => {
+        snackbar.success('编辑成功')
+        goback()
+      })
     }
   }
 
-  return () => undefined
+  return async () => undefined
 }

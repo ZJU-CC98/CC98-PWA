@@ -19,7 +19,7 @@ export { EditorContainer }
 
 interface Props {
   editor: EditorContainer
-  onSendCallback: () => void
+  onSendCallback: () => Promise<void>
 }
 
 const Editor: React.FunctionComponent<Props> = ({ editor, onSendCallback }) => {

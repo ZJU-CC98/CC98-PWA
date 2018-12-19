@@ -52,8 +52,6 @@ export default ({ id }: Props) => {
           ))}
         </InfiniteList>
       </ListS>
-
-      {/* TODO: reply input */}
     </>
   )
 }

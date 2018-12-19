@@ -19,7 +19,7 @@ const WrapperToolBox = styled.div`
 `
 interface Props {
   editor: EditorContainer
-  onSendCallback: () => void
+  onSendCallback: () => Promise<void>
 }
 
 export default ({ editor, onSendCallback }: Props) => (
@@ -33,8 +33,8 @@ export default ({ editor, onSendCallback }: Props) => (
         <ClearBtn editor={editor} />
         <PreviewBtn editor={editor} />
         <SendBtn
-          onSendCallback={() => {
-            onSendCallback()
+          onSendCallback={async () => {
+            await onSendCallback()
             editor.clearAll()
           }}
         />

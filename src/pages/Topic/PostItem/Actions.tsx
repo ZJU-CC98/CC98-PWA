@@ -88,6 +88,10 @@ const IconActions: React.FunctionComponent<Props> = ({ postInfo, refreshPost }) 
     navigate(`/editor/replyTopic/${postInfo.topicId}/quote/${postInfo.id}`)
   }
 
+  const cannotHandleQuote = () => {
+    snackbar.error('不能引用已删除的帖子')
+  }
+
   return (
     <ActionDiv>
       <IconButton onClick={handleLike(LikeState.DISLIKE)}>
@@ -96,7 +100,7 @@ const IconActions: React.FunctionComponent<Props> = ({ postInfo, refreshPost }) 
       <Count>{postInfo.dislikeCount}</Count>
       <DividerCol />
       <IconButton>
-        <RotateLeftIcon onClick={handleQuote} />
+        <RotateLeftIcon onClick={postInfo.isDeleted ? cannotHandleQuote : handleQuote} />
       </IconButton>
       <DividerCol />
       <IconButton onClick={handleLike(LikeState.LIKE)}>

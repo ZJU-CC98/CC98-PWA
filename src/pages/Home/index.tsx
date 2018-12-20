@@ -2,24 +2,25 @@ import React from 'react'
 
 import useFetcher from '@/hooks/useFetcher'
 
+// import Announcement from './Announcement'
 import RecommendReadings from './Recommend'
 
 import { getHomeInfo } from '@/services/global'
 import { notificationHandler } from '@/services/utils/errorHandler'
 
 const Home: React.FunctionComponent = () => {
-  const [data] = useFetcher(getHomeInfo, {
+  const [homeInfo] = useFetcher(getHomeInfo, {
     fail: notificationHandler,
   })
 
-  if (data === null) {
+  if (homeInfo === null) {
     return null
   }
 
   return (
     <>
-      {/*<Announcement content={data.announcement} />*/}
-      <RecommendReadings recommendationReading={data.recommendationReading} />
+      {/* <Announcement content={homeInfo.announcement} /> */}
+      <RecommendReadings recommendationReading={homeInfo.recommendationReading} />
     </>
   )
 }

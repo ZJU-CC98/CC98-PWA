@@ -6,8 +6,8 @@ import AnnouncementIcon from '@material-ui/icons/Announcement'
 
 import UBB from '@/UBB'
 
-const DivS = styled.div`
-  margin: 1rem;
+const WrapperDiv = styled.div`
+  margin: 12px 16px;
 `
 
 interface Props {
@@ -20,9 +20,11 @@ export default ({ content }: Props) => (
       <ListItemIcon>
         <AnnouncementIcon />
       </ListItemIcon>
-      <ListItemText primary="推荐阅读" />
+      <ListItemText primary="全站公告" />
     </ListItem>
     <Divider />
-    <DivS>{UBB({ ubbText: content })}</DivS>
+    <WrapperDiv>
+      <UBB ubbText={content} />
+    </WrapperDiv>
   </>
 )

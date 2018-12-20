@@ -76,9 +76,9 @@ export default () => {
 
   return (
     <>
-      {isLoading && <LoadingCircle />}
       <Title>开发组</Title>
       <Divider />
+      {isLoading && <LoadingCircle />}
 
       <CardFlexDiv>
         {usersInfo.map(userInfo => (

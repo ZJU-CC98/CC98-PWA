@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import useInfList from '@/hooks/useInfList'
@@ -33,10 +33,21 @@ interface Props {
   id: string
 }
 
+export default ({ id }: Props) => {
+  const [messageListKey, setMessageListKey] = useState(0)
+  return (
+    <MessageList
+      key={messageListKey}
+      id={id}
+      refresh={() => setMessageListKey(messageListKey + 1)}
+    />
+  )
+}
+
 /**
  * 私信-会话列表
  */
-export default ({ id }: Props) => {
+const MessageList = ({ id, refresh }: Props & { refresh: () => void }) => {
   const service = (from: number) => getMessageContent(id, from, 10)
   const [list, state, callback] = useInfList(service, {
     step: 10,
@@ -44,8 +55,8 @@ export default ({ id }: Props) => {
   const { isLoading, isEnd } = state
   const sendMsg = (content: string) => {
     sendMessage(id, content).then(res => {
-      res.fail().succeed(id => {
-        callback()
+      res.fail().succeed(_ => {
+        refresh()
       })
     })
   }

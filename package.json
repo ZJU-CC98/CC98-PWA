@@ -24,7 +24,7 @@
     "dayjs": "^1.7.8",
     "lodash-es": "^4.17.11",
     "prop-types": "^15.6.2",
-    "react": "^16.7.0-alpha.2",
+    "react": "16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",
     "remark": "^10.0.1",
     "remark-react": "^5.0.1",

@@ -64,7 +64,7 @@ const Awards = ({ awards }: Props) => {
       {showExpanded && !expanded && (
         <TableRowS>
           <CellShowMore colSpan={SHOW_AWARDS_NUM} onClick={() => setExpanded(true)}>
-            展开剩余{awards ? awards.length : 0 - SHOW_AWARDS_NUM}个评分
+            展开剩余{awards ? awards.length - SHOW_AWARDS_NUM : 0}个评分
           </CellShowMore>
         </TableRowS>
       )}

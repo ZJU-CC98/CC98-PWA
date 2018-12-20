@@ -9,9 +9,11 @@ const handler: ITagHandler<React.ReactNode> = {
 
   render(node: TagNode, context: IContext, children: React.ReactNode[]) {
     const { color } = node.tagData
+    // FIXME: ban blue in quote
+    const banColor = color === 'blue' && context.quoteRoot ? undefined : color
 
     const style = {
-      color,
+      color: banColor,
     } as React.CSSProperties
 
     return <span style={style}>{children}</span>

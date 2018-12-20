@@ -12,7 +12,10 @@ const handler: IGeneralTagHandler<React.ReactNode> = {
   render(node: TagNode, context: IContext) {
     const acID = node.tagData.__tagName__.slice(2)
 
-    const url = `${context.imgBaseURL}/ac/${acID}.png`
+    const url =
+      context.theme === 'light'
+        ? `${context.imgBaseURL}/ac/${acID}.png`
+        : `${context.imgBaseURL}/ac-reverse/${acID}.png`
 
     return <img className="ubb-tag-ac" src={url} alt={`[ac${acID}]`} />
   },

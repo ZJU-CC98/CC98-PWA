@@ -16,15 +16,15 @@ export function isSafe(dangerousURL: string) {
 }
 
 const handler: ITagHandler<React.ReactNode> = {
-  isRecursive: false,
+  isRecursive: true,
 
-  render(node: TagNode, context: IContext) {
+  render(node: TagNode, context: IContext, children: React.ReactNode[]) {
     const innerText = node.innerText
     const dangerousURL = node.tagData.url || innerText
 
     const safeURL = isSafe(dangerousURL) ? dangerousURL : undefined
 
-    return <a href={safeURL}>{innerText}</a>
+    return <a href={safeURL}>{children}</a>
   },
 }
 

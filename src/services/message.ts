@@ -1,4 +1,4 @@
-import { GET } from '@/utils/fetch'
+import { GET, POST } from '@/utils/fetch'
 import { IRecentMessage, IMessageContent } from '@cc98/api'
 
 /**
@@ -21,6 +21,18 @@ export function getMessageContent(userId: number | string, from: number, size: n
     params: {
       from,
       size,
+    },
+  })
+}
+
+/**
+ * 发送私信
+ */
+export function sendMessage(ReceiverId: number | string, Content: string) {
+  return POST<string>('message', {
+    params: {
+      ReceiverId,
+      Content,
     },
   })
 }

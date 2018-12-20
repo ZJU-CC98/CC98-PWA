@@ -39,23 +39,24 @@ interface Props {
   isTrace?: boolean
 }
 
+const DELETE_CONTENT = '该贴已被 my CC98, my home'
+
 export default ({ postInfo, userInfo, isHot, isTrace = false }: Props) => {
   const [currentPost, setCurrentPost] = useState<IPost>(postInfo)
   if (postInfo.isDeleted) {
-    postInfo.content = '该贴已被 my CC98, my home'
+    postInfo.content = DELETE_CONTENT
   }
+
   const refreshPost = async () => {
-    const res = await getSinglePost(postInfo.topicId, postInfo.floor - 1)
-    res.fail().succeed(data => {
-      if (data.length && data.length === 1) {
-        if (data[0].isDeleted) {
-          data[0].content = '该贴已被 my CC98, my home'
-          if (userInfo) {
-            userInfo.portraitUrl = ''
-          }
+    const res = await getSinglePost(postInfo.topicId, postInfo.floor)
+    res.fail().succeed(post => {
+      if (post.isDeleted) {
+        post.content = DELETE_CONTENT
+        if (userInfo) {
+          userInfo.portraitUrl = ''
         }
-        setCurrentPost(data[0])
       }
+      setCurrentPost(post)
     })
   }
 
@@ -70,7 +71,7 @@ export default ({ postInfo, userInfo, isHot, isTrace = false }: Props) => {
         refreshPost={refreshPost}
       />
       <Awards
-        key={currentPost.awards ? currentPost.awards.length : Date.now()}
+        key={currentPost.awards ? currentPost.awards.length : 0}
         awards={currentPost.awards}
       />
 

@@ -30,7 +30,9 @@ interface PreviewProps {
 const Preview = ({ content, handleClose }: PreviewProps) => (
   <>
     <DialogContent>
-      <DialogContentTextS>{content ? UBB(content) : '【没有内容】'}</DialogContentTextS>
+      <DialogContentTextS>
+        <UBB ubbText={content || '[ 没有内容 ]'} />
+      </DialogContentTextS>
     </DialogContent>
     <DialogActions>
       <Button color="primary" onClick={handleClose}>

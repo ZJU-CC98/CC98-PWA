@@ -18,7 +18,7 @@ const WrapperDiv = styled.div`
 /********************************
  * boardId - 发布帖子
  * topicId - 回复帖子
- * topicId & postId - 引用帖子
+ * topicId & floor - 引用帖子
  * postId  - 修改帖子
  ********************************/
 
@@ -31,6 +31,10 @@ export interface Props {
    * 帖子 ID
    */
   topicId?: string
+  /**
+   * 引用楼层数
+   */
+  floor?: string
   /**
    * 楼层 ID
    */
@@ -86,8 +90,15 @@ function chooseSendCallback(
 ): () => void {
   const { boardId, topicId, postId } = props
 
-  const stopLoading = () => {
+  const failCallback = () => {
     editor.setState({ isSending: false })
+  }
+
+  const successCallback = () => {
+    editor.clearAll()
+    editor.setState({ isSending: false })
+    // TODO: 刷新帖子
+    goback()
   }
 
   /**
@@ -112,12 +123,11 @@ function chooseSendCallback(
         res
           .fail(() => {
             snackbar.error('发布失败')
-            stopLoading()
+            failCallback()
           })
           .succeed(() => {
-            // TODO: 刷新帖子，下同
             snackbar.success('发布成功')
-            goback()
+            successCallback()
           })
       )
     }
@@ -136,11 +146,11 @@ function chooseSendCallback(
         res
           .fail(() => {
             snackbar.error('回复失败')
-            stopLoading()
+            failCallback()
           })
           .succeed(() => {
             snackbar.success('回复成功')
-            goback()
+            successCallback()
           })
       )
     }
@@ -165,11 +175,11 @@ function chooseSendCallback(
         res
           .fail(() => {
             snackbar.error('编辑失败')
-            stopLoading()
+            failCallback()
           })
           .succeed(() => {
             snackbar.success('编辑成功')
-            goback()
+            successCallback()
           })
       )
     }

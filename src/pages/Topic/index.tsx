@@ -36,7 +36,7 @@ interface Props {
 }
 
 const Topic = ({ topicId, userId, postId, isReverse }: Props) => {
-  const [topicInfo] = useFetcher(() => getTopicInfo(topicId), {
+  const [topicInfo, setTopicInfo] = useFetcher(() => getTopicInfo(topicId), {
     fail: navigateHandler,
   })
 
@@ -57,15 +57,22 @@ const Topic = ({ topicId, userId, postId, isReverse }: Props) => {
         : postId
         ? (from: number) => getAnonymousTracePost(topicInfo.id, postId, from)
         : (from: number) => getPost(topicInfo.id, from),
-    []
+    [topicInfo]
   )
 
-  const hotPostService = () => getHotPost(topicInfo.id)
+  const hotPostService = useCallback(() => getHotPost(topicInfo.id), [topicInfo])
 
   // 是否处于追踪状态
   const isTrace = !!userId || !!postId
 
-  const refreshFunc = useCallback(() => setPostListKey(postListKey + 1), [postListKey])
+  const refreshFunc = () => {
+    getTopicInfo(topicId).then(res =>
+      res.fail(navigateHandler).succeed(newTopicInfo => {
+        setTopicInfo(newTopicInfo)
+        setPostListKey(postListKey + 1)
+      })
+    )
+  }
 
   return (
     <>

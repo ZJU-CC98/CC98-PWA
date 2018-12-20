@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import ExpandPanel from './ExpandPanel'
 
@@ -12,15 +12,24 @@ interface Props {
   isUserCenter: boolean
 }
 
-const RecentTopics: React.FunctionComponent<Props> = ({ info, isUserCenter }) => (
-  <ExpandPanel defaultExpanded={false} title="发表主题">
-    <InfTopicList
-      service={
-        isUserCenter ? getMyRecentTopics : (from: number) => getUsersRecentTopics(info.id, from)
-      }
-      place="usercenter"
-    />
-  </ExpandPanel>
-)
+const RecentTopics: React.FunctionComponent<Props> = ({ info, isUserCenter }) => {
+  const [expand, setExpand] = useState(false)
+  const onChange = () => {
+    setExpand(!expand)
+  }
+
+  return (
+    <ExpandPanel expanded={expand} title="发表主题" onChange={onChange}>
+      {expand && (
+        <InfTopicList
+          service={
+            isUserCenter ? getMyRecentTopics : (from: number) => getUsersRecentTopics(info.id, from)
+          }
+          place="usercenter"
+        />
+      )}
+    </ExpandPanel>
+  )
+}
 
 export default RecentTopics

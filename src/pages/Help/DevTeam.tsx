@@ -28,6 +28,7 @@ const CardHeaderS = styled(CardHeader)`
 interface Props {
   userInfo: IUser
 }
+
 const DevCard: React.FC<Props> = ({ userInfo }) => (
   <CardHeaderS
     avatar={<Avatar src={userInfo.portraitUrl} />}
@@ -58,16 +59,17 @@ export default () => {
 
   useEffect(() => {
     setIsLoading(true)
-    const res = getUsersInfoByIds(ids)
-    res.then(r =>
-      r.fail().succeed(data => {
-        if (data.length === ids.length) {
-          const orderedData: IUser[] = []
-          for (const i in ids) {
-            orderedData[i] = data.filter(u => u.id === ids[i])[0]
-            orderedData[i].introduction = descriptions[i]
-          }
-          setUsersInfo(orderedData)
+    getUsersInfoByIds(ids).then(usersTry =>
+      usersTry.fail().succeed(users => {
+        if (users.length === ids.length) {
+          const usersInfo = ids.map((id, i) => {
+            const user = users.find(u => u.id === id) as IUser
+            user.introduction = descriptions[i]
+
+            return user
+          })
+
+          setUsersInfo(usersInfo)
           setIsLoading(false)
         }
       })

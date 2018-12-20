@@ -107,20 +107,23 @@ const IconActions: React.FunctionComponent<Props> = ({ postInfo, refreshPost }) 
 
       return
     }
-    navigate(`/editor/replyTopic/${postInfo.topicId}/quote/${postInfo.id}`)
+    navigate(`/editor/replyTopic/${postInfo.topicId}/quote/${postInfo.floor}`)
   }
 
   return (
     <ActionDiv>
-      <IconButton onClick={handleLike(LikeState.DISLIKE)}>
-        <ThumbDownIcon color={likeState === LikeState.DISLIKE ? 'secondary' : 'inherit'} />
-      </IconButton>
-      <Count>{postInfo.dislikeCount}</Count>
-      <DividerCol />
       <IconButton onClick={handleLike(LikeState.LIKE)}>
         <ThumbUpIcon color={likeState === LikeState.LIKE ? 'secondary' : 'inherit'} />
       </IconButton>
       <Count>{postInfo.likeCount}</Count>
+
+      <DividerCol />
+
+      <IconButton onClick={handleLike(LikeState.DISLIKE)}>
+        <ThumbDownIcon color={likeState === LikeState.DISLIKE ? 'secondary' : 'inherit'} />
+      </IconButton>
+      <Count>{postInfo.dislikeCount}</Count>
+
       <DividerCol />
       <IconButton>
         <FormatQuoteIcon onClick={handleQuote} />

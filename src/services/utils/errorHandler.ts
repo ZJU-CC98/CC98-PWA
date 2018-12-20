@@ -46,6 +46,7 @@ export function rateHandler(err: FetchError) {
 
 export function loginHandler(err: FetchError) {
   // TODO:
+  snackbar.error('登录失败')
 }
 
 export function manageHandler(err: FetchError) {

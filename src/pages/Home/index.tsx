@@ -15,6 +15,7 @@ const Home: React.FunctionComponent = () => {
   if (data === null) {
     return null
   }
+
   return (
     <>
       {/*<Announcement content={data.announcement} />*/}

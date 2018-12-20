@@ -23,6 +23,6 @@ export default ({ content }: Props) => (
       <ListItemText primary="推荐阅读" />
     </ListItem>
     <Divider />
-    <DivS>{UBB(content)}</DivS>
+    <DivS>{UBB({ ubbText: content })}</DivS>
   </>
 )

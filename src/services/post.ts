@@ -28,8 +28,11 @@ export function getReversePost(id: number, from: number, total: number) {
    * case ex 10L
    *     realFrom = 0 realSize = 10
    *     from = 9 total = 9
+   * case
+   *     from = 0 total = 10 floor = 11
+   *     希望的结果 realFrom = 1
    */
-  const realFrom = floor - from - 10 > 0 ? floor - from - 10 : 0
+  const realFrom = floor - from - 10 >= 0 ? floor - from - 10 : 0
   let realSize = from !== 0 && from === total ? 0 : 10
   if (floor - from < 9) {
     realSize = floor - from

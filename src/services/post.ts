@@ -49,13 +49,13 @@ export function getReversePost(id: number, from: number, total: number) {
 /**
  * 获取一个帖子的单独一层
  */
-export function getSinglePost(id: number, from: number) {
-  return GET<IPost[]>(`topic/${id}/post`, {
+export function getSinglePost(topicId: number | string, floor: number) {
+  return GET<IPost[]>(`topic/${topicId}/post`, {
     params: {
-      from,
+      from: floor - 1,
       size: 1,
     },
-  })
+  }).then(res => Promise.resolve(res.map(posts => posts[0])))
 }
 
 /**

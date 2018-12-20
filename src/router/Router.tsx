@@ -64,7 +64,7 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
 
     <Route path="editor/postTopic/:boardId" component={Editor} />
     <Route path="editor/replyTopic/:topicId/" component={Editor} />
-    <Route path="editor/replyTopic/:topicId/quote/:postId" component={Editor} />
+    <Route path="editor/replyTopic/:topicId/quote/:floor" component={Editor} />
     <Route path="editor/edit/:postId" component={Editor} />
 
     <Route path="setting" component={Setting} />

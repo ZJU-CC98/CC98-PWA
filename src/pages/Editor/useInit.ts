@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { getOriginalPost } from '@/services/editor'
 import { getTopicInfo } from '@/services/topic'
+import { getSinglePost } from '@/services/post'
 
 import dayjs from 'dayjs'
 
@@ -34,7 +35,7 @@ import { Props } from './index'
  * 获取 editor 和 metaInfo 的初始值，返回 null 意味着 loading 中
  */
 export default function useInit(props: Props): Init | null {
-  const { boardId, topicId, postId } = props
+  const { boardId, topicId, postId, floor } = props
   const [ok, setOk] = useState(false)
 
   const [initContent, setInitContent] = useState('')
@@ -62,16 +63,9 @@ export default function useInit(props: Props): Init | null {
     return null
   }
 
-  // 回复帖子
-  if (topicId && !postId) {
-    setOk(true)
-
-    return null
-  }
-
   // 引用某楼层
-  if (topicId && postId) {
-    getOriginalPost(postId).then(res =>
+  if (topicId && floor) {
+    getSinglePost(topicId, parseInt(floor, 10)).then(res =>
       res.fail().succeed(postInfo => {
         const { floor, userName, time, topicId, content } = postInfo
         const formatTime = dayjs(time).format('YYYY-MM-DD HH:mm')
@@ -82,6 +76,13 @@ export default function useInit(props: Props): Init | null {
         setOk(true)
       })
     )
+
+    return null
+  }
+
+  // 回复帖子
+  if (topicId) {
+    setOk(true)
 
     return null
   }

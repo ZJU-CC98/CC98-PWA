@@ -1,10 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import settingInstance from '@/containers/setting'
-
-import { Typography } from '@material-ui/core'
-
 import { IPost } from '@cc98/api'
 
 import UBB from '@/UBB'
@@ -17,17 +13,13 @@ function Markdown(content: string) {
     .processSync(content).contents
 }
 
-const TypographyS = styled(Typography).attrs({
-  component: 'div',
-})`
-  && {
-    margin: 12px 16px;
-    margin-bottom: 4px;
+const UBBDiv = styled.div`
+  margin: 12px 16px;
+  margin-bottom: 4px;
 
-    /* for <img> in markdown */
-    img {
-      max-width: 100%;
-    }
+  /* for <img> in markdown */
+  img {
+    max-width: 100%;
   }
 `
 
@@ -38,11 +30,9 @@ interface Props {
   postInfo: IPost
 }
 
-const theme = settingInstance.state.theme
-
 export default ({ postInfo }: Props) => {
   const content =
-    postInfo.contentType === 0 ? UBB(postInfo.content, { theme }) : Markdown(postInfo.content)
+    postInfo.contentType === 0 ? <UBB ubbText={postInfo.content} /> : Markdown(postInfo.content)
 
-  return <TypographyS>{content}</TypographyS>
+  return <UBBDiv>{content}</UBBDiv>
 }

@@ -46,7 +46,7 @@ const InfTopicList: React.FunctionComponent<InfProps> = ({ service, place }) => 
 
   return (
     <>
-      {!isLoading && topics.length === 0 && <EmtpyList />}
+      {isEnd && topics.length === 0 && <EmtpyList />}
       <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
         <TopicList topics={topics} place={place} />
       </InfiniteList>

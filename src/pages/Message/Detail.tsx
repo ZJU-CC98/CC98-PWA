@@ -35,6 +35,7 @@ interface Props {
 
 export default ({ id }: Props) => {
   const [messageListKey, setMessageListKey] = useState(0)
+
   return (
     <MessageList
       key={messageListKey}
@@ -52,7 +53,9 @@ const MessageList = ({ id, refresh }: Props & { refresh: () => void }) => {
   const [list, state, callback] = useInfList(service, {
     step: 10,
   })
+
   const { isLoading, isEnd } = state
+
   const sendMsg = (content: string) => {
     sendMessage(id, content).then(res => {
       res.fail().succeed(_ => {
@@ -76,6 +79,7 @@ const MessageList = ({ id, refresh }: Props & { refresh: () => void }) => {
           ))}
         </InfiniteList>
       </ListS>
+
       <FixBottomDiv>
         <Editor callback={sendMsg} />
       </FixBottomDiv>

@@ -1,39 +1,45 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { IconButton, FilledInput } from '@material-ui/core'
+import { IconButton, TextField } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
-const Root = styled.div`
-  display: flex;
-  width: 100%;
-`
-const MyFilledInput = styled(FilledInput).attrs({
-  id: 'chatInput',
-})`
-  width: 100%;
-`
+
 const MyIconButton = styled(IconButton)`
   && {
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
+    position: relative;
+    margin-right: -12px;
+    margin-bottom: -2px;
   }
 `
 interface Props {
   callback: (content: string) => void
 }
+
 export default ({ callback }: Props) => {
   const [content, setContent] = useState<string>('')
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setContent(event.target.value)
   }
 
+  const handleSend = () => {
+    callback(content)
+  }
+
   return (
-    <Root>
-      <MyFilledInput onChange={handleInputChange} value={content} />
-      <MyIconButton>
-        <SendIcon onClick={() => callback(content)} />
-      </MyIconButton>
-    </Root>
+    <TextField
+      label="私信内容"
+      variant="filled"
+      fullWidth
+      value={content}
+      onChange={handleInputChange}
+      InputProps={{
+        endAdornment: (
+          <MyIconButton>
+            <SendIcon onClick={handleSend} />
+          </MyIconButton>
+        ),
+      }}
+    />
   )
 }

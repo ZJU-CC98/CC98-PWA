@@ -33,7 +33,7 @@ export default ({ editor }: Props) => (
           badgeContent={<ClearIcon fontSize="small" />}
           onClick={() => editor.detachAttachment(index)}
         >
-          {UBB(attach)}
+          <UBB ubbText={attach} />
         </Badge>
       </AttachDiv>
     ))}

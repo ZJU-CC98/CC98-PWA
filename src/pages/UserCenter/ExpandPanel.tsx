@@ -8,6 +8,8 @@ import {
   Typography,
 } from '@material-ui/core'
 
+import { ExpansionPanelProps } from '@material-ui/core/ExpansionPanel'
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 const ExpansionPanelDetailsS = styled(ExpansionPanelDetails)`
@@ -17,12 +19,7 @@ const ExpansionPanelDetailsS = styled(ExpansionPanelDetails)`
   }
 `
 
-interface Props {
-  /**
-   * ExpansionPanel props
-   */
-  expanded?: boolean
-  defaultExpanded?: boolean
+type Props = Pick<ExpansionPanelProps, 'expanded' | 'defaultExpanded' | 'onChange'> & {
   /**
    * 标题
    */
@@ -30,13 +27,17 @@ interface Props {
 }
 
 const ExpandPanel: React.FunctionComponent<Props> = props => (
-  <ExpansionPanel expanded={props.expanded} defaultExpanded={props.defaultExpanded}>
+  <ExpansionPanel
+    expanded={props.expanded}
+    defaultExpanded={props.defaultExpanded}
+    onChange={props.onChange}
+  >
     {props.title && (
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="subtitle1">{props.title}</Typography>
       </ExpansionPanelSummary>
     )}
-    <ExpansionPanelDetailsS>{props.children}</ExpansionPanelDetailsS>
+    <ExpansionPanelDetailsS>{props.children || <></>}</ExpansionPanelDetailsS>
   </ExpansionPanel>
 )
 

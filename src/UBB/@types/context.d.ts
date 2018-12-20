@@ -6,9 +6,7 @@ declare module '@cc98/context' {
     /**
      * 主题
      */
-    theme: {
-      // TODO:
-    }
+    theme: 'light' | 'dark'
     /**
      * 表情包地址 baseURL
      */

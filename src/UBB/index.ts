@@ -7,9 +7,7 @@ import { IContext } from '@cc98/context'
 import './style.css'
 
 const defaultContext: IContext = {
-  theme: {
-    // TODO:
-  },
+  theme: 'light',
   imgBaseURL: 'https://www.cc98.org/static/images',
 }
 

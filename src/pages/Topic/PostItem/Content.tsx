@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import settingInstance from '@/containers/setting'
+
 import { Typography } from '@material-ui/core'
 
 import { IPost } from '@cc98/api'
@@ -36,8 +38,11 @@ interface Props {
   postInfo: IPost
 }
 
+const theme = settingInstance.state.theme
+
 export default ({ postInfo }: Props) => {
-  const content = postInfo.contentType === 0 ? UBB(postInfo.content) : Markdown(postInfo.content)
+  const content =
+    postInfo.contentType === 0 ? UBB(postInfo.content, { theme }) : Markdown(postInfo.content)
 
   return <TypographyS>{content}</TypographyS>
 }

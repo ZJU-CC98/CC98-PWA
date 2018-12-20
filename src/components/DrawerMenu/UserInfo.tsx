@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Avatar, Typography } from '@material-ui/core'
 
-import defaultAvatarImg from '@/assets/9.png'
+import defaultAvatarImg from '@/assets/snowball.png'
 import { IUser } from '@cc98/api'
 
 const WrapperDiv = styled.div`

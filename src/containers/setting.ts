@@ -15,6 +15,10 @@ interface State {
    * 缓存页数
    */
   routerCacheSize: number
+  /**
+   * 自定义主页
+   */
+  customHome: number
 }
 
 class SettingContainer extends Container<State> {
@@ -25,10 +29,10 @@ class SettingContainer extends Container<State> {
       theme: 'light',
       useSignalr: false,
       routerCacheSize: 3,
+      customHome: 1,
     }
 
     const setting = getLocalStorage('setting') as State | null
-
     this.setState(setting)
   }
 
@@ -55,9 +59,21 @@ class SettingContainer extends Container<State> {
   }
 
   CHANGE_CACHE = (size: number) => {
-    this.setState({
-      routerCacheSize: size,
-    })
+    this.setState(
+      {
+        routerCacheSize: size,
+      },
+      this.SYNC_SETTING
+    )
+  }
+
+  CHANGE_CUSTOMHOME = (value: number) => {
+    this.setState(
+      {
+        customHome: value,
+      },
+      this.SYNC_SETTING
+    )
   }
 }
 

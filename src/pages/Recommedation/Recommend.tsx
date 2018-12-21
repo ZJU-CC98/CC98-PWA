@@ -22,24 +22,23 @@ const ListItemTextS = styled(ListItemText)`
 interface Props {
   recommendationReading: IRecommendationReading[]
 }
-export default (props: Props) =>
-  (
-    <List>
-      <ListItem>
-        <ListItemIcon>
-          <Event />
-        </ListItemIcon>
-        <ListItemText primary="推荐阅读" />
-      </ListItem>
-      <Divider />
+export default (props: Props) => (
+  <List>
+    <ListItem>
+      <ListItemIcon>
+        <Event />
+      </ListItemIcon>
+      <ListItemText primary="推荐阅读" />
+    </ListItem>
+    <Divider />
 
-      {props.recommendationReading.map((info: IRecommendationReading) => (
-        <ListItem key={info.id} onClick={() => navigate(info.url)}>
-          <ListItemIcon>
-            <AvatarS src={info.imageUrl} />
-          </ListItemIcon>
-          <ListItemTextS primary={info.title} secondary={info.content} />
-        </ListItem>
-      ))}
-    </List>
-  )
+    {props.recommendationReading.map((info: IRecommendationReading) => (
+      <ListItem key={info.id} onClick={() => navigate(info.url)}>
+        <ListItemIcon>
+          <AvatarS src={info.imageUrl} />
+        </ListItemIcon>
+        <ListItemTextS primary={info.title} secondary={info.content} />
+      </ListItem>
+    ))}
+  </List>
+)

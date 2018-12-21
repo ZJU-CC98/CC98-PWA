@@ -11,9 +11,9 @@ const defaultContext: IContext = {
   imgBaseURL: 'https://www.cc98.org/static/images',
 }
 
-export default function UBBReact(ubbText: string, options?: Partial<IContext>) {
+export default function UBBReact(ubbText: string, context?: Partial<IContext>) {
   return UBBCore<React.ReactNode>(ubbText, handlerHub, {
     ...defaultContext,
-    ...options,
+    ...context,
   })
 }

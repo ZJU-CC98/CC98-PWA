@@ -15,7 +15,7 @@ function Markdown(content: string) {
     .processSync(content).contents
 }
 
-const Content = styled(Typography)`
+const TypographyS = styled(Typography)`
   && {
     margin: 12px 16px;
     margin-bottom: 4px;
@@ -38,5 +38,5 @@ export default ({ postInfo }: Props) => {
   const content =
     postInfo.contentType === 0 ? UBBReact(postInfo.content) : Markdown(postInfo.content)
 
-  return <Content>{content}</Content>
+  return <TypographyS component="div">{content}</TypographyS>
 }

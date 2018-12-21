@@ -10,6 +10,7 @@ import HotTopic from '@/pages/HotTopic'
 import MessageDetail from '@/pages/Message/Detail'
 import MessageList from '@/pages/Message/List'
 import MyFollow from '@/pages/MyFollow'
+import Recommedation from '@/pages/Recommedation'
 import NewTopic from '@/pages/NewTopic'
 import Search from '@/pages/Search'
 import Setting from '@/pages/Setting'
@@ -61,6 +62,8 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
     <Route path="userCenter" component={UserCenter} />
     <Route path="userCenter/edit" component={UserCenterEdit} />
     <Route path="user/:id" component={UserCenter} />
+
+    <Route path="recommedation" component={Recommedation} />
 
     <Route path="editor/postTopic/:boardId" component={Editor} />
     <Route path="editor/replyTopic/:topicId/" component={Editor} />

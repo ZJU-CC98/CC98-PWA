@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import useContainer from '@/hooks/useContainer'
 import userInstance from '@/containers/user'
 import stateInstance from '@/containers/state'
+import settingInstance from '@/containers/setting'
 
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 
@@ -18,6 +19,7 @@ import Settings from '@material-ui/icons/Settings'
 import Help from '@material-ui/icons/Help'
 import SpeakerNotes from '@material-ui/icons/SpeakerNotes'
 import Whatshot from '@material-ui/icons/Whatshot'
+import Event from '@material-ui/icons/Event'
 
 import UserInfo from './UserInfo'
 
@@ -62,6 +64,8 @@ const jump = (link: string) => () => navigate(link)
 const DrawerMenu: React.FunctionComponent = () => {
   const { state: user, LOG_OUT } = useContainer(userInstance)
   const { state, CLOSE_DRAWER } = useContainer(stateInstance)
+  const instance = useContainer(settingInstance)
+  const { customHome } = instance.state
 
   return (
     <Drawer open={state.isDrawerOpen} onClose={CLOSE_DRAWER}>
@@ -69,12 +73,13 @@ const DrawerMenu: React.FunctionComponent = () => {
         <UserInfo isLogIn={user.isLogIn} info={user.myInfo} />
         <DividerS />
         <Item icon={<HomeIcon />} text="主页" onClick={jump('/')} />
-        <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopics')} />
-        <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopics')} />
+        {customHome !== 1 && <Item icon={<Event />} text="推荐" onClick={jump('/recommedation')} />}
+        {customHome !== 2 && <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopics')} />}
+        {customHome !== 3 && <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopics')} />}
         <Item icon={<AspectRatio />} text="版面" onClick={jump('/boardList')} />
         {user.isLogIn && (
           <>
-            <Item icon={<Book />} text="关注" onClick={jump('/myFollow')} />
+            {customHome !== 4 && <Item icon={<Book />} text="关注" onClick={jump('/myFollow')} />}
             <Item icon={<Search />} text="搜索" onClick={jump('/search')} />
             <Item icon={<SpeakerNotes />} text="私信" onClick={jump('/messageList')} />
           </>

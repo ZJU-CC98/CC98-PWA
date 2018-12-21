@@ -52,6 +52,7 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
     <Route path="topic/:topicId/reverse" component={TopicReverse} />
     <Route path="topic/:topicId/anonymous/trace/:postId" component={Topic} />
     <Route path="topic/:topicId/trace/:userId" component={Topic} />
+    <Route path="topic/:topicId/:page" component={Topic} />
 
     <Route path="myFollow" component={MyFollow} />
     <Route path="search" component={Search} />

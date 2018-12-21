@@ -4,6 +4,7 @@ import { Typography } from '@material-ui/core'
 import settingInstance from '@/containers/setting'
 
 import UBBReact from './ubb'
+export { UBBReact }
 
 const options = {
   theme: settingInstance.state.theme,

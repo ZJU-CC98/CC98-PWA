@@ -64,8 +64,9 @@ const jump = (link: string) => () => navigate(link)
 const DrawerMenu: React.FunctionComponent = () => {
   const { state: user, LOG_OUT } = useContainer(userInstance)
   const { state, CLOSE_DRAWER } = useContainer(stateInstance)
-  const instance = useContainer(settingInstance)
-  const { customHome } = instance.state
+  const {
+    state: { customHome },
+  } = useContainer(settingInstance)
 
   return (
     <Drawer open={state.isDrawerOpen} onClose={CLOSE_DRAWER}>

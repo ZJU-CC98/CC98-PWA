@@ -17,8 +17,8 @@ const HeaderDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2px 32px;
-  padding-right: 15px;
+  padding: 2px 15px;
+  padding-left: 24px;
 `
 
 const BodyDiv = styled.div`

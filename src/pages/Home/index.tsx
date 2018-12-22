@@ -1,28 +1,24 @@
 import React from 'react'
 
-import useFetcher from '@/hooks/useFetcher'
+import useContainer from '@/hooks/useContainer'
+import settingInstance from '@/containers/setting'
 
-// import Announcement from './Announcement'
-import RecommendReadings from './Recommend'
+import HotTopic from '../HotTopic'
+import NewTopic from '../NewTopic'
+import MyFollow from '../MyFollow'
+import Recommedation from '../Recommedation'
 
-import { getHomeInfo } from '@/services/global'
-import { notificationHandler } from '@/services/utils/errorHandler'
-
-const Home: React.FunctionComponent = () => {
-  const [homeInfo] = useFetcher(getHomeInfo, {
-    fail: notificationHandler,
-  })
-
-  if (homeInfo === null) {
-    return null
-  }
+export default () => {
+  const {
+    state: { customHome },
+  } = useContainer(settingInstance)
 
   return (
     <>
-      {/* <Announcement content={homeInfo.announcement} /> */}
-      <RecommendReadings recommendationReading={homeInfo.recommendationReading} />
+      {customHome === 1 && <Recommedation />}
+      {customHome === 2 && <HotTopic />}
+      {customHome === 3 && <NewTopic />}
+      {customHome === 4 && <MyFollow />}
     </>
   )
 }
-
-export default Home

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Avatar, Typography } from '@material-ui/core'
 
-import defaultAvatarImg from '@/assets/snowball.png'
+import snowballImg from '@/assets/snowball.png'
 import { IUser } from '@cc98/api'
 
 const WrapperDiv = styled.div`
@@ -25,6 +25,14 @@ const AvatarS = styled(Avatar)`
   }
 `
 
+const UnLogInAvatar = styled.img.attrs({
+  src: snowballImg,
+})`
+  padding: 3px;
+  width: 74px;
+  height: 74px;
+`
+
 const Username = styled(Typography).attrs({
   variant: 'body1',
 })`
@@ -43,10 +51,10 @@ interface Props {
 
 const UserInfo: React.FunctionComponent<Props> = ({ isLogIn, info }) => (
   <WrapperDiv>
-    <AvatarS
-      src={isLogIn ? info && info.portraitUrl : defaultAvatarImg}
-      onClick={isLogIn ? () => navigate('/userCenter') : () => navigate('/logIn')}
-    />
+    {isLogIn && (
+      <AvatarS src={info ? info.portraitUrl : undefined} onClick={() => navigate('/userCenter')} />
+    )}
+    {!isLogIn && <UnLogInAvatar onClick={() => navigate('/logIn')} />}
     <Username>{isLogIn ? info && info.name : '未登录'}</Username>
   </WrapperDiv>
 )

@@ -2,7 +2,7 @@ import React from 'react'
 import { Router } from '@reach/router'
 import { Route } from '@/router/Router'
 
-import { MenuList, MenuItem, ListItemIcon, Typography } from '@material-ui/core'
+import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 
 import NetworkCellIcon from '@material-ui/icons/NetworkCell'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
@@ -16,33 +16,27 @@ import HowPWA from './HowPWA'
 import SiteInfo from './SiteInfo'
 import DevTeam from './DevTeam'
 
+interface ItemProps {
+  // tslint:disable-next-line:no-any
+  icon: React.ReactElement<any>
+  text: string
+  url: string
+}
+
+const Item: React.FunctionComponent<ItemProps> = ({ icon, text, url }) => (
+  <ListItem button onClick={() => navigate(url)}>
+    <ListItemIcon>{icon}</ListItemIcon>
+    <ListItemText primary={text} />
+  </ListItem>
+)
+
 const Index = () => (
-  <MenuList>
-    <MenuItem onClick={() => navigate('/help/VPN')}>
-      <ListItemIcon>
-        <NetworkCellIcon />
-      </ListItemIcon>
-      <Typography variant="inherit">如何使用 RVPN 连接内网</Typography>
-    </MenuItem>
-    <MenuItem onClick={() => navigate('/help/PWA')}>
-      <ListItemIcon>
-        <ArrowDownwardIcon />
-      </ListItemIcon>
-      <Typography variant="inherit">如何将 PWA 安装到桌面</Typography>
-    </MenuItem>
-    <MenuItem onClick={() => navigate('/help/siteInfo')}>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <Typography variant="inherit">论坛统计</Typography>
-    </MenuItem>
-    <MenuItem onClick={() => navigate('/help/devTeam')}>
-      <ListItemIcon>
-        <CopyrightIcon />
-      </ListItemIcon>
-      <Typography variant="inherit">CC98 PWA 开发组</Typography>
-    </MenuItem>
-  </MenuList>
+  <List>
+    <Item icon={<NetworkCellIcon />} text="如何使用 RVPN 连接内网" url="/help/VPN" />
+    <Item icon={<ArrowDownwardIcon />} text="如何将 PWA 安装到桌面" url="/help/PWA" />
+    <Item icon={<BarChartIcon />} text="论坛统计" url="/help/siteInfo" />
+    <Item icon={<CopyrightIcon />} text="CC98 PWA 开发组" url="/help/devTeam" />
+  </List>
 )
 
 export default () => (

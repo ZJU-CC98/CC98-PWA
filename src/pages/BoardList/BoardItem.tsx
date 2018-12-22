@@ -13,6 +13,7 @@ interface Props {
 const Item = styled(Button)`
   && {
     margin: 4px;
+    text-align: left;
   }
 `
 

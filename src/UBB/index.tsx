@@ -3,9 +3,10 @@ import React from 'react'
 import { Typography } from '@material-ui/core'
 import settingInstance from '@/containers/setting'
 
-import UBBReact from './ubb'
+import ubbReact from './ubbReact'
+import { IContext } from '@cc98/context'
 
-const options = {
+const context: Partial<IContext> = {
   theme: settingInstance.state.theme,
 }
 
@@ -13,8 +14,10 @@ interface Props {
   ubbText: string
 }
 
-const UBB = (props: Props) => (
-  <Typography component="div">{UBBReact(props.ubbText, options)}</Typography>
-)
+const UBB = React.memo((props: Props) => (
+  <Typography component="div">{ubbReact(props.ubbText, context)}</Typography>
+))
 
-export default React.memo(UBB)
+const UBBReact = (ubbText: string) => ubbReact(ubbText, context)
+
+export { UBB as default, UBBReact }

@@ -45,17 +45,12 @@ const PostList: React.FunctionComponent<Props> = ({ service, isTrace, children }
 
   return (
     <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
-      {posts.map((info: IPost, index: number) =>
+      {posts.map(info =>
         info.floor === 1 ? (
-          <>
-            <PostItem
-              key={info.id}
-              isTrace={isTrace}
-              postInfo={info}
-              userInfo={userMap[info.userId]}
-            />
+          <React.Fragment key={info.id}>
+            <PostItem isTrace={isTrace} postInfo={info} userInfo={userMap[info.userId]} />
             {children/** <PostListHot /> */}
-          </>
+          </React.Fragment>
         ) : (
           <PostItem
             key={info.id}

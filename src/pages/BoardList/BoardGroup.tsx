@@ -18,13 +18,14 @@ const HeaderDiv = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 2px 15px;
-  padding-left: 24px;
+  padding-left: 36px;
 `
 
 const BodyDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 0 12px;
+  margin-right: 20px;
+  margin-left: 24px;
   margin-bottom: 10px;
 `
 

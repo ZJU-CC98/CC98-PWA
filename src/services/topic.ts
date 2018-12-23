@@ -158,3 +158,10 @@ export function getMyRecentTopics(from: number) {
     },
   })
 }
+
+/**
+ * 获取帖子是否收藏
+ */
+export function getTopicFavorite(id: number | string) {
+  return GET<boolean>(`topic/${id}/isfavorite`)
+}

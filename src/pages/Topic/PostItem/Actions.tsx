@@ -194,7 +194,7 @@ const MoreActions = ({ postInfo, isTrace, refreshPost, userInfo }: Props) => {
       )
     },
   })
-  const board = childBoards.filter(b => b.id === postInfo.boardId)[0]
+  const board = childBoards.find(b => b.id === postInfo.boardId)
 
   function isManager() {
     // 本人是管理员允许修改任何帖子

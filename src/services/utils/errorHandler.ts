@@ -60,3 +60,7 @@ export function manageHandler(err: FetchError) {
     snackbar.error('服务器内部错误')
   }
 }
+
+export function favoriteHandler(err: FetchError) {
+  snackbar.error('操作失败')
+}

@@ -10,6 +10,8 @@ import { getBoardNameById } from '@/services/board'
 
 import { navigate, goback } from '@/utils/history'
 
+import TopicMenu from './Actions'
+
 const Wrapper = styled(Paper).attrs({
   square: true,
   elevation: 1,
@@ -21,6 +23,7 @@ const Wrapper = styled(Paper).attrs({
     top: 0;
     min-height: 56px;
     padding: 0 16px;
+    padding-right: 0;
     /* z-index of TopBar is 1100 and DrawerMenu is 1200 */
     z-index: 1105;
 
@@ -43,6 +46,7 @@ const Title = styled(Typography).attrs({
   && {
     margin: 4px 0;
     flex-grow: 2;
+    flex-shrink: 1;
   }
 `
 
@@ -50,8 +54,13 @@ const SubTitle = styled(Typography)`
   && {
     margin-left: 8px;
     margin-right: -5px;
-    flex-shrink: 0;
+    flex-shrink: 1.2;
     opacity: 0.5;
+  }
+`
+const MenuIcon = styled(IconButton)`
+  && {
+    margin-right: 5px;
   }
 `
 
@@ -73,6 +82,7 @@ const PostHead: React.FunctionComponent<Props> = ({ topicInfo }) => {
       </GobackIcon>
       <Title>{topicInfo.title}</Title>
       <SubTitle onClick={() => navigate(`/board/${topicInfo.boardId}`)}>{boardName}</SubTitle>
+      <TopicMenu topicInfo={topicInfo} />
     </Wrapper>
   )
 }

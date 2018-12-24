@@ -2,4 +2,4 @@
  * 版本号
  */
 
-export default 'v1.1.0-beta'
+export default 'v1.1.1-beta'

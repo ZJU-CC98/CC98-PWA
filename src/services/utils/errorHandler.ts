@@ -62,5 +62,9 @@ export function manageHandler(err: FetchError) {
 }
 
 export function favoriteHandler(err: FetchError) {
-  snackbar.error('操作失败')
+  if (err.status === 401) {
+    snackbar.error('请先登录')
+  } else {
+    snackbar.error('操作失败')
+  }
 }

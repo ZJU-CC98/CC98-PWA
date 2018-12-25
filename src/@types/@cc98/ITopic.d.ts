@@ -85,9 +85,5 @@ declare module '@cc98/api' {
     tag2: number
 
     isInternalOnly: boolean
-    /**
-     * 是否收藏
-     */
-    isFavorite: boolean
   }
 }

@@ -194,20 +194,34 @@ const MoreActions = ({ postInfo, isTrace, refreshPost, userInfo }: Props) => {
       )
     },
   })
-  const board = childBoards.filter(b => b.id === postInfo.boardId)[0]
+  const board = childBoards.find(b => b.id === postInfo.boardId)
 
-  function isManager() {
+  function judgeEdit() {
     // 本人是管理员允许修改任何帖子
     if (myInfo && myInfo.privilege === '管理员') return true
     // 不是管理员包括版主不允许修改管理员的帖子
     if (userInfo && userInfo.privilege === '管理员') return false
     // 本人是版主可以修改其他帖子
     if (myInfo && board && board.boardMasters.indexOf(myInfo.name) !== -1) return true
+
+    return false
+  }
+
+  function judgeManage() {
+    // 本人是管理员允许管理任何帖子
+    if (myInfo && myInfo.privilege === '管理员') return true
+    // 本人是版主可以管理本版帖子
+    if (myInfo && board && board.boardMasters.indexOf(myInfo.name) !== -1) return true
+
+    return false
   }
 
   const myInfo = userInstance.state.myInfo
-  const isMaster = isManager()
-  const canEdit = postInfo.userId === (myInfo && myInfo.id) || postInfo.isAnonymous || isMaster
+  const myEdit = judgeEdit()
+  // 编辑操作
+  const canEdit = postInfo.userId === (myInfo && myInfo.id) || postInfo.isAnonymous || myEdit
+  // 管理操作
+  const canManage = judgeManage()
 
   return (
     <>
@@ -234,7 +248,7 @@ const MoreActions = ({ postInfo, isTrace, refreshPost, userInfo }: Props) => {
         )}
         <MenuItem onClick={handleJudge}>评分</MenuItem>
         <MenuItem onClick={handleShare}>分享</MenuItem>
-        {isMaster && <MenuItem onClick={handleManage}>管理</MenuItem>}
+        {canManage && <MenuItem onClick={handleManage}>管理</MenuItem>}
       </Menu>
     </>
   )

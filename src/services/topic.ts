@@ -95,6 +95,18 @@ export function getFollowUsersTopics(from: number) {
 }
 
 /**
+ * 获取收藏的帖子
+ */
+export function getFavoriteTopics(from: number) {
+  return GET<ITopic[]>('topic/me/favorite', {
+    params: {
+      from,
+      size: 20,
+    },
+  })
+}
+
+/**
  * 搜索
  */
 export function searchTopics(keyword: string, from: number) {
@@ -157,4 +169,11 @@ export function getMyRecentTopics(from: number) {
       size: 20,
     },
   })
+}
+
+/**
+ * 获取帖子是否收藏
+ */
+export function getTopicFavorite(id: number | string) {
+  return GET<boolean>(`topic/${id}/isfavorite`)
 }

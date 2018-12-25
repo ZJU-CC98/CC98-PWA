@@ -60,3 +60,11 @@ export function manageHandler(err: FetchError) {
     snackbar.error('服务器内部错误')
   }
 }
+
+export function favoriteHandler(err: FetchError) {
+  if (err.status === 401) {
+    snackbar.error('请先登录')
+  } else {
+    snackbar.error('操作失败')
+  }
+}

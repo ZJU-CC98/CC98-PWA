@@ -24,6 +24,11 @@ const TypographyS = styled(Typography)`
     img {
       max-width: 100%;
     }
+
+    pre,
+    code {
+      white-space: pre-wrap;
+    }
   }
 `
 

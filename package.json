@@ -25,6 +25,7 @@
     "lodash-es": "^4.17.11",
     "react": "16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",
+    "react-spring": "^7.2.5",
     "remark": "^10.0.1",
     "remark-react": "^5.0.1",
     "styled-components": "^4.1.3",

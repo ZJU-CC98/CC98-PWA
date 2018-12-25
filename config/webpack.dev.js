@@ -17,6 +17,7 @@ module.exports = merge(common, {
   devtool: 'eval-source-map',
 
   devServer: {
+    disableHostCheck: true,
     historyApiFallback: true,
     port: 9898,
     host: '0.0.0.0',

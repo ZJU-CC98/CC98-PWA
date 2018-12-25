@@ -10,7 +10,7 @@ const InputArea = styled(InputBase).attrs({
   multiline: true,
   autoFocus: true,
   rows: 6,
-  rowsMax: 12,
+  rowsMax: 10,
 })`
   && {
     margin-top: 8px;

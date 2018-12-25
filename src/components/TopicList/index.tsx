@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import useInfList, { Service as InfService } from '@/hooks/useInfList'
 import useFetcher, { Service as FinService } from '@/hooks/useFetcher'
+import useDelay from '@/hooks/useDelay'
 
 import TopicList from './TopicList'
 import { Place } from './TopicListItem'
@@ -58,12 +59,19 @@ interface FinProps {
   service: FinService<ITopic[]>
   noLoading?: boolean
   place: Place
+  delay?: number
 }
 
-const FinTopicList: React.FunctionComponent<FinProps> = ({ service, noLoading, place }) => {
+const FinTopicList: React.FunctionComponent<FinProps> = ({
+  service,
+  noLoading,
+  place,
+  delay = 0,
+}) => {
   const [topics] = useFetcher(service, { fail: navigateHandler })
+  const isResolve = useDelay(delay)
 
-  if (topics === null) {
+  if (topics === null || !isResolve) {
     return noLoading ? null : <LoadingCircle />
   }
 

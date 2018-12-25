@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import useFetcher from '@/hooks/useFetcher'
+import useDelay from '@/hooks/useDelay'
 import { FinTopicList } from '@/components/TopicList'
 
 import { List, Tab, Tabs } from '@material-ui/core'
@@ -18,14 +19,16 @@ import { notificationHandler } from '@/services/utils/errorHandler'
 
 interface Props {
   service: typeof getHotTopics
+  delay?: number
 }
 
-export const HotTopicList: React.FunctionComponent<Props> = ({ service }) => {
+export const HotTopicList: React.FunctionComponent<Props> = ({ service, delay = 0 }) => {
   const [topics] = useFetcher(service, {
     fail: notificationHandler,
   })
+  const isResolve = useDelay(delay)
 
-  if (topics === null) {
+  if (topics === null || !isResolve) {
     return <LoadingCircle />
   }
 
@@ -60,11 +63,14 @@ export default () => {
         <Tab value="history" label="历史上的今天" />
       </Tabs>
 
-      {current === 'day' && <HotTopicList service={getHotTopics} />}
-
-      {current === 'week' && <FinTopicList service={getWeeklyHotTopics} place="hot" />}
-      {current === 'month' && <FinTopicList service={getMonthlyHotTopics} place="hot" />}
-      {current === 'history' && <FinTopicList service={getHistoryHotTopics} place="hot" />}
+      {current === 'day' && <HotTopicList service={getHotTopics} delay={300} />}
+      {current === 'week' && <FinTopicList service={getWeeklyHotTopics} place="hot" delay={300} />}
+      {current === 'month' && (
+        <FinTopicList service={getMonthlyHotTopics} place="hot" delay={300} />
+      )}
+      {current === 'history' && (
+        <FinTopicList service={getHistoryHotTopics} place="hot" delay={300} />
+      )}
     </>
   )
 }

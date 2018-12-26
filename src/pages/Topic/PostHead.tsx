@@ -10,7 +10,7 @@ import { getBoardNameById } from '@/services/board'
 
 import { navigate, goback } from '@/utils/history'
 
-import TopicMenu from './Actions'
+import PostActions from './PostActions'
 
 const Wrapper = styled(Paper).attrs({
   square: true,
@@ -52,15 +52,13 @@ const Title = styled(Typography).attrs({
 
 const SubTitle = styled(Typography)`
   && {
-    margin-left: 8px;
+    display: inline-block;
+    min-width: 4rem;
+    max-width: 6rem;
+    text-align: center;
     margin-right: -5px;
     flex-shrink: 1.2;
     opacity: 0.5;
-  }
-`
-const MenuIcon = styled(IconButton)`
-  && {
-    margin-right: 5px;
   }
 `
 
@@ -82,7 +80,7 @@ const PostHead: React.FunctionComponent<Props> = ({ topicInfo }) => {
       </GobackIcon>
       <Title>{topicInfo.title}</Title>
       <SubTitle onClick={() => navigate(`/board/${topicInfo.boardId}`)}>{boardName}</SubTitle>
-      <TopicMenu topicInfo={topicInfo} />
+      <PostActions topicInfo={topicInfo} />
     </Wrapper>
   )
 }

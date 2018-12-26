@@ -9,7 +9,7 @@ const FabS = styled(Fab).attrs({
 })<{ bottom: number }>`
   && {
     position: fixed;
-    bottom: ${props => (props.bottom ? `${props.bottom}px` : '15px')};
+    bottom: ${props => `${props.bottom}px`};
     right: 15px;
     z-index: 20;
   }
@@ -17,13 +17,14 @@ const FabS = styled(Fab).attrs({
 
 interface Props {
   onClick?: () => void
-  bottom?: number
+  /** 次序，从 1 计数 */
+  order?: number
 }
 
-const FixFab: React.FunctionComponent<Props> = ({ onClick, bottom, children }) => (
+const FixFab: React.FunctionComponent<Props> = ({ onClick, order = 1, children }) => (
   // FIXME: waiting @types/styled-components to upgrade
   // @ts-ignore https://www.styled-components.com/docs/advanced#refs
-  <FabS onClick={onClick} bottom={bottom}>
+  <FabS onClick={onClick} bottom={(order - 1) * 50 + 15}>
     {children}
   </FabS>
 )

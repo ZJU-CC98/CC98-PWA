@@ -5,7 +5,6 @@ import useFetcher from '@/hooks/useFetcher'
 import { IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@material-ui/core'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import FavoriteIcon from '@material-ui/icons/Favorite'
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 
 import snackbar from '@/utils/snackbar'
 import { ITopic } from '@cc98/api'
@@ -61,21 +60,10 @@ export default ({ topicInfo }: Props) => {
             handleClose()
           }}
         >
-          {isFavorite ? (
-            <>
-              <ListItemIcon>
-                <FavoriteIcon />
-              </ListItemIcon>
-              <Typography variant="inherit">取消收藏</Typography>
-            </>
-          ) : (
-            <>
-              <ListItemIcon>
-                <FavoriteBorderIcon />
-              </ListItemIcon>
-              <Typography variant="inherit">收藏主题</Typography>
-            </>
-          )}
+          <ListItemIcon>
+            <FavoriteIcon color={isFavorite ? 'secondary' : 'disabled'} />
+          </ListItemIcon>
+          <Typography>{isFavorite ? '取消收藏' : '收藏主题'}</Typography>
         </MenuItem>
       </Menu>
     </>

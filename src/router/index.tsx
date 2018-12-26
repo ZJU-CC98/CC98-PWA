@@ -76,7 +76,7 @@ export function bindURL(func: Function, href: string) {
 }
 
 // https://majido.github.io/scroll-restoration-proposal/history-based-api.html#web-idl
-history.scrollRestoration = 'manual'
+// history.scrollRestoration = 'manual'
 
 // @ts-ignore FIXME: no animated export from d.ts
 import { useSpring, animated } from 'react-spring/hooks'

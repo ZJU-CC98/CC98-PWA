@@ -14,7 +14,7 @@ export const getBoardsInfo = cacheService(
 )
 
 /**
- * 通过版面Id获取版面名称
+ * 通过版面Id获取版面名称（返回值不是 Try）
  */
 export const getBoardNameById = (() => {
   // cache

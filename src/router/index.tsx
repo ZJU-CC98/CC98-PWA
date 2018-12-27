@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 // https://reach.tech/router/api/Router
 import { Location, WindowLocation } from '@reach/router'
 import Router, { ILocation } from './Router'
@@ -8,8 +8,14 @@ import settingInstance from '@/containers/setting'
 
 import './gesture'
 
+interface LocationState {
+  href: string
+  location: WindowLocation
+  scrollTop: number
+}
+
 interface State {
-  locations: WindowLocation[]
+  locationStates: LocationState[]
   MAX_CACHE_SIZE: number
 }
 
@@ -18,7 +24,7 @@ interface State {
  */
 class RouterCacheContainer extends Container<State> {
   state: State = {
-    locations: [],
+    locationStates: [],
     MAX_CACHE_SIZE: settingInstance.state.routerCacheSize,
   }
 
@@ -27,22 +33,26 @@ class RouterCacheContainer extends Container<State> {
    * @param location
    */
   push(location: WindowLocation) {
-    const { locations, MAX_CACHE_SIZE } = this.state
-    const index = locations.findIndex(backLoc => backLoc.href === location.href)
+    const { locationStates, MAX_CACHE_SIZE } = this.state
+    const index = locationStates.findIndex(locState => locState.href === location.href)
 
     if (index !== -1) {
-      const loc = locations[index]
-      locations.splice(index, 1)
-      locations.push(loc)
+      const loc = locationStates[index]
+      locationStates.splice(index, 1)
+      locationStates.push(loc)
     } else {
-      locations.push({ ...location })
+      locationStates.push({
+        href: location.href,
+        location: { ...location },
+        scrollTop: 0,
+      })
       // 超过最大缓存数
-      if (locations.length > MAX_CACHE_SIZE) {
-        locations.shift()
+      if (locationStates.length > MAX_CACHE_SIZE) {
+        locationStates.shift()
       }
     }
 
-    this.setState({ locations })
+    this.setState({ locationStates })
   }
 }
 
@@ -65,8 +75,63 @@ export function bindURL(func: Function, href: string) {
   }
 }
 
-const CacheRouter: React.FunctionComponent<ILocation> = ({ location }) => {
-  const { locations } = useContainer(ROUTER_CACHE).state
+// https://majido.github.io/scroll-restoration-proposal/history-based-api.html#web-idl
+// history.scrollRestoration = 'manual'
+
+// @ts-ignore FIXME: no animated export from d.ts
+import { useSpring, animated } from 'react-spring/hooks'
+import { config } from 'react-spring'
+
+interface ScrollDivProps {
+  show: boolean
+  locState: LocationState
+}
+
+const ScrollDiv = ({ show, locState }: ScrollDivProps) => {
+  const lastShow = useRef(false)
+  const [props, set] = useSpring(() => ({
+    opacity: 0,
+    config: config.gentle,
+  }))
+
+  if (lastShow.current !== show) {
+    if (show) {
+      // @ts-ignore
+      set({ opacity: 1 })
+
+      setTimeout(() => {
+        if (!locState.scrollTop) {
+          return
+        }
+        window.scrollTo({
+          left: 0,
+          top: locState.scrollTop,
+          // behavior: 'smooth',
+        })
+        // FIXME: choose a better delay
+      }, 300)
+    }
+
+    if (!show) {
+      // @ts-ignore
+      set({ opacity: 0 })
+      locState.scrollTop = window.scrollY
+    }
+
+    lastShow.current = show
+  }
+
+  const style = show ? props : { display: 'none' }
+
+  return (
+    <animated.div style={style}>
+      <Router location={locState.location} />
+    </animated.div>
+  )
+}
+
+const CacheRouter: React.FC<ILocation> = ({ location }) => {
+  const { locationStates } = useContainer(ROUTER_CACHE).state
 
   useEffect(
     () => {
@@ -77,13 +142,8 @@ const CacheRouter: React.FunctionComponent<ILocation> = ({ location }) => {
 
   return (
     <>
-      {locations.map(backLoc => (
-        <div
-          key={backLoc.href}
-          style={{ display: backLoc.href === location.href ? 'block' : 'none' }}
-        >
-          <Router location={backLoc} />
-        </div>
+      {locationStates.map(locState => (
+        <ScrollDiv key={locState.href} show={locState.href === location.href} locState={locState} />
       ))}
     </>
   )

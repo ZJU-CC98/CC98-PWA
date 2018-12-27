@@ -37,7 +37,7 @@ declare module '@cc98/api' {
     /**
      * 推荐功能
      */
-    recommendationFunction: Array
+    recommendationFunction: any[]
     /**
      * 推荐阅读
      */

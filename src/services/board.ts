@@ -13,32 +13,50 @@ export const getBoardsInfo = cacheService(
   3600 * 24 * 7
 )
 
-/**
- * 通过版面Id获取版面名称
- */
-export const getBoardNameById = (() => {
-  // cache
-  let _hasMap = false
-  const _BoardNameCacheMap: {
-    [key: number]: string
-  } = {}
+// Cache Map for Board
+let HAS_MAP = false
+const BOARD_MAP: {
+  [id: number]: IBoard
+} = {}
 
-  return async (id: number) => {
-    if (!_hasMap) {
-      const res = await getBoardsInfo()
-      res.fail().succeed(boards => {
-        for (const baseBoard of boards) {
-          for (const childBoard of baseBoard.boards) {
-            _BoardNameCacheMap[childBoard.id] = childBoard.name
-          }
-        }
-        _hasMap = true
-      })
+/** 创建 BOARD_MAP */
+async function buildBoardMap() {
+  const res = await getBoardsInfo()
+  res.fail().succeed(boards => {
+    // 防止重复创建
+    if (HAS_MAP) {
+      return
     }
+    for (const baseBoard of boards) {
+      for (const childBoard of baseBoard.boards) {
+        BOARD_MAP[childBoard.id] = childBoard
+      }
+    }
+    HAS_MAP = true
+  })
+}
 
-    return _BoardNameCacheMap[id] || '版面不存在'
+/**
+ * 获取版面的版主信息（返回值不是 Try）
+ */
+export async function getBoardMastersById(boardId: number) {
+  if (!HAS_MAP) {
+    await buildBoardMap()
   }
-})()
+
+  return BOARD_MAP[boardId].boardMasters || []
+}
+
+/**
+ * 通过版面Id获取版面名称（返回值不是 Try）
+ */
+export async function getBoardNameById(boardId: number) {
+  if (!HAS_MAP) {
+    await buildBoardMap()
+  }
+
+  return BOARD_MAP[boardId].name || '版面不存在'
+}
 
 /**
  * 获取单个版面信息

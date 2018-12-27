@@ -1,4 +1,4 @@
-import { GET, PUT } from '@/utils/fetch'
+import { GET, PUT, DELETE } from '@/utils/fetch'
 import { IPost, ILike } from '@cc98/api'
 
 /**
@@ -128,4 +128,18 @@ export function rate(id: number, value: 1 | -1, reason: string) {
       reason,
     },
   })
+}
+
+/**
+ * 收藏帖子
+ */
+export function putFavorite(topicId: number) {
+  return PUT(`me/favorite/${topicId}`)
+}
+
+/**
+ * 取消收藏帖子
+ */
+export function deleteFavorite(topicId: number) {
+  return DELETE(`me/favorite/${topicId}`)
 }

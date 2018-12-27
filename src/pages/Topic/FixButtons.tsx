@@ -34,10 +34,10 @@ export default ({ topicInfo, isReverse, refreshFunc }: Props) => {
     <>
       {expand && (
         <>
-          <FixFab bottom={165}>
+          <FixFab order={4}>
             <RotateRightIcon onClick={refreshFunc} />
           </FixFab>
-          <FixFab bottom={115}>
+          <FixFab order={3}>
             <SwapVertIcon
               onClick={() =>
                 isReverse
@@ -46,7 +46,7 @@ export default ({ topicInfo, isReverse, refreshFunc }: Props) => {
               }
             />
           </FixFab>
-          <FixFab bottom={65}>
+          <FixFab order={2}>
             <EditIcon onClick={() => navigate(`/editor/replyTopic/${topicInfo.id}`)} />
           </FixFab>
         </>

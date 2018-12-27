@@ -12,20 +12,11 @@ const handler: ITagHandler<React.ReactNode> = {
     const { bili } = node.tagData
     const partNumber = parseInt(bili, 10) || 1
 
-    const props = {
-      border: 0,
-      frameborder: 'no',
-      framespacing: 0,
-      allowfullscreen: true,
-    }
-
     return (
       <iframe
         className="ubb-tag-bili"
-        {...props}
         src={`https://player.bilibili.com/player.html?aid=${innerText}&page=${partNumber}`}
-        allowFullScreen={true}
-        scrolling="no"
+        allowFullScreen
       />
     )
   },

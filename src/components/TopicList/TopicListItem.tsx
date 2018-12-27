@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { navigate } from '@/utils/history'
 
@@ -91,10 +91,18 @@ interface Props {
 
 export default ({ data, place }: Props) => {
   const [boardName, setBoardName] = useState('')
-
-  function getBoardName() {
-    getBoardNameById(data.boardId).then(boardName => setBoardName(boardName))
-  }
+  useEffect(
+    () => {
+      switch (place) {
+        case 'usercenter':
+        case 'hot':
+        case 'follow':
+        case 'search':
+          getBoardNameById(data.boardId).then(boardName => setBoardName(boardName))
+      }
+    },
+    [place]
+  )
 
   const title = data.title
   let subtitle = data.userName ? data.userName : '[匿名]'
@@ -103,16 +111,10 @@ export default ({ data, place }: Props) => {
 
   switch (place) {
     case 'usercenter':
-      if (!boardName) {
-        getBoardName()
-      }
       subtitle = boardName
       break
 
     case 'hot':
-      if (!boardName) {
-        getBoardName()
-      }
       info1 = boardName
       break
 
@@ -120,9 +122,6 @@ export default ({ data, place }: Props) => {
       info1 = dayjs(data.time).fromNow()
     case 'follow':
     case 'search':
-      if (!boardName) {
-        getBoardName()
-      }
       info2 = boardName
       break
 

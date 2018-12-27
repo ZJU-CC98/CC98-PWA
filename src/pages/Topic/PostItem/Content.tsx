@@ -20,9 +20,15 @@ const TypographyS = styled(Typography)`
     margin: 12px 16px;
     margin-bottom: 4px;
 
-    /* for <img> in markdown */
+    /* for markdown */
     img {
       max-width: 100%;
+    }
+    pre,
+    code,
+    a {
+      white-space: pre-wrap;
+      word-break: break-all;
     }
   }
 `

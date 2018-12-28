@@ -83,3 +83,17 @@ export function customBoard(id: number, opt: 0 | 1) {
 
   return DELETE(url)
 }
+
+/**
+ * 获取版面事件
+ */
+export async function getBoardEvent(boardId: number, from: number, size: number = 20) {
+  const url = `board/${boardId}/events?from=${from}&size=${size}`
+}
+
+/**
+ * TODO:获取版面小黑屋
+ */
+export async function getBoardStopPostUser(boardId: number, from: number, size: number = 20) {
+  return
+}

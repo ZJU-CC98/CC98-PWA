@@ -131,15 +131,13 @@ export function rate(id: number, value: 1 | -1, reason: string) {
 }
 
 /**
- * 收藏帖子
+ * 收藏/取消收藏帖子
  */
-export function putFavorite(topicId: number) {
-  return PUT(`me/favorite/${topicId}`)
-}
+export function FavoriteTopic(topicId: number, opt: boolean | null) {
+  const url = `me/favorite/${topicId}`
+  if (!opt) {
+    return PUT(url)
+  }
 
-/**
- * 取消收藏帖子
- */
-export function deleteFavorite(topicId: number) {
-  return DELETE(`me/favorite/${topicId}`)
+  return DELETE(url)
 }

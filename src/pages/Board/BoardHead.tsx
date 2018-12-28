@@ -8,10 +8,16 @@ import {
   ExpansionPanelSummary,
   IconButton,
   CircularProgress,
+  Menu,
+  MenuItem,
+  ListItemIcon,
 } from '@material-ui/core'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FavoriteIcon from '@material-ui/icons/Favorite'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import EventIcon from '@material-ui/icons/Event'
+import WarningIcon from '@material-ui/icons/Warning'
 
 import { IBoard } from '@cc98/api'
 import { customBoard } from '@/services/board'
@@ -44,6 +50,15 @@ export default ({ data }: Props) => {
     isFollowed: data.isUserCustomBoard,
     loading: false,
   })
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+
+  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
   const { isFollowed, loading } = state
 
@@ -79,14 +94,32 @@ export default ({ data }: Props) => {
             {`${data.todayCount} / ${data.topicCount}`}
           </Typography>
         </div>
-
-        <IconButton onClick={handleClick}>
-          {state.loading ? (
-            <CircularProgress size={20} />
-          ) : (
-            <FavoriteIcon color={isFollowed ? 'secondary' : 'disabled'} />
-          )}
-        </IconButton>
+        <div>
+          <IconButton onClick={handleClick}>
+            {state.loading ? (
+              <CircularProgress size={20} />
+            ) : (
+              <FavoriteIcon color={isFollowed ? 'secondary' : 'disabled'} />
+            )}
+          </IconButton>
+          <IconButton onClick={handleOpen}>
+            <MoreVertIcon />
+          </IconButton>
+          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+            <MenuItem>
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+              <Typography>版面事件</Typography>
+            </MenuItem>
+            <MenuItem>
+              <ListItemIcon>
+                <WarningIcon />
+              </ListItemIcon>
+              <Typography>小黑屋</Typography>
+            </MenuItem>
+          </Menu>
+        </div>
       </HeaderDiv>
 
       <ExpansionPanelS>

@@ -11,7 +11,7 @@ import { ITopic } from '@cc98/api'
 
 import { getTopicFavorite } from '@/services/topic'
 import { favoriteHandler } from '@/services/utils/errorHandler'
-import { putFavorite, deleteFavorite } from '@/services/post'
+import { FavoriteTopic } from '@/services/post'
 
 interface Props {
   /**
@@ -33,19 +33,11 @@ export default ({ topicInfo }: Props) => {
   }
 
   const handleFavorite = async () => {
-    if (isFavorite) {
-      const res = await deleteFavorite(topicInfo.id)
-      res.fail(favoriteHandler).succeed(() => {
-        snackbar.success('取消收藏')
-        setIsFavorite(false)
-      })
-    } else {
-      const res = await putFavorite(topicInfo.id)
-      res.fail(favoriteHandler).succeed(() => {
-        snackbar.success('收藏成功')
-        setIsFavorite(true)
-      })
-    }
+    const res = await FavoriteTopic(topicInfo.id, isFavorite)
+    res.fail(favoriteHandler).succeed(() => {
+      isFavorite ? snackbar.success('取消收藏') : snackbar.success('收藏成功')
+      setIsFavorite(!isFavorite)
+    })
   }
 
   return (

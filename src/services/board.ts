@@ -1,6 +1,6 @@
 import { GET, PUT, DELETE } from '@/utils/fetch'
 
-import { IBoardGroup, IBoard, ITagGroup } from '@cc98/api'
+import { IBoardGroup, IBoard, ITagGroup, IBoardRecord, IBoardStopPostUser } from '@cc98/api'
 
 import { cacheService } from './utils'
 
@@ -87,13 +87,29 @@ export function customBoard(id: number, opt: 0 | 1) {
 /**
  * 获取版面事件
  */
-export async function getBoardEvent(boardId: number, from: number, size: number = 20) {
-  const url = `board/${boardId}/events?from=${from}&size=${size}`
+export function getBoardEvent(boardId: number, from: number) {
+  return (
+    GET<IBoardRecord>(`board/${boardId}/events`),
+      {
+        params: {
+        from,
+        size: 20,
+      },
+      }
+  )
 }
 
 /**
- * TODO:获取版面小黑屋
+ * 获取版面小黑屋
  */
-export async function getBoardStopPostUser(boardId: number, from: number, size: number = 20) {
-  return
+export function getBoardStopPostUser(boardId: number, from: number) {
+  return (
+    GET<IBoardStopPostUser[]>(`board/${boardId}/stop-post-user`),
+      {
+        params: {
+        from,
+        size: 20,
+      },
+      }
+  )
 }

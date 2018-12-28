@@ -15,7 +15,7 @@ declare module '@cc98/api' {
     /**
      * 时间
      */
-    time: Date
+    time: string
     /**
      * 类型
      */

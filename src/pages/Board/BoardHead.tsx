@@ -22,6 +22,8 @@ import WarningIcon from '@material-ui/icons/Warning'
 import { IBoard } from '@cc98/api'
 import { customBoard } from '@/services/board'
 
+import { navigate } from '@/utils/history'
+
 interface Props {
   data: IBoard
 }
@@ -106,7 +108,7 @@ export default ({ data }: Props) => {
             <MoreVertIcon />
           </IconButton>
           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-            <MenuItem>
+            <MenuItem onClick={() => navigate(`/board/${data.id}/record`)}>
               <ListItemIcon>
                 <EventIcon />
               </ListItemIcon>

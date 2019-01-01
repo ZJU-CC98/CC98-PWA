@@ -5,6 +5,7 @@ import useFetcher from '@/hooks/useFetcher'
 import { IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@material-ui/core'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import FavoriteIcon from '@material-ui/icons/Favorite'
+import ShareIcon from '@material-ui/icons/Share'
 
 import snackbar from '@/utils/snackbar'
 import { ITopic } from '@cc98/api'
@@ -12,6 +13,8 @@ import { ITopic } from '@cc98/api'
 import { getTopicFavorite } from '@/services/topic'
 import { favoriteHandler } from '@/services/utils/errorHandler'
 import { FavoriteTopic } from '@/services/post'
+
+import copy2Clipboard from 'copy-to-clipboard'
 
 interface Props {
   /**
@@ -30,6 +33,14 @@ export default ({ topicInfo }: Props) => {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleShare = () => {
+    if (document.location) {
+      copy2Clipboard(`https://${document.location.host}/topic/${topicInfo.id}`)
+    }
+    snackbar.success('分享链接已经成功复制到剪切板')
+    handleClose()
   }
 
   const handleFavorite = async () => {
@@ -56,6 +67,16 @@ export default ({ topicInfo }: Props) => {
             <FavoriteIcon color={isFavorite ? 'secondary' : 'disabled'} />
           </ListItemIcon>
           <Typography>{isFavorite ? '取消收藏' : '收藏主题'}</Typography>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleShare()
+          }}
+        >
+          <ListItemIcon>
+            <ShareIcon />
+          </ListItemIcon>
+          <Typography>分享链接</Typography>
         </MenuItem>
       </Menu>
     </>

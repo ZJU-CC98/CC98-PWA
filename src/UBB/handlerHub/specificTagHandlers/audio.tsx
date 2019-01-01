@@ -4,8 +4,8 @@ import { IContext } from '@cc98/context'
 
 import React from 'react'
 
-import 'APlayer/dist/APlayer.min.css'
-import APlayer from 'APlayer'
+import 'aplayer/dist/APlayer.min.css'
+import APlayer from 'dplayer'
 
 const handler: ITagHandler<React.ReactNode> = {
   isRecursive: false,

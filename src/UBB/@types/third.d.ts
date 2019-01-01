@@ -1,2 +1,2 @@
-declare module 'APlayer'
-declare module 'DPlayer'
+declare module 'aplayer'
+declare module 'dplayer'

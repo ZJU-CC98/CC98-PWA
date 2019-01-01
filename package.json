@@ -20,6 +20,7 @@
     "@material-ui/icons": "^3.0.1",
     "@reach/router": "^1.2.1",
     "@sentry/browser": "^4.4.2",
+    "aplayer": "^1.10.1",
     "copy-to-clipboard": "^3.0.8",
     "dayjs": "^1.7.8",
     "lodash-es": "^4.17.11",
@@ -73,7 +74,7 @@
     "webpack": "^4.28.1",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.11",
+    "webpack-dev-server": "^3.1.14",
     "webpack-merge": "^4.1.5",
     "workbox-webpack-plugin": "^3.6.3"
   },

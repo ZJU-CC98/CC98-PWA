@@ -4,7 +4,6 @@ import { IContext } from '@cc98/context'
 
 import React from 'react'
 
-
 const handler: ITagHandler<React.ReactNode> = {
   isRecursive: false,
 

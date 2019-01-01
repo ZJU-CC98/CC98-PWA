@@ -30,8 +30,9 @@ class AudioComponent extends React.Component<IProps> {
   /**
    * 对播放器的引用
    */
+  // tslint:disable-next-line:no-any
   ap: any
-  
+
   /**
    * 组件加载后初始化播放器
    */

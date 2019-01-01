@@ -28,9 +28,10 @@ import tr from './tr'
 import u from './u'
 import upload from './upload'
 import url from './url'
+import video from './video'
 
 /*
- * TODO: glow?, md, pm, topic, user, video
+ * TODO: glow?, md, pm, topic, user
  */
 const tagHandlers: IHandlerHub<React.ReactNode>['specificTagHandlers'] = {
   // register handler here
@@ -63,6 +64,7 @@ const tagHandlers: IHandlerHub<React.ReactNode>['specificTagHandlers'] = {
   u,
   upload,
   url,
+  video,
 }
 
 export default tagHandlers

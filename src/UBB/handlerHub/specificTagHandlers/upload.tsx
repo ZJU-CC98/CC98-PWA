@@ -4,7 +4,6 @@ import { IContext } from '@cc98/context'
 
 import React from 'react'
 
-import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 
 const handler: ITagHandler<React.ReactNode> = {
   isRecursive: false,
@@ -20,10 +19,9 @@ const handler: ITagHandler<React.ReactNode> = {
         return <img className="ubb-tag-img" src={node.innerText} />
       default:
         return (
-          <div className="ubb-tag-upload">
-            <InsertDriveFile />
-            upload文件，请使用电脑网页版下载
-          </div>
+          <a className="ubb-tag-upload" href={node.innerText}>
+            点击下载文件
+          </a>
         )
     }
   },

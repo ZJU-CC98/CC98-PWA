@@ -64,7 +64,7 @@ class AudioComponent extends React.Component<IProps> {
     // 监听到url改变，暂停
     this.unsubscribe = globalHistory.listen(() => {
       if (!this.ap.audio.paused) {
-        // this.ap.pause()
+        this.ap.pause()
       }
     })
   }

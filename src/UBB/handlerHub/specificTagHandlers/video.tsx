@@ -4,6 +4,8 @@ import { IContext } from '@cc98/context'
 
 import React from 'react'
 
+import { globalHistory, HistoryUnsubscribe } from '@reach/router'
+
 import 'dplayer/dist/DPlayer.min.css'
 import DPlayer from 'dplayer'
 
@@ -46,6 +48,10 @@ class VideoComponent extends React.Component<IProps, IState> {
    * 播放器默认高度
    */
   defaultHeight: string = '200px'
+  /**
+   *  取消页面URL的监听器
+   */
+  unsubscribe: HistoryUnsubscribe | undefined
 
   state: IState = {
     height: this.defaultHeight,
@@ -70,6 +76,12 @@ class VideoComponent extends React.Component<IProps, IState> {
     } else {
       this.initPlayer()
     }
+    // 监听到url改变，暂停
+    this.unsubscribe = globalHistory.listen(() => {
+      if (!this.dp.video.paused) {
+        this.dp.pause()
+      }
+    })
   }
 
   initPlayer = (type?: string) => {
@@ -99,18 +111,16 @@ class VideoComponent extends React.Component<IProps, IState> {
     this.dp.on('fullscreen_cancel', () => this.setState({ height: this.defaultHeight }))
     this.dp.on('webfullscreen', () => this.setState({ height: '100%' }))
     this.dp.on('webfullscreen_cancel', () => this.setState({ height: this.defaultHeight }))
-    // tslint:disable-next-line:max-line-length
     this.div &&
       (this.div.getElementsByClassName('dplayer-menu')[0].innerHTML =
+        // tslint:disable-next-line:max-line-length
         '<div class="dplayer-menu-item"><a target="_blank" href="https://github.com/MoePlayer/DPlayer">关于 DPlayer 播放器</a></div>')
   }
 
+  // 离开帖子时销毁之前的监听器和播放器
   componentWillUnmount() {
-    if (!this.dp) {
-      return
-    }
-
-    this.dp.destroy()
+    this.unsubscribe && this.unsubscribe()
+    this.dp && this.dp.destroy()
     this.div && (this.div.innerHTML = '')
   }
 

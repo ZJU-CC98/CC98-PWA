@@ -4,6 +4,8 @@ import { IContext } from '@cc98/context'
 
 import React from 'react'
 
+import { globalHistory, HistoryUnsubscribe } from '@reach/router'
+
 import 'aplayer/dist/APlayer.min.css'
 import APlayer from 'aplayer'
 
@@ -32,6 +34,10 @@ class AudioComponent extends React.Component<IProps> {
    */
   // tslint:disable-next-line:no-any
   ap: any
+  /**
+   *  取消页面URL的监听器
+   */
+  unsubscribe: HistoryUnsubscribe | undefined
 
   /**
    * 组件加载后初始化播放器
@@ -54,10 +60,20 @@ class AudioComponent extends React.Component<IProps> {
     } catch (e) {
       // IE 11 下会抛一个 InvalidStateError 的错误，忽略
     }
+
+    // 监听到url改变，暂停
+    this.unsubscribe = globalHistory.listen(() => {
+      if (!this.ap.audio.paused) {
+        // this.ap.pause()
+      }
+    })
   }
 
+  // 离开帖子时销毁之前的监听器和播放器
   componentWillUnmount() {
+    this.unsubscribe && this.unsubscribe()
     this.ap && this.ap.destroy()
+    this.div && (this.div.innerHTML = '')
   }
 
   render() {

@@ -3,13 +3,11 @@ import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
 
+import RecordHead from './BoardRecordHead'
+import RecordList from './BoardRecordList'
 
-
-
-import BoardHead from '../Board/BoardHead'
-
-import { getBoardInfo } from '../../services/board'
-import { navigateHandler } from '../../services/utils/errorHandler'
+import { getBoardInfo, getBoardEvent } from '@/services/board'
+import { navigateHandler } from '@/services/utils/errorHandler'
 
 const WrapperDiv = styled.div`
   display: flex;
@@ -30,13 +28,14 @@ export default ({ id }: Props) => {
     fail: navigateHandler,
   })
 
+  if (board === null) {
+    return null
+  }
+
   return (
     <WrapperDiv>
-      {board && (
-        <>
-          <BoardHead data={board} />
-        </>
-      )}
+      <RecordHead BoardInfo={board} />
+      <RecordList service={(from: number) => getBoardEvent(id, from)} />
     </WrapperDiv>
   )
 }

@@ -61,7 +61,7 @@ export async function getBoardNameById(boardId: number) {
 /**
  * 获取单个版面信息
  */
-export function getBoardInfo(id: string) {
+export function getBoardInfo(id: string | number) {
   return GET<IBoard>(`board/${id}`)
 }
 
@@ -87,16 +87,13 @@ export function customBoard(id: number, opt: 0 | 1) {
 /**
  * 获取版面事件
  */
-export function getBoardEvent(boardId: number, from: number) {
-  return (
-    GET<IBoardRecord>(`board/${boardId}/events`),
-      {
-        params: {
-        from,
-        size: 20,
-      },
-      }
-  )
+export function getBoardEvent(boardId: string | number, from: number) {
+  return GET<IBoardRecord>(`board/${boardId}/events`, {
+    params: {
+      from,
+      size: 20,
+    },
+  }).then(res => Promise.resolve(res.map(events => events.boardEvents)))
 }
 
 /**

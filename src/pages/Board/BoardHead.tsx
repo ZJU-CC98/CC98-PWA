@@ -16,8 +16,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import EventIcon from '@material-ui/icons/Event'
-import WarningIcon from '@material-ui/icons/Warning'
+import InfoIcon from '@material-ui/icons/Info'
 
 import { IBoard } from '@cc98/api'
 import { customBoard } from '@/services/board'
@@ -108,17 +107,16 @@ export default ({ data }: Props) => {
             <MoreVertIcon />
           </IconButton>
           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-            <MenuItem onClick={() => navigate(`/board/${data.id}/record`)}>
+            <MenuItem
+              onClick={() => {
+                navigate(`/board/${data.id}/record`)
+                handleClose()
+              }}
+            >
               <ListItemIcon>
-                <EventIcon />
+                <InfoIcon />
               </ListItemIcon>
               <Typography>版面事件</Typography>
-            </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                <WarningIcon />
-              </ListItemIcon>
-              <Typography>小黑屋</Typography>
             </MenuItem>
           </Menu>
         </div>

@@ -1,7 +1,13 @@
-import React, { useRef } from 'react'
+import React, { useState, useRef } from 'react'
 
 import styled from 'styled-components'
-import { DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core'
+import {
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  CircularProgress,
+} from '@material-ui/core'
 
 import ReactCropper from 'react-cropper'
 import 'cropperjs/dist/cropper.css'
@@ -11,6 +17,12 @@ import { updateMyAvatar } from '@/services/user'
 const DialogTitleS = styled(DialogTitle)`
   && {
     padding: 12px;
+  }
+`
+
+const CircularProgressS = styled(CircularProgress)`
+  && {
+    margin-right: 24px;
   }
 `
 
@@ -31,6 +43,7 @@ interface Props {
 }
 
 export default ({ imgSrc, handleAvatarSubmit, handleClose, fileType }: Props) => {
+  const [isLoading, setIsLoading] = useState(false)
   // 版本低，不兼容
   // tslint:disable
   const cropRef = useRef<any>(null)
@@ -40,6 +53,7 @@ export default ({ imgSrc, handleAvatarSubmit, handleClose, fileType }: Props) =>
       return
     }
 
+    setIsLoading(true)
     const avatarCanvas: HTMLCanvasElement = cropRef.current.getCroppedCanvas()
     avatarCanvas.toBlob(
       async result => {
@@ -48,10 +62,13 @@ export default ({ imgSrc, handleAvatarSubmit, handleClose, fileType }: Props) =>
           const file: File = new File([result], name, { type: fileType })
 
           const res = await updateMyAvatar(file)
-          res.fail().succeed(data => {
-            handleAvatarSubmit(data[0])
-            handleClose()
-          })
+          res
+            .fail(() => setIsLoading(false))
+            .succeed(data => {
+              handleAvatarSubmit(data[0])
+              setIsLoading(false)
+              handleClose()
+            })
         }
       },
       fileType,
@@ -75,9 +92,13 @@ export default ({ imgSrc, handleAvatarSubmit, handleClose, fileType }: Props) =>
         </FlexDiv>
       </DialogContent>
       <DialogActions>
-        <Button onClick={submitHandle} color="primary">
-          提交
-        </Button>
+        {isLoading ? (
+          <CircularProgressS size={20} />
+        ) : (
+          <Button onClick={submitHandle} color="primary">
+            提交
+          </Button>
+        )}
       </DialogActions>
     </>
   )

@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 import RecordItem from './BoardRecordItem'
 
 import { IBoardEvent } from '@cc98/api'

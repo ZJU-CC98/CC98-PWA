@@ -13,13 +13,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import dayjs from 'dayjs'
 
-interface Props {
-  /**
-   * 事件信息
-   */
-  eventInfo: IBoardEvent
-}
-
 const FlexDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,6 +24,13 @@ const ExpansionPanelS = styled(ExpansionPanel)`
     width: 100%;
   }
 `
+
+interface Props {
+  /**
+   * 事件信息
+   */
+  eventInfo: IBoardEvent
+}
 
 export default ({ eventInfo }: Props) => (
   <FlexDiv>

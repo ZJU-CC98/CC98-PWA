@@ -8,20 +8,15 @@ import {
   ExpansionPanelSummary,
   IconButton,
   CircularProgress,
-  Menu,
-  MenuItem,
-  ListItemIcon,
 } from '@material-ui/core'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FavoriteIcon from '@material-ui/icons/Favorite'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
-import InfoIcon from '@material-ui/icons/Info'
 
 import { IBoard } from '@cc98/api'
 import { customBoard } from '@/services/board'
 
-import { navigate } from '@/utils/history'
+import BoardMenu from './components/BoardMenu'
 
 interface Props {
   data: IBoard
@@ -51,16 +46,6 @@ export default ({ data }: Props) => {
     isFollowed: data.isUserCustomBoard,
     loading: false,
   })
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
   const { isFollowed, loading } = state
 
   async function handleClick() {
@@ -103,22 +88,7 @@ export default ({ data }: Props) => {
               <FavoriteIcon color={isFollowed ? 'secondary' : 'disabled'} />
             )}
           </IconButton>
-          <IconButton onClick={handleOpen}>
-            <MoreVertIcon />
-          </IconButton>
-          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-            <MenuItem
-              onClick={() => {
-                navigate(`/board/${data.id}/record`)
-                handleClose()
-              }}
-            >
-              <ListItemIcon>
-                <InfoIcon />
-              </ListItemIcon>
-              <Typography>版面事件</Typography>
-            </MenuItem>
-          </Menu>
+          <BoardMenu boardId={data.id} />
         </div>
       </HeaderDiv>
 

@@ -13,11 +13,11 @@ declare module '@cc98/api' {
      */
     boardId: number
     /**
-     * 操作对象姓名
+     * 操作对象用户名
      */
     targetUserName: string
     /**
-     * 操作人姓名
+     * 操作人用户名
      */
     operatorUserName: string
     /**

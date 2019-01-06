@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
 
-import RecordHead from './BoardRecordHead'
+import RecordHead from '../components/BoardItemHead'
 import RecordList from './BoardRecordList'
 
 import { getBoardInfo, getBoardEvent } from '@/services/board'
@@ -34,7 +34,7 @@ export default ({ id }: Props) => {
 
   return (
     <WrapperDiv>
-      <RecordHead BoardInfo={board} />
+      <RecordHead itemName="版面事件" BoardInfo={board} />
       <RecordList service={(from: number) => getBoardEvent(id, from)} />
     </WrapperDiv>
   )

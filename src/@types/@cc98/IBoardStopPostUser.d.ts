@@ -5,19 +5,19 @@ declare module '@cc98/api' {
      */
     userId: number
     /**
-     * 用户姓名
+     * 用户名
      */
     userName: string
     /**
-     * 到期时间
+     * 解禁时间
      */
     expiredTime: string
     /**
-     * 天数
+     * TP天数
      */
     days: number
     /**
-     * 操作人
+     * 操作人用户名
      */
     operatorUserName: string
   }

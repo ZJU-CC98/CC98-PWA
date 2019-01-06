@@ -21,6 +21,9 @@ export const deletePost = (postId: number, reason: string) =>
     },
   })
 
+/**
+ * TP
+ */
 export const stopPost = (postId: number, value: number, reason: string) =>
   POST(`post/${postId}/operation`, {
     params: {
@@ -30,5 +33,8 @@ export const stopPost = (postId: number, value: number, reason: string) =>
     },
   })
 
+/**
+ * 解禁
+ */
 export const cancelStopPost = (boardId: number, userId: number) =>
   DELETE(`/board/${boardId}/stop-post-user/${userId}`)

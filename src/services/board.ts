@@ -99,14 +99,11 @@ export function getBoardEvent(boardId: string | number, from: number) {
 /**
  * 获取版面小黑屋
  */
-export function getBoardStopPostUser(boardId: number, from: number) {
-  return (
-    GET<IBoardStopPostUser[]>(`board/${boardId}/stop-post-user`),
-      {
-        params: {
-        from,
-        size: 20,
-      },
-      }
-  )
+export function getBoardStopPostUser(boardId: string | number, from: number) {
+  return GET<IBoardStopPostUser[]>(`board/${boardId}/stop-post-user`, {
+    params: {
+      from,
+      size: 20,
+    },
+  })
 }

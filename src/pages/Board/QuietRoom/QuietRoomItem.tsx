@@ -44,9 +44,13 @@ interface Props {
    * 解除TP后刷新
    */
   refreshFunc: () => void
+  /**
+   * 判断能否解除TP
+   */
+  canManage: boolean
 }
 
-export default ({ info, boardId, refreshFunc }: Props) => (
+export default ({ info, boardId, refreshFunc, canManage }: Props) => (
   <Wrapper>
     <FlexDiv>
       <div>
@@ -56,7 +60,12 @@ export default ({ info, boardId, refreshFunc }: Props) => (
       </div>
       <RightDiv>
         <Typography>{`操作人：${info.operatorUserName}`}</Typography>
-        <Actions boardId={boardId} userId={info.userId} refreshFunc={refreshFunc} />
+        <Actions
+          boardId={boardId}
+          userId={info.userId}
+          refreshFunc={refreshFunc}
+          canManage={canManage}
+        />
       </RightDiv>
     </FlexDiv>
 

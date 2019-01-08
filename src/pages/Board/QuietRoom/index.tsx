@@ -6,8 +6,11 @@ import useFetcher from '@/hooks/useFetcher'
 import { navigateHandler } from '@/services/utils/errorHandler'
 import { getBoardInfo, getBoardStopPostUser } from '@/services/board'
 
+import userInstance from '@/containers/user'
+
 import QuietRoomList from './QuietRoomList'
 import QuietRoomHead from '../components/BoardItemHead'
+import { judgeManagerOrBoardMasters } from '@/utils/ActionsJudge'
 
 const WrapperDiv = styled.div`
   display: flex;
@@ -20,7 +23,7 @@ interface Props {
   /**
    * 版面 ID
    */
-  id: string
+  id: number
 }
 
 export default ({ id }: Props) => {
@@ -32,6 +35,9 @@ export default ({ id }: Props) => {
     return null
   }
 
+  const myInfo = userInstance.state.myInfo
+  const canManage = judgeManagerOrBoardMasters(myInfo, board.boardMasters)
+
   return (
     <WrapperDiv>
       <QuietRoomHead itemName="小黑屋" BoardInfo={board} />
@@ -40,6 +46,7 @@ export default ({ id }: Props) => {
         service={(from: number) => getBoardStopPostUser(id, from)}
         boardId={board.id}
         refreshFunc={() => setListKey(listKey + 1)}
+        canManage={canManage}
       />
     </WrapperDiv>
   )

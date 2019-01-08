@@ -11,16 +11,23 @@ interface Props {
   service: Service<IBoardStopPostUser[]>
   boardId: number
   refreshFunc: () => void
+  canManage: boolean
 }
 
-const QuietRoomList: React.FC<Props> = ({ service, boardId, refreshFunc }) => {
+const QuietRoomList: React.FC<Props> = ({ service, boardId, refreshFunc, canManage }) => {
   const [users, state, callback] = useInfList(service)
   const { isLoading, isEnd } = state
 
   return (
     <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
       {users.map(info => (
-        <QuietRoomItem key={info.userId} info={info} boardId={boardId} refreshFunc={refreshFunc} />
+        <QuietRoomItem
+          key={info.userId}
+          info={info}
+          boardId={boardId}
+          refreshFunc={refreshFunc}
+          canManage={canManage}
+        />
       ))}
     </InfiniteList>
   )

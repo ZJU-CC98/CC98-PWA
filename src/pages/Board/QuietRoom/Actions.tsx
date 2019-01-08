@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { IconButton, Menu, MenuItem } from '@material-ui/core'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-import userInstance from '@/containers/user'
-
-import { getBoardMastersById } from '@/services/board'
-import { judgeManagerOrBoardMasters } from '@/utils/ActionsJudge'
 import { cancelStopPost } from '@/services/manage'
 import snackbar from '@/utils/snackbar'
 import { manageHandler } from '@/services/utils/errorHandler'
@@ -33,18 +29,14 @@ interface Props {
    * 刷新列表
    */
   refreshFunc: () => void
+  /**
+   * 判断能否解除TP
+   */
+  canManage: boolean
 }
 
-const Actions: React.FC<Props> = ({ boardId, userId, refreshFunc }) => {
+const Actions: React.FC<Props> = ({ boardId, userId, refreshFunc, canManage }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-  const [boardMasters, setBoardMasters] = useState<string[]>([])
-
-  useEffect(
-    () => {
-      getBoardMastersById(boardId).then(res => setBoardMasters(res))
-    },
-    [boardId]
-  )
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -65,9 +57,6 @@ const Actions: React.FC<Props> = ({ boardId, userId, refreshFunc }) => {
       setAnchorEl(null)
     })
   }
-
-  const myInfo = userInstance.state.myInfo
-  const canManage = judgeManagerOrBoardMasters(myInfo, boardMasters)
 
   return (
     <>

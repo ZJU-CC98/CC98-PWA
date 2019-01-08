@@ -9,18 +9,18 @@ import QuietRoomItem from './QuietRoomItem'
 
 interface Props {
   service: Service<IBoardStopPostUser[]>
-  boardId: string | number
+  boardId: number
+  refreshFunc: () => void
 }
 
-const QuietRoomList: React.FC<Props> = ({ service, boardId }) => {
+const QuietRoomList: React.FC<Props> = ({ service, boardId, refreshFunc }) => {
   const [users, state, callback] = useInfList(service)
   const { isLoading, isEnd } = state
 
-  // TODO: no TPUser's information
   return (
     <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
       {users.map(info => (
-        <QuietRoomItem key={info.userId} info={info} boardId={boardId} />
+        <QuietRoomItem key={info.userId} info={info} boardId={boardId} refreshFunc={refreshFunc} />
       ))}
     </InfiniteList>
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Paper, Divider, Typography, Button } from '@material-ui/core'
+import { Paper, Divider, Typography } from '@material-ui/core'
 import { IBoardStopPostUser } from '@cc98/api'
 
 import dayjs from 'dayjs'
@@ -31,11 +31,6 @@ const SubTitle = styled(Typography).attrs({
   color: 'textSecondary',
 })``
 
-const SubmitButton = styled(Button).attrs({
-  variant: 'contained',
-  color: 'primary',
-})``
-
 interface Props {
   /**
    * TP信息
@@ -44,10 +39,14 @@ interface Props {
   /**
    * 版面 id
    */
-  boardId: string | number
+  boardId: number
+  /**
+   * 解除TP后刷新
+   */
+  refreshFunc: () => void
 }
 
-export default ({ info, boardId }: Props) => (
+export default ({ info, boardId, refreshFunc }: Props) => (
   <Wrapper>
     <FlexDiv>
       <div>
@@ -57,7 +56,7 @@ export default ({ info, boardId }: Props) => (
       </div>
       <RightDiv>
         <Typography>{`操作人：${info.operatorUserName}`}</Typography>
-        <Actions boardId={boardId} userId={info.userId} />
+        <Actions boardId={boardId} userId={info.userId} refreshFunc={refreshFunc} />
       </RightDiv>
     </FlexDiv>
 

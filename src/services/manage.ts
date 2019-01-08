@@ -14,6 +14,20 @@ export const operateWealth = (
     },
   })
 
+export const operatePrestige = (
+  postId: number,
+  value: number,
+  reason: string,
+  operationType: number
+) =>
+  POST(`post/${postId}/operation`, {
+    params: {
+      reason,
+      operationType,
+      prestige: value,
+    },
+  })
+
 export const deletePost = (postId: number, reason: string) =>
   DELETE(`post/${postId}`, {
     params: {

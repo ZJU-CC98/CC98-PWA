@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { IconButton, Menu, MenuItem } from '@material-ui/core'
 
@@ -17,6 +17,7 @@ import copy2Clipboard from 'copy-to-clipboard'
 // TODO: fix
 import Judge from '../Dialog/Judge'
 import Manage from '../Dialog/Manage'
+import { getBoardMastersById } from '@/services/board'
 
 interface Props {
   /**
@@ -74,6 +75,15 @@ const MenuActions: React.FC<Props> = ({ postInfo, isTrace, refreshPost, userInfo
   const [showJudge, setShowJudge] = useState(false)
   const [showManage, setShowManage] = useState(false)
 
+  const [boardMasters, setBoardMasters] = useState<string[]>([])
+
+  useEffect(
+    () => {
+      getBoardMastersById(postInfo.boardId).then(res => setBoardMasters(res))
+    },
+    [postInfo.boardId]
+  )
+
   const judgeOpen = () => setShowJudge(true)
   const judgeClose = () => setShowJudge(false)
 
@@ -92,9 +102,9 @@ const MenuActions: React.FC<Props> = ({ postInfo, isTrace, refreshPost, userInfo
 
   const myInfo = userInstance.state.myInfo
   // 编辑操作
-  const canEdit = judgeEdit(myInfo, userInfo, postInfo)
+  const canEdit = judgeEdit(myInfo, userInfo, postInfo, boardMasters)
   // 管理操作
-  const canManage = judgeManagerOrBoardMasters(myInfo, postInfo.boardId)
+  const canManage = judgeManagerOrBoardMasters(myInfo, boardMasters)
   // 管理员才有的管理操作
   const onlyManager = judgeManager(myInfo)
 

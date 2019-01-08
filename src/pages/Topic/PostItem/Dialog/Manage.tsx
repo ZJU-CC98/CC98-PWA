@@ -8,8 +8,7 @@ import {
   DialogContent,
   DialogTitle,
   Select,
-  Tab,
-  Tabs,
+  MenuItem,
   TextField,
 } from '@material-ui/core'
 
@@ -17,12 +16,7 @@ import { manageHandler } from '@/services/utils/errorHandler'
 import { operateWealth, deletePost, stopPost, cancelStopPost } from '@/services/manage'
 import { IPost } from '@cc98/api'
 import snackbar from '@/utils/snackbar'
-
-const TabS = styled(Tab)`
-  && {
-    flex-grow: 1;
-  }
-`
+import { operatePrestige } from '../../../../services/manage'
 
 const TextFieldS = styled(TextField).attrs({
   fullWidth: true,
@@ -52,9 +46,11 @@ interface Props {
 }
 
 const Manage: React.FC<Props> = ({ postInfo, isManager, handleClose, refreshPost }) => {
-  const [point, setPoint] = useState(0)
-  const handlePointChange = (_: React.ChangeEvent, value: number) => {
-    setPoint(value)
+  const [point, setPoint] = useState(-1)
+
+  const handlePointChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const point = parseInt(event.target.value, 10)
+    setPoint(point)
   }
 
   const [value, setValue] = useState(0)
@@ -80,11 +76,16 @@ const Manage: React.FC<Props> = ({ postInfo, isManager, handleClose, refreshPost
         res = await deletePost(postInfo.id, reason)
         break
       case 3:
-        res = await stopPost(postInfo.id, value, reason)
+        res = await operatePrestige(postInfo.id, value, reason, 0)
         break
       case 4:
-        res = await cancelStopPost(postInfo.boardId, postInfo.userId)
+        res = await operatePrestige(postInfo.id, value, reason, 1)
         break
+      case 5:
+        res = await stopPost(postInfo.id, value, reason)
+        break
+      case 6:
+        res = await cancelStopPost(postInfo.boardId, postInfo.userId)
     }
 
     if (!res) {
@@ -102,43 +103,38 @@ const Manage: React.FC<Props> = ({ postInfo, isManager, handleClose, refreshPost
     <Dialog open={true} onClose={handleClose} style={{ zIndex: 1010 }}>
       <DialogTitle>管理</DialogTitle>
       <DialogContent>
-        <Select native onChange={handlePointChange}>
-          <option value="" />
-          <option value={1}>奖励财富值</option>
-          <option value={2}>扣除财富值</option>
-          {isManager && <option value={3}>奖励威望</option>}
-          {isManager && <option value={4}>扣除威望</option>}
-          <option value={5}>TP</option>
-          <option value={6}>解除TP</option>
+        <Select value={point} onChange={handlePointChange}>
+          <MenuItem key={0} value={-1} />
+          <MenuItem key={1} value={0}>
+            奖励财富值
+          </MenuItem>
+          <MenuItem key={2} value={1}>
+            扣除财富值
+          </MenuItem>
+          <MenuItem key={3} value={2}>
+            删除
+          </MenuItem>
+          {isManager && (
+            <MenuItem key={4} value={3}>
+              奖励威望
+            </MenuItem>
+          )}
+          {isManager && (
+            <MenuItem key={5} value={4}>
+              扣除威望
+            </MenuItem>
+          )}
+          <MenuItem key={6} value={5}>
+            TP
+          </MenuItem>
+          <MenuItem key={7} value={6}>
+            解除TP
+          </MenuItem>
         </Select>
-        <TextFieldS label="请输入理由" onChange={handleTextChange} />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          取消
-        </Button>
-        <Button onClick={submit} color="primary">
-          提交
-        </Button>
-      </DialogActions>
-    </Dialog>
-  )
-
-  return (
-    <Dialog open={true} onClose={handleClose} style={{ zIndex: 1010 }}>
-      <DialogTitle>管理</DialogTitle>
-      <DialogContent>
-        <Tabs value={point} onChange={handlePointChange} scrollable>
-          <TabS label="奖励" value={0} />
-          <TabS label="惩罚" value={1} />
-          <TabS label="删除" value={2} />
-          <TabS label="TP" value={3} />
-          <TabS label="解除TP" value={4} />
-        </Tabs>
-        {(point === 0 || point === 1 || point === 3) && (
+        {(point === 0 || point === 1 || point === 3 || point === 4 || point === 5) && (
           <TextFieldS label="请输入数量" onChange={handleValueChange} />
         )}
-        <TextFieldS label="请输入理由" onChange={handleTextChange} />
+        {point !== 6 && <TextFieldS label="请输入理由" onChange={handleTextChange} />}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">

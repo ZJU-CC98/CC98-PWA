@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
@@ -24,10 +24,10 @@ interface Props {
 }
 
 export default ({ id }: Props) => {
+  const [listKey, setListKey] = useState(0)
   const [board] = useFetcher(() => getBoardInfo(id), {
     fail: navigateHandler,
   })
-
   if (board === null) {
     return null
   }
@@ -36,8 +36,10 @@ export default ({ id }: Props) => {
     <WrapperDiv>
       <QuietRoomHead itemName="小黑屋" BoardInfo={board} />
       <QuietRoomList
+        key={listKey}
         service={(from: number) => getBoardStopPostUser(id, from)}
         boardId={board.id}
+        refreshFunc={() => setListKey(listKey + 1)}
       />
     </WrapperDiv>
   )

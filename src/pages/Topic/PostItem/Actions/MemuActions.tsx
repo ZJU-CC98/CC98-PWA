@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { IconButton, Menu, MenuItem } from '@material-ui/core'
 
@@ -10,7 +10,8 @@ import userInstance from '@/containers/user'
 
 import { navigate } from '@/utils/history'
 import snackbar from '@/utils/snackbar'
-import { getBoardMastersById } from '@/services/board'
+import { judgeEdit, judgeManager, judgeManagerOrBoardMasters } from '@/utils/ActionsJudge'
+
 import copy2Clipboard from 'copy-to-clipboard'
 
 // TODO: fix
@@ -89,42 +90,13 @@ const MenuActions: React.FC<Props> = ({ postInfo, isTrace, refreshPost, userInfo
     handleClose()
   }
 
-  // FIXME: 显然组件的组织有问题，数据或许可以集中化处理
-
-  // 获取该版面版主信息
-  const [boardMasters, setBoardMasters] = useState<string[]>([])
-  useEffect(
-    () => {
-      getBoardMastersById(postInfo.boardId).then(boardMasters => setBoardMasters(boardMasters))
-    },
-    [postInfo.boardId]
-  )
-
-  function judgeEdit() {
-    // 本人是管理员允许修改任何帖子
-    if (myInfo && myInfo.privilege === '管理员') return true
-    // 不是管理员包括版主不允许修改管理员的帖子
-    if (userInfo && userInfo.privilege === '管理员') return false
-    // 本人是版主可以修改其他帖子
-    if (myInfo && boardMasters.indexOf(myInfo.name) !== -1) return true
-
-    return false
-  }
-
-  function judgeManage() {
-    // 本人是管理员允许管理任何帖子
-    if (myInfo && myInfo.privilege === '管理员') return true
-    // 本人是版主可以管理本版帖子
-    if (myInfo && boardMasters.indexOf(myInfo.name) !== -1) return true
-
-    return false
-  }
-
   const myInfo = userInstance.state.myInfo
   // 编辑操作
-  const canEdit = postInfo.userId === (myInfo && myInfo.id) || postInfo.isAnonymous || judgeEdit()
+  const canEdit = judgeEdit(myInfo, userInfo, postInfo)
   // 管理操作
-  const canManage = judgeManage()
+  const canManage = judgeManagerOrBoardMasters(myInfo, postInfo.boardId)
+  // 管理员才有的管理操作
+  const onlyManager = judgeManager(myInfo)
 
   return (
     <>
@@ -132,7 +104,12 @@ const MenuActions: React.FC<Props> = ({ postInfo, isTrace, refreshPost, userInfo
         <Judge postInfo={postInfo} handleClose={judgeClose} refreshPost={refreshPost} />
       )}
       {showManage && (
-        <Manage postInfo={postInfo} handleClose={manageClose} refreshPost={refreshPost} />
+        <Manage
+          postInfo={postInfo}
+          handleClose={manageClose}
+          refreshPost={refreshPost}
+          isManager={onlyManager}
+        />
       )}
       <IconButton onClick={handleOpen}>
         <ExpandMoreIcon />

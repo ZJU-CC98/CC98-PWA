@@ -7,6 +7,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Select,
   Tab,
   Tabs,
   TextField,
@@ -37,6 +38,10 @@ interface Props {
    */
   postInfo: IPost
   /**
+   * 更新 postInfo
+   */
+  isManager: boolean
+  /**
    * 关闭 Dialog
    */
   handleClose: () => void
@@ -46,7 +51,7 @@ interface Props {
   refreshPost: () => void
 }
 
-const Manage: React.FunctionComponent<Props> = ({ postInfo, handleClose, refreshPost }) => {
+const Manage: React.FC<Props> = ({ postInfo, isManager, handleClose, refreshPost }) => {
   const [point, setPoint] = useState(0)
   const handlePointChange = (_: React.ChangeEvent, value: number) => {
     setPoint(value)
@@ -92,6 +97,32 @@ const Manage: React.FunctionComponent<Props> = ({ postInfo, handleClose, refresh
       refreshPost()
     })
   }
+
+  return (
+    <Dialog open={true} onClose={handleClose} style={{ zIndex: 1010 }}>
+      <DialogTitle>管理</DialogTitle>
+      <DialogContent>
+        <Select native onChange={handlePointChange}>
+          <option value="" />
+          <option value={1}>奖励财富值</option>
+          <option value={2}>扣除财富值</option>
+          {isManager && <option value={3}>奖励威望</option>}
+          {isManager && <option value={4}>扣除威望</option>}
+          <option value={5}>TP</option>
+          <option value={6}>解除TP</option>
+        </Select>
+        <TextFieldS label="请输入理由" onChange={handleTextChange} />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="primary">
+          取消
+        </Button>
+        <Button onClick={submit} color="primary">
+          提交
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
 
   return (
     <Dialog open={true} onClose={handleClose} style={{ zIndex: 1010 }}>

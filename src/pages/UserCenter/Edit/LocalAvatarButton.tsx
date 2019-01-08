@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Button, Dialog } from '@material-ui/core'
 
-import LocalAvatarButton from './LocalAvatarBox'
+import LocalAvatarBox from './LocalAvatarBox'
 import snackbar from '@/utils/snackbar'
 
 interface Props {
@@ -21,10 +21,8 @@ const SubmitButton = styled(Button).attrs({
 
 export default ({ handleAvatarSubmit }: Props) => {
   const [open, setOpen] = useState(false)
-  const [imgSrc, setImgSrc] = useState('')
+  const [img, setImg] = useState({ imgSrc: '', fileType: '' })
   const fileInputRef = useRef<HTMLInputElement>(null)
-
-  let fileType = ''
 
   const handleClose = () => {
     setOpen(false)
@@ -45,12 +43,12 @@ export default ({ handleAvatarSubmit }: Props) => {
 
       return
     }
-    fileType = file.type
+    setImg({ ...img, fileType: file.type })
     const render = new FileReader()
 
     render.readAsDataURL(file)
     render.onload = e => {
-      setImgSrc(render.result as string)
+      setImg({ ...img, imgSrc: render.result as string })
       setOpen(!open)
     }
   }
@@ -77,11 +75,11 @@ export default ({ handleAvatarSubmit }: Props) => {
         accept="image/*"
       />
       <Dialog open={open} onClose={handleClose} fullWidth scroll="paper">
-        <LocalAvatarButton
-          imgSrc={imgSrc}
+        <LocalAvatarBox
+          imgSrc={img.imgSrc}
           handleAvatarSubmit={handleAvatarSubmit}
           handleClose={handleClose}
-          fileType={fileType}
+          fileType={img.fileType}
         />
       </Dialog>
     </>

@@ -52,9 +52,8 @@ const Actions: React.FC<Props> = ({ boardId, userId, refreshFunc, canManage }) =
     }
     res.fail(manageHandler).succeed(() => {
       snackbar.success('操作成功')
-      // 该刷新方法报错
-      refreshFunc()
       setAnchorEl(null)
+      refreshFunc()
     })
   }
 

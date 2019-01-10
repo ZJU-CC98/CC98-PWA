@@ -8,15 +8,22 @@ import {
   DialogContent,
   DialogTitle,
   Select,
+  CircularProgress,
   MenuItem,
   TextField,
 } from '@material-ui/core'
 
 import { manageHandler } from '@/services/utils/errorHandler'
-import { operateWealth, deletePost, stopPost, cancelStopPost } from '@/services/manage'
+import {
+  operateWealth,
+  deletePost,
+  stopPost,
+  cancelStopPost,
+  operatePrestige,
+} from '@/services/manage'
+
 import { IPost } from '@cc98/api'
 import snackbar from '@/utils/snackbar'
-import { operatePrestige } from '../../../../services/manage'
 
 const TextFieldS = styled(TextField).attrs({
   fullWidth: true,
@@ -26,13 +33,18 @@ const TextFieldS = styled(TextField).attrs({
   }
 ` as typeof TextField
 
+const ButtonProgress = styled(CircularProgress).attrs({
+  size: 20,
+  color: 'secondary',
+})``
+
 interface Props {
   /**
    * 帖子信息
    */
   postInfo: IPost
   /**
-   * 更新 postInfo
+   * 可管理
    */
   isManager: boolean
   /**
@@ -45,8 +57,17 @@ interface Props {
   refreshPost: () => void
 }
 
+interface SubmitState {
+  loading: boolean
+  submitFail: boolean
+}
+
 const Manage: React.FC<Props> = ({ postInfo, isManager, handleClose, refreshPost }) => {
   const [point, setPoint] = useState(-1)
+  const [submitState, setSubmitState] = useState<SubmitState>({
+    loading: false,
+    submitFail: false,
+  })
 
   const handlePointChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const point = parseInt(event.target.value, 10)
@@ -64,6 +85,10 @@ const Manage: React.FC<Props> = ({ postInfo, isManager, handleClose, refreshPost
   }
 
   const submit = async () => {
+    setSubmitState({
+      loading: true,
+      submitFail: false,
+    })
     let res = null
     switch (point) {
       case 0:
@@ -92,12 +117,26 @@ const Manage: React.FC<Props> = ({ postInfo, isManager, handleClose, refreshPost
       return
     }
 
-    res.fail(manageHandler).succeed(() => {
-      snackbar.success('操作成功')
-      handleClose()
-      refreshPost()
-    })
+    res
+      .fail(err => {
+        setSubmitState({
+          loading: false,
+          submitFail: true,
+        })
+        manageHandler(err)
+      })
+      .succeed(() => {
+        setSubmitState({
+          loading: false,
+          submitFail: false,
+        })
+        snackbar.success('操作成功')
+        handleClose()
+        refreshPost()
+      })
   }
+
+  const { submitFail, loading } = submitState
 
   return (
     <Dialog open={true} onClose={handleClose} style={{ zIndex: 1010 }}>
@@ -140,8 +179,9 @@ const Manage: React.FC<Props> = ({ postInfo, isManager, handleClose, refreshPost
         <Button onClick={handleClose} color="primary">
           取消
         </Button>
-        <Button onClick={submit} color="primary">
-          提交
+        <Button color="primary" disabled={loading} onClick={submit}>
+          {submitFail ? '重试' : '提交'}
+          {loading && <ButtonProgress />}
         </Button>
       </DialogActions>
     </Dialog>

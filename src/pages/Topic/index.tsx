@@ -76,7 +76,7 @@ const Topic = ({ topicId, userId, postId, isReverse }: Props) => {
 
   return (
     <>
-      <PostHead topicInfo={topicInfo} />
+      <PostHead topicInfo={topicInfo} refreshFunc={refreshFunc} />
       <PostList key={postListKey} service={postService} isTrace={isTrace}>
         {!isTrace && <PostListHot service={hotPostService} />}
       </PostList>

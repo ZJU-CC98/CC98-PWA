@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import useFetcher from '@/hooks/useFetcher'
 
@@ -6,13 +6,21 @@ import { IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@material-
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShareIcon from '@material-ui/icons/Share'
+import SettingIcon from '@material-ui/icons/Settings'
+
+import userInstace from '@/containers/user'
 
 import snackbar from '@/utils/snackbar'
+import { judgeManagerOrBoardMasters } from '@/utils/ActionsJudge'
+
 import { ITopic } from '@cc98/api'
 
-import { getTopicFavorite } from '@/services/topic'
+import { getTopicFavorite, FavoriteTopic } from '@/services/topic'
+import { getBoardMastersById } from '@/services/board'
+
 import { favoriteHandler } from '@/services/utils/errorHandler'
-import { FavoriteTopic } from '@/services/post'
+
+import Setting from './Dialog/Setting'
 
 import copy2Clipboard from 'copy-to-clipboard'
 
@@ -21,11 +29,21 @@ interface Props {
    * 帖子信息
    */
   topicInfo: ITopic
+  refreshFunc: () => void
 }
 
-export default ({ topicInfo }: Props) => {
+export default ({ topicInfo, refreshFunc }: Props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const [showSetting, setShowSetting] = useState(false)
   const [isFavorite, setIsFavorite] = useFetcher(() => getTopicFavorite(topicInfo.id))
+  const [boardMasters, setBoardMasters] = useState<string[]>([])
+
+  useEffect(
+    () => {
+      getBoardMastersById(topicInfo.boardId).then(res => setBoardMasters(res))
+    },
+    [topicInfo.boardId]
+  )
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -33,6 +51,12 @@ export default ({ topicInfo }: Props) => {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+  const settingOpen = () => {
+    setShowSetting(true)
+  }
+  const settingClose = () => {
+    setShowSetting(false)
   }
 
   const handleShare = () => {
@@ -51,6 +75,14 @@ export default ({ topicInfo }: Props) => {
     })
   }
 
+  const handleSetting = () => {
+    settingOpen()
+    handleClose()
+  }
+
+  const myInfo = userInstace.state.myInfo
+  const canManage = judgeManagerOrBoardMasters(myInfo, boardMasters)
+
   return (
     <>
       <IconButton onClick={handleOpen}>
@@ -68,17 +100,24 @@ export default ({ topicInfo }: Props) => {
           </ListItemIcon>
           <Typography>{isFavorite ? '取消收藏' : '收藏主题'}</Typography>
         </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleShare()
-          }}
-        >
+        <MenuItem onClick={() => handleShare()}>
           <ListItemIcon>
             <ShareIcon />
           </ListItemIcon>
           <Typography>分享链接</Typography>
         </MenuItem>
+        {canManage && (
+          <MenuItem onClick={() => handleSetting()}>
+            <ListItemIcon>
+              <SettingIcon />
+            </ListItemIcon>
+            <Typography>管理主题</Typography>
+          </MenuItem>
+        )}
       </Menu>
+      {showSetting && (
+        <Setting topicInfo={topicInfo} handleClose={settingClose} refreshFunc={refreshFunc} />
+      )}
     </>
   )
 }

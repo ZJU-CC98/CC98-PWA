@@ -37,8 +37,10 @@ declare module '@cc98/api' {
      * 最后回复时间
      */
     lastPostTime: string
-
-    state: number
+    /**
+     * 锁定状态
+     */
+    state: 0 | 1
 
     type: number
     /**

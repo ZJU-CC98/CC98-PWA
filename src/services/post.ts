@@ -1,4 +1,4 @@
-import { GET, PUT, DELETE } from '@/utils/fetch'
+import { GET, PUT } from '@/utils/fetch'
 import { IPost, ILike } from '@cc98/api'
 
 /**
@@ -59,7 +59,7 @@ export function getSinglePost(topicId: number | string, floor: number) {
 }
 
 /**
- * 追踪非匿名板块的用户
+ * 追踪非匿名版块的用户
  */
 export function getTracePost(topicId: number, userId: number | string, from: number) {
   return GET<IPost[]>('post/topic/user', {
@@ -73,7 +73,7 @@ export function getTracePost(topicId: number, userId: number | string, from: num
 }
 
 /**
- * 追踪匿名板块用户
+ * 追踪匿名版块用户
  */
 export function getAnonymousTracePost(topicId: number, postId: number | string, from: number) {
   return GET<IPost[]>('post/topic/anonymous/user', {
@@ -128,18 +128,4 @@ export function rate(id: number, value: 1 | -1, reason: string) {
       reason,
     },
   })
-}
-
-/**
- * 收藏帖子
- */
-export function putFavorite(topicId: number) {
-  return PUT(`me/favorite/${topicId}`)
-}
-
-/**
- * 取消收藏帖子
- */
-export function deleteFavorite(topicId: number) {
-  return DELETE(`me/favorite/${topicId}`)
 }

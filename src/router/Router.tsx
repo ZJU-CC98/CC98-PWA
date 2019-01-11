@@ -4,6 +4,8 @@ import { Router, RouteComponentProps, WindowLocation } from '@reach/router'
 
 import BoardList from '@/pages/BoardList'
 import Board from '@/pages/Board'
+import BoardRecord from '@/pages/Board/BoardRecord'
+import BoardQuietRoom from '@/pages/Board/QuietRoom'
 import Editor from '@/pages/Editor'
 import Home from '@/pages/Home'
 import HotTopic from '@/pages/HotTopic'
@@ -59,6 +61,8 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
 
     <Route path="boardList" component={BoardList} />
     <Route path="board/:id" component={Board} />
+    <Route path="board/:id/record" component={BoardRecord} />
+    <Route path="board/:id/quietRoom" component={BoardQuietRoom} />
 
     <Route path="userCenter" component={UserCenter} />
     <Route path="userCenter/edit" component={UserCenterEdit} />

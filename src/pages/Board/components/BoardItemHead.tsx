@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import { IconButton, Typography, Paper } from '@material-ui/core'
-
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
+import { IBoard } from '@cc98/api'
 
-import { ITopic } from '@cc98/api'
-import { getBoardNameById } from '@/services/board'
+import BoardMenu from './BoardMenu'
 
 import { navigate, goback } from '@/utils/history'
-
-import PostActions from './PostActions'
 
 const Wrapper = styled(Paper).attrs({
   square: true,
@@ -22,6 +19,7 @@ const Wrapper = styled(Paper).attrs({
     position: sticky;
     top: 0;
     min-height: 56px;
+    width: 100%;
     padding: 0 16px;
     padding-right: 0;
     /* z-index of TopBar is 1100 and DrawerMenu is 1200 */
@@ -63,30 +61,22 @@ const SubTitle = styled(Typography)`
 `
 
 interface Props {
-  topicInfo: ITopic
-  refreshFunc: () => void
+  BoardInfo: IBoard
+  /**
+   * 当前页面名称
+   */
+  itemName: string
 }
 
-const PostHead: React.FunctionComponent<Props> = ({ topicInfo, refreshFunc }) => {
-  const [boardName, setBoardName] = useState('')
+const RecordHead: React.FC<Props> = ({ BoardInfo, itemName }: Props) => (
+  <Wrapper>
+    <GobackIcon onClick={goback}>
+      <KeyboardBackspaceIcon />
+    </GobackIcon>
+    <Title>{itemName}</Title>
+    <SubTitle onClick={() => navigate(`/board/${BoardInfo.id}`)}>{BoardInfo.name}</SubTitle>
+    <BoardMenu boardId={BoardInfo.id} />
+  </Wrapper>
+)
 
-  useEffect(
-    () => {
-      getBoardNameById(topicInfo.boardId).then(boardName => setBoardName(boardName))
-    },
-    [topicInfo.boardId]
-  )
-
-  return (
-    <Wrapper>
-      <GobackIcon onClick={goback}>
-        <KeyboardBackspaceIcon />
-      </GobackIcon>
-      <Title>{topicInfo.title}</Title>
-      <SubTitle onClick={() => navigate(`/board/${topicInfo.boardId}`)}>{boardName}</SubTitle>
-      <PostActions topicInfo={topicInfo} refreshFunc={refreshFunc} />
-    </Wrapper>
-  )
-}
-
-export default PostHead
+export default RecordHead

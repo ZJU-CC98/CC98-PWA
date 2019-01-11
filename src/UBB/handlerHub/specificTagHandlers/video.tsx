@@ -2,140 +2,59 @@ import { ITagHandler, TagNode } from '@cc98/ubb-core'
 
 import { IContext } from '@cc98/context'
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import { globalHistory, HistoryUnsubscribe } from '@reach/router'
 
 import 'dplayer/dist/DPlayer.min.css'
-import DPlayer from 'dplayer'
 
 const handler: ITagHandler<React.ReactNode> = {
   isRecursive: false,
 
   render(node: TagNode, context: IContext) {
-    return <VideoComponent src={node.innerText} />
+    return <Video src={node.innerText} />
   },
 }
 
-interface IProps {
+interface Props {
   /**
-   * 音频文件地址
+   * 视频文件地址
    */
   src: string
 }
 
-interface IState {
-  /**
-   * 播放器高度
-   */
-  height: string
-}
+const Video: React.FC<Props> = ({ src }) => {
+  const divRef = useRef<HTMLDivElement>(null)
 
-// tslint:disable-next-line:no-any
-declare const Hls: any
+  useEffect(() => {
+    // tslint:disable-next-line
+    let dplayer: any = null
+    let unsubscribe: HistoryUnsubscribe | null
 
-class VideoComponent extends React.Component<IProps, IState> {
-  /**
-   * 对div的引用
-   */
-  div: HTMLDivElement | null
-  /**
-   * 对播放器的引用
-   */
-  // tslint:disable-next-line:no-any
-  dp: any = null
-  /**
-   * 播放器默认高度
-   */
-  defaultHeight: string = '200px'
-  /**
-   *  取消页面URL的监听器
-   */
-  unsubscribe: HistoryUnsubscribe | undefined
-
-  state: IState = {
-    height: this.defaultHeight,
-  }
-
-  /**
-   * 组件加载后初始化播放器
-   */
-  componentDidMount() {
-    if (this.props.src.match(/\.m3u8$/)) {
-      try {
-        new Hls()
-        this.initPlayer('hls')
-      } catch (e) {
-        const script = document.createElement('script')
-        script.src = 'https://www.cc98.org/static/content/hls.min.js'
-        document.getElementsByTagName('head')[0].appendChild(script)
-        script.onload = () => {
-          this.initPlayer('hls')
-        }
-      }
-    } else {
-      this.initPlayer()
-    }
-    // 监听到url改变，暂停
-    this.unsubscribe = globalHistory.listen(() => {
-      if (!this.dp.video.paused) {
-        this.dp.pause()
-      }
-    })
-  }
-
-  initPlayer = (type?: string) => {
-    try {
-      this.dp = new DPlayer({
-        element: this.div,
+    import('dplayer').then(({ default: DPlayer }) => {
+      dplayer = new DPlayer({
+        container: divRef.current,
         autoplay: false,
         preload: 'metadata',
         video: {
-          url: encodeURI(this.props.src),
-          type,
+          url: encodeURI(src),
+          type: 'auto',
         },
       })
-    } catch (e) {
-      // tslint:disable-next-line:no-console
-      console.log(e, 'new Dplayer Error.')
+
+      // 监听到 url 改变，暂停播放
+      unsubscribe = globalHistory.listen(() => {
+        dplayer && dplayer.pause()
+      })
+    })
+
+    return () => {
+      unsubscribe && unsubscribe()
+      dplayer && dplayer.destroy()
     }
+  }, [])
 
-    if (!this.dp) {
-      return
-    }
-
-    this.dp.on('abort', () => null)
-
-    // 对全屏下高度的调整
-    this.dp.on('fullscreen', () => this.setState({ height: 'auto' }))
-    this.dp.on('fullscreen_cancel', () => this.setState({ height: this.defaultHeight }))
-    this.dp.on('webfullscreen', () => this.setState({ height: '100%' }))
-    this.dp.on('webfullscreen_cancel', () => this.setState({ height: this.defaultHeight }))
-    this.div &&
-      (this.div.getElementsByClassName('dplayer-menu')[0].innerHTML =
-        // tslint:disable-next-line:max-line-length
-        '<div class="dplayer-menu-item"><a target="_blank" href="https://github.com/MoePlayer/DPlayer">关于 DPlayer 播放器</a></div>')
-  }
-
-  // 离开帖子时销毁之前的监听器和播放器
-  componentWillUnmount() {
-    this.unsubscribe && this.unsubscribe()
-    this.dp && this.dp.destroy()
-    this.div && (this.div.innerHTML = '')
-  }
-
-  render() {
-    // 重置继承自article的whiteSpace
-    return (
-      <div style={{ display: 'flex' }}>
-        <div
-          className="dplayer"
-          style={{ whiteSpace: 'normal', height: this.state.height }}
-          ref={it => (this.div = it)}
-        />
-      </div>
-    )
-  }
+  return <div className="dplayer" style={{ whiteSpace: 'normal' }} ref={divRef} />
 }
 
 export default handler

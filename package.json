@@ -24,7 +24,6 @@
     "copy-to-clipboard": "^3.0.8",
     "dayjs": "^1.7.8",
     "dplayer": "^1.25.0",
-    "hls.js": "^0.12.2",
     "lodash-es": "^4.17.11",
     "react": "16.8.0-alpha.0",
     "react-cropper": "^1.0.1",

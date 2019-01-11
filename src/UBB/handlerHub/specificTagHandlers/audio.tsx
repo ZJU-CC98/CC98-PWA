@@ -32,20 +32,19 @@ const Audio: React.FC<Props> = ({ src }) => {
 
     import('aplayer').then(({ default: APlayer }) => {
       aplayer = new APlayer({
-        element: divRef.current,
+        container: divRef.current,
         autoplay: false,
         preload: 'metadata',
-        music: {
+        audio: {
           url: encodeURI(src),
-          title: encodeURI(src),
-          author: '',
-          pic: `${IMG_BASE_URL}/audio_cover.png`,
+          name: encodeURI(src),
+          cover: `${IMG_BASE_URL}/audio_cover.png`,
         },
       })
 
       // 监听到 url 改变，暂停播放
       unsubscribe = globalHistory.listen(() => {
-        aplayer && aplayer.audio.pause()
+        aplayer && aplayer.pause()
       })
     })
 

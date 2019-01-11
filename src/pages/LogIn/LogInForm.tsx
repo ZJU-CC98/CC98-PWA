@@ -66,7 +66,7 @@ interface LogInState {
   logInFail: boolean
 }
 
-const LogIn: React.FunctionComponent = () => {
+const LogIn: React.FC = () => {
   const [formField, setFormField] = useState<FormField>({
     username: '',
     password: '',

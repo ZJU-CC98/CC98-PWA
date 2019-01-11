@@ -62,13 +62,7 @@ interface ItemProps {
   onClick: () => void
 }
 
-export const TopicItem: React.FunctionComponent<ItemProps> = ({
-  onClick,
-  title,
-  subtitle,
-  info1,
-  info2,
-}) => (
+export const TopicItem: React.FC<ItemProps> = ({ onClick, title, subtitle, info1, info2 }) => (
   <ListItemS button divider onClick={onClick}>
     <TitleArea>
       <Title variant="subtitle1">{title}</Title>

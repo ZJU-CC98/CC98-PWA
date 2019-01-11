@@ -47,7 +47,7 @@ interface Props {
   refreshPost: () => void
 }
 
-const Judge: React.FunctionComponent<Props> = ({ postInfo, handleClose, refreshPost }) => {
+const Judge: React.FC<Props> = ({ postInfo, handleClose, refreshPost }) => {
   const [point, setPoint] = useState<1 | -1>(1)
 
   const handlePointChange = (_: React.ChangeEvent, value: 1 | -1) => {

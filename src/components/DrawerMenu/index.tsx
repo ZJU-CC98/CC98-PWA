@@ -39,7 +39,7 @@ interface ItemProps {
   onClick: () => void
 }
 
-const Item: React.FunctionComponent<ItemProps> = ({ icon, text, onClick }) => (
+const Item: React.FC<ItemProps> = ({ icon, text, onClick }) => (
   <ListItem button onClick={onClick}>
     <ListItemIcon>{icon}</ListItemIcon>
     <ListItemText primary={text} />
@@ -61,7 +61,7 @@ const DividerS = styled(Divider)`
 
 const jump = (link: string) => () => navigate(link)
 
-const DrawerMenu: React.FunctionComponent = () => {
+const DrawerMenu: React.FC = () => {
   const { state: user, LOG_OUT } = useContainer(userInstance)
   const { state, CLOSE_DRAWER } = useContainer(stateInstance)
   const {

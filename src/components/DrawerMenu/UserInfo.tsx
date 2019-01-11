@@ -49,7 +49,7 @@ interface Props {
   info: IUser | null
 }
 
-const UserInfo: React.FunctionComponent<Props> = ({ isLogIn, info }) => (
+const UserInfo: React.FC<Props> = ({ isLogIn, info }) => (
   <WrapperDiv>
     {isLogIn && (
       <AvatarS src={info ? info.portraitUrl : undefined} onClick={() => navigate('/userCenter')} />

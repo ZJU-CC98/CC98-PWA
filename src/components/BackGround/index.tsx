@@ -22,7 +22,7 @@ const Placeholder = styled.div`
   }
 `
 
-const BackGround: React.FunctionComponent = ({ children }) => (
+const BackGround: React.FC = ({ children }) => (
   <>
     <Background />
     <Placeholder />

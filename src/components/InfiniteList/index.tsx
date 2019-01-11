@@ -42,7 +42,7 @@ interface Props {
   inFixedContainer?: boolean
 }
 
-const InfiniteList: React.FunctionComponent<Props> = props => {
+const InfiniteList: React.FC<Props> = props => {
   const wrapperDom = useRef<HTMLDivElement>(null)
   const loadingDom = useRef<HTMLDivElement>(null)
   // 保证 bindFunc 取到最新的值

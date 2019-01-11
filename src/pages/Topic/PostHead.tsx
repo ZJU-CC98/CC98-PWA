@@ -67,7 +67,7 @@ interface Props {
   refreshFunc: () => void
 }
 
-const PostHead: React.FunctionComponent<Props> = ({ topicInfo, refreshFunc }) => {
+const PostHead: React.FC<Props> = ({ topicInfo, refreshFunc }) => {
   const [boardName, setBoardName] = useState('')
 
   useEffect(

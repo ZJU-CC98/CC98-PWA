@@ -72,7 +72,7 @@ const Awards = ({ awards }: Props) => {
   )
 }
 
-const AwardsTable: React.FunctionComponent = ({ children }) => (
+const AwardsTable: React.FC = ({ children }) => (
   <Table>
     <TableHead>
       <TableRowS>

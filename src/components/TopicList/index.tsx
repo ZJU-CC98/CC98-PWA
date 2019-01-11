@@ -41,7 +41,7 @@ interface InfProps {
   place: Place
 }
 
-const InfTopicList: React.FunctionComponent<InfProps> = ({ service, place }) => {
+const InfTopicList: React.FC<InfProps> = ({ service, place }) => {
   const [topics, state, callback] = useInfList(service, { fail: navigateHandler })
   const { isLoading, isEnd } = state
 
@@ -62,12 +62,7 @@ interface FinProps {
   delay?: number
 }
 
-const FinTopicList: React.FunctionComponent<FinProps> = ({
-  service,
-  noLoading,
-  place,
-  delay = 0,
-}) => {
+const FinTopicList: React.FC<FinProps> = ({ service, noLoading, place, delay = 0 }) => {
   const [topics] = useFetcher(service, { fail: navigateHandler })
   const isResolve = useDelay(delay)
 

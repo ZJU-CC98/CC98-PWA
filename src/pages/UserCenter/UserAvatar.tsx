@@ -44,7 +44,7 @@ interface Props {
   isUserCenter: boolean
 }
 
-const UserAvatar: React.FunctionComponent<Props> = ({ info, isUserCenter }) => {
+const UserAvatar: React.FC<Props> = ({ info, isUserCenter }) => {
   const [isFollowing, setIsFollowing] = useState(info.isFollowing)
   const [isLoading, setIsLoading] = useState(false)
   const toggleFunc = async () => {

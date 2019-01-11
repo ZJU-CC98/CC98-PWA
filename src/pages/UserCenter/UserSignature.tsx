@@ -16,7 +16,7 @@ interface Props {
   info: IUser
 }
 
-const UserSignature: React.FunctionComponent<Props> = ({ info }) => {
+const UserSignature: React.FC<Props> = ({ info }) => {
   const [expand, setExpand] = useState(false)
   const onChange = () => {
     setExpand(!expand)

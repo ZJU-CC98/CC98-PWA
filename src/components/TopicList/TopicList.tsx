@@ -18,7 +18,7 @@ interface Props {
   place: Place
 }
 
-const TopicList: React.FunctionComponent<Props> = ({ topics, place }) => (
+const TopicList: React.FC<Props> = ({ topics, place }) => (
   <ListS>
     {topics.map(info => (
       <TopicListItem key={info.id} data={info} place={place} />

@@ -12,7 +12,7 @@ interface Props {
   isUserCenter: boolean
 }
 
-const RecentTopics: React.FunctionComponent<Props> = ({ info, isUserCenter }) => {
+const RecentTopics: React.FC<Props> = ({ info, isUserCenter }) => {
   const [expand, setExpand] = useState(false)
   const onChange = () => {
     setExpand(!expand)

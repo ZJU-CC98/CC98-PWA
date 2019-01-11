@@ -4,13 +4,15 @@ import { goback } from '@/utils/history'
 import styled from 'styled-components'
 
 import useContainer from '@/hooks/useContainer'
-import userInstace from '@/containers/user'
+import userInstance from '@/containers/user'
 
 import { IconButton, Typography, Button, TextField } from '@material-ui/core'
 
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 
-import { modifyMyInfo } from '@/services/user'
+import EditAvatar from './EditAvatar'
+
+import { modifyMyInfo, modifyMyAvatar } from '@/services/user'
 import snackbar from '@/utils/snackbar'
 
 const HeaderDiv = styled.div`
@@ -63,7 +65,7 @@ const SubmitButton = styled(Button).attrs({
 const FormBody = () => {
   const {
     state: { myInfo },
-  } = useContainer(userInstace)
+  } = useContainer(userInstance)
 
   const [info, setInfo] = useState(myInfo)
 
@@ -82,36 +84,55 @@ const FormBody = () => {
     modifyMyInfo(info).then(res =>
       res.fail().succeed(_ => {
         snackbar.success('修改成功')
-        userInstace.FRESH_INFO()
+        userInstance.FRESH_INFO()
       })
     )
   }
 
-  return (
-    <FormWrapper noValidate autoComplete="off">
-      <FormItem
-        label="性别"
-        select
-        SelectProps={{
-          native: true,
-        }}
-        value={info.gender}
-        onChange={handleChange('gender')}
-      >
-        <option value={1}>男</option>
-        <option value={0}>女</option>
-      </FormItem>
-      <FormItem label="QQ" value={info.qq} onChange={handleChange('qq')} />
-      <FormItem label="邮箱" value={info.emailAddress} onChange={handleChange('emailAddress')} />
-      <FormItem
-        label="签名档"
-        value={info.signatureCode}
-        onChange={handleChange('signatureCode')}
-      />
+  const handleAvatarSubmit = (AvatarSrc: string) => {
+    modifyMyAvatar(AvatarSrc).then(res =>
+      res.fail().succeed(_ => {
+        snackbar.success('修改成功')
+        userInstance.FRESH_INFO()
+      })
+    )
+  }
+  if (myInfo) {
+    return (
+      <>
+        <EditAvatar info={myInfo} handleAvatarSubmit={handleAvatarSubmit} />
+        <FormWrapper noValidate autoComplete="off">
+          <FormItem
+            label="性别"
+            select
+            SelectProps={{
+              native: true,
+            }}
+            value={info.gender}
+            onChange={handleChange('gender')}
+          >
+            <option value={1}>男</option>
+            <option value={0}>女</option>
+          </FormItem>
+          <FormItem label="QQ" value={info.qq} onChange={handleChange('qq')} />
+          <FormItem
+            label="邮箱"
+            value={info.emailAddress}
+            onChange={handleChange('emailAddress')}
+          />
+          <FormItem
+            label="签名档"
+            value={info.signatureCode}
+            onChange={handleChange('signatureCode')}
+          />
 
-      <SubmitButton onClick={handleSubmit}>提交修改</SubmitButton>
-    </FormWrapper>
-  )
+          <SubmitButton onClick={handleSubmit}>提交修改</SubmitButton>
+        </FormWrapper>
+      </>
+    )
+  }
+
+  return null
 }
 
 export default () => (

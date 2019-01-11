@@ -14,12 +14,6 @@ import 'cropperjs/dist/cropper.css'
 
 import { updateMyAvatar } from '@/services/user'
 
-const DialogTitleS = styled(DialogTitle)`
-  && {
-    padding: 12px;
-  }
-`
-
 const CircularProgressS = styled(CircularProgress)`
   && {
     margin-right: 24px;
@@ -38,13 +32,12 @@ interface Props {
    * 文件类型
    */
   fileType: string
-  handleAvatarSubmit: (AvatarSrc: string) => void
+  handleAvatarSubmit: (avatarSrc: string) => void
   handleClose: () => void
 }
 
 export default ({ imgSrc, handleAvatarSubmit, handleClose, fileType }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  // 版本低，不兼容
   // tslint:disable
   const cropRef = useRef<any>(null)
 
@@ -78,7 +71,7 @@ export default ({ imgSrc, handleAvatarSubmit, handleClose, fileType }: Props) =>
 
   return (
     <>
-      <DialogTitleS>本地头像</DialogTitleS>
+      <DialogTitle>本地头像</DialogTitle>
       <DialogContent>
         <FlexDiv>
           <ReactCropper

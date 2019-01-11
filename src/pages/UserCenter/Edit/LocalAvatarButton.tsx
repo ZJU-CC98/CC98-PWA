@@ -1,23 +1,14 @@
 import React, { useState, useRef } from 'react'
-import styled from 'styled-components'
 
-import { Button, Dialog } from '@material-ui/core'
+import { Dialog, Button } from '@material-ui/core'
 
 import LocalAvatarBox from './LocalAvatarBox'
+
 import snackbar from '@/utils/snackbar'
 
 interface Props {
-  handleAvatarSubmit: (AvatarSrc: string) => void
+  handleAvatarSubmit: (avatarSrc: string) => void
 }
-
-const SubmitButton = styled(Button).attrs({
-  variant: 'contained',
-})`
-  && {
-    margin: 8px;
-    padding: 5px;
-  }
-`
 
 export default ({ handleAvatarSubmit }: Props) => {
   const [open, setOpen] = useState(false)
@@ -47,7 +38,7 @@ export default ({ handleAvatarSubmit }: Props) => {
     const render = new FileReader()
 
     render.readAsDataURL(file)
-    render.onload = e => {
+    render.onload = _ => {
       setImg({ ...img, imgSrc: render.result as string })
       setOpen(!open)
     }
@@ -62,7 +53,7 @@ export default ({ handleAvatarSubmit }: Props) => {
 
   return (
     <>
-      <SubmitButton onClick={clickHandler}>选择本地头像</SubmitButton>
+      <Button onClick={clickHandler}>更换本地头像</Button>
       <input
         style={{ display: 'none' }}
         type="file"

@@ -5,12 +5,6 @@ import { DialogTitle, DialogContent } from '@material-ui/core'
 
 import { IMG_BASE_URL } from '@/config'
 
-const DialogTitleS = styled(DialogTitle)`
-  && {
-    padding: 12px;
-  }
-`
-
 const FlexDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -48,7 +42,7 @@ export default ({ handleClose, handleAvatarSubmit }: Props) => {
 
   return (
     <>
-      <DialogTitleS>论坛头像</DialogTitleS>
+      <DialogTitle>论坛头像</DialogTitle>
       <DialogContent>
         <FlexDiv>{ForumAvatarArr}</FlexDiv>
       </DialogContent>

@@ -1,11 +1,14 @@
-# CC98-PWA
+<p align="center"><img src="./public/icons/snowball-144.png" alt="cc98 logo" width="144"></p>
 
-CC98 Forum PWA version.
+<h1 align="center">CC98-PWA</h1>
+
+<p align="center">CC98 Forum PWA version.</p>
 
 
-## 项目技术栈
 
-- react@16.7.0-alpha.2
+### 项目技术栈
+
+- react@next
 
 - @reach/router
 
@@ -16,12 +19,14 @@ CC98 Forum PWA version.
 - webpack@4
 
 
-## 知识库
+
+### 知识库
 
 [CC98 语雀知识库](https://www.yuque.com/cc98)
 
 
-## 开发说明
+
+### 开发说明
 
 #### 启动项目
 
@@ -64,7 +69,7 @@ module.exports = {
 
 
 
-## 开发组
+### 开发组
 
 <table>
   <tbody>
@@ -90,8 +95,6 @@ module.exports = {
         <p>高级 Webpack 配置工程师</p>
         <p>董松松松</p>
       </td>
-    </tr>
-    <tr>
       <td align="center" valign="top">
         <img width="150" height="150" src="https://github.com/Tsukiko15.png?s=150">
         <br>
@@ -99,6 +102,8 @@ module.exports = {
         <p>后端开发</p>
         <p>主席</p>
       </td>
+    </tr>
+    <tr>
       <td align="center" valign="top">
         <img width="150" height="150" src="https://github.com/adddna.png?s=150">
         <br>
@@ -112,6 +117,13 @@ module.exports = {
         <a href="https://github.com/c708423">c708423</a>
         <p>前端开发</p>
         <p>qc</p>
+      </td>
+            <td align="center" valign="top">
+        <img width="150" height="150" src="https://github.com/tgsmdww.png?s=150">
+        <br>
+        <a href="https://github.com/AsukaSong">tgsmdww</a>
+        <p>前端开发</p>
+        <p>TG</p>
       </td>
     </tr>
   </tbody>

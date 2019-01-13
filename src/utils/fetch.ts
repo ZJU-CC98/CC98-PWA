@@ -71,18 +71,17 @@ interface GETOptions {
 }
 
 export async function GET<T>(url: string, options: GETOptions = {}) {
-  const headers: Record<string, string> = {}
+  const headers = new Headers(options.headers)
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken) headers.Authorization = accessToken
+    if (accessToken) {
+      headers.append('Authorization', accessToken)
+    }
   }
 
   const requestInit: RequestInit = {
-    headers: new Headers({
-      ...headers,
-      ...options.headers,
-    }),
+    headers,
     // credentials: "include",
     ...options.requestInit,
   }
@@ -112,21 +111,22 @@ interface POSTOptions {
 }
 
 export async function POST<T = void>(url: string, options: POSTOptions = {}) {
-  const headers: Record<string, string> = {}
+  const headers = new Headers(options.headers)
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken) headers.Authorization = accessToken
+    if (accessToken) {
+      headers.append('Authorization', accessToken)
+    }
+  }
+
+  if (!options.headers) {
+    headers.append('Content-Type', 'application/json')
   }
 
   const requestInit: RequestInit = {
     method: 'POST',
-    headers: new Headers({
-      ...headers,
-      ...(options.headers || {
-        'Content-Type': 'application/json',
-      }),
-    }),
+    headers,
     body: options.params && JSON.stringify(options.params),
     ...options.requestInit,
   }
@@ -137,21 +137,22 @@ export async function POST<T = void>(url: string, options: POSTOptions = {}) {
 type PUTOptions = POSTOptions
 
 export async function PUT<T = void>(url: string, options: PUTOptions = {}) {
-  const headers: Record<string, string> = {}
+  const headers = new Headers(options.headers)
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken) headers.Authorization = accessToken
+    if (accessToken) {
+      headers.append('Authorization', accessToken)
+    }
+  }
+
+  if (!options.headers) {
+    headers.append('Content-Type', 'application/json')
   }
 
   const requestInit: RequestInit = {
     method: 'PUT',
-    headers: new Headers({
-      ...headers,
-      ...(options.headers || {
-        'Content-Type': 'application/json',
-      }),
-    }),
+    headers,
     body: options.params && JSON.stringify(options.params),
     ...options.requestInit,
   }
@@ -162,21 +163,22 @@ export async function PUT<T = void>(url: string, options: PUTOptions = {}) {
 type DELETEOptions = GETOptions
 
 export async function DELETE<T = void>(url: string, options: DELETEOptions = {}) {
-  const headers: Record<string, string> = {}
+  const headers = new Headers(options.headers)
 
   if (!options.noAuthorization) {
     const accessToken = await getAccessToken()
-    if (accessToken) headers.Authorization = accessToken
+    if (accessToken) {
+      headers.append('Authorization', accessToken)
+    }
+  }
+
+  if (!options.headers) {
+    headers.append('Content-Type', 'application/json')
   }
 
   const requestInit: RequestInit = {
     method: 'DELETE',
-    headers: new Headers({
-      ...headers,
-      ...(options.headers || {
-        'Content-Type': 'application/json',
-      }),
-    }),
+    headers,
     body: options.params && JSON.stringify(options.params),
     ...options.requestInit,
   }

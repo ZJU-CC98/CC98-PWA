@@ -3,6 +3,7 @@ import { IHandlerHub } from '@cc98/ubb-core'
 import React from 'react'
 
 import align from './align'
+import audio from './audio'
 import b from './b'
 import bili from './bili'
 import center from './center'
@@ -27,14 +28,16 @@ import tr from './tr'
 import u from './u'
 import upload from './upload'
 import url from './url'
+import video from './video'
 
 /*
- * TODO: audio, glow?, md, pm, topic, user, video
+ * TODO: glow?, md, pm, topic, user
  */
 const tagHandlers: IHandlerHub<React.ReactNode>['specificTagHandlers'] = {
   // register handler here
   // e.g. "b": handler_for_tag_b
   align,
+  audio,
   b,
   bili,
   center,
@@ -47,6 +50,7 @@ const tagHandlers: IHandlerHub<React.ReactNode>['specificTagHandlers'] = {
   i,
   img,
   left,
+  mp3: audio,
   noubb,
   quote,
   quotex: quote,
@@ -60,6 +64,7 @@ const tagHandlers: IHandlerHub<React.ReactNode>['specificTagHandlers'] = {
   u,
   upload,
   url,
+  video,
 }
 
 export default tagHandlers

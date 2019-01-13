@@ -7,7 +7,7 @@ import Theme from './Theme'
 import Cache from './Cache'
 import CustomHome from './Home'
 
-const Setting: React.FunctionComponent = () => (
+const Setting: React.FC = () => (
   <List>
     <Signalr />
     <Theme />

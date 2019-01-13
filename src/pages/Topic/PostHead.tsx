@@ -64,14 +64,18 @@ const SubTitle = styled(Typography)`
 
 interface Props {
   topicInfo: ITopic
+  refreshFunc: () => void
 }
 
-const PostHead: React.FunctionComponent<Props> = ({ topicInfo }) => {
+const PostHead: React.FC<Props> = ({ topicInfo, refreshFunc }) => {
   const [boardName, setBoardName] = useState('')
 
-  useEffect(() => {
-    getBoardNameById(topicInfo.boardId).then(boardName => setBoardName(boardName))
-  }, [])
+  useEffect(
+    () => {
+      getBoardNameById(topicInfo.boardId).then(boardName => setBoardName(boardName))
+    },
+    [topicInfo.boardId]
+  )
 
   return (
     <Wrapper>
@@ -80,7 +84,7 @@ const PostHead: React.FunctionComponent<Props> = ({ topicInfo }) => {
       </GobackIcon>
       <Title>{topicInfo.title}</Title>
       <SubTitle onClick={() => navigate(`/board/${topicInfo.boardId}`)}>{boardName}</SubTitle>
-      <PostActions topicInfo={topicInfo} />
+      <PostActions topicInfo={topicInfo} refreshFunc={refreshFunc} />
     </Wrapper>
   )
 }

@@ -8,7 +8,7 @@ import RecommendReadings from './Recommend'
 import { getHomeInfo } from '@/services/global'
 import { notificationHandler } from '@/services/utils/errorHandler'
 
-const Home: React.FunctionComponent = () => {
+const Home: React.FC = () => {
   const [homeInfo] = useFetcher(getHomeInfo, {
     fail: notificationHandler,
   })

@@ -28,7 +28,7 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const SearchInput: React.FunctionComponent<Props> = ({ value, onChange }) => (
+const SearchInput: React.FC<Props> = ({ value, onChange }) => (
   <SearchInputDiv>
     <IconButton>
       <SearchIcon color="primary" />

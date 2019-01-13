@@ -18,7 +18,7 @@ interface Props {
   isUserCenter: boolean
 }
 
-const UserCenter: React.FunctionComponent<Props> = ({ info, isUserCenter }) => (
+const UserCenter: React.FC<Props> = ({ info, isUserCenter }) => (
   <>
     <UserAvatar info={info} isUserCenter={isUserCenter} />
     <UserDetail info={info} />
@@ -34,7 +34,7 @@ interface WrapperProps {
   id?: string
 }
 
-const Wrapper: React.FunctionComponent<WrapperProps> = props => {
+const Wrapper: React.FC<WrapperProps> = props => {
   const {
     state: { myInfo },
   } = useContainer(userInstance)

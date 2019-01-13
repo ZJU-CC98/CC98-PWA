@@ -38,3 +38,11 @@ input:-webkit-autofill:focus {
 div {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
+/* for markdown */
+pre,
+code,
+a {
+  white-space: pre-wrap;
+  word-break: break-all;
+}

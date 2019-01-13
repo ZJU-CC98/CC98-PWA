@@ -22,7 +22,7 @@ interface Props {
   delay?: number
 }
 
-export const HotTopicList: React.FunctionComponent<Props> = ({ service, delay = 0 }) => {
+export const HotTopicList: React.FC<Props> = ({ service, delay = 0 }) => {
   const [topics] = useFetcher(service, {
     fail: notificationHandler,
   })
@@ -55,7 +55,7 @@ export default () => {
         onChange={handleChange}
         indicatorColor="primary"
         textColor="primary"
-        fullWidth
+        variant="fullWidth"
       >
         <Tab value="day" label="今日热门" />
         <Tab value="week" label="本周热门" />

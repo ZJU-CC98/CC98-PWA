@@ -4,7 +4,7 @@ import LayoutCenter from '@/components/LayoutCenter'
 
 import LogInForm from './LogInForm'
 
-const LogIn: React.FunctionComponent = () => (
+const LogIn: React.FC = () => (
   <LayoutCenter>
     <LogInForm />
   </LayoutCenter>

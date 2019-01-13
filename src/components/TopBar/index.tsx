@@ -35,7 +35,7 @@ const Version = styled(Button).attrs({
   }
 `
 
-const TopBar: React.FunctionComponent = () => (
+const TopBar: React.FC = () => (
   <AppBar position="fixed">
     <Toolbar>
       <IconButtonS onClick={stateInstance.OPEN_DRAWER}>

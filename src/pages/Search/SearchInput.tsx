@@ -16,7 +16,7 @@ interface Props {
   onSearch: (value: string) => void
 }
 
-const SearchInput: React.FunctionComponent<Props> = ({ onSearch }) => {
+const SearchInput: React.FC<Props> = ({ onSearch }) => {
   const [value, setValue] = useState('')
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

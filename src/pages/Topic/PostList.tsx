@@ -34,7 +34,7 @@ export function useUserMap() {
   return [userMap, updateUserMap] as [typeof userMap, typeof updateUserMap]
 }
 
-const PostList: React.FunctionComponent<Props> = ({ service, isTrace, children }) => {
+const PostList: React.FC<Props> = ({ service, isTrace, children }) => {
   const [userMap, updateUserMap] = useUserMap()
 
   const [posts, state, callback] = useInfList(service, {

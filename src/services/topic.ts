@@ -1,4 +1,4 @@
-import { GET } from '@/utils/fetch'
+import { GET, PUT, DELETE } from '@/utils/fetch'
 import { ITopic, IHotTopic } from '@cc98/api'
 
 /**
@@ -176,4 +176,16 @@ export function getMyRecentTopics(from: number) {
  */
 export function getTopicFavorite(id: number | string) {
   return GET<boolean>(`topic/${id}/isfavorite`)
+}
+
+/**
+ * 收藏/取消收藏帖子
+ */
+export function FavoriteTopic(topicId: number, opt: boolean | null) {
+  const url = `me/favorite/${topicId}`
+  if (!opt) {
+    return PUT(url)
+  }
+
+  return DELETE(url)
 }

@@ -16,6 +16,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import { IBoard } from '@cc98/api'
 import { customBoard } from '@/services/board'
 
+import BoardMenu from './components/BoardMenu'
+
 interface Props {
   data: IBoard
 }
@@ -44,7 +46,6 @@ export default ({ data }: Props) => {
     isFollowed: data.isUserCustomBoard,
     loading: false,
   })
-
   const { isFollowed, loading } = state
 
   async function handleClick() {
@@ -79,14 +80,16 @@ export default ({ data }: Props) => {
             {`${data.todayCount} / ${data.topicCount}`}
           </Typography>
         </div>
-
-        <IconButton onClick={handleClick}>
-          {state.loading ? (
-            <CircularProgress size={20} />
-          ) : (
-            <FavoriteIcon color={isFollowed ? 'secondary' : 'disabled'} />
-          )}
-        </IconButton>
+        <div>
+          <IconButton onClick={handleClick}>
+            {state.loading ? (
+              <CircularProgress size={20} />
+            ) : (
+              <FavoriteIcon color={isFollowed ? 'secondary' : 'disabled'} />
+            )}
+          </IconButton>
+          <BoardMenu boardId={data.id} />
+        </div>
       </HeaderDiv>
 
       <ExpansionPanelS>

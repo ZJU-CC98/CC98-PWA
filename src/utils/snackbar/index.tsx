@@ -18,7 +18,7 @@ type ISnackBar = Pick<SnackbarProps, 'autoHideDuration' | 'anchorOrigin'> & {
  */
 let snackBarRef!: (props: ISnackBar) => void
 
-const MySnackBar: React.FunctionComponent = () => {
+const MySnackBar: React.FC = () => {
   const [open, setOpen] = useState(false)
   const handleClose = () => setOpen(false)
 
@@ -81,7 +81,10 @@ snackbar.error = (message: string) => {
 export default snackbar
 
 // mount the Component to DOM
+const snackbarDom = document.createElement('div')
+document.body.append(snackbarDom)
+
 function renderSnackBar() {
-  ReactDOM.render(<MySnackBar />, document.getElementById('snackbar'))
+  ReactDOM.render(<MySnackBar />, snackbarDom)
 }
 renderSnackBar()

@@ -62,13 +62,7 @@ interface ItemProps {
   onClick: () => void
 }
 
-export const TopicItem: React.FunctionComponent<ItemProps> = ({
-  onClick,
-  title,
-  subtitle,
-  info1,
-  info2,
-}) => (
+export const TopicItem: React.FC<ItemProps> = ({ onClick, title, subtitle, info1, info2 }) => (
   <ListItemS button divider onClick={onClick}>
     <TitleArea>
       <Title variant="subtitle1">{title}</Title>
@@ -93,19 +87,16 @@ export default ({ data, place }: Props) => {
   const [boardName, setBoardName] = useState('')
   useEffect(
     () => {
-      switch (place) {
-        case 'usercenter':
-        case 'hot':
-        case 'follow':
-        case 'search':
-          getBoardNameById(data.boardId).then(boardName => setBoardName(boardName))
+      if (place === 'inboard') {
+        return
       }
+      getBoardNameById(data.boardId).then(boardName => setBoardName(boardName))
     },
     [place]
   )
 
   const title = data.title
-  let subtitle = data.userName ? data.userName : '[匿名]'
+  let subtitle = data.userName || '[匿名]'
   let info1 = dayjs(data.lastPostTime).fromNow()
   let info2 = `回帖: ${data.replyCount}`
 

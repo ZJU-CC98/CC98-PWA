@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { DialogTitle, DialogContent, Tabs, Tab } from '@material-ui/core'
-
 import { EditorContainer } from '../EditorContainer'
+
+import { IMG_BASE_URL } from '@/config'
 
 const DialogTitleS = styled(DialogTitle)`
   && {
@@ -29,8 +30,6 @@ interface Props {
 }
 
 type StickerType = 'ac' | 'tb' | 'ms' | 'em'
-
-const BaseUrl = 'https://www.cc98.org/static/images'
 
 // TODO: refactor with UBB
 // tslint:disable-next-line
@@ -58,7 +57,7 @@ function getStickerReactNode(type: StickerType, handleFunc: Function) {
         : `${type}-mini/${type}${number}`
 
     stickerArr.push(
-      <Img src={`${BaseUrl}/${url}.${suffix}`} onClick={handleFunc(`${type}${number}`)} />
+      <Img src={`${IMG_BASE_URL}/${url}.${suffix}`} onClick={handleFunc(`${type}${number}`)} />
     )
   }
 
@@ -87,7 +86,7 @@ export default ({ editor, handleClose }: Props) => {
           onChange={handleChange}
           indicatorColor="primary"
           textColor="primary"
-          fullWidth
+          variant="fullWidth"
           scrollable
         >
           <Tab value="ac" label="AC娘" />

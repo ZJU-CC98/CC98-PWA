@@ -112,9 +112,9 @@
 
 
 .ubb-tag-upload {
-  display: inline-flex;
-  justify-content: space-around;
-  align-items: center;
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
   border: 1px solid;
   border-radius: 1px;
   padding: 6px 9px;

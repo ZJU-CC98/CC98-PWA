@@ -9,6 +9,7 @@ const presets = [
 
 const plugins = [
   ["@babel/plugin-transform-runtime"],
+  ["@babel/plugin-syntax-dynamic-import"],
   ["@babel/plugin-proposal-class-properties", {
     "loose": true
   }],

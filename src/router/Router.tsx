@@ -4,6 +4,8 @@ import { Router, RouteComponentProps, WindowLocation } from '@reach/router'
 
 import BoardList from '@/pages/BoardList'
 import Board from '@/pages/Board'
+import BoardRecord from '@/pages/Board/BoardRecord'
+import BoardQuietRoom from '@/pages/Board/QuietRoom'
 import Editor from '@/pages/Editor'
 import Home from '@/pages/Home'
 import HotTopic from '@/pages/HotTopic'
@@ -22,12 +24,12 @@ import Help from '@/pages/Help'
 import LogIn from '@/pages/LogIn'
 import Error from '@/pages/Error'
 
-export const Route: React.FunctionComponent<
+export const Route: React.FC<
   RouteComponentProps & {
     // @types/react 里 createElement 签名很混乱
     // tslint:disable-next-line:no-any
     component: any
-    // component: React.FunctionComponent<any>
+    // component: React.FC<any>
   }
 > = props => {
   const { path, component, ...otherProps } = props
@@ -39,7 +41,7 @@ export interface ILocation {
   location: WindowLocation
 }
 
-const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
+const MyRouter: React.FC<ILocation> = ({ location }) => (
   <Router location={location}>
     <Route path="/" component={Home} />
 
@@ -59,6 +61,8 @@ const MyRouter: React.FunctionComponent<ILocation> = ({ location }) => (
 
     <Route path="boardList" component={BoardList} />
     <Route path="board/:id" component={Board} />
+    <Route path="board/:id/record" component={BoardRecord} />
+    <Route path="board/:id/quietRoom" component={BoardQuietRoom} />
 
     <Route path="userCenter" component={UserCenter} />
     <Route path="userCenter/edit" component={UserCenterEdit} />

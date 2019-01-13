@@ -18,7 +18,7 @@ const ItemDiv = styled.div`
   width: 50%;
 `
 
-const ListItem: React.FunctionComponent<ListItemProps> = ({ name, value }) => (
+const ListItem: React.FC<ListItemProps> = ({ name, value }) => (
   <ItemDiv>
     <Typography color="textSecondary">{name}</Typography>
     <Typography>{value}</Typography>
@@ -34,7 +34,7 @@ interface Props {
   info: IUser
 }
 
-const RecentTopics: React.FunctionComponent<Props> = ({ info }) => (
+const RecentTopics: React.FC<Props> = ({ info }) => (
   <ExpandPanel defaultExpanded title="用户资料">
     <ListDiv>
       <ListItem name="性别" value={info.gender === 1 ? '男' : '女'} />

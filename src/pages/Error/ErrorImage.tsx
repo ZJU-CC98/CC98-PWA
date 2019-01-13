@@ -21,7 +21,7 @@ interface Props {
 /**
  * image for error page
  */
-const ErrorImage: React.FunctionComponent<Props> = props => {
+const ErrorImage: React.FC<Props> = props => {
   const [imgSrc, setImgSrc] = useState(img)
 
   const changeImage = () => {

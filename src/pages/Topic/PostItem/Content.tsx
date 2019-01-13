@@ -24,12 +24,6 @@ const TypographyS = styled(Typography)`
     img {
       max-width: 100%;
     }
-    pre,
-    code,
-    a {
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
   }
 `
 

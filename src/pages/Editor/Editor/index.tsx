@@ -22,7 +22,7 @@ interface Props {
   onSendCallback: () => void
 }
 
-const Editor: React.FunctionComponent<Props> = ({ editor, onSendCallback }) => {
+const Editor: React.FC<Props> = ({ editor, onSendCallback }) => {
   useContainer(editor)
 
   return (

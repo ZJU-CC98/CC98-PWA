@@ -5,7 +5,7 @@ import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/cor
 
 import useFetcher from '@/hooks/useFetcher'
 import useContainer from '@/hooks/useContainer'
-import userInstace from '@/containers/user'
+import userInstance from '@/containers/user'
 
 import { IMessageContent, IUser } from '@cc98/api'
 
@@ -107,7 +107,7 @@ const renderItem = (message: IMessageContent, userInfo: IUser, isCurrSend: boole
 export default ({ message }: Props) => {
   const {
     state: { myInfo },
-  } = useContainer(userInstace)
+  } = useContainer(userInstance)
 
   const [userInfo] = useFetcher(() => getUserInfoById(message.senderId))
   if (userInfo === null || myInfo === null) {

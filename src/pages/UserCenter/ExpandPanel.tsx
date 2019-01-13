@@ -26,7 +26,7 @@ type Props = Pick<ExpansionPanelProps, 'expanded' | 'defaultExpanded' | 'onChang
   title?: string
 }
 
-const ExpandPanel: React.FunctionComponent<Props> = props => (
+const ExpandPanel: React.FC<Props> = props => (
   <ExpansionPanel
     expanded={props.expanded}
     defaultExpanded={props.defaultExpanded}

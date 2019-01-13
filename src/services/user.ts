@@ -1,5 +1,5 @@
 import { IUser } from '@cc98/api'
-import { GET, PUT, DELETE } from '@/utils/fetch'
+import { GET, PUT, DELETE, POST } from '@/utils/fetch'
 
 import { memoize } from 'lodash-es'
 
@@ -48,5 +48,31 @@ export function unFollowUser(id: number) {
 export function modifyMyInfo(newInfo: IUser) {
   return PUT('me', {
     params: newInfo,
+  })
+}
+
+/**
+ * 上传个人头像
+ */
+export function updateMyAvatar(file: File) {
+  const formData = new FormData()
+  formData.append('files', file, file.name)
+  formData.append('contentType', 'multipart/form-data')
+
+  return POST<string>('file', {
+    headers: {
+      // Content-Type 置空
+    },
+    requestInit: {
+      body: formData,
+    },
+  })
+}
+/**
+ * 修改个人头像
+ */
+export function modifyMyAvatar(newAvatar: string) {
+  return PUT('me/portrait', {
+    params: newAvatar,
   })
 }

@@ -21,7 +21,7 @@ interface Props {
   order?: number
 }
 
-const FixFab: React.FunctionComponent<Props> = ({ onClick, order = 1, children }) => (
+const FixFab: React.FC<Props> = ({ onClick, order = 1, children }) => (
   // FIXME: waiting @types/styled-components to upgrade
   // @ts-ignore https://www.styled-components.com/docs/advanced#refs
   <FabS onClick={onClick} bottom={(order - 1) * 50 + 15}>

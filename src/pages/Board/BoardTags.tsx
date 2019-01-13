@@ -14,7 +14,7 @@ interface SelectProps {
   onChange: (tagID: number) => void
 }
 
-const TagSelect: React.FunctionComponent<SelectProps> = ({ tagGroup, onChange }) => {
+const TagSelect: React.FC<SelectProps> = ({ tagGroup, onChange }) => {
   const [tag, setTag] = useState(-1)
 
   const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -50,7 +50,7 @@ interface Props {
   onChange: (tagID: number, index: number) => void
 }
 
-const Tags: React.FunctionComponent<Props> = ({ boardTags, onChange }) => (
+const Tags: React.FC<Props> = ({ boardTags, onChange }) => (
   <FlexDiv>
     {boardTags &&
       boardTags.map((tagGroup, index) => (

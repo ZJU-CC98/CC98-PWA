@@ -9,7 +9,7 @@ const WrapperDiv = styled.div`
   padding: 15px 0;
 `
 
-const LoadingCircle: React.FunctionComponent = () => (
+const LoadingCircle: React.FC = () => (
   <WrapperDiv>
     <CircularProgress />
   </WrapperDiv>

@@ -23,7 +23,7 @@ interface ItemProps {
   url: string
 }
 
-const Item: React.FunctionComponent<ItemProps> = ({ icon, text, url }) => (
+const Item: React.FC<ItemProps> = ({ icon, text, url }) => (
   <ListItem button onClick={() => navigate(url)}>
     <ListItemIcon>{icon}</ListItemIcon>
     <ListItemText primary={text} />

@@ -95,22 +95,6 @@ module.exports = {
         <p>高级 Webpack 配置工程师</p>
         <p>董松松松</p>
       </td>
-      <td align="center" valign="top">
-        <img width="150" height="150" src="https://github.com/tgsmdww.png?s=150">
-        <br>
-        <a href="https://github.com/tgsmdww">tgsmdww</a>
-        <p>前端开发</p>
-        <p>hzt</p>
-      </td>
-    </tr>
-    <tr>
-      <td align="center" valign="top">
-        <img width="150" height="150" src="https://github.com/Tsukiko15.png?s=150">
-        <br>
-        <a href="https://github.com/Tsukiko15">Tsukiko15</a>
-        <p>后端开发</p>
-        <p>主席</p>
-      </td>
     </tr>
     <tr>
       <td align="center" valign="top">
@@ -127,7 +111,7 @@ module.exports = {
         <p>前端开发</p>
         <p>qc</p>
       </td>
-            <td align="center" valign="top">
+      <td align="center" valign="top">
         <img width="150" height="150" src="https://github.com/tgsmdww.png?s=150">
         <br>
         <a href="https://github.com/AsukaSong">tgsmdww</a>
@@ -135,7 +119,18 @@ module.exports = {
         <p>TG</p>
       </td>
     </tr>
+    <tr>
+      <td align="center" valign="top">
+        <img width="150" height="150" src="https://github.com/Tsukiko15.png?s=150">
+        <br>
+        <a href="https://github.com/Tsukiko15">Tsukiko15</a>
+        <p>后端开发</p>
+        <p>主席</p>
+      </td>
+    </tr>
   </tbody>
 </table>
 
+### 联系方式
 
+Email: contact@cc98.org

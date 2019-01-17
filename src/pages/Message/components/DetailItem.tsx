@@ -41,6 +41,8 @@ const MessageContent = styled.div`
   min-height: 3em;
   display: flex;
   align-items: center;
+  white-space: pre-wrap;
+  word-break: break-all;
 `
 
 const MessageContentLeft = styled(MessageContent)`

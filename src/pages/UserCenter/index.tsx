@@ -12,20 +12,28 @@ import UserAvatar from './UserAvatar'
 import UserSignature from './UserSignature'
 import UserDetail from './UserDetail'
 import UserRecentTopics from './UserRecentTopics'
+import UserRecentPosts from './UserRecentPosts'
 
 interface Props {
   info: IUser
   isUserCenter: boolean
 }
 
-const UserCenter: React.FC<Props> = ({ info, isUserCenter }) => (
-  <>
-    <UserAvatar info={info} isUserCenter={isUserCenter} />
-    <UserDetail info={info} />
-    <UserSignature info={info} />
-    <UserRecentTopics info={info} isUserCenter={isUserCenter} />
-  </>
-)
+const UserCenter: React.FC<Props> = ({ info, isUserCenter }) => {
+  const {
+    state: { myInfo },
+  } = useContainer(userInstance)
+
+  return (
+    <>
+      <UserAvatar info={info} isUserCenter={isUserCenter} />
+      <UserDetail info={info} />
+      <UserSignature info={info} />
+      <UserRecentTopics info={info} isUserCenter={isUserCenter} />
+      {myInfo && info.id === myInfo.id && <UserRecentPosts />}
+    </>
+  )
+}
 
 interface WrapperProps {
   /**

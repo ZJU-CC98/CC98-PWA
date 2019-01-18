@@ -1,5 +1,5 @@
 import { GET, PUT } from '@/utils/fetch'
-import { IPost, ILike } from '@cc98/api'
+import { IPost, IMyPosts, ILike } from '@cc98/api'
 
 /**
  * 获取一个帖子的10层楼
@@ -128,4 +128,16 @@ export function rate(id: number, value: 1 | -1, reason: string) {
       reason,
     },
   })
+}
+
+/**
+ * 获取用户近期发的回复
+ */
+export function getMyRecentPosts(from: number) {
+  return GET<IMyPosts>('me/recent-post', {
+    params: {
+      from,
+      size: 20,
+    },
+  }).then(res => Promise.resolve(res.map(posts => posts.data)))
 }

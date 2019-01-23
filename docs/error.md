@@ -60,7 +60,7 @@ TODO
 * 401 -用户名密码错误
 * 50* -服务器内部错误
 
-## 关注 （/myfollow）新帖 （/newTopics）搜索（/search）
+## 关注 （/myfollow）新帖 （/newTopics）搜索（/search）
 对获取关注信息的api进行处理
 
 **navigate**

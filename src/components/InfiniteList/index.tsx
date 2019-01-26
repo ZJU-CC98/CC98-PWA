@@ -6,7 +6,7 @@ import LoadingCircle from '@/components/LoadingCircle'
 import { debounce } from 'lodash-es'
 
 // TODO: move to utils
-import { bindURL } from '@/router'
+import { bindURL, scrollDom } from '@/router'
 
 const WrapperDiv = styled.div<{
   reverse: boolean
@@ -92,11 +92,14 @@ const InfiniteList: React.FC<Props> = props => {
       }
       wrapperDom.current.onscroll = bindFunc
     } else {
-      window.addEventListener('scroll', bindFunc)
-
-      return () => {
-        window.removeEventListener('scroll', bindFunc)
+      if (scrollDom) {
+        scrollDom.onscroll = bindFunc
       }
+      // window.addEventListener('scroll', bindFunc)
+
+      // return () => {
+      //   window.removeEventListener('scroll', bindFunc)
+      // }
     }
   }, [])
 

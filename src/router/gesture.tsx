@@ -20,9 +20,22 @@ document.addEventListener(
   false
 )
 
+import { updateFunc } from './index'
+
+document.addEventListener(
+  'touchmove',
+  (event: TouchEvent) => {
+    const moveX = event.changedTouches[0].clientX - globalBack.clientX
+    updateFunc(moveX)
+  },
+  false
+)
+
 document.addEventListener(
   'touchend',
   (event: TouchEvent) => {
+    updateFunc(0)
+
     const moveX = event.changedTouches[0].clientX - globalBack.clientX
     const moveY = event.changedTouches[0].clientY - globalBack.clientY
 

@@ -66,8 +66,7 @@ export const ROUTER_CACHE = new RouterCacheContainer()
  * @param func 待绑定函数
  * @param href 路由
  */
-// tslint:disable-next-line
-export const bindURL = (func: Function, href: string) => () => {
+export const bindURL = (func: () => void, href: string) => () => {
   if (window.location.href === href) {
     func()
   }
@@ -117,14 +116,6 @@ const ScrollDiv = ({ show, zIndex, locState }: ScrollDivProps) => {
     updateFn = () => refreshFn(null)
     style.left = moveX
   }
-
-  // console.log(moveX)
-
-  // useEffect(() => {
-  //   if (scrollDiv.current) {
-  //     console.log(scrollDiv.current.scrollTop)
-  //   }
-  // })
 
   const lastShow = useRef(false)
 

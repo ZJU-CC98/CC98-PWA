@@ -61,19 +61,6 @@ class RouterCacheContainer extends Container<State> {
  */
 export const ROUTER_CACHE = new RouterCacheContainer()
 
-/**
- * 将函数触发限定在某一路由下（配合事件绑定用）
- * @param func 待绑定函数
- * @param href 路由
- */
-export const bindURL = (func: () => void, href: string) => () => {
-  if (window.location.href === href) {
-    func()
-  }
-}
-
-export let scrollDom: HTMLElement
-
 // https://majido.github.io/scroll-restoration-proposal/history-based-api.html#web-idl
 // history.scrollRestoration = 'manual'
 
@@ -99,7 +86,7 @@ const ScrollDiv = ({ show, zIndex, locState }: ScrollDivProps) => {
   const style: React.CSSProperties = {
     position: 'fixed',
     width: '100%',
-    height: '100%',
+    height: 'calc(100vh - 56px)',
     overflowY: 'scroll',
     backgroundColor: '#fff',
   }
@@ -108,7 +95,7 @@ const ScrollDiv = ({ show, zIndex, locState }: ScrollDivProps) => {
 
   useEffect(() => {
     if (scrollDiv.current) {
-      scrollDom = scrollDiv.current
+      scrollDom.current = scrollDiv.current
     }
   }, [])
 
@@ -122,10 +109,12 @@ const ScrollDiv = ({ show, zIndex, locState }: ScrollDivProps) => {
   useEffect(() => {
     if (lastShow.current !== show) {
       if (show) {
-        scrollDiv.current &&
-          scrollDiv.current.scrollTo({
-            top: locState.scrollTop,
-          })
+        setImmediate(() => {
+          scrollDiv.current &&
+            scrollDiv.current.scrollTo({
+              top: locState.scrollTop,
+            })
+        })
       }
       if (!show) {
         if (scrollDiv.current) {

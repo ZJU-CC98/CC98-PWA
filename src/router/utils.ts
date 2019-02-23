@@ -9,7 +9,7 @@ export const bindURL = (func: () => void, href: string) => () => {
   }
 }
 
-class ScrollDom {
+export class ScrollDom {
   _scrollDom?: HTMLElement
   _bindFunc?: () => void
 

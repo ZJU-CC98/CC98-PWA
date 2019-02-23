@@ -55,8 +55,8 @@ export default ({ editor }: Props) => {
   }
 
   return (
-    <IconButton>
-      <TransformIcon onClick={clickHandler} />
+    <IconButton onClick={clickHandler}>
+      <TransformIcon />
       <Dialog open={open} fullWidth scroll="paper">
         <Preview content={editor.fullContent} handleClose={handleClose} />
       </Dialog>

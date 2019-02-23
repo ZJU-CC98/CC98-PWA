@@ -35,8 +35,8 @@ export default ({ callback }: Props) => {
       onChange={handleInputChange}
       InputProps={{
         endAdornment: (
-          <MyIconButton>
-            <SendIcon onClick={handleSend} />
+          <MyIconButton onClick={handleSend}>
+            <SendIcon />
           </MyIconButton>
         ),
       }}

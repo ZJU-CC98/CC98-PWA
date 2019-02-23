@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 // https://reach.tech/router/api/Router
 import { Location, WindowLocation } from '@reach/router'
 import Router, { ILocation } from './Router'
 
 import useContainer, { Container } from '@/hooks/useContainer'
 import settingInstance from '@/containers/setting'
-
-import './gesture'
 
 interface LocationState {
   href: string
@@ -64,33 +62,22 @@ export const ROUTER_CACHE = new RouterCacheContainer()
 // https://majido.github.io/scroll-restoration-proposal/history-based-api.html#web-idl
 history.scrollRestoration = 'manual'
 
-// import { useSpring, animated } from 'react-spring/hooks'
-// import { config } from 'react-spring'
-
 interface ScrollDivProps {
   show: boolean
   zIndex: number
   locState: LocationState
 }
 
-let moveX = 0
-let updateFn: () => void
-export let updateFunc = (x: number) => {
-  moveX = x
-  updateFn()
-}
-
 import { globalScrollMap, ScrollDom } from './utils'
+import MoveDiv from './MoveDiv'
 
 const ScrollDiv = ({ show, zIndex, locState }: ScrollDivProps) => {
-  const refreshFn = useState(0)[1]
-
   const style: React.CSSProperties = {
     position: 'fixed',
     width: '100%',
     height: 'calc(100vh - 56px)',
     overflowY: 'scroll',
-    backgroundColor: '#fff',
+    zIndex,
   }
 
   const scrollDiv = useRef<HTMLDivElement>(null)
@@ -104,37 +91,37 @@ const ScrollDiv = ({ show, zIndex, locState }: ScrollDivProps) => {
     }
   }, [])
 
-  if (show) {
-    updateFn = () => refreshFn(prev => prev + 1)
-    style.left = moveX
-  }
-
   const lastShow = useRef(false)
 
   useEffect(() => {
-    if (lastShow.current !== show) {
-      if (show) {
-        setImmediate(() => {
-          scrollDiv.current &&
-            scrollDiv.current.scrollTo({
-              top: locState.scrollTop,
-              behavior: 'smooth',
-            })
-        })
-      }
-      if (!show) {
-        if (scrollDiv.current) {
-          locState.scrollTop = scrollDiv.current.scrollTop
-        }
-      }
-
-      lastShow.current = show
+    if (lastShow.current === show) {
+      return
     }
+
+    // hide -> show
+    if (show) {
+      setImmediate(() => {
+        scrollDiv.current &&
+          scrollDiv.current.scrollTo({
+            top: locState.scrollTop,
+            // behavior: 'smooth',
+          })
+      })
+    } else {
+      // show -> hide
+      if (scrollDiv.current) {
+        locState.scrollTop = scrollDiv.current.scrollTop
+      }
+    }
+
+    lastShow.current = show
   })
 
   return (
-    <div ref={scrollDiv} style={{ ...style, zIndex }}>
-      <Router location={locState.location} />
+    <div ref={scrollDiv} style={style}>
+      <MoveDiv>
+        <Router location={locState.location} />
+      </MoveDiv>
     </div>
   )
 }

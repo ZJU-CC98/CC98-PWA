@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 
 import MetaInfo, { MetaInfoContainer } from './MetaInfo'
@@ -61,16 +61,8 @@ export default (props: Props) => {
     isContainerInit.current = true
   }
 
-  const onSendCallback = useMemo(
-    () =>
-      chooseSendCallback(
-        editor.current!,
-        metaContainer.current!,
-        props,
-        init.boardId !== undefined
-      ),
-    []
-  )
+  const onSendCallback = () =>
+    chooseSendCallback(editor.current!, metaContainer.current!, props, init.boardId !== undefined)
 
   return (
     <WrapperDiv>

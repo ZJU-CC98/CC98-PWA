@@ -16,7 +16,10 @@ const MoveDiv: React.FC = ({ children }) => {
   }))
 
   const divRef = useRef<HTMLDivElement>(null)
-  const touchX = useRef(0)
+  const touchPos = useRef({
+    x: 0,
+    y: 0,
+  })
 
   useEffect(() => {
     if (!divRef.current) {
@@ -25,15 +28,16 @@ const MoveDiv: React.FC = ({ children }) => {
     const divDom = divRef.current
 
     divDom.addEventListener('touchstart', (event: TouchEvent) => {
-      touchX.current = event.changedTouches[0].clientX
+      touchPos.current.x = event.changedTouches[0].clientX
+      touchPos.current.y = event.changedTouches[0].clientY
     })
 
     divDom.addEventListener('touchmove', (event: TouchEvent) => {
-      if (touchX.current > 100) {
+      if (touchPos.current.x > 100) {
         return
       }
 
-      const moveX = event.changedTouches[0].clientX - touchX.current
+      const moveX = event.changedTouches[0].clientX - touchPos.current.x
       set({
         left: moveX,
       })
@@ -44,7 +48,12 @@ const MoveDiv: React.FC = ({ children }) => {
         left: 0,
       })
 
-      const moveX = event.changedTouches[0].clientX - touchX.current
+      const moveX = event.changedTouches[0].clientX - touchPos.current.x
+      const moveY = event.changedTouches[0].clientY - touchPos.current.y
+
+      if (moveY > 40) {
+        return
+      }
 
       if (moveX > 150) {
         history.go(-1)

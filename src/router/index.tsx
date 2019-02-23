@@ -77,6 +77,7 @@ const ScrollDiv = ({ show, zIndex, locState }: ScrollDivProps) => {
     width: '100%',
     height: 'calc(100vh - 56px)',
     overflowY: 'scroll',
+    WebkitOverflowScrolling: 'touch',
     zIndex,
   }
 

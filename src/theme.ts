@@ -9,17 +9,11 @@ export const dark = createMuiTheme({
     secondary: pink,
     type: 'dark',
   },
-  typography: {
-    useNextVariants: true,
-  },
 })
 
 export const light = createMuiTheme({
   palette: {
     primary: blue,
     secondary: pink,
-  },
-  typography: {
-    useNextVariants: true,
   },
 })

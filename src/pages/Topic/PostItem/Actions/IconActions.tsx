@@ -109,8 +109,8 @@ const IconActions: React.FC<Props> = ({ postInfo, refreshPost }) => {
       <Count>{postInfo.dislikeCount}</Count>
 
       <DividerCol />
-      <IconButton>
-        <FormatQuoteIcon onClick={handleQuote} />
+      <IconButton onClick={handleQuote}>
+        <FormatQuoteIcon />
       </IconButton>
     </ActionDiv>
   )

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
@@ -48,19 +48,15 @@ const Topic = ({ topicId, userId, postId, isReverse }: Props) => {
   }
 
   // 根据 URL 参数选择获取 post 的 service
-  const postService = useMemo(
-    () =>
-      isReverse
-        ? (from: number) => getReversePost(topicInfo.id, from, topicInfo.replyCount)
-        : userId
-        ? (from: number) => getTracePost(topicInfo.id, userId, from)
-        : postId
-        ? (from: number) => getAnonymousTracePost(topicInfo.id, postId, from)
-        : (from: number) => getPost(topicInfo.id, from),
-    [topicInfo]
-  )
+  const postService = isReverse
+    ? (from: number) => getReversePost(topicInfo.id, from, topicInfo.replyCount)
+    : userId
+    ? (from: number) => getTracePost(topicInfo.id, userId, from)
+    : postId
+    ? (from: number) => getAnonymousTracePost(topicInfo.id, postId, from)
+    : (from: number) => getPost(topicInfo.id, from)
 
-  const hotPostService = useCallback(() => getHotPost(topicInfo.id), [topicInfo])
+  const hotPostService = () => getHotPost(topicInfo.id)
 
   // 是否处于追踪状态
   const isTrace = !!userId || !!postId
@@ -69,7 +65,7 @@ const Topic = ({ topicId, userId, postId, isReverse }: Props) => {
     getTopicInfo(topicId).then(res =>
       res.fail(navigateHandler).succeed(newTopicInfo => {
         setTopicInfo(newTopicInfo)
-        setPostListKey(postListKey + 1)
+        setPostListKey(prevKey => prevKey + 1)
       })
     )
   }

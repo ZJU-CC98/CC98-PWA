@@ -25,7 +25,7 @@ import { updateFunc } from './index'
 document.addEventListener(
   'touchmove',
   (event: TouchEvent) => {
-    if (globalBack.clientX < 100) {
+    if (globalBack.clientX > 100) {
       return
     }
 

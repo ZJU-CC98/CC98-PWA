@@ -46,12 +46,8 @@ export default (props: Props) => {
 
   const isContainerInit = useRef(false)
 
-  interface MutableRefObject<T> {
-    current: T
-  }
-  // 此处 @types/react 类型有误
-  const editor = useRef<EditorContainer>(null) as MutableRefObject<EditorContainer>
-  const metaContainer = useRef<MetaInfoContainer>(null) as MutableRefObject<MetaInfoContainer>
+  const editor = useRef<EditorContainer | null>(null)
+  const metaContainer = useRef<MetaInfoContainer | null>(null)
 
   if (init === null) {
     // init 还在获取中
@@ -67,14 +63,19 @@ export default (props: Props) => {
 
   const onSendCallback = useMemo(
     () =>
-      chooseSendCallback(editor.current, metaContainer.current, props, init.boardId !== undefined),
+      chooseSendCallback(
+        editor.current!,
+        metaContainer.current!,
+        props,
+        init.boardId !== undefined
+      ),
     []
   )
 
   return (
     <WrapperDiv>
-      {init.boardId && <MetaInfo container={metaContainer.current} boardId={init.boardId} />}
-      <Editor editor={editor.current} onSendCallback={onSendCallback} />
+      {init.boardId && <MetaInfo container={metaContainer.current!} boardId={init.boardId} />}
+      <Editor editor={editor.current!} onSendCallback={onSendCallback} />
     </WrapperDiv>
   )
 }

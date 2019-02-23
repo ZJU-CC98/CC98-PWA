@@ -84,7 +84,7 @@ interface Props {
 // TODO: 消息气泡
 const renderItem = (message: IMessageContent, userInfo: IUser, isCurrSend: boolean) =>
   !isCurrSend ? (
-    <ListItemS>
+    <ListItemS button>
       <ListItemAvatarS>
         <Avatar src={userInfo.portraitUrl} onClick={() => navigate(`/user/${userInfo.id}`)} />
       </ListItemAvatarS>
@@ -94,7 +94,7 @@ const renderItem = (message: IMessageContent, userInfo: IUser, isCurrSend: boole
       </MessageRoot>
     </ListItemS>
   ) : (
-    <ListItemS>
+    <ListItemS button>
       <ListItemText />
       <MessageRoot>
         <MessageContentRight>{message.content}</MessageContentRight>

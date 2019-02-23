@@ -60,10 +60,10 @@ export class Container<State extends object = {}> {
  * @param containerInstance 全局 container 实例
  */
 export default function useContainer<T extends Container>(containerInstance: T) {
-  const forceUpdate = useState(null)[1]
+  const setUpdateCnt = useState(0)[1]
 
   useEffect(() => {
-    const listener = () => forceUpdate(null)
+    const listener = () => setUpdateCnt(prevCnt => prevCnt + 1)
     containerInstance._subscribe(listener)
 
     return () => containerInstance._unsubscribe(listener)

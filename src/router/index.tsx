@@ -62,7 +62,7 @@ class RouterCacheContainer extends Container<State> {
 export const ROUTER_CACHE = new RouterCacheContainer()
 
 // https://majido.github.io/scroll-restoration-proposal/history-based-api.html#web-idl
-// history.scrollRestoration = 'manual'
+history.scrollRestoration = 'manual'
 
 // import { useSpring, animated } from 'react-spring/hooks'
 // import { config } from 'react-spring'
@@ -80,8 +80,10 @@ export let updateFunc = (x: number) => {
   updateFn()
 }
 
+import { globalScrollMap, ScrollDom } from './utils'
+
 const ScrollDiv = ({ show, zIndex, locState }: ScrollDivProps) => {
-  const refreshFn = useState(null)[1]
+  const refreshFn = useState(0)[1]
 
   const style: React.CSSProperties = {
     position: 'fixed',
@@ -95,12 +97,15 @@ const ScrollDiv = ({ show, zIndex, locState }: ScrollDivProps) => {
 
   useEffect(() => {
     if (scrollDiv.current) {
-      scrollDom.current = scrollDiv.current
+      const scrollDom = new ScrollDom()
+      scrollDom.scrollDom = scrollDiv.current
+
+      globalScrollMap.set(locState.href, scrollDom)
     }
   }, [])
 
   if (show) {
-    updateFn = () => refreshFn(null)
+    updateFn = () => refreshFn(prev => prev + 1)
     style.left = moveX
   }
 
@@ -113,6 +118,7 @@ const ScrollDiv = ({ show, zIndex, locState }: ScrollDivProps) => {
           scrollDiv.current &&
             scrollDiv.current.scrollTo({
               top: locState.scrollTop,
+              behavior: 'smooth',
             })
         })
       }

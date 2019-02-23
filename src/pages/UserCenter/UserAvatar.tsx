@@ -84,8 +84,8 @@ const UserAvatar: React.FC<Props> = ({ info, isUserCenter }) => {
           <FavoriteIcon color={isFollowing ? 'secondary' : 'disabled'} />
         )}
       </IconButton>
-      <IconButton>
-        <ChatIcon onClick={() => navigate(`/messageDetail/${info.id}`)} />
+      <IconButton onClick={() => navigate(`/messageDetail/${info.id}`)}>
+        <ChatIcon />
       </IconButton>
     </>
   )

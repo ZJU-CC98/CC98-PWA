@@ -55,7 +55,7 @@ export default () => {
         onChange={handleChange}
         indicatorColor="primary"
         textColor="primary"
-        variant="fullWidth"
+        fullWidth
       >
         <Tab value="day" label="今日热门" />
         <Tab value="week" label="本周热门" />

@@ -18,7 +18,7 @@ export default () => {
       <Tabs
         textColor="primary"
         indicatorColor="primary"
-        variant="fullWidth"
+        fullWidth
         value={current}
         onChange={handleChange}
       >

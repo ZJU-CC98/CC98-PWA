@@ -6,6 +6,8 @@ import Router, { ILocation } from './Router'
 import useContainer, { Container } from '@/hooks/useContainer'
 import settingInstance from '@/containers/setting'
 
+import './gesture'
+
 interface LocationState {
   href: string
   location: WindowLocation
@@ -62,68 +64,47 @@ export const ROUTER_CACHE = new RouterCacheContainer()
 // https://majido.github.io/scroll-restoration-proposal/history-based-api.html#web-idl
 history.scrollRestoration = 'manual'
 
+import { useSpring, animated, config } from 'react-spring'
+
 interface ScrollDivProps {
   show: boolean
-  zIndex: number
   locState: LocationState
 }
 
-import { globalScrollMap, ScrollDom } from './utils'
-import MoveDiv from './MoveDiv'
-
-const ScrollDiv = ({ show, zIndex, locState }: ScrollDivProps) => {
-  const style: React.CSSProperties = {
-    position: 'fixed',
-    width: '100%',
-    height: 'calc(100vh - 56px)',
-    overflowY: 'scroll',
-    WebkitOverflowScrolling: 'touch',
-    zIndex,
-  }
-
-  const scrollDiv = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (scrollDiv.current) {
-      const scrollDom = new ScrollDom()
-      scrollDom.scrollDom = scrollDiv.current
-
-      globalScrollMap.set(locState.href, scrollDom)
-    }
-  }, [])
-
+const ScrollDiv = ({ show, locState }: ScrollDivProps) => {
   const lastShow = useRef(false)
+  const [props, set] = useSpring(() => ({
+    opacity: 0,
+    config: config.slow,
+  }))
 
-  useEffect(() => {
-    if (lastShow.current === show) {
-      return
+  if (lastShow.current !== show) {
+    if (show) {
+      set({ opacity: 1 })
+
+      setImmediate(() => {
+        window.scrollTo({
+          left: 0,
+          top: locState.scrollTop,
+          // behavior: 'smooth',
+        })
+      })
     }
 
-    // hide -> show
-    if (show) {
-      setImmediate(() => {
-        scrollDiv.current &&
-          scrollDiv.current.scrollTo({
-            top: locState.scrollTop,
-            // behavior: 'smooth',
-          })
-      })
-    } else {
-      // show -> hide
-      if (scrollDiv.current) {
-        locState.scrollTop = scrollDiv.current.scrollTop
-      }
+    if (!show) {
+      set({ opacity: 0 })
+      locState.scrollTop = window.scrollY
     }
 
     lastShow.current = show
-  })
+  }
+
+  const style = show ? props : { display: 'none' }
 
   return (
-    <div ref={scrollDiv} style={style}>
-      <MoveDiv>
-        <Router location={locState.location} />
-      </MoveDiv>
-    </div>
+    <animated.div style={style}>
+      <Router location={locState.location} />
+    </animated.div>
   )
 }
 
@@ -136,13 +117,8 @@ const CacheRouter: React.FC<ILocation> = ({ location }) => {
 
   return (
     <>
-      {locationStates.map((locState, i) => (
-        <ScrollDiv
-          key={locState.href}
-          show={locState.href === location.href}
-          zIndex={i}
-          locState={locState}
-        />
+      {locationStates.map(locState => (
+        <ScrollDiv key={locState.href} show={locState.href === location.href} locState={locState} />
       ))}
     </>
   )

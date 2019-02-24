@@ -4,9 +4,7 @@ import styled from 'styled-components'
 import LoadingCircle from '@/components/LoadingCircle'
 
 import { debounce } from 'lodash-es'
-
-// TODO: move to utils
-import { bindURL, globalScrollMap } from '@/router/utils'
+import { bindURL } from '@/router/utils'
 
 const WrapperDiv = styled.div<{
   reverse: boolean
@@ -92,16 +90,11 @@ const InfiniteList: React.FC<Props> = props => {
       }
       wrapperDom.current.onscroll = bindFunc
     } else {
-      const scrollDom = globalScrollMap.get(window.location.href)
+      window.addEventListener('scroll', bindFunc)
 
-      if (scrollDom) {
-        scrollDom.bindFunc = bindFunc
+      return () => {
+        window.removeEventListener('scroll', bindFunc)
       }
-
-      // window.addEventListener('scroll', bindFunc)
-      // return () => {
-      //   window.removeEventListener('scroll', bindFunc)
-      // }
     }
   }, [])
 

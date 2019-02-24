@@ -8,11 +8,11 @@
 
 ### 项目技术栈
 
-- react@next
+- react@16.8
 
 - @reach/router
 
-- ​@material-ui/core@3
+- ​@material-ui@4
 
 - styled-component@4
 

@@ -15,10 +15,12 @@ export default () => {
 
   return (
     <>
+      {/*
+        // @ts-ignore */}
       <Tabs
         textColor="primary"
         indicatorColor="primary"
-        fullWidth
+        variant="fullWidth"
         value={current}
         onChange={handleChange}
       >

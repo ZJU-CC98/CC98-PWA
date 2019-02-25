@@ -80,13 +80,14 @@ export default ({ editor, handleClose }: Props) => {
   return (
     <>
       <DialogTitleS>
+        {/*
+          // @ts-ignore */}
         <Tabs
           value={type}
           onChange={handleChange}
           indicatorColor="primary"
           textColor="primary"
-          fullWidth
-          scrollable
+          variant="scrollable"
         >
           <Tab value="ac" label="AC娘" />
           <Tab value="ms" label="雀魂" />

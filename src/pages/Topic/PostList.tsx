@@ -27,7 +27,8 @@ export function useUserMap() {
         userMap[user.id] = user
       })
 
-      setUserMap(userMap)
+      // react use Object.is algorithm for comparing
+      setUserMap({ ...userMap })
     })
   }
 

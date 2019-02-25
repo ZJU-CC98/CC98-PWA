@@ -5,11 +5,34 @@ import ExpandPanel from './ExpandPanel'
 import InfiniteList from '@/components/InfiniteList'
 import useInfList from '@/hooks/useInfList'
 
+import { TopicItem } from '@/components/TopicList/TopicListItem'
+
+import { IPost } from '@cc98/api'
 import { navigateHandler } from '@/services/utils/errorHandler'
 
-import UserRecentPostsItem from './UserRecentPostsItem'
+import { navigate } from '@/utils/history'
+import dayjs from 'dayjs'
 
 import { getMyRecentPosts } from '@/services/post'
+
+const UserRecentPostsItem: React.FC<{
+  post: IPost
+}> = ({ post }) => {
+  // FIXME: 后端应不返回签到
+  if (post.content.startsWith('签到回复')) {
+    return null
+  }
+
+  return (
+    <TopicItem
+      title={post.title}
+      subtitle={post.content}
+      info1={dayjs(post.time).fromNow()}
+      info2={`${post.floor} L`}
+      onClick={() => navigate(`/topic/${post.topicId}#${post.floor}`)}
+    />
+  )
+}
 
 const RecentPosts: React.FC = () => {
   const [expand, setExpand] = useState(false)
@@ -24,8 +47,8 @@ const RecentPosts: React.FC = () => {
     <ExpandPanel expanded={expand} title="发表回复" onChange={onChange}>
       {expand && (
         <InfiniteList isLoading={isLoading} isEnd={isEnd} callback={callback}>
-          {posts.map(info => (
-            <UserRecentPostsItem key={info.id} data={info} />
+          {posts.map(post => (
+            <UserRecentPostsItem key={post.id} post={post} />
           ))}
         </InfiniteList>
       )}

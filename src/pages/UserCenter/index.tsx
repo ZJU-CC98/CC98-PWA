@@ -19,21 +19,15 @@ interface Props {
   isUserCenter: boolean
 }
 
-const UserCenter: React.FC<Props> = ({ info, isUserCenter }) => {
-  const {
-    state: { myInfo },
-  } = useContainer(userInstance)
-
-  return (
-    <>
-      <UserAvatar info={info} isUserCenter={isUserCenter} />
-      <UserDetail info={info} />
-      <UserSignature info={info} />
-      <UserRecentTopics info={info} isUserCenter={isUserCenter} />
-      {myInfo && info.id === myInfo.id && <UserRecentPosts />}
-    </>
-  )
-}
+const UserCenter: React.FC<Props> = ({ info, isUserCenter }) => (
+  <>
+    <UserAvatar info={info} isUserCenter={isUserCenter} />
+    <UserDetail info={info} />
+    <UserSignature info={info} />
+    <UserRecentTopics info={info} isUserCenter={isUserCenter} />
+    {isUserCenter && <UserRecentPosts />}
+  </>
+)
 
 interface WrapperProps {
   /**

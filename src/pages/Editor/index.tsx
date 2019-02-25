@@ -61,8 +61,12 @@ export default (props: Props) => {
     isContainerInit.current = true
   }
 
-  const onSendCallback = () =>
-    chooseSendCallback(editor.current!, metaContainer.current!, props, init.boardId !== undefined)
+  const onSendCallback = chooseSendCallback(
+    editor.current!,
+    metaContainer.current!,
+    props,
+    init.boardId !== undefined
+  )
 
   return (
     <WrapperDiv>

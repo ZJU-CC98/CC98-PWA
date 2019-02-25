@@ -32,8 +32,10 @@ export default ({ editor }: Props) => {
   }
 
   return (
-    <IconButton onClick={clickHandler}>
-      <DeleteIcon />
+    <>
+      <IconButton onClick={clickHandler}>
+        <DeleteIcon />
+      </IconButton>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <DialogContentText>确认要清空已输入的内容吗？</DialogContentText>
@@ -47,6 +49,6 @@ export default ({ editor }: Props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </IconButton>
+    </>
   )
 }

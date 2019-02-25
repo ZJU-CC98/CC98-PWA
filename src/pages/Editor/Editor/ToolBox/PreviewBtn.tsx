@@ -53,11 +53,13 @@ export default ({ editor }: Props) => {
   }
 
   return (
-    <IconButton onClick={clickHandler}>
-      <TransformIcon />
+    <>
+      <IconButton onClick={clickHandler}>
+        <TransformIcon />
+      </IconButton>
       <Dialog open={open} fullWidth scroll="paper">
         <Preview content={editor.fullContent} handleClose={handleClose} />
       </Dialog>
-    </IconButton>
+    </>
   )
 }

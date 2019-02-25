@@ -33,7 +33,10 @@ export default ({ editor }: Props) => {
   }
 
   return (
-    <IconButton onClick={clickHandler}>
+    <>
+      <IconButton onClick={clickHandler}>
+        <AddPhotoAlternateIcon />
+      </IconButton>
       <input
         style={{ display: 'none' }}
         type="file"
@@ -43,7 +46,6 @@ export default ({ editor }: Props) => {
         multiple
         accept="image/*"
       />
-      <AddPhotoAlternateIcon />
-    </IconButton>
+    </>
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { IconButton, Typography } from '@material-ui/core'
 
@@ -39,14 +40,12 @@ const ActionDiv = styled.div`
   margin-left: 8px;
 `
 
-const Count = styled(Typography).attrs({
+const Count = muiStyled(Typography).attrs({
   color: 'textSecondary',
-})`
-  && {
-    margin-left: -2px;
-    margin-right: 12px;
-  }
-`
+})({
+  marginLeft: -2,
+  marginRight: 12,
+})
 
 const DividerCol = styled.span`
   margin: 0 4px;

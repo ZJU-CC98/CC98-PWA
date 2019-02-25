@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Paper, Divider } from '@material-ui/core'
 
@@ -11,14 +11,12 @@ import Awards from './Awards'
 import { getSinglePost } from '@/services/post'
 import { IPost, IUser } from '@cc98/api'
 
-const Wrapper = styled(Paper).attrs({
+const Wrapper = muiStyled(Paper).attrs({
   square: true,
   elevation: 0,
-})`
-  && {
-    margin-top: 6px;
-  }
-`
+})({
+  marginTop: 6,
+})
 
 interface Props {
   /**

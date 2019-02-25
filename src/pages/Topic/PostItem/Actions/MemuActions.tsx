@@ -77,12 +77,9 @@ const MenuActions: React.FC<Props> = ({ postInfo, isTrace, refreshPost, userInfo
 
   const [boardMasters, setBoardMasters] = useState<string[]>([])
 
-  useEffect(
-    () => {
-      getBoardMastersById(postInfo.boardId).then(res => setBoardMasters(res))
-    },
-    [postInfo.boardId]
-  )
+  useEffect(() => {
+    getBoardMastersById(postInfo.boardId).then(res => setBoardMasters(res))
+  }, [postInfo.boardId])
 
   const judgeOpen = () => setShowJudge(true)
   const judgeClose = () => setShowJudge(false)

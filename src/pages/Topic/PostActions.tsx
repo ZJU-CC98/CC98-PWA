@@ -38,12 +38,9 @@ export default ({ topicInfo, refreshFunc }: Props) => {
   const [isFavorite, setIsFavorite] = useFetcher(() => getTopicFavorite(topicInfo.id))
   const [boardMasters, setBoardMasters] = useState<string[]>([])
 
-  useEffect(
-    () => {
-      getBoardMastersById(topicInfo.boardId).then(res => setBoardMasters(res))
-    },
-    [topicInfo.boardId]
-  )
+  useEffect(() => {
+    getBoardMastersById(topicInfo.boardId).then(res => setBoardMasters(res))
+  }, [topicInfo.boardId])
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)

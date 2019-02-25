@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { navigate } from '@/utils/history'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import {
   Button,
@@ -38,23 +39,19 @@ const FormDiv = styled.div`
   height: 105px;
 `
 
-const LogInButton = styled(Button).attrs({
+const LogInButton = muiStyled(Button).attrs({
   variant: 'contained',
   color: 'primary',
-})`
-  && {
-    margin-top: 35px;
-  }
-`
+})({
+  marginTop: 35,
+})
 
-const ButtonProgress = styled(CircularProgress).attrs({
+const ButtonProgress = muiStyled(CircularProgress).attrs({
   size: 20,
   color: 'secondary',
-})`
-  && {
-    margin-left: 15px;
-  }
-`
+})({
+  marginLeft: 15,
+})
 
 interface FormField {
   username: string

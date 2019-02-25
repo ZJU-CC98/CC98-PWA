@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import useFetcher from '@/hooks/useFetcher'
 import useContainer from '@/hooks/useContainer'
@@ -12,14 +13,12 @@ import SelectType from './SelectType'
 
 import { getBoardTags } from '@/services/board'
 
-const InputArea = styled(InputBase).attrs({
+const InputArea = muiStyled(InputBase).attrs({
   fullWidth: true,
-})`
-  && {
-    padding: 4px 8px;
-    border: 1.5px solid #ccc;
-  }
-`
+})({
+  padding: '4px 8px',
+  border: '1.5px solid #ccc',
+})
 
 export { MetaInfoContainer }
 

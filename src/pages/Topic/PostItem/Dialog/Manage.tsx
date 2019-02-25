@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import {
   Button,
@@ -25,18 +25,16 @@ import {
 import { IPost } from '@cc98/api'
 import snackbar from '@/utils/snackbar'
 
-const TextFieldS = styled(TextField).attrs({
+const TextFieldS = muiStyled(TextField).attrs({
   fullWidth: true,
-})`
-  && {
-    margin-top: 16px;
-  }
-` as typeof TextField
+})({
+  marginTop: 16,
+})
 
-const ButtonProgress = styled(CircularProgress).attrs({
+const ButtonProgress = muiStyled(CircularProgress).attrs({
   size: 20,
   color: 'secondary',
-})``
+})({})
 
 interface Props {
   /**

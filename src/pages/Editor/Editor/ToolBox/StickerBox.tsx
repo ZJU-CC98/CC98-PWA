@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { DialogTitle, DialogContent, Tabs, Tab } from '@material-ui/core'
 import { EditorContainer } from '../EditorContainer'
 
 import { IMG_BASE_URL } from '@/config'
 
-const DialogTitleS = styled(DialogTitle)`
-  && {
-    padding: 12px;
-    padding-top: 0;
-  }
-`
+const DialogTitleS = muiStyled(DialogTitle)({
+  padding: 12,
+  paddingTop: 0,
+})
 
 const Img = styled.img`
   max-width: 25%;

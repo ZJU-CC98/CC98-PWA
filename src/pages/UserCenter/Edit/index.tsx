@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import { goback } from '@/utils/history'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import useContainer from '@/hooks/useContainer'
 import userInstance from '@/containers/user'
@@ -21,12 +22,10 @@ const HeaderDiv = styled.div`
   margin: 8px 0;
 `
 
-const GobackIcon = styled(IconButton)`
-  && {
-    margin-left: 4px;
-    margin-right: 5px;
-  }
-`
+const GobackIcon = muiStyled(IconButton)({
+  marginLeft: 4,
+  marginRight: 5,
+})
 
 const FormHeader = () => (
   <HeaderDiv>
@@ -44,23 +43,19 @@ const FormWrapper = styled.form`
   margin: 0 16px;
 `
 
-const FormItem = styled(TextField).attrs({
+const FormItem = muiStyled(TextField).attrs({
   fullWidth: true,
   variant: 'outlined',
-})`
-  && {
-    margin-bottom: 20px;
-  }
-` as typeof TextField // FIXME: @types/styled-components
+})({
+  marginBottom: 20,
+})
 
-const SubmitButton = styled(Button).attrs({
+const SubmitButton = muiStyled(Button).attrs({
   variant: 'contained',
   color: 'primary',
-})`
-  && {
-    margin: 8px;
-  }
-`
+})({
+  margin: 8,
+})
 
 const FormBody = () => {
   const {

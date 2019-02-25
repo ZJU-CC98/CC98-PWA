@@ -1,43 +1,37 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
 
 import { IAward } from '@cc98/api'
 
-const TableRowS = styled(TableRow)`
-  && {
-    height: 2rem;
-    padding: 0;
-  }
-`
+const TableRowS = muiStyled(TableRow)({
+  height: '2rem',
+  padding: 0,
+})
 
-const CellLeft = styled(TableCell)`
-  && {
-    min-width: 5rem;
-    max-width: 7rem;
-    word-break: break-all;
-    padding: 4px;
-    padding-left: 0;
-  }
-`
+const CellLeft = muiStyled(TableCell)({
+  minWidth: '5rem',
+  maxWidth: '7rem',
+  wordBreak: 'break-all',
+  padding: 4,
+  paddingLeft: 0,
+})
 
 const CellMiddle = CellLeft
 
-const CellRight = styled(TableCell)`
-  /* 保证优先级高于 .MuiTableCell-root-163:last-child */
-  &&& {
-    padding: 4px 0;
-  }
-`
+const CellRight = muiStyled(TableCell)({
+  '&:last-child': {
+    padding: '4px 0',
+  },
+})
 
-const CellShowMore = styled(TableCell)`
-  &&& {
-    padding: 8px 0;
-    text-align: center;
-    cursor: pointer;
-  }
-`
+const CellShowMore = muiStyled(TableCell)({
+  padding: '8px 0',
+  textAlign: 'center',
+  cursor: 'pointer',
+})
 
 interface Props {
   awards: IAward[]

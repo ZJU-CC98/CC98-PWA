@@ -101,8 +101,6 @@ const InfiniteList: React.FC<Props> = props => {
   const { isEnd, reverse = false, children } = props
 
   return (
-    // FIXME: waiting @types/styled-components to upgrade
-    // @ts-ignore https://www.styled-components.com/docs/advanced#refs
     <WrapperDiv ref={wrapperDom} reverse={reverse}>
       {children}
       {!isEnd && (

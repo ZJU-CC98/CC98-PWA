@@ -1,19 +1,17 @@
 import React from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Fab } from '@material-ui/core'
 
-const FabS = styled(Fab).attrs({
+const FabS = muiStyled(Fab).attrs({
   size: 'small',
   color: 'primary',
-})<{ bottom: number }>`
-  && {
-    position: fixed;
-    bottom: ${props => `${props.bottom}px`};
-    right: 15px;
-    z-index: 20;
-  }
-`
+})({
+  position: 'fixed',
+  // bottom: pass by props
+  right: 15,
+  zIndex: 20,
+})
 
 interface Props {
   onClick?: () => void
@@ -22,9 +20,7 @@ interface Props {
 }
 
 const FixFab: React.FC<Props> = ({ onClick, order = 1, children }) => (
-  // FIXME: waiting @types/styled-components to upgrade
-  // @ts-ignore https://www.styled-components.com/docs/advanced#refs
-  <FabS onClick={onClick} bottom={(order - 1) * 50 + 15}>
+  <FabS onClick={onClick} style={{ bottom: (order - 1) * 50 + 15 }}>
     {children}
   </FabS>
 )

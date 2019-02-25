@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { EditorContainer } from '../EditorContainer'
 
@@ -16,11 +16,9 @@ import TransformIcon from '@material-ui/icons/Transform'
 
 import UBB from '@/UBB'
 
-const DialogContentTextS = styled(DialogContentText)`
-  && {
-    min-height: 160px;
-  }
-`
+const DialogContentTextS = muiStyled(DialogContentText)({
+  minHeight: 160,
+})
 
 interface PreviewProps {
   content: string

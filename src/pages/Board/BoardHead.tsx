@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import {
   Typography,
@@ -35,11 +36,9 @@ const HeaderDiv = styled.div`
   padding: 16px 10px 10px 24px;
 `
 
-const ExpansionPanelS = styled(ExpansionPanel)`
-  && {
-    width: 100%;
-  }
-`
+const ExpansionPanelS = muiStyled(ExpansionPanel)({
+  width: '100%',
+})
 
 export default ({ data }: Props) => {
   const [state, setState] = useState({

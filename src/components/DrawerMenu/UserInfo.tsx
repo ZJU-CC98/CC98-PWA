@@ -1,6 +1,7 @@
 import React from 'react'
 import { navigate } from '@/utils/history'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Avatar, Typography } from '@material-ui/core'
 
@@ -18,12 +19,10 @@ const WrapperDiv = styled.div`
   padding-bottom: 5px;
 `
 
-const AvatarS = styled(Avatar)`
-  && {
-    width: 80px;
-    height: 80px;
-  }
-`
+const AvatarS = muiStyled(Avatar)({
+  width: 80,
+  height: 80,
+})
 
 const UnLogInAvatar = styled.img.attrs({
   src: snowballImg,
@@ -33,16 +32,14 @@ const UnLogInAvatar = styled.img.attrs({
   height: 74px;
 `
 
-const Username = styled(Typography).attrs({
+const Username = muiStyled(Typography).attrs({
   variant: 'body1',
-})`
-  && {
-    margin-top: 8px;
-    margin-bottom: -8px;
-    font-weight: bolder;
-    opacity: 0.6;
-  }
-`
+})({
+  marginTop: 8,
+  marginBottom: -8,
+  fontWeight: 'bolder',
+  opacity: 0.6,
+})
 
 interface Props {
   isLogIn: boolean

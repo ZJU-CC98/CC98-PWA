@@ -3,7 +3,12 @@ import React from 'react'
 import useContainer from '@/hooks/useContainer'
 import settingInstance from '@/containers/setting'
 
+// FIXME: delete after migrate to v4
+// https://material-ui.com/css-in-js/basics/#migration-for-material-ui-core-users
 import { MuiThemeProvider } from '@material-ui/core/styles'
+import { install } from '@material-ui/styles'
+install()
+
 import { dark, light } from './theme'
 
 import TopBar from '@/components/TopBar'

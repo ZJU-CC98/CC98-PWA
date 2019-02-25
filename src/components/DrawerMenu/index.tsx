@@ -1,6 +1,6 @@
 import React from 'react'
 import { navigate } from '@/utils/history'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import useContainer from '@/hooks/useContainer'
 import userInstance from '@/containers/user'
@@ -9,17 +9,17 @@ import settingInstance from '@/containers/setting'
 
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 
-import AspectRatio from '@material-ui/icons/AspectRatio'
-import Book from '@material-ui/icons/Book'
-import ExitToApp from '@material-ui/icons/ExitToApp'
-import FiberNew from '@material-ui/icons/FiberNew'
+import AspectRatioIcon from '@material-ui/icons/AspectRatio'
+import BookIcon from '@material-ui/icons/Book'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import FiberNewIcon from '@material-ui/icons/FiberNew'
 import HomeIcon from '@material-ui/icons/Home'
-import Search from '@material-ui/icons/Search'
-import Settings from '@material-ui/icons/Settings'
-import Help from '@material-ui/icons/Help'
-import SpeakerNotes from '@material-ui/icons/SpeakerNotes'
-import Whatshot from '@material-ui/icons/Whatshot'
-import Event from '@material-ui/icons/Event'
+import SearchIcon from '@material-ui/icons/Search'
+import SettingsIcon from '@material-ui/icons/Settings'
+import HelpIcon from '@material-ui/icons/Help'
+import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes'
+import WhatshotIcon from '@material-ui/icons/Whatshot'
+import EventIcon from '@material-ui/icons/Event'
 
 import UserInfo from './UserInfo'
 
@@ -46,18 +46,14 @@ const Item: React.FC<ItemProps> = ({ icon, text, onClick }) => (
   </ListItem>
 )
 
-const ListS = styled(List)`
-  && {
-    width: 190px;
-  }
-`
+const ListS = muiStyled(List)({
+  width: 190,
+})
 
-const DividerS = styled(Divider)`
-  && {
-    margin: 0 16px;
-    height: 1.5px;
-  }
-`
+const DividerS = muiStyled(Divider)({
+  margin: '0 16px',
+  height: 1.5,
+})
 
 const jump = (link: string) => () => navigate(link)
 
@@ -74,22 +70,30 @@ const DrawerMenu: React.FC = () => {
         <UserInfo isLogIn={user.isLogIn} info={user.myInfo} />
         <DividerS />
         <Item icon={<HomeIcon />} text="主页" onClick={jump('/')} />
-        {customHome !== 1 && <Item icon={<Event />} text="推荐" onClick={jump('/recommedation')} />}
-        {customHome !== 2 && <Item icon={<Whatshot />} text="热门" onClick={jump('/hotTopics')} />}
-        {customHome !== 3 && <Item icon={<FiberNew />} text="新帖" onClick={jump('/newTopics')} />}
-        <Item icon={<AspectRatio />} text="版面" onClick={jump('/boardList')} />
+        {customHome !== 1 && (
+          <Item icon={<EventIcon />} text="推荐" onClick={jump('/recommedation')} />
+        )}
+        {customHome !== 2 && (
+          <Item icon={<WhatshotIcon />} text="热门" onClick={jump('/hotTopics')} />
+        )}
+        {customHome !== 3 && (
+          <Item icon={<FiberNewIcon />} text="新帖" onClick={jump('/newTopics')} />
+        )}
+        <Item icon={<AspectRatioIcon />} text="版面" onClick={jump('/boardList')} />
         {user.isLogIn && (
           <>
-            {customHome !== 4 && <Item icon={<Book />} text="关注" onClick={jump('/myFollow')} />}
-            <Item icon={<Search />} text="搜索" onClick={jump('/search')} />
-            <Item icon={<SpeakerNotes />} text="私信" onClick={jump('/messageList')} />
+            {customHome !== 4 && (
+              <Item icon={<BookIcon />} text="关注" onClick={jump('/myFollow')} />
+            )}
+            <Item icon={<SearchIcon />} text="搜索" onClick={jump('/search')} />
+            <Item icon={<SpeakerNotesIcon />} text="私信" onClick={jump('/messageList')} />
           </>
         )}
-        <Item icon={<Settings />} text="设置" onClick={jump('/setting')} />
-        <Item icon={<Help />} text="帮助" onClick={jump('/help')} />
+        <Item icon={<SettingsIcon />} text="设置" onClick={jump('/setting')} />
+        <Item icon={<HelpIcon />} text="帮助" onClick={jump('/help')} />
         {user.isLogIn && (
           <>
-            <Item icon={<ExitToApp />} text="登出" onClick={LOG_OUT} />
+            <Item icon={<ExitToAppIcon />} text="登出" onClick={LOG_OUT} />
           </>
         )}
       </ListS>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { navigate } from '@/utils/history'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Avatar, IconButton, Typography, CircularProgress } from '@material-ui/core'
 
@@ -31,13 +32,11 @@ const ButtonDiv = styled.div`
   margin-right: -10px;
 `
 
-const AvatarS = styled(Avatar)`
-  && {
-    width: 70px;
-    height: 70px;
-    margin-right: 20px;
-  }
-`
+const AvatarS = muiStyled(Avatar)({
+  width: 70,
+  height: 70,
+  marginRight: 20,
+})
 
 interface Props {
   info: IUser

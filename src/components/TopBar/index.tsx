@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import stateInstance from '@/containers/state'
 
@@ -9,31 +9,25 @@ import MenuIcon from '@material-ui/icons/Menu'
 
 import version from '@/version'
 
-const IconButtonS = styled(IconButton).attrs({
+const IconButtonS = muiStyled(IconButton).attrs({
   color: 'inherit',
-})`
-  && {
-    margin-left: -12px;
-    margin-right: 5px;
-  }
-`
+})({
+  marginLeft: -12,
+  marginRight: 5,
+})
 
-const MainText = styled(Typography).attrs({
+const MainText = muiStyled(Typography).attrs({
   color: 'inherit',
-})`
-  && {
-    flex-grow: 1;
-  }
-`
+})({
+  flexGrow: 1,
+})
 
-const Version = styled(Button).attrs({
+const Version = muiStyled(Button).attrs({
   color: 'inherit',
   size: 'small',
-})`
-  && {
-    margin-right: -12px;
-  }
-`
+})({
+  marginRight: -12,
+})
 
 const TopBar: React.FC = () => (
   <AppBar position="fixed">

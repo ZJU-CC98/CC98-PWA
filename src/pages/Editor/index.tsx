@@ -154,15 +154,15 @@ function chooseSendCallback(
     return () => {
       const params: ITopicParams | IPostParams = isEditorTopic
         ? {
-          ...metaInfo.state,
-          content: editor.fullContent,
-          contentType: 0,
-        }
+            ...metaInfo.state,
+            content: editor.fullContent,
+            contentType: 0,
+          }
         : {
-          title: '',
-          content: editor.fullContent,
-          contentType: 0,
-        }
+            title: '',
+            content: editor.fullContent,
+            contentType: 0,
+          }
 
       editorPost(postId, params).then(res =>
         res

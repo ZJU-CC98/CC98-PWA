@@ -1,6 +1,6 @@
 import React from 'react'
 import { navigate } from '@/utils/history'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Button } from '@material-ui/core'
 
@@ -10,12 +10,10 @@ interface Props {
   data: IBoard
 }
 
-const Item = styled(Button)`
-  && {
-    margin: 4px;
-    text-align: left;
-  }
-`
+const Item = muiStyled(Button)({
+  margin: 4,
+  textAlign: 'left',
+})
 
 export default (props: Props) => (
   <Item

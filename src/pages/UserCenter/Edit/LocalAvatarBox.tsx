@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 import {
   DialogTitle,
   DialogContent,
@@ -14,11 +15,9 @@ import 'cropperjs/dist/cropper.css'
 
 import { updateMyAvatar } from '@/services/user'
 
-const CircularProgressS = styled(CircularProgress)`
-  && {
-    margin-right: 24px;
-  }
-`
+const CircularProgressS = muiStyled(CircularProgress)({
+  marginRight: 24,
+})
 
 const FlexDiv = styled.div`
   display: flex;

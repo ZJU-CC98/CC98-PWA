@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 import { navigate } from '@/utils/history'
 
 import { ListItem, Typography } from '@material-ui/core'
@@ -9,15 +10,12 @@ import { getBoardNameById } from '@/services/board'
 
 import dayjs from 'dayjs'
 
-const ListItemS = styled(ListItem)`
-  && {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    width: 100%;
-  }
-`
-
+const ListItemS = muiStyled(ListItem)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-end',
+  width: '100%',
+})
 const TitleArea = styled.div`
   max-width: 80%;
   flex-grow: 1;
@@ -29,23 +27,19 @@ const InfoArea = styled.div`
   text-align: right;
 `
 
-const Title = styled(Typography)`
-  && {
-    /* 多行截断，兼容性不好 */
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+const Title = muiStyled(Typography)({
+  /* 多行截断，兼容性不好 */
+  display: '-webkit-box',
+  overflow: 'hidden',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
 
-    line-height: 1.25;
-  }
-`
+  lineHeight: 1.25,
+})
 
-const SubTitle = styled(Typography)`
-  && {
-    margin-top: 3px;
-  }
-`
+const SubTitle = muiStyled(Typography)({
+  marginTop: 3,
+})
 
 const Info = SubTitle
 
@@ -85,15 +79,12 @@ interface Props {
 
 export default ({ data, place }: Props) => {
   const [boardName, setBoardName] = useState('')
-  useEffect(
-    () => {
-      if (place === 'inboard') {
-        return
-      }
-      getBoardNameById(data.boardId).then(boardName => setBoardName(boardName))
-    },
-    [place]
-  )
+  useEffect(() => {
+    if (place === 'inboard') {
+      return
+    }
+    getBoardNameById(data.boardId).then(boardName => setBoardName(boardName))
+  }, [place])
 
   const title = data.title
   let subtitle = data.userName || '[匿名]'

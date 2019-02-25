@@ -1,6 +1,6 @@
 import React from 'react'
 import { navigate } from '@/utils/history'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { List, ListItem, ListItemText, ListItemIcon, Divider, Avatar } from '@material-ui/core'
 
@@ -8,17 +8,14 @@ import Event from '@material-ui/icons/Event'
 
 import { IRecommendationReading } from '@cc98/api'
 
-const AvatarS = styled(Avatar)`
-  && {
-    background-color: #999;
-  }
-`
+const AvatarS = muiStyled(Avatar)({
+  backgroundColor: '#999',
+})
 
-const ListItemTextS = styled(ListItemText)`
-  && {
-    padding: 0;
-  }
-`
+const ListItemTextS = muiStyled(ListItemText)({
+  padding: 0,
+})
+
 interface Props {
   recommendationReading: IRecommendationReading[]
 }

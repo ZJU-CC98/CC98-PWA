@@ -13,35 +13,43 @@ import dayjs from 'dayjs'
 const ListItemS = muiStyled(ListItem)({
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'flex-end',
+  alignItems: 'stretch',
   width: '100%',
 })
+
 const TitleArea = styled.div`
-  max-width: 80%;
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 
 const InfoArea = styled.div`
-  width: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
   flex-shrink: 0;
+  margin-left: 1em;
   text-align: right;
 `
 
-const Title = muiStyled(Typography)({
-  /* 多行截断，兼容性不好 */
-  display: '-webkit-box',
-  overflow: 'hidden',
-  WebkitLineClamp: 2,
-  WebkitBoxOrient: 'vertical',
-
-  lineHeight: 1.25,
+const Title = muiStyled(Typography).attrs({
+  variant: 'subtitle2',
+})({
+  // marginTop: 3,
+  // lineHeight: 1.25,
+  flexGrow: 1,
 })
 
-const SubTitle = muiStyled(Typography)({
-  marginTop: 3,
+const SubTitle = muiStyled(Typography).attrs({
+  color: 'textSecondary',
+})({
+  marginTop: 4,
 })
 
-const Info = SubTitle
+const Info1 = Typography
+
+const Info2 = SubTitle
 
 /**
  * 布局：
@@ -59,13 +67,13 @@ interface ItemProps {
 export const TopicItem: React.FC<ItemProps> = ({ onClick, title, subtitle, info1, info2 }) => (
   <ListItemS button divider onClick={onClick}>
     <TitleArea>
-      <Title variant="subtitle1">{title}</Title>
-      <SubTitle color="textSecondary">{subtitle}</SubTitle>
+      <Title>{title}</Title>
+      <SubTitle>{subtitle}</SubTitle>
     </TitleArea>
 
     <InfoArea>
-      <Info color="textSecondary">{info1}</Info>
-      <Info color="textSecondary">{info2}</Info>
+      <Info1>{info1}</Info1>
+      <Info2>{info2}</Info2>
     </InfoArea>
   </ListItemS>
 )

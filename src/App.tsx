@@ -6,6 +6,8 @@ import settingInstance from '@/containers/setting'
 // FIXME: delete after migrate to v4
 // https://material-ui.com/css-in-js/basics/#migration-for-material-ui-core-users
 import { MuiThemeProvider } from '@material-ui/core/styles'
+import { ThemeProvider } from '@material-ui/styles'
+
 import { install } from '@material-ui/styles'
 install()
 
@@ -31,7 +33,9 @@ const Root = () => {
 
   return (
     <MuiThemeProvider theme={theme === 'light' ? light : dark}>
-      <App />
+      <ThemeProvider theme={theme === 'light' ? light : dark}>
+        <App />
+      </ThemeProvider>
     </MuiThemeProvider>
   )
 }

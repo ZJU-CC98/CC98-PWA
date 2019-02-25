@@ -85,8 +85,8 @@ export default ({ editor, handleClose }: Props) => {
         <Tabs
           value={type}
           onChange={handleChange}
-          indicatorColor="primary"
           textColor="primary"
+          indicatorColor="primary"
           variant="scrollable"
         >
           <Tab value="ac" label="AC娘" />

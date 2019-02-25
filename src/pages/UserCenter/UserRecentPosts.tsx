@@ -25,10 +25,10 @@ const UserRecentPostsItem: React.FC<{
 
   return (
     <TopicItem
-      title={post.title}
-      subtitle={post.content}
-      info1={dayjs(post.time).fromNow()}
-      info2={`${post.floor} L`}
+      title={post.content}
+      subtitle=""
+      info1={`${post.floor} L`}
+      info2={dayjs(post.time).fromNow()}
       onClick={() => navigate(`/topic/${post.topicId}#${post.floor}`)}
     />
   )

@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import muiStyled from '@/muiStyled'
+import { useTheme } from '@material-ui/styles'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
 
 import { IconButton, Typography } from '@material-ui/core'
 
@@ -47,12 +49,17 @@ const Count = muiStyled(Typography).attrs({
   marginRight: 12,
 })
 
-const DividerCol = styled.span`
-  margin: 0 4px;
-  /* FIXME: remove hardcode color */
-  border: solid thin rgba(0, 0, 0, 0.54);
-  height: 1rem;
-`
+const DividerCol = () => {
+  const theme = useTheme<Theme>()
+
+  const style: React.CSSProperties = {
+    margin: '0 4px',
+    height: '1em',
+    border: `solid thin ${theme.palette.text.secondary}`,
+  }
+
+  return <span style={style} />
+}
 
 /**
  * 检查是否登录

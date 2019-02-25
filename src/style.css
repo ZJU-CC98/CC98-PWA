@@ -43,6 +43,11 @@ div {
 pre,
 code,
 a {
+  color: inherit;
   white-space: pre-wrap;
   word-break: break-all;
+}
+
+a:visited {
+  color: inherit;
 }

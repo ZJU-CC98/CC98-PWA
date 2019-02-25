@@ -36,5 +36,5 @@ export default ({ postInfo }: Props) => {
   const content =
     postInfo.contentType === 0 ? UBBReact(postInfo.content) : Markdown(postInfo.content)
 
-  return <TypographyS component="div">{content}</TypographyS>
+  return <TypographyS>{content}</TypographyS>
 }

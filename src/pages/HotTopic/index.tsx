@@ -52,7 +52,13 @@ export default () => {
     <>
       {/*
         // @ts-ignore */}
-      <Tabs value={current} onChange={handleChange} indicatorColor="primary" variant="fullWidth">
+      <Tabs
+        value={current}
+        onChange={handleChange}
+        textColor="primary"
+        indicatorColor="primary"
+        variant="fullWidth"
+      >
         <Tab value="day" label="今日热门" />
         <Tab value="week" label="本周热门" />
         <Tab value="month" label="本月热门" />

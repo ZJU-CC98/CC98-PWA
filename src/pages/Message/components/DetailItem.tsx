@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 
@@ -14,13 +15,13 @@ import { getUserInfoById } from '@/services/user'
 import dayjs from 'dayjs'
 import { navigate } from '@/utils/history'
 
-const ListItemS = styled(ListItem)`
-  flex-shrink: 0;
-`
+const ListItemS = muiStyled(ListItem)({
+  flexShrink: 0,
+})
 
-const ListItemAvatarS = styled(ListItemAvatar)`
-  align-self: flex-start;
-`
+const ListItemAvatarS = muiStyled(ListItemAvatar)({
+  alignSelf: 'flex-start',
+})
 
 const MessageRoot = styled.div`
   width: 50%;
@@ -84,7 +85,7 @@ interface Props {
 // TODO: 消息气泡
 const renderItem = (message: IMessageContent, userInfo: IUser, isCurrSend: boolean) =>
   !isCurrSend ? (
-    <ListItemS>
+    <ListItemS button>
       <ListItemAvatarS>
         <Avatar src={userInfo.portraitUrl} onClick={() => navigate(`/user/${userInfo.id}`)} />
       </ListItemAvatarS>
@@ -94,7 +95,7 @@ const renderItem = (message: IMessageContent, userInfo: IUser, isCurrSend: boole
       </MessageRoot>
     </ListItemS>
   ) : (
-    <ListItemS>
+    <ListItemS button>
       <ListItemText />
       <MessageRoot>
         <MessageContentRight>{message.content}</MessageContentRight>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import useFetcher from '@/hooks/useFetcher'
 
@@ -16,11 +17,9 @@ const FormDiv = styled.div`
   margin-top: 10px;
 `
 
-const FormControlS = styled(FormControl)`
-  && {
-    min-width: 40%;
-  }
-`
+const FormControlS = muiStyled(FormControl)({
+  minWidth: '40%',
+})
 
 interface Props {
   handleBoardChange: (boardId: number) => void

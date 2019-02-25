@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Avatar, Typography } from '@material-ui/core'
 import Whatshot from '@material-ui/icons/Whatshot'
@@ -22,26 +23,24 @@ const AvatarArea = styled.div`
   align-items: center;
 `
 
-const AvatarS = styled(Avatar)`
-  && {
-    margin-right: 12px;
-  }
-`
+const AvatarS = muiStyled(Avatar)({
+  marginRight: 12,
+})
 
 const Title = Typography
 
-const SubTitle = styled(Typography).attrs({
+const SubTitle = muiStyled(Typography).attrs({
   color: 'textSecondary',
-})``
+})({})
 
-const Floor = styled(Typography).attrs({
+const Floor = muiStyled(Typography).attrs({
   variant: 'button',
   color: 'textSecondary',
-})``
+})({})
 
-const HotIcon = styled(Whatshot)`
-  color: ${red[400]};
-`
+const HotIcon = muiStyled(Whatshot)({
+  color: red[400],
+})
 
 interface Props {
   /**

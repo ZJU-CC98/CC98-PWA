@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import {
   Button,
@@ -18,19 +18,15 @@ import { rateHandler } from '@/services/utils/errorHandler'
 import { rate } from '@/services/post'
 import { IPost } from '@cc98/api'
 
-const TabS = styled(Tab)`
-  && {
-    flex-grow: 1;
-  }
-`
+const TabS = muiStyled(Tab)({
+  flexGrow: 1,
+})
 
-const TextFieldS = styled(TextField).attrs({
+const TextFieldS = muiStyled(TextField).attrs({
   fullWidth: true,
-})`
-  && {
-    margin-top: 16px;
-  }
-` as typeof TextField
+})({
+  marginTop: 16,
+})
 
 interface Props {
   /**

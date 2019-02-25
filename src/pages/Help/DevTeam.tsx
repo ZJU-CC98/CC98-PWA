@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import LoadingCircle from '@/components/LoadingCircle'
 
@@ -10,21 +11,18 @@ import { Avatar, CardHeader, Divider, Typography } from '@material-ui/core'
 import { getUsersInfoByIds } from '@/services/user'
 import { IUser } from '@cc98/api'
 
-const Title = styled(Typography).attrs({
+const Title = muiStyled(Typography).attrs({
   align: 'center',
   variant: 'h6',
-})`
-  && {
-    margin-top: 16px;
-    margin-bottom: 16px;
-  }
-`
+})({
+  marginTop: 16,
+  marginBottom: 16,
+})
 
-const CardHeaderS = styled(CardHeader)`
-  && {
-    width: 48%;
-  }
-`
+const CardHeaderS = muiStyled(CardHeader)({
+  width: '48%',
+})
+
 interface Props {
   userInfo: IUser
 }

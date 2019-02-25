@@ -1,4 +1,4 @@
-import { PUT, POST, DELETE } from '../utils/fetch'
+import { PUT, POST, DELETE } from '@/utils/fetch'
 
 /**
  * 操作财富值

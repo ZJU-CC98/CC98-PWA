@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import useFetcher from '@/hooks/useFetcher'
 
@@ -7,15 +7,13 @@ import { Table, TableRow, TableBody, TableCell, Divider, Typography } from '@mat
 
 import { getSiteInfo } from '@/services/global'
 
-const Title = styled(Typography).attrs({
+const Title = muiStyled(Typography).attrs({
   align: 'center',
   variant: 'h6',
-})`
-  && {
-    margin-top: 16px;
-    margin-bottom: 16px;
-  }
-`
+})({
+  marginTop: 16,
+  marginBottom: 16,
+})
 
 export default () => {
   const [info] = useFetcher(getSiteInfo)

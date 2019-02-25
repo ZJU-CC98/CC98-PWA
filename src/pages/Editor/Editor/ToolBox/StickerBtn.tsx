@@ -22,8 +22,8 @@ export default ({ editor }: Props) => {
   }
 
   return (
-    <IconButton>
-      <TagFacesIcon onClick={clickHandler} />
+    <IconButton onClick={clickHandler}>
+      <TagFacesIcon />
       <Dialog open={open} onClose={handleClose} fullWidth scroll="paper">
         <StickerBox editor={editor} handleClose={handleClose} />
       </Dialog>

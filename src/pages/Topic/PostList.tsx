@@ -49,7 +49,7 @@ const PostList: React.FC<Props> = ({ service, isTrace, children }) => {
         info.floor === 1 ? (
           <React.Fragment key={info.id}>
             <PostItem isTrace={isTrace} postInfo={info} userInfo={userMap[info.userId]} />
-            {children/** <PostListHot /> */}
+            {children /** <PostListHot /> */}
           </React.Fragment>
         ) : (
           <PostItem

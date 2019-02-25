@@ -61,26 +61,10 @@ class RouterCacheContainer extends Container<State> {
  */
 export const ROUTER_CACHE = new RouterCacheContainer()
 
-/**
- * 将函数触发限定在某一路由下（配合事件绑定用）
- * @param func 待绑定函数
- * @param href 路由
- */
-// tslint:disable-next-line
-export function bindURL(func: Function, href: string) {
-  return () => {
-    if (window.location.href === href) {
-      func()
-    }
-  }
-}
-
 // https://majido.github.io/scroll-restoration-proposal/history-based-api.html#web-idl
 history.scrollRestoration = 'manual'
 
-// @ts-ignore FIXME: no animated export from d.ts
-import { useSpring, animated } from 'react-spring/hooks'
-import { config } from 'react-spring'
+import { useSpring, animated, config } from 'react-spring'
 
 interface ScrollDivProps {
   show: boolean
@@ -91,26 +75,23 @@ const ScrollDiv = ({ show, locState }: ScrollDivProps) => {
   const lastShow = useRef(false)
   const [props, set] = useSpring(() => ({
     opacity: 0,
-    config: config.gentle,
+    config: config.slow,
   }))
 
   if (lastShow.current !== show) {
     if (show) {
-      // @ts-ignore
       set({ opacity: 1 })
 
-      setTimeout(() => {
+      setImmediate(() => {
         window.scrollTo({
           left: 0,
           top: locState.scrollTop,
           // behavior: 'smooth',
         })
-        // FIXME: choose a better delay
-      }, 300)
+      })
     }
 
     if (!show) {
-      // @ts-ignore
       set({ opacity: 0 })
       locState.scrollTop = window.scrollY
     }
@@ -130,12 +111,9 @@ const ScrollDiv = ({ show, locState }: ScrollDivProps) => {
 const CacheRouter: React.FC<ILocation> = ({ location }) => {
   const { locationStates } = useContainer(ROUTER_CACHE).state
 
-  useEffect(
-    () => {
-      ROUTER_CACHE.push(location)
-    },
-    [location]
-  )
+  useEffect(() => {
+    ROUTER_CACHE.push(location)
+  }, [location])
 
   return (
     <>

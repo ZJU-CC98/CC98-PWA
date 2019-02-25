@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { IconButton, TextField } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
 
-const MyIconButton = styled(IconButton)`
-  && {
-    position: relative;
-    margin-right: -12px;
-    margin-bottom: -2px;
-  }
-`
+const MyIconButton = muiStyled(IconButton)({
+  position: 'relative',
+  marginRight: -12,
+  marginBottom: -2,
+})
+
 interface Props {
   callback: (content: string) => void
 }
@@ -35,8 +34,8 @@ export default ({ callback }: Props) => {
       onChange={handleInputChange}
       InputProps={{
         endAdornment: (
-          <MyIconButton>
-            <SendIcon onClick={handleSend} />
+          <MyIconButton onClick={handleSend}>
+            <SendIcon />
           </MyIconButton>
         ),
       }}

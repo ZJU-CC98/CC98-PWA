@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import {
   Typography,
@@ -19,11 +20,9 @@ const FlexDiv = styled.div`
   width: 100%;
 `
 
-const ExpansionPanelS = styled(ExpansionPanel)`
-  && {
-    width: 100%;
-  }
-`
+const ExpansionPanelS = muiStyled(ExpansionPanel)({
+  width: '100%',
+})
 
 interface Props {
   /**

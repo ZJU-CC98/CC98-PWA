@@ -1,4 +1,3 @@
-/* tslint:disable */
 /**
  * Functor Try
  */
@@ -76,9 +75,9 @@ export class Try<S, F> {
   map<U>(func: (x: S) => U) {
     if (this._value.constructor === Success) {
       return Try.of<U, F>((this._value as Success<S>).map(func))
-    } else {
-      return Try.of<U, F>((this._value as Failure<F>).map(id => id))
     }
+
+    return Try.of<U, F>((this._value as Failure<F>).map(id => id))
   }
 
   // some methods not fp but useful

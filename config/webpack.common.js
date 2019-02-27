@@ -99,8 +99,10 @@ module.exports = {
     // workbox: https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin
     new WorkboxPlugin.GenerateSW({
       swDest: "service-worker.js",
-      clientsClaim: true,
+      importWorkboxFrom: 'local',
       skipWaiting: true,
+      clientsClaim: true,
+      navigateFallback: '/',
     }),
   ],
 }

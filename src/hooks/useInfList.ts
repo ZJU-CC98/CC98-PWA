@@ -1,4 +1,3 @@
-/* tslint:disable */
 import { useState, useEffect } from 'react'
 
 import { Try } from '@/utils/fp/Try'

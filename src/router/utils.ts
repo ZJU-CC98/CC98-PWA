@@ -3,7 +3,6 @@
  * @param func 待绑定函数
  * @param href 路由
  */
-// tslint:disable-next-line
 export function bindURL(func: Function, href: string) {
   return () => {
     if (window.location.href === href) {

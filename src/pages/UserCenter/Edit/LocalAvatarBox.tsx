@@ -37,7 +37,6 @@ interface Props {
 
 export default ({ imgSrc, handleAvatarSubmit, handleClose, fileType }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  // tslint:disable
   const cropRef = useRef<any>(null)
 
   const submitHandle = () => {

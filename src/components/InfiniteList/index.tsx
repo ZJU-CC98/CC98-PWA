@@ -28,7 +28,6 @@ interface Props {
   /**
    * 列表底部 loading 出现的回调
    */
-  // tslint:disable-next-line
   callback: Function
   /**
    * 是否翻转列表（且 Loading 将出现在上面）

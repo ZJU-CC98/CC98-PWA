@@ -9,7 +9,7 @@ export function getTopTopics(id: string) {
     params: {
       boardid: id,
     },
-  })
+  }).then(res => Promise.resolve(res.map(topics => topics.reverse())))
 }
 
 /**

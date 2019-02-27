@@ -27,7 +27,6 @@ import Error from '@/pages/Error'
 export const Route: React.FC<
   RouteComponentProps & {
     // @types/react 里 createElement 签名很混乱
-    // tslint:disable-next-line:no-any
     component: any
     // component: React.FC<any>
   }

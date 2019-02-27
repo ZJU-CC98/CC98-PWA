@@ -27,7 +27,6 @@ interface ItemProps {
   /**
    * 图标
    */
-  // tslint:disable-next-line:no-any
   icon: React.ReactElement<any>
   /**
    * 文字

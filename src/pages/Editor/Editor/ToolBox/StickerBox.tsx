@@ -31,7 +31,6 @@ interface Props {
 type StickerType = 'ac' | 'tb' | 'ms' | 'em'
 
 // TODO: refactor with UBB
-// tslint:disable-next-line
 function getStickerReactNode(type: StickerType, handleFunc: Function) {
   const stickerArr = []
 

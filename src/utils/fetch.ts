@@ -1,4 +1,3 @@
-/* tslint:disable */
 import { Try, Success, Failure } from './fp/Try'
 import { getAccessToken } from './logIn'
 
@@ -42,6 +41,7 @@ async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, Fetc
   try {
     data = await response.clone().json()
   } catch {
+    // tslint:disable-next-line
     console.warn(`FIX: ${requestURL} response.json() fail.`)
     data = await response.text()
   }

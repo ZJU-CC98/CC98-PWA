@@ -1,4 +1,3 @@
-/* tslint:disable */
 import { Try, Success, Failure } from './fp/Try'
 import { FetchError, encodeParams } from './fetch'
 import { getLocalStorage, setLocalStorage, removeLocalStorage } from './storage'

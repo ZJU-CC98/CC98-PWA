@@ -1,4 +1,3 @@
-/* tslint:disable */
 import { useState, useEffect } from 'react'
 
 type Listener = () => void
@@ -40,6 +39,7 @@ export class Container<State extends object = {}> {
     // this will prevent broadcast
     if (nextState == null) {
       if (callback) callback()
+
       return Promise.resolve()
     }
 

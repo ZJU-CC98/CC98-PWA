@@ -98,7 +98,6 @@ const LogIn: React.FC = () => {
             loading: false,
             logInFail: true,
           })
-          // tslint:disable-next-line:align
         }, 2000)
 
         loginHandler(err)

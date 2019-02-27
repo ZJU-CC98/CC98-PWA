@@ -1,6 +1,5 @@
 const path = require('path')
 const HTMLWebpackPlugin = require("html-webpack-plugin")
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
@@ -85,16 +84,6 @@ module.exports = {
       favicon: './public/favicon.ico',
       inject: true,
     }),
-
-    new CopyWebpackPlugin([{
-        from: 'public/manifest.json',
-        to: 'manifest.json'
-      },
-      {
-        from: 'public/icons/',
-        to: 'icons/'
-      },
-    ]),
 
     // workbox: https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin
     new WorkboxPlugin.GenerateSW({

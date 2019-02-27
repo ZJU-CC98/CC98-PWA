@@ -15,7 +15,9 @@ function Markdown(content: string) {
     .processSync(content).contents
 }
 
-const TypographyS = muiStyled(Typography)({
+const TypographyS = muiStyled(Typography).attrs({
+  component: 'div',
+})({
   margin: '12px 16px',
   marginBottom: 4,
 

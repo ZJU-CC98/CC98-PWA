@@ -47,9 +47,11 @@ const SubTitle = muiStyled(Typography).attrs({
   marginTop: 4,
 })
 
-const Info1 = Typography
+const Info1 = muiStyled(Typography).attrs({
+  color: 'textSecondary',
+})({})
 
-const Info2 = SubTitle
+const Info2 = Info1
 
 /**
  * 布局：

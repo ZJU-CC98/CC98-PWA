@@ -103,20 +103,26 @@ const IconActions: React.FC<Props> = ({ postInfo, refreshPost }) => {
   return (
     <ActionDiv>
       <IconButton onClick={handleLike(LikeState.LIKE)}>
-        <ThumbUpIcon color={likeState === LikeState.LIKE ? 'secondary' : 'inherit'} />
+        <ThumbUpIcon
+          fontSize="small"
+          color={likeState === LikeState.LIKE ? 'secondary' : 'inherit'}
+        />
       </IconButton>
       <Count>{postInfo.likeCount}</Count>
 
       <DividerCol />
 
       <IconButton onClick={handleLike(LikeState.DISLIKE)}>
-        <ThumbDownIcon color={likeState === LikeState.DISLIKE ? 'secondary' : 'inherit'} />
+        <ThumbDownIcon
+          fontSize="small"
+          color={likeState === LikeState.DISLIKE ? 'secondary' : 'inherit'}
+        />
       </IconButton>
       <Count>{postInfo.dislikeCount}</Count>
 
       <DividerCol />
       <IconButton onClick={handleQuote}>
-        <FormatQuoteIcon />
+        <FormatQuoteIcon fontSize="small" />
       </IconButton>
     </ActionDiv>
   )

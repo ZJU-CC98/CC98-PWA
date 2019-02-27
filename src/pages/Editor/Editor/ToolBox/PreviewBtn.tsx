@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import muiStyled from '@/muiStyled'
 
-import { EditorContainer } from '../EditorContainer'
+import { EditorModel } from '../EditorModel'
 
 import {
   IconButton,
@@ -41,7 +41,7 @@ const Preview = ({ content, handleClose }: PreviewProps) => (
 )
 
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
 }
 
 export default ({ editor }: Props) => {

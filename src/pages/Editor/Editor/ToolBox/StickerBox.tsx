@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import muiStyled from '@/muiStyled'
 
 import { DialogTitle, DialogContent, Tabs, Tab } from '@material-ui/core'
-import { EditorContainer } from '../EditorContainer'
+import { EditorModel } from '../EditorModel'
 
 import { IMG_BASE_URL } from '@/config'
 
@@ -24,7 +24,7 @@ const FlexDiv = styled.div`
 `
 
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
   handleClose: () => void
 }
 

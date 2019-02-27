@@ -1,4 +1,4 @@
-import { Container } from '@/hooks/useContainer'
+import { Model } from '@/hooks/useModel'
 
 import { getLocalStorage, setLocalStorage } from '@/utils/storage'
 
@@ -14,21 +14,21 @@ interface State {
   /**
    * 缓存页数
    */
-  routerCacheSize: number
+  cacheSize: number
   /**
    * 自定义主页
    */
   customHome: number
 }
 
-class SettingContainer extends Container<State> {
+class SettingModel extends Model<State> {
   constructor() {
     super()
 
     this.state = {
       theme: 'light',
       useSignalr: false,
-      routerCacheSize: 3,
+      cacheSize: 3,
       customHome: 1,
     }
 
@@ -61,7 +61,7 @@ class SettingContainer extends Container<State> {
   CHANGE_CACHE = (size: number) => {
     this.setState(
       {
-        routerCacheSize: size,
+        cacheSize: size,
       },
       this.SYNC_SETTING
     )
@@ -77,4 +77,4 @@ class SettingContainer extends Container<State> {
   }
 }
 
-export default new SettingContainer()
+export default new SettingModel()

@@ -8,7 +8,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShareIcon from '@material-ui/icons/Share'
 import SettingIcon from '@material-ui/icons/Settings'
 
-import userInstace from '@/containers/user'
+import userInstace from '@/models/user'
 
 import snackbar from '@/utils/snackbar'
 import { judgeManagerOrBoardMasters } from '@/utils/ActionsJudge'

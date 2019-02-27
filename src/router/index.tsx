@@ -3,8 +3,8 @@ import React, { useEffect, useRef } from 'react'
 import { Location, WindowLocation } from '@reach/router'
 import Router, { ILocation } from './Router'
 
-import useContainer, { Container } from '@/hooks/useContainer'
-import settingInstance from '@/containers/setting'
+import useModel, { Model } from '@/hooks/useModel'
+import settingModel from '@/models/setting'
 
 import './gesture'
 
@@ -22,10 +22,10 @@ interface State {
 /**
  * 路由级页面缓存
  */
-class RouterCacheContainer extends Container<State> {
+class RouterCacheModel extends Model<State> {
   state: State = {
     locationStates: [],
-    MAX_CACHE_SIZE: settingInstance.state.routerCacheSize,
+    MAX_CACHE_SIZE: settingModel.state.cacheSize,
   }
 
   /**
@@ -59,7 +59,7 @@ class RouterCacheContainer extends Container<State> {
 /**
  * 路由缓存实例
  */
-export const ROUTER_CACHE = new RouterCacheContainer()
+export const ROUTER_CACHE = new RouterCacheModel()
 
 // https://majido.github.io/scroll-restoration-proposal/history-based-api.html#web-idl
 history.scrollRestoration = 'manual'
@@ -109,7 +109,7 @@ const ScrollDiv = ({ show, locState }: ScrollDivProps) => {
 }
 
 const CacheRouter: React.FC<ILocation> = ({ location }) => {
-  const { locationStates } = useContainer(ROUTER_CACHE).state
+  const { locationStates } = useModel(ROUTER_CACHE).state
 
   useEffect(() => {
     ROUTER_CACHE.push(location)

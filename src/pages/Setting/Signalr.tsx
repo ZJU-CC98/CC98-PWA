@@ -1,12 +1,12 @@
 import React from 'react'
 
-import useContainer from '@/hooks/useContainer'
-import settingInstance from '@/containers/setting'
+import useModel from '@/hooks/useModel'
+import settingModel from '@/models/setting'
 
 import { ListItem, ListItemText, Switch } from '@material-ui/core'
 
 export default () => {
-  const { state, TOGGLE_SIGNALR } = useContainer(settingInstance)
+  const { state, TOGGLE_SIGNALR } = useModel(settingModel)
 
   return (
     <ListItem button>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { EditorContainer } from '../EditorContainer'
+import { EditorModel } from '../EditorModel'
 
 import {
   IconButton,
@@ -13,7 +13,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete'
 
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
 }
 
 export default ({ editor }: Props) => {

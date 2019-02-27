@@ -1,7 +1,7 @@
 import React from 'react'
 
-import useContainer from '@/hooks/useContainer'
-import userInstance from '@/containers/user'
+import useModel from '@/hooks/useModel'
+import userModel from '@/models/user'
 
 import useFetcher from '@/hooks/useFetcher'
 
@@ -39,7 +39,7 @@ interface WrapperProps {
 const Wrapper: React.FC<WrapperProps> = props => {
   const {
     state: { myInfo },
-  } = useContainer(userInstance)
+  } = useModel(userModel)
 
   const [userInfo] = useFetcher(props.id ? () => getUserInfoById(props.id as string) : null)
 

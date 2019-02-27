@@ -13,7 +13,7 @@ import FormatQuoteIcon from '@material-ui/icons/FormatQuote'
 import { IPost, ILikeState } from '@cc98/api'
 import { putLike, putDislike } from '@/services/post'
 
-import userInstance from '@/containers/user'
+import userModel from '@/models/user'
 
 import { navigate } from '@/utils/history'
 import snackbar from '@/utils/snackbar'
@@ -65,7 +65,7 @@ const DividerCol = () => {
  * 检查是否登录
  */
 function checkLogIn() {
-  if (!userInstance.state.isLogIn) {
+  if (!userModel.state.isLogIn) {
     snackbar.error('请先登录')
 
     return false

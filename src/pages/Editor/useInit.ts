@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 
 interface Init {
   /**
-   * MetaInfo Container 初始值
+   * MetaInfo Model 初始值
    */
   metaInfo: {
     title: string
@@ -17,7 +17,7 @@ interface Init {
     tag2?: number
   }
   /**
-   * Editor Container 初始值
+   * Editor Model 初始值
    */
   editor: {
     initContent: string

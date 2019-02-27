@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react'
 
-type Listener = () => void
+type Listener<T> = (prevState: T, nextState: T) => void
 
-export class Container<State extends object = {}> {
+export class Model<State extends object = {}> {
   namespace: string
   state: Readonly<State>
-  _listeners: Listener[] = []
+  _prevState: Readonly<State>
 
-  _subscribe(fn: Listener) {
+  _listeners: Listener<State>[] = []
+
+  _subscribe(fn: Listener<State>) {
     this._listeners.push(fn)
   }
 
-  _unsubscribe(fn: Listener) {
+  _unsubscribe(fn: Listener<State>) {
     const listeners = this._listeners
     listeners.splice(listeners.indexOf(fn), 1)
   }
@@ -43,9 +45,10 @@ export class Container<State extends object = {}> {
       return Promise.resolve()
     }
 
+    this._prevState = this.state
     this.state = Object.assign({}, this.state, nextState)
 
-    const promises = this._listeners.map(listener => listener())
+    const promises = this._listeners.map(listener => listener(this._prevState, this.state))
 
     return Promise.all(promises).then(() => {
       if (callback) {
@@ -56,18 +59,32 @@ export class Container<State extends object = {}> {
 }
 
 /**
- * 注入一个全局 Container
- * @param containerInstance 全局 container 实例
+ * 订阅一个 model
+ * @param model model 实例
+ * @param shouldUpdate 用于避免不必要的重渲染
  */
-export default function useContainer<T extends Container>(containerInstance: T) {
-  const setUpdateCnt = useState(0)[1]
+export default function useModel<M extends Model>(
+  model: M,
+  shouldUpdate?: (prevState: M['state'], nextState: M['state']) => boolean
+) {
+  const updateCount = useState(0)[1]
 
   useEffect(() => {
-    const listener = () => setUpdateCnt(prevCnt => prevCnt + 1)
-    containerInstance._subscribe(listener)
+    const listener: Listener<M['state']> = (prevState, nextState) => {
+      if (shouldUpdate && !shouldUpdate(prevState, nextState)) {
+        // shouldUpdate(...) === false 就避免 rerender
+        return
+      }
 
-    return () => containerInstance._unsubscribe(listener)
-  }, [])
+      updateCount(prev => prev + 1)
+    }
 
-  return containerInstance
+    model._subscribe(listener)
+
+    return () => {
+      model._unsubscribe(listener)
+    }
+  }, [model, shouldUpdate])
+
+  return model
 }

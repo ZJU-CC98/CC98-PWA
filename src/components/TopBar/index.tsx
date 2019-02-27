@@ -1,7 +1,7 @@
 import React from 'react'
 import muiStyled from '@/muiStyled'
 
-import stateInstance from '@/containers/state'
+import stateModel from '@/models/state'
 
 import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core'
 
@@ -32,7 +32,7 @@ const Version = muiStyled(Button).attrs({
 const TopBar: React.FC = () => (
   <AppBar position="fixed">
     <Toolbar>
-      <IconButtonS onClick={stateInstance.OPEN_DRAWER}>
+      <IconButtonS onClick={stateModel.OPEN_DRAWER}>
         <MenuIcon />
       </IconButtonS>
 

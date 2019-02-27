@@ -2,10 +2,10 @@ import React from 'react'
 import { navigate } from '@/utils/history'
 import muiStyled from '@/muiStyled'
 
-import useContainer from '@/hooks/useContainer'
-import userInstance from '@/containers/user'
-import stateInstance from '@/containers/state'
-import settingInstance from '@/containers/setting'
+import useModel from '@/hooks/useModel'
+import userModel from '@/models/user'
+import stateModel from '@/models/state'
+import settingModel from '@/models/setting'
 
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 
@@ -57,11 +57,11 @@ const DividerS = muiStyled(Divider)({
 const jump = (link: string) => () => navigate(link)
 
 const DrawerMenu: React.FC = () => {
-  const { state: user, LOG_OUT } = useContainer(userInstance)
-  const { state, CLOSE_DRAWER } = useContainer(stateInstance)
+  const { state: user, LOG_OUT } = useModel(userModel)
+  const { state, CLOSE_DRAWER } = useModel(stateModel)
   const {
     state: { customHome },
-  } = useContainer(settingInstance)
+  } = useModel(settingModel)
 
   return (
     <Drawer open={state.isDrawerOpen} onClose={CLOSE_DRAWER}>

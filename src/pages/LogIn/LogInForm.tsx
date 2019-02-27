@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@material-ui/core'
 
-import userInstance from '@/containers/user'
+import userModel from '@/models/user'
 
 import { loginHandler } from '@/services/utils/errorHandler'
 
@@ -89,7 +89,7 @@ const LogIn: React.FC = () => {
       logInFail: false,
     })
 
-    const token = await userInstance.LOG_IN(username, password)
+    const token = await userModel.LOG_IN(username, password)
 
     token
       .fail(err => {

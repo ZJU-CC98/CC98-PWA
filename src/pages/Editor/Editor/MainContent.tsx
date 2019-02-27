@@ -1,7 +1,7 @@
 import React from 'react'
 import muiStyled from '@/muiStyled'
 
-import { EditorContainer } from './EditorContainer'
+import { EditorModel } from './EditorModel'
 
 import { InputBase } from '@material-ui/core'
 
@@ -18,7 +18,7 @@ const InputArea = muiStyled(InputBase).attrs({
 })
 
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
 }
 
 export default ({ editor }: Props) => {

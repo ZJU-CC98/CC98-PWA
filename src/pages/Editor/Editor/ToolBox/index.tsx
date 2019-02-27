@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { EditorContainer } from '../EditorContainer'
+import { EditorModel } from '../EditorModel'
 
 import PictureBtn from './PictureBtn'
 import StickerBtn from './StickerBtn'
@@ -18,7 +18,7 @@ const WrapperToolBox = styled.div`
   flex-direction: column;
 `
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
   onSendCallback: () => void
 }
 

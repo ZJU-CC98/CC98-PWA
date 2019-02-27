@@ -3,10 +3,10 @@ import React from 'react'
 import { IconButton, CircularProgress } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
 
-import { EditorContainer } from '../EditorContainer'
+import { EditorModel } from '../EditorModel'
 
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
   onSendCallback: () => void
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import useContainer from '@/hooks/useContainer'
-import settingInstance from '@/containers/setting'
+import useModel from '@/hooks/useModel'
+import settingModel from '@/models/setting'
 
 import HotTopic from '../HotTopic'
 import NewTopic from '../NewTopic'
@@ -9,9 +9,7 @@ import MyFollow from '../MyFollow'
 import Recommedation from '../Recommedation'
 
 export default () => {
-  const {
-    state: { customHome },
-  } = useContainer(settingInstance)
+  const { customHome } = useModel(settingModel).state
 
   return (
     <>

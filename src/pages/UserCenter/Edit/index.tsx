@@ -4,8 +4,8 @@ import { goback } from '@/utils/history'
 import styled from 'styled-components'
 import muiStyled from '@/muiStyled'
 
-import useContainer from '@/hooks/useContainer'
-import userInstance from '@/containers/user'
+import useModel from '@/hooks/useModel'
+import userModel from '@/models/user'
 
 import { IconButton, Typography, Button, TextField } from '@material-ui/core'
 
@@ -58,9 +58,7 @@ const SubmitButton = muiStyled(Button).attrs({
 })
 
 const FormBody = () => {
-  const {
-    state: { myInfo },
-  } = useContainer(userInstance)
+  const { myInfo } = useModel(userModel).state
 
   const [info, setInfo] = useState(myInfo)
 
@@ -79,7 +77,7 @@ const FormBody = () => {
     modifyMyInfo(info).then(res =>
       res.fail().succeed(_ => {
         snackbar.success('修改成功')
-        userInstance.FRESH_INFO()
+        userModel.FRESH_INFO()
       })
     )
   }
@@ -88,7 +86,7 @@ const FormBody = () => {
     modifyMyAvatar(AvatarSrc).then(res =>
       res.fail().succeed(_ => {
         snackbar.success('修改成功')
-        userInstance.FRESH_INFO()
+        userModel.FRESH_INFO()
       })
     )
   }

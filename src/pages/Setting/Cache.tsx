@@ -1,8 +1,8 @@
 import React from 'react'
 import { ListItem, TextField, MenuItem, ListItemText, InputAdornment } from '@material-ui/core'
 
-import useContainer from '@/hooks/useContainer'
-import settingInstance from '@/containers/setting'
+import useModel from '@/hooks/useModel'
+import settingModel from '@/models/setting'
 
 const ranges = [
   { label: '1', value: 1 },
@@ -12,11 +12,11 @@ const ranges = [
   { label: '5', value: 5 },
 ]
 
-export default () => {
+const Cache = () => {
   const {
-    state: { routerCacheSize },
+    state: { cacheSize },
     CHANGE_CACHE,
-  } = useContainer(settingInstance)
+  } = useModel(settingModel, (prev, next) => prev.cacheSize !== next.cacheSize)
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     CHANGE_CACHE(parseInt(event.target.value, 10))
@@ -30,7 +30,7 @@ export default () => {
         InputProps={{
           endAdornment: <InputAdornment position="end">页</InputAdornment>,
         }}
-        value={routerCacheSize}
+        value={cacheSize}
         onChange={handleChange}
       >
         {ranges.map(option => (
@@ -42,3 +42,5 @@ export default () => {
     </ListItem>
   )
 }
+
+export default React.memo(Cache)

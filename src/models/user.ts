@@ -1,4 +1,4 @@
-import { Container } from '@/hooks/useContainer'
+import { Model } from '@/hooks/useModel'
 
 import { GET } from '@/utils/fetch'
 import { logIn, logOut, isLogIn } from '@/utils/logIn'
@@ -15,7 +15,7 @@ interface State {
   myInfo: IUser | null
 }
 
-class UserContainer extends Container<State> {
+class UserModel extends Model<State> {
   constructor() {
     super()
 
@@ -65,4 +65,4 @@ class UserContainer extends Container<State> {
   }
 }
 
-export default new UserContainer()
+export default new UserModel()

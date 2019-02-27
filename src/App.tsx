@@ -1,7 +1,7 @@
 import React from 'react'
 
-import useContainer from '@/hooks/useContainer'
-import settingInstance from '@/containers/setting'
+import useModel from '@/hooks/useModel'
+import settingModel from '@/models/setting'
 
 // FIXME: delete after migrate to v4
 // https://material-ui.com/css-in-js/basics/#migration-for-material-ui-core-users
@@ -29,7 +29,7 @@ const App = () => (
 const Root = () => {
   const {
     state: { theme },
-  } = useContainer(settingInstance)
+  } = useModel(settingModel)
 
   return (
     <MuiThemeProvider theme={theme === 'light' ? light : dark}>

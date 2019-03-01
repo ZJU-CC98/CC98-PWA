@@ -37,7 +37,9 @@ const UserRecentPostsItem: React.FC<{
 const RecentPosts: React.FC = () => {
   const [expand, setExpand] = useState(false)
 
-  const [posts, state, callback] = useInfList(getMyRecentPosts, { fail: navigateHandler })
+  const [posts, state, callback] = useInfList(getMyRecentPosts, {
+    fail: navigateHandler,
+  })
   const { isLoading, isEnd } = state
   const onChange = () => {
     setExpand(!expand)

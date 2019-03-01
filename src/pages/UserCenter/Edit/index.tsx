@@ -58,7 +58,7 @@ const SubmitButton = muiStyled(Button).attrs({
 })
 
 const FormBody = () => {
-  const { myInfo } = useModel(userModel).state
+  const { myInfo } = useModel(userModel, ['myInfo'])
 
   const [info, setInfo] = useState(myInfo)
 

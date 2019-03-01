@@ -108,7 +108,7 @@ const renderItem = (message: IMessageContent, userInfo: IUser, isCurrSend: boole
   )
 
 export default ({ message }: Props) => {
-  const { myInfo } = useModel(userModel).state
+  const { myInfo } = useModel(userModel)
 
   const [userInfo] = useFetcher(() => getUserInfoById(message.senderId))
   if (userInfo === null || myInfo === null) {

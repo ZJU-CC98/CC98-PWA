@@ -22,7 +22,7 @@ interface State {
 /**
  * 路由级页面缓存
  */
-class RouterCacheModel extends Model<State> {
+class RouterModel extends Model<State> {
   state: State = {
     locationStates: [],
     MAX_CACHE_SIZE: settingModel.state.cacheSize,
@@ -32,7 +32,7 @@ class RouterCacheModel extends Model<State> {
    * 新增路由缓存 (LRU)
    * @param location
    */
-  push(location: WindowLocation) {
+  PUSH(location: WindowLocation) {
     const { locationStates, MAX_CACHE_SIZE } = this.state
     const index = locationStates.findIndex(locState => locState.href === location.href)
 
@@ -59,7 +59,7 @@ class RouterCacheModel extends Model<State> {
 /**
  * 路由缓存实例
  */
-export const ROUTER_CACHE = new RouterCacheModel()
+export const routerModel = new RouterModel()
 
 // https://majido.github.io/scroll-restoration-proposal/history-based-api.html#web-idl
 history.scrollRestoration = 'manual'
@@ -109,10 +109,10 @@ const ScrollDiv = ({ show, locState }: ScrollDivProps) => {
 }
 
 const CacheRouter: React.FC<ILocation> = ({ location }) => {
-  const { locationStates } = useModel(ROUTER_CACHE).state
+  const { locationStates } = useModel(routerModel)
 
   useEffect(() => {
-    ROUTER_CACHE.push(location)
+    routerModel.PUSH(location)
   }, [location])
 
   return (

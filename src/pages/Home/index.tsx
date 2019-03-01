@@ -9,7 +9,7 @@ import MyFollow from '../MyFollow'
 import Recommedation from '../Recommedation'
 
 export default () => {
-  const { customHome } = useModel(settingModel).state
+  const { customHome } = useModel(settingModel, ['customHome'])
 
   return (
     <>

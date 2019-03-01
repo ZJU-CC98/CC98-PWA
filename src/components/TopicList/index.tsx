@@ -42,7 +42,9 @@ interface InfProps {
 }
 
 const InfTopicList: React.FC<InfProps> = ({ service, place }) => {
-  const [topics, state, callback] = useInfList(service, { fail: navigateHandler })
+  const [topics, state, callback] = useInfList(service, {
+    fail: navigateHandler,
+  })
   const { isLoading, isEnd } = state
 
   return (

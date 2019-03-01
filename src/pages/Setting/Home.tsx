@@ -12,10 +12,8 @@ const ranges = [
 ]
 
 const Home = () => {
-  const {
-    state: { customHome },
-    CHANGE_CUSTOMHOME,
-  } = useModel(settingModel, (prev, next) => prev.customHome !== next.customHome)
+  const { customHome } = useModel(settingModel, ['customHome'])
+  const { CHANGE_CUSTOMHOME } = settingModel
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     CHANGE_CUSTOMHOME(parseInt(event.target.value, 10))

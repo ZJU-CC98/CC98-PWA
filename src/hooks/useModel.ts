@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 type Listener<T> = (prevState: T, nextState: T) => void
 
 export class Model<State extends object = {}> {
-  namespace: string
+  // namespace: string
   state: Readonly<State>
   _prevState: Readonly<State>
 
@@ -61,22 +61,59 @@ export class Model<State extends object = {}> {
 /**
  * 订阅一个 model
  * @param model model 实例
- * @param shouldUpdate 用于避免不必要的重渲染
+ * @param props 用于比较的 keys, 用于避免不必要的重渲染
  */
-export default function useModel<M extends Model>(
-  model: M,
-  shouldUpdate?: (prevState: M['state'], nextState: M['state']) => boolean
-) {
-  const updateCount = useState(0)[1]
+export default function useModel<S extends object, K extends keyof S>(
+  model: Model<S>,
+  props: K[]
+): S
+
+/**
+ * 订阅一个 model
+ * @param model model 实例
+ * @param shouldUpdate 比较函数，用于避免不必要的重渲染
+ */
+export default function useModel<S extends object>(
+  model: Model<S>,
+  shouldUpdate?: (prevState: S, nextState: S) => boolean
+): S
+
+export default function useModel<S extends object, K extends keyof S>(
+  model: Model<S>,
+  comparator?: ((prevState: S, nextState: S) => boolean) | K[]
+): S {
+  const setUpdateTime = useState(0)[1]
 
   useEffect(() => {
-    const listener: Listener<M['state']> = (prevState, nextState) => {
-      if (shouldUpdate && !shouldUpdate(prevState, nextState)) {
-        // shouldUpdate(...) === false 就避免 rerender
+    const shouldUpdateFunc = (prevState: S, nextState: S) => {
+      if (comparator === undefined) {
+        return true
+      }
+
+      // comparator: (prevState: S, nextState: S) => boolean
+      if (typeof comparator === 'function') {
+        return !comparator(prevState, nextState)
+      }
+
+      // comparator: K[]
+      for (let i = 0; i < comparator.length; i++) {
+        const prop = comparator[i]
+
+        if (prevState[prop] !== nextState[prop]) {
+          return true
+        }
+      }
+
+      return false
+    }
+
+    const listener: Listener<S> = (prevState, nextState) => {
+      if (shouldUpdateFunc(prevState, nextState)) {
+        // shouldUpdate 返回 false 就避免 rerender
         return
       }
 
-      updateCount(prev => prev + 1)
+      setUpdateTime(prev => prev + 1)
     }
 
     model._subscribe(listener)
@@ -84,7 +121,7 @@ export default function useModel<M extends Model>(
     return () => {
       model._unsubscribe(listener)
     }
-  }, [model, shouldUpdate])
+  }, [model, comparator])
 
-  return model
+  return model.state
 }

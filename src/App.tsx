@@ -6,9 +6,8 @@ import settingModel from '@/models/setting'
 // FIXME: delete after migrate to v4
 // https://material-ui.com/css-in-js/basics/#migration-for-material-ui-core-users
 import { MuiThemeProvider } from '@material-ui/core/styles'
-import { ThemeProvider } from '@material-ui/styles'
+import { ThemeProvider, install } from '@material-ui/styles'
 
-import { install } from '@material-ui/styles'
 install()
 
 import { dark, light } from './theme'
@@ -27,9 +26,7 @@ const App = () => (
 )
 
 const Root = () => {
-  const {
-    state: { theme },
-  } = useModel(settingModel)
+  const { theme } = useModel(settingModel, ['theme'])
 
   return (
     <MuiThemeProvider theme={theme === 'light' ? light : dark}>

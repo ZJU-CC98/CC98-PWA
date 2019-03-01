@@ -37,9 +37,7 @@ interface WrapperProps {
 }
 
 const Wrapper: React.FC<WrapperProps> = props => {
-  const {
-    state: { myInfo },
-  } = useModel(userModel)
+  const { myInfo } = useModel(userModel, ['myInfo'])
 
   const [userInfo] = useFetcher(props.id ? () => getUserInfoById(props.id as string) : null)
 

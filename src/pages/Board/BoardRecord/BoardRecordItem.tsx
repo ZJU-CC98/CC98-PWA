@@ -37,7 +37,8 @@ export default ({ eventInfo }: Props) => (
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <FlexDiv>
           <Typography>
-            对象：{eventInfo.boardId === 182 ? '匿名用户' : eventInfo.targetUserName}
+            对象：
+            {eventInfo.boardId === 182 ? '匿名用户' : eventInfo.targetUserName}
           </Typography>
           <Typography>时间：{dayjs(eventInfo.time).format('YYYY/MM/DD HH:mm')}</Typography>
         </FlexDiv>

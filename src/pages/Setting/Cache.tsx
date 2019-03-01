@@ -13,10 +13,8 @@ const ranges = [
 ]
 
 const Cache = () => {
-  const {
-    state: { cacheSize },
-    CHANGE_CACHE,
-  } = useModel(settingModel, (prev, next) => prev.cacheSize !== next.cacheSize)
+  const { cacheSize } = useModel(settingModel, ['cacheSize'])
+  const { CHANGE_CACHE } = settingModel
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     CHANGE_CACHE(parseInt(event.target.value, 10))

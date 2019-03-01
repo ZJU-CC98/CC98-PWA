@@ -6,10 +6,8 @@ import settingModel from '@/models/setting'
 import { ListItem, ListItemText, Switch } from '@material-ui/core'
 
 const Theme = () => {
-  const {
-    state: { theme },
-    TOGGLE_THEME,
-  } = useModel(settingModel, (prev, next) => prev.theme !== next.theme)
+  const { theme } = useModel(settingModel, ['theme'])
+  const { TOGGLE_THEME } = settingModel
 
   return (
     <ListItem button>

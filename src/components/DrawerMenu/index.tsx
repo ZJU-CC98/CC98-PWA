@@ -57,14 +57,16 @@ const DividerS = muiStyled(Divider)({
 const jump = (link: string) => () => navigate(link)
 
 const DrawerMenu: React.FC = () => {
-  const { state: user, LOG_OUT } = useModel(userModel)
-  const { state, CLOSE_DRAWER } = useModel(stateModel)
-  const {
-    state: { customHome },
-  } = useModel(settingModel)
+  const user = useModel(userModel)
+  const { LOG_OUT } = userModel
+
+  const { isDrawerOpen } = useModel(stateModel, ['isDrawerOpen'])
+  const { CLOSE_DRAWER } = stateModel
+
+  const { customHome } = useModel(settingModel, ['customHome'])
 
   return (
-    <Drawer open={state.isDrawerOpen} onClose={CLOSE_DRAWER}>
+    <Drawer open={isDrawerOpen} onClose={CLOSE_DRAWER}>
       <ListS onClick={CLOSE_DRAWER}>
         <UserInfo isLogIn={user.isLogIn} info={user.myInfo} />
         <DividerS />

@@ -92,7 +92,7 @@ export default function useModel<S extends object, K extends keyof S>(
 
       // comparator: (prevState: S, nextState: S) => boolean
       if (typeof comparator === 'function') {
-        return !comparator(prevState, nextState)
+        return comparator(prevState, nextState)
       }
 
       // comparator: K[]
@@ -109,11 +109,8 @@ export default function useModel<S extends object, K extends keyof S>(
 
     const listener: Listener<S> = (prevState, nextState) => {
       if (shouldUpdateFunc(prevState, nextState)) {
-        // shouldUpdate 返回 false 就避免 rerender
-        return
+        setUpdateTime(prev => prev + 1)
       }
-
-      setUpdateTime(prev => prev + 1)
     }
 
     model._subscribe(listener)

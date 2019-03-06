@@ -21,13 +21,11 @@ export class Model<State extends object = {}> {
   /**
    * just like setState in react
    * @param state_or_updater
-   * @param callback
    */
   setState<K extends keyof State>(
     updater:
       | ((prevState: Readonly<State>) => Pick<State, K> | State | null)
-      | (Pick<State, K> | State | null),
-    callback?: () => void
+      | (Pick<State, K> | State | null)
   ) {
     let nextState: Pick<State, K> | State | null
 
@@ -40,20 +38,14 @@ export class Model<State extends object = {}> {
     // (v == null) equal to (v === null || v === undefined)
     // this will prevent broadcast
     if (nextState == null) {
-      if (callback) callback()
-
-      return Promise.resolve()
+      return
     }
 
     this._prevState = this.state
     this.state = Object.assign({}, this.state, nextState)
 
-    const promises = this._listeners.map(listener => listener(this._prevState, this.state))
-
-    return Promise.all(promises).then(() => {
-      if (callback) {
-        return callback()
-      }
+    this._listeners.forEach(listener => {
+      listener(this._prevState, this.state)
     })
   }
 }

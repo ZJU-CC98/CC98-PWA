@@ -17,10 +17,6 @@ const Background = muiStyled(Paper).attrs({
 // 该占位符高度和 TopBar 保持一致
 const Placeholder = styled.div`
   height: 56px;
-
-  @media (min-width: 600px) {
-    height: 64px;
-  }
 `
 
 const BackGround: React.FC = ({ children }) => (

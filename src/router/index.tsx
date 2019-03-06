@@ -54,6 +54,16 @@ class RouterModel extends Model<State> {
 
     this.setState({ locationStates })
   }
+
+  /**
+   * 删除最后一个路由（配合 replace 使用
+   */
+  POP() {
+    const { locationStates } = this.state
+    locationStates.pop()
+
+    this.setState({ locationStates })
+  }
 }
 
 /**

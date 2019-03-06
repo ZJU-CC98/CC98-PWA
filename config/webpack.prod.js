@@ -10,9 +10,8 @@ module.exports = merge(common, {
   mode: "production",
 
   plugins: [
-    new CleanWebpackPlugin(['dist'], {
-      root: path.resolve(__dirname, '../'),
-      verbose: true,
+    new CleanWebpackPlugin({
+      // verbose: true,
     }),
 
     new CopyWebpackPlugin([{

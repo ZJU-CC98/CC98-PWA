@@ -18,15 +18,15 @@ export function notificationHandler(err: FetchError) {
 
 export function navigateHandler(err: FetchError) {
   if (err.status === 400) {
-    navigate('/error/400')
+    navigate('/error/400', { replace: true })
   } else if (err.status === 401) {
-    navigate('/error/401')
+    navigate('/error/401', { replace: true })
   } else if (err.status === 403) {
-    navigate('/error/403')
+    navigate('/error/403', { replace: true })
   } else if (err.status === 404) {
-    navigate('/error/404')
+    navigate('/error/404', { replace: true })
   } else if (err.status === 500 || err.status === 502 || err.status === 503) {
-    navigate('/error/500')
+    navigate('/error/500', { replace: true })
   }
 }
 

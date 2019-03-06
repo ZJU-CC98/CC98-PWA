@@ -23,10 +23,6 @@ const Wrapper = muiStyled(Paper).attrs({
   paddingRight: 0,
   /* z-index of TopBar is 1100 and DrawerMenu is 1200 */
   zIndex: 1105,
-
-  '@media (min-width: 600px)': {
-    height: 64,
-  },
 })
 
 const GobackIcon = muiStyled(IconButton)({

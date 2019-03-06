@@ -41,39 +41,31 @@ class SettingModel extends Model<State> {
   }
 
   TOGGLE_THEME = () => {
-    this.setState(
-      state => ({
-        theme: state.theme === 'light' ? 'dark' : 'light',
-      }),
-      this.SYNC_SETTING
-    )
+    this.setState(state => ({
+      theme: state.theme === 'light' ? 'dark' : 'light',
+    }))
+    this.SYNC_SETTING()
   }
 
   TOGGLE_SIGNALR = () => {
-    this.setState(
-      state => ({
-        useSignalr: !state.useSignalr,
-      }),
-      this.SYNC_SETTING
-    )
+    this.setState(state => ({
+      useSignalr: !state.useSignalr,
+    }))
+    this.SYNC_SETTING()
   }
 
   CHANGE_CACHE = (size: number) => {
-    this.setState(
-      {
-        cacheSize: size,
-      },
-      this.SYNC_SETTING
-    )
+    this.setState({
+      cacheSize: size,
+    })
+    this.SYNC_SETTING()
   }
 
   CHANGE_CUSTOMHOME = (value: number) => {
-    this.setState(
-      {
-        customHome: value,
-      },
-      this.SYNC_SETTING
-    )
+    this.setState({
+      customHome: value,
+    })
+    this.SYNC_SETTING()
   }
 }
 

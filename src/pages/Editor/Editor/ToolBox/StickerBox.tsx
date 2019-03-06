@@ -79,8 +79,6 @@ export default ({ editor, handleClose }: Props) => {
   return (
     <>
       <DialogTitleS>
-        {/*
-          // @ts-ignore */}
         <Tabs
           value={type}
           onChange={handleChange}

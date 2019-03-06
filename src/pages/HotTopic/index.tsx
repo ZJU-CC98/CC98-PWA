@@ -50,8 +50,6 @@ export default () => {
 
   return (
     <>
-      {/*
-        // @ts-ignore */}
       <Tabs
         value={current}
         onChange={handleChange}

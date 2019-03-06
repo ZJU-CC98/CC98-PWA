@@ -31,12 +31,10 @@ class UserModel extends Model<State> {
     const token = await logIn(username, password)
 
     token.fail().succeed(_ => {
-      this.setState(
-        {
-          isLogIn: true,
-        },
-        this.FRESH_INFO
-      )
+      this.setState({
+        isLogIn: true,
+      })
+      this.FRESH_INFO()
     })
 
     return token

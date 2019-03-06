@@ -91,7 +91,6 @@ module.exports = {
       importWorkboxFrom: 'local',
       skipWaiting: true,
       clientsClaim: true,
-      navigateFallback: '/',
     }),
   ],
 }

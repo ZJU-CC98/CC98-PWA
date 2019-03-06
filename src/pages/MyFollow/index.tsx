@@ -15,8 +15,6 @@ export default () => {
 
   return (
     <>
-      {/*
-        // @ts-ignore */}
       <Tabs
         textColor="primary"
         indicatorColor="primary"

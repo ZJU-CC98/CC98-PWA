@@ -1,12 +1,13 @@
 declare module '@cc98/context' {
   import React, { ReactNode } from 'react'
   import { TagNode, IContext as ICoreContext } from '@cc98/ubb-core'
+  import { ModeEnum } from '@/theme'
 
   export interface IContext extends ICoreContext {
     /**
      * 主题
      */
-    theme: 'light' | 'dark'
+    mode: ModeEnum
     /**
      * 表情包地址 baseURL
      */

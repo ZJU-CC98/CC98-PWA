@@ -7,12 +7,12 @@ import ubbReact from './ubbReact'
 import { IContext } from '@cc98/context'
 
 const context: Partial<IContext> = {
-  theme: settingModel.state.theme,
+  mode: settingModel.state.mode,
 }
 
 settingModel._subscribe((prev, next) => {
-  if (prev.theme !== next.theme) {
-    context.theme = next.theme
+  if (prev.mode !== next.mode) {
+    context.mode = next.mode
   }
 })
 

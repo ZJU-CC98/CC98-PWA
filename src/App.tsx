@@ -10,12 +10,12 @@ import { ThemeProvider, install } from '@material-ui/styles'
 
 install()
 
-import { dark, light } from './theme'
+import { getTheme } from '@/theme'
 
 import TopBar from '@/components/TopBar'
 import DrawerMenu from '@/components/DrawerMenu'
 import BackGround from '@/components/BackGround'
-import Router from './router'
+import Router from '@/router'
 
 const App = () => (
   <BackGround>
@@ -26,11 +26,11 @@ const App = () => (
 )
 
 const Root = () => {
-  const { theme } = useModel(settingModel, ['theme'])
+  const { theme, mode } = useModel(settingModel, ['theme', 'mode'])
 
   return (
-    <MuiThemeProvider theme={theme === 'light' ? light : dark}>
-      <ThemeProvider theme={theme === 'light' ? light : dark}>
+    <MuiThemeProvider theme={getTheme(theme, mode)}>
+      <ThemeProvider theme={getTheme(theme, mode)}>
         <App />
       </ThemeProvider>
     </MuiThemeProvider>

@@ -2,11 +2,17 @@ import { Model } from '@/hooks/useModel'
 
 import { getLocalStorage, setLocalStorage } from '@/utils/storage'
 
+import { ThemeEnum, ModeEnum } from '@/theme'
+
 interface State {
   /**
    * 主题
    */
-  theme: 'light' | 'dark'
+  theme: ThemeEnum
+  /**
+   * 模式
+   */
+  mode: ModeEnum
   /**
    * 是否开启实时通知
    */
@@ -26,7 +32,8 @@ class SettingModel extends Model<State> {
     super()
 
     this.state = {
-      theme: 'light',
+      theme: ThemeEnum.DEFAULT,
+      mode: ModeEnum.LIGHT,
       useSignalr: false,
       cacheSize: 3,
       customHome: 1,
@@ -40,10 +47,15 @@ class SettingModel extends Model<State> {
     setLocalStorage('setting', this.state)
   }
 
-  TOGGLE_THEME = () => {
+  TOGGLE_MODE = () => {
     this.setState(state => ({
-      theme: state.theme === 'light' ? 'dark' : 'light',
+      mode: state.mode === ModeEnum.LIGHT ? ModeEnum.DARK : ModeEnum.LIGHT,
     }))
+    this.SYNC_SETTING()
+  }
+
+  CHANGE_THEME = (theme: ThemeEnum) => {
+    this.setState({ theme })
     this.SYNC_SETTING()
   }
 

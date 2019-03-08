@@ -14,7 +14,7 @@ const ranges = [
   // { label: '冬', value: ThemeEnum.WINTER },
 ]
 
-const Cache = () => {
+const Theme = () => {
   const { theme } = useModel(settingModel, ['theme'])
   const { CHANGE_THEME } = settingModel
 
@@ -36,4 +36,4 @@ const Cache = () => {
   )
 }
 
-export default React.memo(Cache)
+export default React.memo(Theme)

@@ -83,7 +83,7 @@ export default ({ topicInfo, refreshFunc }: Props) => {
   return (
     <>
       <IconButton onClick={handleOpen}>
-        <MoreVertIcon />
+        <MoreVertIcon fontSize="small" />
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem

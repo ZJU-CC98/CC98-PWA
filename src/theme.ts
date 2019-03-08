@@ -15,8 +15,8 @@ export enum ThemeEnum {
 }
 
 export enum ModeEnum {
-  LIGHT = 'light',
-  DARK = 'dark',
+  LIGHT,
+  DARK,
 }
 
 // default
@@ -81,5 +81,8 @@ const themeMap: {
  * 根据设置的主题和模式获取 MUI Theme
  */
 export function getTheme(theme: ThemeEnum, mode: ModeEnum) {
-  return themeMap[mode][theme]
+  const safeMode = ModeEnum[mode] ? mode : ModeEnum.LIGHT
+  const safeTheme = ThemeEnum[theme] ? theme : ThemeEnum.DEFAULT
+
+  return themeMap[safeMode][safeTheme]
 }

@@ -30,7 +30,7 @@ const Version = muiStyled(Button).attrs({
 })
 
 const TopBar: React.FC = () => (
-  <AppBar position="fixed">
+  <AppBar position="fixed" elevation={0}>
     <Toolbar>
       <IconButtonS onClick={stateModel.OPEN_DRAWER}>
         <MenuIcon />

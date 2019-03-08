@@ -9,7 +9,7 @@ import { getBoardInfo, getBoardStopPostUser } from '@/services/board'
 import userModel from '@/models/user'
 
 import QuietRoomList from './QuietRoomList'
-import QuietRoomHead from '../components/BoardItemHead'
+import BoardItemHead from '../components/BoardItemHead'
 import { judgeManagerOrBoardMasters } from '@/utils/ActionsJudge'
 
 const WrapperDiv = styled.div`
@@ -40,7 +40,7 @@ export default ({ id }: Props) => {
 
   return (
     <WrapperDiv>
-      <QuietRoomHead itemName="小黑屋" BoardInfo={board} />
+      <BoardItemHead title="小黑屋" boardInfo={board} />
       <QuietRoomList
         key={listKey}
         service={(from: number) => getBoardStopPostUser(id, from)}

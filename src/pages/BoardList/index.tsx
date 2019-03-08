@@ -16,26 +16,8 @@ import { IBoard } from '@cc98/api'
 
 import { throttle } from 'lodash-es'
 
-const SearchInputDiv = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 10px 25px 25px 5px;
-`
-
-interface Props {
-  value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
-
-const SearchInput: React.FC<Props> = ({ value, onChange }) => (
-  <SearchInputDiv>
-    <IconButton>
-      <SearchIcon color="primary" />
-    </IconButton>
-    <TextField fullWidth placeholder="搜索版面" value={value} onChange={onChange} />
-  </SearchInputDiv>
-)
+import SearchInput from '@/components/SearchInput'
+import StickyBar from '@/components/StickyBar'
 
 const WrapperDiv = styled.div`
   margin: 0 10px;
@@ -60,14 +42,16 @@ export default () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredBoards, setFilteredBoards] = useState<IBoard[]>([])
 
-  const onSearchTermChange = throttle((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value)
-    setFilteredBoards(childBoards.filter(board => board.name.indexOf(e.target.value) !== -1))
+  const onSearchTermChange = throttle((value: string) => {
+    setSearchTerm(value)
+    setFilteredBoards(childBoards.filter(board => board.name.indexOf(value) !== -1))
   }, 250)
 
   return (
     <>
-      <SearchInput value={searchTerm} onChange={onSearchTermChange} />
+      <StickyBar>
+        <SearchInput placeholder="搜索版面" onChange={onSearchTermChange} />
+      </StickyBar>
       {searchTerm ? (
         <WrapperDiv>
           {filteredBoards.map(board => (

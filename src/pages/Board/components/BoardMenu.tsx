@@ -40,7 +40,7 @@ export default ({ boardId }: Props) => {
 
   return (
     <>
-      <IconButton onClick={handleOpen}>
+      <IconButton color="inherit" onClick={handleOpen}>
         <MoreVertIcon />
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>

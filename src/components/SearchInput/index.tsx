@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
   },
   inputRoot: {
+    color: 'inherit',
     width: '100%',
   },
   inputInput: {
@@ -72,7 +73,7 @@ const SearchInput: React.FC<Props> = ({ placeholder, onChange, onSearch }) => {
         onChange={inputOnChange}
       />
       <div className={classes.searchIcon}>
-        <SearchIcon color="action" onClick={onSearchClick} />
+        <SearchIcon color="inherit" onClick={onSearchClick} />
       </div>
     </div>
   )

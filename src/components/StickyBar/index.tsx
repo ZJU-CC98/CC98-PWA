@@ -1,30 +1,21 @@
 import React from 'react'
+import styled from 'styled-components'
 
-import { makeStyles } from '@material-ui/styles'
+import { AppBar } from '@material-ui/core'
 
-import { Theme } from '@material-ui/core/styles'
+const Div = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 56px;
+  padding: 0 16px;
+`
 
-const useStyles = makeStyles((theme: Theme) => ({
-  wrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    minHeight: 56,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    backgroundColor: theme.palette.primary.main,
-    // sticky
-    position: 'sticky',
-    top: 0,
-    zIndex: 1200,
-  },
-}))
-
-const StickyBar: React.FC = ({ children }) => {
-  const classes = useStyles()
-
-  return <div className={classes.wrapper}>{children}</div>
-}
+const StickyBar: React.FC = ({ children }) => (
+  <AppBar elevation={0} position="sticky">
+    <Div>{children}</Div>
+  </AppBar>
+)
 
 export default StickyBar

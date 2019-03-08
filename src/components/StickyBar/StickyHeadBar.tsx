@@ -10,13 +10,16 @@ import { goback } from '@/utils/history'
 
 import StickyBar from './index'
 
-const GobackIcon = muiStyled(IconButton)({
+const GobackIcon = muiStyled(IconButton).attrs({
+  color: 'inherit',
+})({
   marginLeft: -12,
   marginRight: -4,
 })
 
 const Title = muiStyled(Typography).attrs({
   variant: 'subtitle2',
+  color: 'inherit',
 })({
   margin: '6px 4px',
   flexGrow: 2,
@@ -25,16 +28,18 @@ const Title = muiStyled(Typography).attrs({
 })
 
 const AcitonDiv = styled.div`
-  margin-left: -8px;
-  margin-right: -18px;
+  margin-left: -10px;
+  margin-right: -16px;
 `
 
-const SubTitle = muiStyled(Typography)({
+const SubTitle = muiStyled(Typography).attrs({
+  color: 'inherit',
+})({
   minWidth: '4rem',
   maxWidth: '6rem',
   textAlign: 'center',
   flexShrink: 2,
-  opacity: 0.6,
+  opacity: 0.75,
 })
 
 interface Props {

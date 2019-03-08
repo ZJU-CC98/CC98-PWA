@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react'
 
 import styled from 'styled-components'
-import muiStyled from '@/muiStyled'
 import {
   DialogTitle,
   DialogContent,
@@ -10,14 +9,11 @@ import {
   CircularProgress,
 } from '@material-ui/core'
 
-import ReactCropper from 'react-cropper'
+import ReactCropper, { Cropper } from './ReactCropper'
 import 'cropperjs/dist/cropper.css'
 
 import { updateMyAvatar } from '@/services/user'
-
-const CircularProgressS = muiStyled(CircularProgress)({
-  marginRight: 24,
-})
+import snackbar from '@/utils/snackbar'
 
 const FlexDiv = styled.div`
   display: flex;
@@ -27,44 +23,44 @@ const FlexDiv = styled.div`
 
 interface Props {
   imgSrc: string
-  /**
-   * 文件类型
-   */
-  fileType: string
-  handleAvatarSubmit: (avatarSrc: string) => void
-  handleClose: () => void
+  uploadAvatorCallback: (avatarSrc: string) => void
 }
 
-export default ({ imgSrc, handleAvatarSubmit, handleClose, fileType }: Props) => {
+export default ({ imgSrc, uploadAvatorCallback }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  const cropRef = useRef<any>(null)
+  const cropRef = useRef<{
+    cropper: Cropper
+  }>(null)
 
   const submitHandle = () => {
     if (!cropRef.current) {
       return
     }
+    const cropper = cropRef.current.cropper
 
     setIsLoading(true)
-    const avatarCanvas: HTMLCanvasElement = cropRef.current.getCroppedCanvas()
-    avatarCanvas.toBlob(
-      async result => {
-        if (result) {
-          const name: string = `头像.${fileType.slice(fileType.indexOf('/'), fileType.length)}`
-          const file: File = new File([result], name, { type: fileType })
+    const canvas = cropper.getCroppedCanvas()
+    const blobCallback = (blob: Blob | null) => {
+      if (!blob) {
+        return
+      }
 
-          const res = await updateMyAvatar(file)
-          res
-            .fail(() => setIsLoading(false))
-            .succeed(data => {
-              handleAvatarSubmit(data[0])
-              setIsLoading(false)
-              handleClose()
-            })
-        }
-      },
-      fileType,
-      0.75
-    )
+      const file = new File([blob], 'user-avatar')
+
+      updateMyAvatar(file).then(res =>
+        res
+          .fail(_ => {
+            snackbar.error('上传头像失败')
+            setIsLoading(false)
+          })
+          .succeed(data => {
+            uploadAvatorCallback(data[0])
+            setIsLoading(false)
+          })
+      )
+    }
+
+    canvas.toBlob(blobCallback)
   }
 
   return (
@@ -72,24 +68,13 @@ export default ({ imgSrc, handleAvatarSubmit, handleClose, fileType }: Props) =>
       <DialogTitle>本地头像</DialogTitle>
       <DialogContent>
         <FlexDiv>
-          <ReactCropper
-            viewMode={2}
-            src={imgSrc}
-            style={{ height: 300, width: '100%' }}
-            aspectRatio={1 / 1}
-            zoomable
-            ref={cropRef}
-          />
+          <ReactCropper style={{ height: 300, width: '100%' }} src={imgSrc} ref={cropRef} />
         </FlexDiv>
       </DialogContent>
       <DialogActions>
-        {isLoading ? (
-          <CircularProgressS size={20} />
-        ) : (
-          <Button onClick={submitHandle} color="primary">
-            提交
-          </Button>
-        )}
+        <Button onClick={submitHandle} color="primary">
+          {isLoading ? <CircularProgress size={24} /> : '提交'}
+        </Button>
       </DialogActions>
     </>
   )

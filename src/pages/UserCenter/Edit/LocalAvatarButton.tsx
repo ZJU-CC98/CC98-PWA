@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 
 import { Dialog, Button } from '@material-ui/core'
 
-import LocalAvatarBox from './LocalAvatarBox'
+const LocalAvatarBox = React.lazy(() => import('./LocalAvatarBox'))
 
 import snackbar from '@/utils/snackbar'
 
@@ -12,42 +12,42 @@ interface Props {
 
 export default ({ handleAvatarSubmit }: Props) => {
   const [open, setOpen] = useState(false)
-  const [img, setImg] = useState({ imgSrc: '', fileType: '' })
+  const [imgSrc, setImgSrc] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleClose = () => {
     setOpen(false)
   }
 
-  const clickHandler = () => {
-    if (!fileInputRef.current) {
-      return
-    }
-
-    fileInputRef.current.click()
+  const uploadAvatorCallback = (avatorSrc: string) => {
+    handleAvatarSubmit(avatorSrc)
+    handleClose()
   }
 
-  async function choosePicFinish(file: File) {
-    if (!file) return
-    if (!file.type.match('image.*')) {
-      snackbar.error('请选择图片文件')
+  const clickHandler = () => {
+    fileInputRef.current && fileInputRef.current.click()
+  }
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files) {
       return
     }
-    setImg({ ...img, fileType: file.type })
+    const file = files[0]
+    if (!file.type.match('image.*')) {
+      snackbar.error('请选择图片文件')
+      return
+    }
+
     const render = new FileReader()
 
     render.readAsDataURL(file)
     render.onload = _ => {
-      setImg({ ...img, imgSrc: render.result as string })
-      setOpen(!open)
-    }
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files: FileList | null = e.target.files
-    if (files) {
-      choosePicFinish(files[0])
+      if (!render.result) {
+        return
+      }
+      setImgSrc(render.result as string)
+      setOpen(true)
     }
   }
 
@@ -57,22 +57,15 @@ export default ({ handleAvatarSubmit }: Props) => {
       <input
         style={{ display: 'none' }}
         type="file"
-        name="file"
-        onChange={e => {
-          handleInputChange(e)
-          e.target.value = ''
-        }}
+        onChange={onChange}
         ref={fileInputRef}
         accept="image/*"
       />
-      <Dialog open={open} onClose={handleClose} fullWidth scroll="paper">
-        <LocalAvatarBox
-          imgSrc={img.imgSrc}
-          handleAvatarSubmit={handleAvatarSubmit}
-          handleClose={handleClose}
-          fileType={img.fileType}
-        />
-      </Dialog>
+      <React.Suspense fallback={null}>
+        <Dialog open={open} onClose={handleClose} fullWidth scroll="paper">
+          <LocalAvatarBox imgSrc={imgSrc} uploadAvatorCallback={uploadAvatorCallback} />
+        </Dialog>
+      </React.Suspense>
     </>
   )
 }

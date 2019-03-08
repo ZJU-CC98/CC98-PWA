@@ -46,7 +46,7 @@ interface Props {
   title: string
   subTitle: string
   subTitleClick?: () => void
-  action: React.ReactNode
+  action?: React.ReactNode
 }
 
 const StickyHeadBar: React.FC<Props> = ({ title, subTitle, subTitleClick, action }) => {
@@ -57,7 +57,7 @@ const StickyHeadBar: React.FC<Props> = ({ title, subTitle, subTitleClick, action
       </GobackIcon>
       <Title>{title}</Title>
       <SubTitle onClick={subTitleClick}>{subTitle}</SubTitle>
-      <AcitonDiv>{action}</AcitonDiv>
+      {action && <AcitonDiv>{action}</AcitonDiv>}
     </StickyBar>
   )
 }

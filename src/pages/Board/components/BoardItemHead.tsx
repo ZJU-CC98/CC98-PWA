@@ -1,7 +1,6 @@
 import React from 'react'
 
 import StickyHeadBar from '@/components/StickyBar/StickyHeadBar'
-import BoardMenu from './BoardMenu'
 
 import { IBoard } from '@cc98/api'
 import { navigate } from '@/utils/history'
@@ -16,7 +15,6 @@ const RecordHead: React.FC<Props> = ({ title, boardInfo }) => (
     title={title}
     subTitle={boardInfo.name}
     subTitleClick={() => navigate(`/board/${boardInfo.id}`)}
-    action={<BoardMenu boardId={boardInfo.id} />}
   />
 )
 

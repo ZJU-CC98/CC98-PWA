@@ -59,7 +59,7 @@ export function updateMyAvatar(file: File) {
   formData.append('files', file, file.name)
   formData.append('contentType', 'multipart/form-data')
 
-  return POST<string>('file', {
+  return POST<string[]>('file', {
     headers: {
       // Content-Type 置空
     },
@@ -68,6 +68,7 @@ export function updateMyAvatar(file: File) {
     },
   })
 }
+
 /**
  * 修改个人头像
  */

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { goback } from '@/utils/history'
 import styled from 'styled-components'
@@ -61,6 +61,9 @@ const FormBody = () => {
   const { myInfo } = useModel(userModel, ['myInfo'])
 
   const [info, setInfo] = useState(myInfo)
+  useEffect(() => {
+    setInfo(myInfo)
+  }, [myInfo])
 
   if (info === null) {
     return null
@@ -110,11 +113,12 @@ const FormBody = () => {
           <FormItem label="QQ" value={info.qq} onChange={handleChange('qq')} />
           <FormItem
             label="邮箱"
-            value={info.emailAddress}
+            value={info.emailAddress || ''}
             onChange={handleChange('emailAddress')}
           />
           <FormItem
             label="签名档"
+            multiline
             value={info.signatureCode}
             onChange={handleChange('signatureCode')}
           />

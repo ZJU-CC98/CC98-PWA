@@ -3,10 +3,6 @@ import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
 
-import { TextField, IconButton } from '@material-ui/core'
-
-import SearchIcon from '@material-ui/icons/Search'
-
 import BoardGroup from './BoardGroup'
 import BoardItem from './BoardItem'
 
@@ -55,13 +51,13 @@ export default () => {
       {searchTerm ? (
         <WrapperDiv>
           {filteredBoards.map(board => (
-            <BoardItem key={board.id} data={board} />
+            <BoardItem key={board.id} boardInfo={board} />
           ))}
         </WrapperDiv>
       ) : (
         <>
           {boardList &&
-            boardList.map(boardGroup => <BoardGroup key={boardGroup.id} data={boardGroup} />)}
+            boardList.map(boardGroup => <BoardGroup key={boardGroup.id} boardsInfo={boardGroup} />)}
           <EmptyDiv />
         </>
       )}

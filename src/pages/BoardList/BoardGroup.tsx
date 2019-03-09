@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
-import { Typography, Collapse, IconButton } from '@material-ui/core'
+import { Typography, Button, IconButton, Collapse } from '@material-ui/core'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
@@ -10,60 +11,46 @@ import BoardItem from './BoardItem'
 import { IBoardGroup } from '@cc98/api'
 
 const WrapperDiv = styled.div`
-  margin-bottom: 20px;
+  margin: 24px 8px;
 `
 
-const HeaderDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2px 15px;
-  padding-left: 36px;
-`
-
-const BodyDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: 20px;
-  margin-left: 24px;
-  margin-bottom: 10px;
-`
-
-const ItemDiv = styled.div`
-  width: 33%;
-`
+const Title = muiStyled(Typography).attrs({
+  variant: 'subtitle1',
+  color: 'primary',
+})({
+  margin: '0 8px',
+  textAlign: 'right',
+})
 
 interface Props {
-  data: IBoardGroup
+  boardsInfo: IBoardGroup
 }
 
 const notExpandedBoards = [2, 29, 33, 35, 37, 604]
 
-export default (props: Props) => {
-  const [isExpanded, setIsExpanded] = useState(notExpandedBoards.indexOf(props.data.id) === -1)
-  const { data } = props
+export default ({ boardsInfo }: Props) => {
+  const hasCover = useMemo(() => {
+    return notExpandedBoards.indexOf(boardsInfo.id) === -1
+  }, [boardsInfo.id])
+  const [isExpanded, setIsExpanded] = useState(hasCover)
 
   return (
     <WrapperDiv>
-      <HeaderDiv onClick={() => setIsExpanded(!isExpanded)}>
-        <Typography variant="subtitle1" color="primary">
-          {data.name}
-        </Typography>
-
-        <IconButton color="primary">
-          {/* 因为简单就内联了 */}
-          <ExpandMoreIcon style={{ transform: isExpanded ? 'rotate(180deg)' : undefined }} />
+      <Title onClick={() => setIsExpanded(!isExpanded)}>
+        {boardsInfo.name}
+        <IconButton color="primary" style={{ marginRight: -4 }}>
+          <ExpandMoreIcon
+            style={{
+              transform: isExpanded ? undefined : 'rotate(90deg)',
+              transition: 'transform 0.5s',
+            }}
+          />
         </IconButton>
-      </HeaderDiv>
-
-      <Collapse in={isExpanded} timeout="auto">
-        <BodyDiv>
-          {data.boards.map(board => (
-            <ItemDiv key={board.id}>
-              <BoardItem data={board} />
-            </ItemDiv>
-          ))}
-        </BodyDiv>
+      </Title>
+      <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+        {boardsInfo.boards.map(board => (
+          <BoardItem key={board.id} boardInfo={board} hasCover={hasCover} />
+        ))}
       </Collapse>
     </WrapperDiv>
   )

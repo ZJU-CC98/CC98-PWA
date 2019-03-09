@@ -1,4 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles'
+import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 
 import blue from '@material-ui/core/colors/blue'
 import pink from '@material-ui/core/colors/pink'
@@ -20,7 +21,7 @@ export enum ModeEnum {
 }
 
 // default
-const blueLight = createMuiTheme({
+const blueLight: ThemeOptions = {
   palette: {
     primary: {
       main: blue[400],
@@ -28,9 +29,9 @@ const blueLight = createMuiTheme({
     },
     secondary: pink,
   },
-})
+}
 
-const blueDark = createMuiTheme({
+const blueDark: ThemeOptions = {
   palette: {
     primary: {
       main: blue[400],
@@ -39,19 +40,19 @@ const blueDark = createMuiTheme({
     secondary: pink,
     type: 'dark',
   },
-})
+}
 
 // spring
-const greenLight = createMuiTheme({
+const greenLight: ThemeOptions = {
   palette: {
     primary: {
       main: green[300],
     },
     secondary: pink,
   },
-})
+}
 
-const greenDark = createMuiTheme({
+const greenDark: ThemeOptions = {
   palette: {
     primary: {
       main: green[300],
@@ -60,11 +61,11 @@ const greenDark = createMuiTheme({
     secondary: pink,
     type: 'dark',
   },
-})
+}
 
 const themeMap: {
   [key: string]: {
-    [key: string]: ReturnType<typeof createMuiTheme>
+    [key: string]: ThemeOptions
   }
 } = {
   [ModeEnum.LIGHT]: {
@@ -78,11 +79,18 @@ const themeMap: {
 }
 
 /**
- * 根据设置的主题和模式获取 MUI Theme
+ * 获取主题
  */
-export function getTheme(theme: ThemeEnum, mode: ModeEnum) {
+function _getTheme(theme: ThemeEnum, mode: ModeEnum): ThemeOptions {
   const safeMode = ModeEnum[mode] ? mode : ModeEnum.LIGHT
   const safeTheme = ThemeEnum[theme] ? theme : ThemeEnum.DEFAULT
 
   return themeMap[safeMode][safeTheme]
+}
+
+/**
+ * 根据设置的主题和模式获取 MUI Theme
+ */
+export function getTheme(theme: ThemeEnum, mode: ModeEnum) {
+  return createMuiTheme(_getTheme(theme, mode))
 }

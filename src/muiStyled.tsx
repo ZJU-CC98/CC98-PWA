@@ -19,3 +19,5 @@ export default function muiStyled<Props>(Component: React.ComponentType<Props> |
 }
 
 // const styledBy = (property, mapping) => props => mapping[props[property]]
+
+export { Theme } from '@material-ui/core/styles/createMuiTheme'

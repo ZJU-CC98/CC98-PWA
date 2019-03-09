@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import muiStyled from '@/muiStyled'
-import { useTheme } from '@material-ui/styles'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import usePalette from '@/hooks/usePalette'
 
 import { IconButton, Typography } from '@material-ui/core'
 
@@ -50,12 +49,12 @@ const Count = muiStyled(Typography).attrs({
 })
 
 const DividerCol = () => {
-  const theme = useTheme<Theme>()
+  const palette = usePalette()
 
   const style: React.CSSProperties = {
     margin: '0 4px',
     height: '1em',
-    border: `solid thin ${theme.palette.text.secondary}`,
+    border: `solid thin ${palette.text.secondary}`,
   }
 
   return <span style={style} />

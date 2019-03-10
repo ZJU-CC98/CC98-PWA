@@ -1,12 +1,13 @@
 import React from 'react'
-import { navigate } from '@/utils/history'
-import { Theme } from '@/muiStyled'
 
 import { makeStyles } from '@material-ui/styles'
+import { Theme } from '@/muiStyled'
 
 import { Typography, CardMedia } from '@material-ui/core'
 
-import { IBoard } from '@cc98/api'
+import { navigate } from '@/utils/history'
+
+import { IBasicBoard } from '@cc98/api'
 import { IMG_BASE_URL } from '@/config'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 interface Props {
-  boardInfo: IBoard
+  boardInfo: IBasicBoard
   hasCover?: boolean
 }
 

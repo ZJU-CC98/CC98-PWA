@@ -8,7 +8,7 @@ import { Select, MenuItem, Input, InputLabel, FormControl } from '@material-ui/c
 
 import { getBoardsInfo } from '@/services/board'
 import { navigateHandler } from '@/services/utils/errorHandler'
-import { IBoard } from '@cc98/api'
+import { IBasicBoard } from '@cc98/api'
 
 const FormDiv = styled.div`
   display: flex;
@@ -28,7 +28,7 @@ interface Props {
 export default ({ handleBoardChange }: Props) => {
   const [basePoint, setBasePoint] = useState('')
   const [childPoint, setChildPoint] = useState('')
-  const [childBoards, setChildBoards] = useState<IBoard[]>([])
+  const [childBoards, setChildBoards] = useState<IBasicBoard[]>([])
   const [boardList] = useFetcher(getBoardsInfo, {
     success: boards => {
       setChildBoards(

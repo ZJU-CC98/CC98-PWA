@@ -5,8 +5,6 @@
 html {
   height: 100%;
   /* https://segmentfault.com/a/1190000012014962 */
-  overscroll-behavior-x: none;
-  overscroll-behavior-y: none;
 }
 
 body {
@@ -16,8 +14,9 @@ body {
   touch-action: manipulation;
   /* 平滑滚动 */
   scroll-behavior: smooth;
-  overscroll-behavior-x: none;
-  overscroll-behavior-y: none;
+
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 #root {

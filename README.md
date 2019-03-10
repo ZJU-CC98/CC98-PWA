@@ -18,6 +18,8 @@
 
 - webpack@4
 
+- typescript
+
 
 
 ### 知识库
@@ -78,7 +80,7 @@ module.exports = {
         <img width="150" height="150" src="https://github.com/Deturium.png?s=150">
         <br>
         <a href="https://github.com/Deturium">Deturium</a>
-        <p>前项目背锅人</p>
+        <p>项目背锅人</p>
         <p>小氢气</p>
       </td>
       <td align="center" valign="top">

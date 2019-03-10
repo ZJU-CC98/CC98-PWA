@@ -12,10 +12,15 @@ const Div = styled.div`
   padding: 0 16px;
 `
 
+const AppBarSticky = styled(AppBar)`
+  position: sticky;
+  position: -webkit-sticky;
+`
+
 const StickyBar: React.FC = ({ children }) => (
-  <AppBar elevation={0} position="sticky">
+  <AppBarSticky elevation={0} position="sticky">
     <Div>{children}</Div>
-  </AppBar>
+  </AppBarSticky>
 )
 
 export default StickyBar

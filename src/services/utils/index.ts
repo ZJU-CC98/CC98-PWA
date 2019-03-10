@@ -18,21 +18,30 @@ export function cacheService<T extends object | string>(
 ) {
   const key = `cache-${name}`
   let cache = getLocalStorage(key) as T | null
+  let isFetching = false
+  let promise: ReturnType<typeof service>
 
   return () => {
     if (cache) {
       return Promise.resolve(Try.of<T, FetchError>(Success.of(cache)))
     }
 
-    const response = service()
+    if (isFetching) {
+      return promise
+    }
 
-    response.then(res => {
+    isFetching = true
+    promise = service()
+
+    return promise.then(res => {
+      isFetching = false
+
       res.fail().succeed(value => {
         cache = value
         setLocalStorage(key, value, expireIn)
       })
-    })
 
-    return response
+      return res
+    })
   }
 }

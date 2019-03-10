@@ -2,11 +2,12 @@ import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import muiStyled from '@/muiStyled'
 
-import { Typography, Button, IconButton, Collapse } from '@material-ui/core'
+import { Typography, IconButton, Collapse } from '@material-ui/core'
 
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import SwapVertIcon from '@material-ui/icons/SwapVert'
 
 import BoardItem from './BoardItem'
+import { NOT_EXPANDED_BOARDS } from './constants'
 
 import { IBoardGroup } from '@cc98/api'
 
@@ -18,19 +19,19 @@ const Title = muiStyled(Typography).attrs({
   variant: 'subtitle1',
   color: 'primary',
 })({
-  margin: '0 8px',
-  textAlign: 'right',
+  margin: '0 6px',
+  display: 'flex',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
 })
 
 interface Props {
   boardsInfo: IBoardGroup
 }
 
-const notExpandedBoards = [2, 29, 33, 35, 37, 604]
-
 export default ({ boardsInfo }: Props) => {
   const hasCover = useMemo(() => {
-    return notExpandedBoards.indexOf(boardsInfo.id) === -1
+    return NOT_EXPANDED_BOARDS.indexOf(boardsInfo.id) === -1
   }, [boardsInfo.id])
   const [isExpanded, setIsExpanded] = useState(hasCover)
 
@@ -39,7 +40,7 @@ export default ({ boardsInfo }: Props) => {
       <Title onClick={() => setIsExpanded(!isExpanded)}>
         {boardsInfo.name}
         <IconButton color="primary" style={{ marginRight: -4 }}>
-          <ExpandMoreIcon
+          <SwapVertIcon
             style={{
               transform: isExpanded ? undefined : 'rotate(90deg)',
               transition: 'transform 0.5s',

@@ -19,6 +19,6 @@ declare module '@cc98/api' {
     /**
      * 子版面
      */
-    boards: IBoard[]
+    boards: IBasicBoard[]
   }
 }

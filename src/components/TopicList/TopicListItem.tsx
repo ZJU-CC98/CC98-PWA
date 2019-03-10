@@ -114,6 +114,9 @@ export default ({ data, place }: Props) => {
       info1 = dayjs(data.time).fromNow()
     case 'follow':
     case 'search':
+      // 搜索时使用发帖时间
+      // https://github.com/ZJU-CC98/CC98-PWA/issues/35
+      info1 = dayjs(data.time).fromNow()
       info2 = boardName
       break
 

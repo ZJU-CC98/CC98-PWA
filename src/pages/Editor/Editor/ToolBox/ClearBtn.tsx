@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { EditorContainer } from '../EditorContainer'
+import { EditorModel } from '../EditorModel'
 
 import {
   IconButton,
@@ -13,7 +13,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete'
 
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
 }
 
 export default ({ editor }: Props) => {
@@ -32,8 +32,10 @@ export default ({ editor }: Props) => {
   }
 
   return (
-    <IconButton>
-      <DeleteIcon onClick={clickHandler} />
+    <>
+      <IconButton onClick={clickHandler}>
+        <DeleteIcon />
+      </IconButton>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <DialogContentText>确认要清空已输入的内容吗？</DialogContentText>
@@ -47,6 +49,6 @@ export default ({ editor }: Props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </IconButton>
+    </>
   )
 }

@@ -1,14 +1,20 @@
 import React from 'react'
 
 import { Typography } from '@material-ui/core'
-import settingInstance from '@/containers/setting'
+import settingModel from '@/models/setting'
 
 import ubbReact from './ubbReact'
 import { IContext } from '@cc98/context'
 
 const context: Partial<IContext> = {
-  theme: settingInstance.state.theme,
+  mode: settingModel.state.mode,
 }
+
+settingModel._subscribe((prev, next) => {
+  if (prev.mode !== next.mode) {
+    context.mode = next.mode
+  }
+})
 
 interface Props {
   ubbText: string

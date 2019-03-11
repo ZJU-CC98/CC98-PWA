@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import useFetcher from '@/hooks/useFetcher'
-import useContainer from '@/hooks/useContainer'
-import { MetaInfoContainer } from './MetaInfoContainer'
+import useModel from '@/hooks/useModel'
+import { MetaInfoModel } from './MetaInfoModel'
 
 import { InputBase, FormLabel } from '@material-ui/core'
 
@@ -12,16 +13,14 @@ import SelectType from './SelectType'
 
 import { getBoardTags } from '@/services/board'
 
-const InputArea = styled(InputBase).attrs({
+const InputArea = muiStyled(InputBase).attrs({
   fullWidth: true,
-})`
-  && {
-    padding: 4px 8px;
-    border: 1.5px solid #ccc;
-  }
-`
+})({
+  padding: '4px 8px',
+  border: '1.5px solid #ccc',
+})
 
-export { MetaInfoContainer }
+export { MetaInfoModel }
 
 const SelectDiv = styled.div`
   display: flex;
@@ -34,20 +33,20 @@ const SelectDiv = styled.div`
 const TagSelectDiv = styled.div``
 
 interface Props {
-  container: MetaInfoContainer
+  model: MetaInfoModel
   /**
    * 版面 ID
    */
   boardId: number
 }
 
-export default ({ container, boardId }: Props) => {
-  useContainer(container)
+export default ({ model, boardId }: Props) => {
+  useModel(model)
 
   const [boardTags] = useFetcher(() => getBoardTags(boardId))
 
   const onTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    container.setTitle(event.target.value)
+    model.setTitle(event.target.value)
   }
 
   if (boardTags === null) {
@@ -59,7 +58,7 @@ export default ({ container, boardId }: Props) => {
       <SelectDiv>
         <div>
           <FormLabel>类型：</FormLabel>
-          <SelectType value={container.state.type} onChange={type => container.setType(type)} />
+          <SelectType value={model.state.type} onChange={type => model.setType(type)} />
         </div>
 
         <TagSelectDiv>
@@ -67,21 +66,21 @@ export default ({ container, boardId }: Props) => {
           {boardTags[0] && (
             <ScrollTag
               tags={boardTags[0].tags}
-              value={container.state.tag1}
-              onChange={tag => container.setTag1(tag)}
+              value={model.state.tag1}
+              onChange={tag => model.setTag1(tag)}
             />
           )}
           {boardTags[1] && (
             <ScrollTag
               tags={boardTags[1].tags}
-              value={container.state.tag2}
-              onChange={tag => container.setTag2(tag)}
+              value={model.state.tag2}
+              onChange={tag => model.setTag2(tag)}
             />
           )}
         </TagSelectDiv>
       </SelectDiv>
 
-      <InputArea value={container.state.title} placeholder="标题" onChange={onTitleChange} />
+      <InputArea value={model.state.title} placeholder="标题" onChange={onTitleChange} />
     </>
   )
 }

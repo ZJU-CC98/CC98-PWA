@@ -1,7 +1,7 @@
 import React from 'react'
 
-import useContainer from '@/hooks/useContainer'
-import userInstance from '@/containers/user'
+import useModel from '@/hooks/useModel'
+import userModel from '@/models/user'
 
 import useFetcher from '@/hooks/useFetcher'
 
@@ -12,6 +12,7 @@ import UserAvatar from './UserAvatar'
 import UserSignature from './UserSignature'
 import UserDetail from './UserDetail'
 import UserRecentTopics from './UserRecentTopics'
+import UserRecentPosts from './UserRecentPosts'
 
 interface Props {
   info: IUser
@@ -24,6 +25,7 @@ const UserCenter: React.FC<Props> = ({ info, isUserCenter }) => (
     <UserDetail info={info} />
     <UserSignature info={info} />
     <UserRecentTopics info={info} isUserCenter={isUserCenter} />
+    {isUserCenter && <UserRecentPosts />}
   </>
 )
 
@@ -35,9 +37,7 @@ interface WrapperProps {
 }
 
 const Wrapper: React.FC<WrapperProps> = props => {
-  const {
-    state: { myInfo },
-  } = useContainer(userInstance)
+  const { myInfo } = useModel(userModel, ['myInfo'])
 
   const [userInfo] = useFetcher(props.id ? () => getUserInfoById(props.id as string) : null)
 

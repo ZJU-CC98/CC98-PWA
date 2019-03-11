@@ -53,8 +53,8 @@ export default () => {
       <Tabs
         value={current}
         onChange={handleChange}
-        indicatorColor="primary"
         textColor="primary"
+        indicatorColor="primary"
         variant="fullWidth"
       >
         <Tab value="day" label="今日热门" />

@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { IconButton, Typography } from '@material-ui/core'
 
@@ -10,7 +11,7 @@ import FormatQuoteIcon from '@material-ui/icons/FormatQuote'
 import { IPost, ILikeState } from '@cc98/api'
 import { putLike, putDislike } from '@/services/post'
 
-import userInstance from '@/containers/user'
+import userModel from '@/models/user'
 
 import { navigate } from '@/utils/history'
 import snackbar from '@/utils/snackbar'
@@ -39,27 +40,24 @@ const ActionDiv = styled.div`
   margin-left: 8px;
 `
 
-const Count = styled(Typography).attrs({
+const Count = muiStyled(Typography).attrs({
   color: 'textSecondary',
-})`
-  && {
-    margin-left: -2px;
-    margin-right: 12px;
-  }
-`
+})({
+  marginLeft: -2,
+  marginRight: 12,
+})
 
-const DividerCol = styled.span`
-  margin: 0 4px;
-  /* FIXME: remove hardcode color */
-  border: solid thin rgba(0, 0, 0, 0.54);
-  height: 1rem;
-`
+const DividerCol = muiStyled('span')(({ theme }) => ({
+  margin: '0 4px',
+  height: '1em',
+  border: `solid thin ${theme.palette.text.secondary}`,
+}))
 
 /**
  * 检查是否登录
  */
 function checkLogIn() {
-  if (!userInstance.state.isLogIn) {
+  if (!userModel.state.isLogIn) {
     snackbar.error('请先登录')
 
     return false
@@ -97,20 +95,26 @@ const IconActions: React.FC<Props> = ({ postInfo, refreshPost }) => {
   return (
     <ActionDiv>
       <IconButton onClick={handleLike(LikeState.LIKE)}>
-        <ThumbUpIcon color={likeState === LikeState.LIKE ? 'secondary' : 'inherit'} />
+        <ThumbUpIcon
+          fontSize="small"
+          color={likeState === LikeState.LIKE ? 'secondary' : 'inherit'}
+        />
       </IconButton>
       <Count>{postInfo.likeCount}</Count>
 
       <DividerCol />
 
       <IconButton onClick={handleLike(LikeState.DISLIKE)}>
-        <ThumbDownIcon color={likeState === LikeState.DISLIKE ? 'secondary' : 'inherit'} />
+        <ThumbDownIcon
+          fontSize="small"
+          color={likeState === LikeState.DISLIKE ? 'secondary' : 'inherit'}
+        />
       </IconButton>
       <Count>{postInfo.dislikeCount}</Count>
 
       <DividerCol />
-      <IconButton>
-        <FormatQuoteIcon onClick={handleQuote} />
+      <IconButton onClick={handleQuote}>
+        <FormatQuoteIcon fontSize="small" />
       </IconButton>
     </ActionDiv>
   )

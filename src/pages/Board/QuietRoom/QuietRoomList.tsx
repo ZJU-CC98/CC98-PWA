@@ -1,8 +1,7 @@
 import React from 'react'
 
 import { IBoardStopPostUser } from '@cc98/api'
-import { Service } from '@/hooks/useInfList'
-import useInfList from '@/hooks/useInfList'
+import useInfList, { Service } from '@/hooks/useInfList'
 import InfiniteList from '@/components/InfiniteList'
 
 import QuietRoomItem from './QuietRoomItem'

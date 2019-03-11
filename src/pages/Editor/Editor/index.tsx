@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import useContainer from '@/hooks/useContainer'
-import { EditorContainer } from './EditorContainer'
+import useModel from '@/hooks/useModel'
+import { EditorModel } from './EditorModel'
 
 import MainContent from './MainContent'
 import Attachments from './Attachments'
@@ -15,15 +15,15 @@ const FixBottomDiv = styled.div`
   bottom: 12px;
 `
 
-export { EditorContainer }
+export { EditorModel }
 
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
   onSendCallback: () => void
 }
 
 const Editor: React.FC<Props> = ({ editor, onSendCallback }) => {
-  useContainer(editor)
+  useModel(editor)
 
   return (
     <div>

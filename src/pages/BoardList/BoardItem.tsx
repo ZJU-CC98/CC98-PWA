@@ -1,27 +1,73 @@
 import React from 'react'
+
+import { makeStyles } from '@material-ui/styles'
+import { Theme } from '@/muiStyled'
+
+import { Typography, CardMedia } from '@material-ui/core'
+
 import { navigate } from '@/utils/history'
-import styled from 'styled-components'
 
-import { Button } from '@material-ui/core'
+import { IBasicBoard } from '@cc98/api'
+import { IMG_BASE_URL } from '@/config'
 
-import { IBoard } from '@cc98/api'
+const useStyles = makeStyles((theme: Theme) => ({
+  card: {
+    display: 'flex',
+    margin: 8,
+    border: `2px solid ${theme.palette.primary.main}`,
+    borderRadius: 4,
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+    padding: '7px 12px 7px 16px',
+    minHeight: 70,
+  },
+  name: {
+    marginBottom: 4,
+  },
+  desc: {
+    lineHeight: 1.25,
+  },
+  media: {
+    width: 75,
+    height: 75,
+    margin: 4,
+    padding: 4,
+    flexShrink: 0,
+  },
+  mediaGround: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: theme.palette.primary.main,
+  },
+}))
 
 interface Props {
-  data: IBoard
+  boardInfo: IBasicBoard
+  hasCover?: boolean
 }
 
-const Item = styled(Button)`
-  && {
-    margin: 4px;
-    text-align: left;
-  }
-`
+export default ({ boardInfo, hasCover }: Props) => {
+  const classes = useStyles()
 
-export default (props: Props) => (
-  <Item
-    // variant="outlined"
-    onClick={() => navigate(`/board/${props.data.id}`)}
-  >
-    {props.data.name}
-  </Item>
-)
+  return (
+    <div className={classes.card} onClick={() => navigate(`board/${boardInfo.id}`)}>
+      <div className={classes.content}>
+        <Typography variant="subtitle1" className={classes.name}>
+          {boardInfo.name}
+        </Typography>
+        <Typography color="textSecondary" className={classes.desc}>
+          {boardInfo.description}
+        </Typography>
+      </div>
+
+      {hasCover && (
+        <div className={classes.mediaGround}>
+          <CardMedia className={classes.media} image={`${IMG_BASE_URL}/_${boardInfo.name}.png`} />
+        </div>
+      )}
+    </div>
+  )
+}

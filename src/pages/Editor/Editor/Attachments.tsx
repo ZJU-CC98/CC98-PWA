@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { EditorContainer } from './EditorContainer'
+import { EditorModel } from './EditorModel'
 
 import { Badge } from '@material-ui/core'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -21,7 +21,7 @@ const AttachDiv = styled.div`
 `
 
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
 }
 
 export default ({ editor }: Props) => (
@@ -30,7 +30,7 @@ export default ({ editor }: Props) => (
       <AttachDiv key={index}>
         <Badge
           color="secondary"
-          badgeContent={<ClearIcon fontSize="small" />}
+          badgeContent={<ClearIcon style={{ fontSize: 13 }} />}
           onClick={() => editor.detachAttachment(index)}
         >
           <UBB ubbText={attach} />

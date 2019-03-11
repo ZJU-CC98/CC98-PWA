@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { goback } from '@/utils/history'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
-import useContainer from '@/hooks/useContainer'
-import userInstance from '@/containers/user'
+import useModel from '@/hooks/useModel'
+import userModel from '@/models/user'
 
 import { IconButton, Typography, Button, TextField } from '@material-ui/core'
 
@@ -21,12 +22,10 @@ const HeaderDiv = styled.div`
   margin: 8px 0;
 `
 
-const GobackIcon = styled(IconButton)`
-  && {
-    margin-left: 4px;
-    margin-right: 5px;
-  }
-`
+const GobackIcon = muiStyled(IconButton)({
+  marginLeft: 4,
+  marginRight: 5,
+})
 
 const FormHeader = () => (
   <HeaderDiv>
@@ -44,30 +43,27 @@ const FormWrapper = styled.form`
   margin: 0 16px;
 `
 
-const FormItem = styled(TextField).attrs({
+const FormItem = muiStyled(TextField).attrs({
   fullWidth: true,
   variant: 'outlined',
-})`
-  && {
-    margin-bottom: 20px;
-  }
-` as typeof TextField // FIXME: @types/styled-components
+})({
+  marginBottom: 20,
+})
 
-const SubmitButton = styled(Button).attrs({
+const SubmitButton = muiStyled(Button).attrs({
   variant: 'contained',
   color: 'primary',
-})`
-  && {
-    margin: 8px;
-  }
-`
+})({
+  margin: 8,
+})
 
 const FormBody = () => {
-  const {
-    state: { myInfo },
-  } = useContainer(userInstance)
+  const { myInfo } = useModel(userModel, ['myInfo'])
 
   const [info, setInfo] = useState(myInfo)
+  useEffect(() => {
+    setInfo(myInfo)
+  }, [myInfo])
 
   if (info === null) {
     return null
@@ -84,7 +80,7 @@ const FormBody = () => {
     modifyMyInfo(info).then(res =>
       res.fail().succeed(_ => {
         snackbar.success('修改成功')
-        userInstance.FRESH_INFO()
+        userModel.FRESH_INFO()
       })
     )
   }
@@ -93,7 +89,7 @@ const FormBody = () => {
     modifyMyAvatar(AvatarSrc).then(res =>
       res.fail().succeed(_ => {
         snackbar.success('修改成功')
-        userInstance.FRESH_INFO()
+        userModel.FRESH_INFO()
       })
     )
   }
@@ -117,11 +113,12 @@ const FormBody = () => {
           <FormItem label="QQ" value={info.qq} onChange={handleChange('qq')} />
           <FormItem
             label="邮箱"
-            value={info.emailAddress}
+            value={info.emailAddress || ''}
             onChange={handleChange('emailAddress')}
           />
           <FormItem
             label="签名档"
+            multiline
             value={info.signatureCode}
             onChange={handleChange('signatureCode')}
           />

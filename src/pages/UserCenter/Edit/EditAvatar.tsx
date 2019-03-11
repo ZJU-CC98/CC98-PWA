@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Avatar, Typography } from '@material-ui/core'
 
@@ -22,13 +23,11 @@ const AvatarDiv = styled.div`
   align-items: center;
 `
 
-const AvatarS = styled(Avatar)`
-  && {
-    width: 70px;
-    height: 70px;
-    margin-right: 20px;
-  }
-`
+const AvatarS = muiStyled(Avatar)({
+  width: 70,
+  height: 70,
+  marginRight: 20,
+})
 
 const ButtonDiv = styled.div`
   display: flex;

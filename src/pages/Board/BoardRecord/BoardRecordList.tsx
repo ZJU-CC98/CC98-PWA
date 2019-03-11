@@ -3,8 +3,7 @@ import React from 'react'
 import RecordItem from './BoardRecordItem'
 
 import { IBoardEvent } from '@cc98/api'
-import { Service } from '@/hooks/useInfList'
-import useInfList from '@/hooks/useInfList'
+import useInfList, { Service } from '@/hooks/useInfList'
 import InfiniteList from '@/components/InfiniteList'
 
 interface Props {

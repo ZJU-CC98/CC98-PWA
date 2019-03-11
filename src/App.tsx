@@ -1,15 +1,16 @@
 import React from 'react'
 
-import useContainer from '@/hooks/useContainer'
-import settingInstance from '@/containers/setting'
+import useModel from '@/hooks/useModel'
+import settingModel from '@/models/setting'
 
-import { MuiThemeProvider } from '@material-ui/core/styles'
-import { dark, light } from './theme'
+import { ThemeProvider } from '@material-ui/styles'
+
+import { getTheme } from '@/theme'
 
 import TopBar from '@/components/TopBar'
 import DrawerMenu from '@/components/DrawerMenu'
 import BackGround from '@/components/BackGround'
-import Router from './router'
+import Router from '@/router'
 
 const App = () => (
   <BackGround>
@@ -20,14 +21,12 @@ const App = () => (
 )
 
 const Root = () => {
-  const {
-    state: { theme },
-  } = useContainer(settingInstance)
+  const { theme, mode } = useModel(settingModel, ['theme', 'mode'])
 
   return (
-    <MuiThemeProvider theme={theme === 'light' ? light : dark}>
+    <ThemeProvider theme={getTheme(theme, mode)}>
       <App />
-    </MuiThemeProvider>
+    </ThemeProvider>
   )
 }
 

@@ -1,6 +1,5 @@
 import { navigate as reachNavigate, NavigateOptions } from '@reach/router'
-
-// TODO: 忽略不需要 cache 的页面
+import { routerModel } from '@/router'
 
 /**
  * 路由跳转到对应 URL
@@ -8,6 +7,10 @@ import { navigate as reachNavigate, NavigateOptions } from '@reach/router'
  * @param options
  */
 export function navigate(url: string, options?: NavigateOptions<{}>) {
+  if (options && options.replace) {
+    routerModel.POP()
+  }
+
   reachNavigate(url, options)
 }
 

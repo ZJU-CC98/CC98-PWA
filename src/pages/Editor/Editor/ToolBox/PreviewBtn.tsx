@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
-import { EditorContainer } from '../EditorContainer'
+import { EditorModel } from '../EditorModel'
 
 import {
   IconButton,
@@ -16,11 +16,9 @@ import TransformIcon from '@material-ui/icons/Transform'
 
 import UBB from '@/UBB'
 
-const DialogContentTextS = styled(DialogContentText)`
-  && {
-    min-height: 160px;
-  }
-`
+const DialogContentTextS = muiStyled(DialogContentText)({
+  minHeight: 160,
+})
 
 interface PreviewProps {
   content: string
@@ -43,7 +41,7 @@ const Preview = ({ content, handleClose }: PreviewProps) => (
 )
 
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
 }
 
 export default ({ editor }: Props) => {
@@ -55,11 +53,13 @@ export default ({ editor }: Props) => {
   }
 
   return (
-    <IconButton>
-      <TransformIcon onClick={clickHandler} />
+    <>
+      <IconButton onClick={clickHandler}>
+        <TransformIcon />
+      </IconButton>
       <Dialog open={open} fullWidth scroll="paper">
         <Preview content={editor.fullContent} handleClose={handleClose} />
       </Dialog>
-    </IconButton>
+    </>
   )
 }

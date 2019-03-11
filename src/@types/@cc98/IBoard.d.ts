@@ -57,4 +57,9 @@ declare module '@cc98/api' {
      */
     canVote: boolean
   }
+
+  export type IBasicBoard = Pick<
+    IBoard,
+    'boardMasters' | 'description' | 'id' | 'name' | 'postCount' | 'todayCount' | 'topicCount'
+  >
 }

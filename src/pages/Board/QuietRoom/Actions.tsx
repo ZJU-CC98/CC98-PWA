@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { IconButton, Menu, MenuItem } from '@material-ui/core'
 
@@ -9,12 +9,10 @@ import { cancelStopPost } from '@/services/manage'
 import snackbar from '@/utils/snackbar'
 import { manageHandler } from '@/services/utils/errorHandler'
 
-const IconButtonS = styled(IconButton)`
-  && {
-    padding-top: 24px;
-    padding-bottom: 0;
-  }
-`
+const IconButtonS = muiStyled(IconButton)({
+  paddingTop: 24,
+  paddingBottom: 0,
+})
 
 interface Props {
   /**

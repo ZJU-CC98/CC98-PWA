@@ -37,7 +37,7 @@ declare module '@cc98/api' {
     /**
      * 邮箱地址
      */
-    emailAddress: string
+    emailAddress: string | null
     /**
      * QQ
      */

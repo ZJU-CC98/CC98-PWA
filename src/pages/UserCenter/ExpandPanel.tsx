@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import {
   ExpansionPanel,
@@ -12,12 +12,10 @@ import { ExpansionPanelProps } from '@material-ui/core/ExpansionPanel'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-const ExpansionPanelDetailsS = styled(ExpansionPanelDetails)`
-  && {
-    width: 100%;
-    padding: 0 4px 24px 4px;
-  }
-`
+const ExpansionPanelDetailsS = muiStyled(ExpansionPanelDetails)({
+  width: '100%',
+  padding: '0 4px 24px 4px',
+})
 
 type Props = Pick<ExpansionPanelProps, 'expanded' | 'defaultExpanded' | 'onChange'> & {
   /**

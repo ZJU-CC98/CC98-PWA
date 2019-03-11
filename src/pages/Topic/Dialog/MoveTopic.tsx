@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import useFetcher from '@/hooks/useFetcher'
 
@@ -7,7 +8,7 @@ import { Select, MenuItem, Input, InputLabel, FormControl } from '@material-ui/c
 
 import { getBoardsInfo } from '@/services/board'
 import { navigateHandler } from '@/services/utils/errorHandler'
-import { IBoard } from '@cc98/api'
+import { IBasicBoard } from '@cc98/api'
 
 const FormDiv = styled.div`
   display: flex;
@@ -16,11 +17,9 @@ const FormDiv = styled.div`
   margin-top: 10px;
 `
 
-const FormControlS = styled(FormControl)`
-  && {
-    min-width: 40%;
-  }
-`
+const FormControlS = muiStyled(FormControl)({
+  minWidth: '40%',
+})
 
 interface Props {
   handleBoardChange: (boardId: number) => void
@@ -29,7 +28,7 @@ interface Props {
 export default ({ handleBoardChange }: Props) => {
   const [basePoint, setBasePoint] = useState('')
   const [childPoint, setChildPoint] = useState('')
-  const [childBoards, setChildBoards] = useState<IBoard[]>([])
+  const [childBoards, setChildBoards] = useState<IBasicBoard[]>([])
   const [boardList] = useFetcher(getBoardsInfo, {
     success: boards => {
       setChildBoards(

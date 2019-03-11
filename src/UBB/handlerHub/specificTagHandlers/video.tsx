@@ -27,7 +27,6 @@ const Video: React.FC<Props> = ({ src }) => {
   const divRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // tslint:disable-next-line
     let dplayer: any = null
     let unsubscribe: HistoryUnsubscribe | null
 

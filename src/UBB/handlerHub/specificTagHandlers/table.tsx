@@ -20,8 +20,8 @@ export default handler
  * @param rawText
  */
 export function parseTableTag(rawText: string) {
-  let rowSpan: number = 1
-  let colSpan: number = 1
+  let rowSpan = 1
+  let colSpan = 1
 
   // FIXME:
   const tagContext = rawText.slice(4, rawText.length - 1)

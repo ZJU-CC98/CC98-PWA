@@ -17,7 +17,6 @@ import SiteInfo from './SiteInfo'
 import DevTeam from './DevTeam'
 
 interface ItemProps {
-  // tslint:disable-next-line:no-any
   icon: React.ReactElement<any>
   text: string
   url: string

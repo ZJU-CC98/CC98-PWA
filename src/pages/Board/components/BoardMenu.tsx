@@ -4,7 +4,7 @@ import { IconButton, Typography, Menu, MenuItem, ListItemIcon } from '@material-
 
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import InfoIcon from '@material-ui/icons/Info'
-import StopIcon from '@material-ui/icons/Stop'
+import BlockIcon from '@material-ui/icons/Block'
 
 import { navigate } from '@/utils/history'
 
@@ -34,7 +34,7 @@ export default ({ boardId }: Props) => {
       key: 1,
       name: '小黑屋',
       router: `/board/${boardId}/quietRoom`,
-      icon: <StopIcon />,
+      icon: <BlockIcon />,
     },
   ]
 

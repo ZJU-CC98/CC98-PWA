@@ -4,9 +4,7 @@ import styled from 'styled-components'
 import LoadingCircle from '@/components/LoadingCircle'
 
 import { debounce } from 'lodash-es'
-
-// TODO: move to utils
-import { bindURL } from '@/router'
+import { bindURL } from '@/router/utils'
 
 const WrapperDiv = styled.div<{
   reverse: boolean
@@ -30,7 +28,6 @@ interface Props {
   /**
    * 列表底部 loading 出现的回调
    */
-  // tslint:disable-next-line
   callback: Function
   /**
    * 是否翻转列表（且 Loading 将出现在上面）
@@ -103,8 +100,6 @@ const InfiniteList: React.FC<Props> = props => {
   const { isEnd, reverse = false, children } = props
 
   return (
-    // FIXME: waiting @types/styled-components to upgrade
-    // @ts-ignore https://www.styled-components.com/docs/advanced#refs
     <WrapperDiv ref={wrapperDom} reverse={reverse}>
       {children}
       {!isEnd && (

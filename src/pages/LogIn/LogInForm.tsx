@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { navigate } from '@/utils/history'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import {
   Button,
@@ -12,7 +13,7 @@ import {
   Typography,
 } from '@material-ui/core'
 
-import userInstance from '@/containers/user'
+import userModel from '@/models/user'
 
 import { loginHandler } from '@/services/utils/errorHandler'
 
@@ -38,23 +39,19 @@ const FormDiv = styled.div`
   height: 105px;
 `
 
-const LogInButton = styled(Button).attrs({
+const LogInButton = muiStyled(Button).attrs({
   variant: 'contained',
   color: 'primary',
-})`
-  && {
-    margin-top: 35px;
-  }
-`
+})({
+  marginTop: 35,
+})
 
-const ButtonProgress = styled(CircularProgress).attrs({
+const ButtonProgress = muiStyled(CircularProgress).attrs({
   size: 20,
   color: 'secondary',
-})`
-  && {
-    margin-left: 15px;
-  }
-`
+})({
+  marginLeft: 15,
+})
 
 interface FormField {
   username: string
@@ -92,7 +89,7 @@ const LogIn: React.FC = () => {
       logInFail: false,
     })
 
-    const token = await userInstance.LOG_IN(username, password)
+    const token = await userModel.LOG_IN(username, password)
 
     token
       .fail(err => {
@@ -101,7 +98,6 @@ const LogIn: React.FC = () => {
             loading: false,
             logInFail: true,
           })
-          // tslint:disable-next-line:align
         }, 2000)
 
         loginHandler(err)

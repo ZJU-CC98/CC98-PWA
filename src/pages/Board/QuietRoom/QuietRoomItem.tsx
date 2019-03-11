@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Paper, Divider, Typography } from '@material-ui/core'
 import { IBoardStopPostUser } from '@cc98/api'
@@ -7,14 +8,12 @@ import { IBoardStopPostUser } from '@cc98/api'
 import dayjs from 'dayjs'
 import Actions from './Actions'
 
-const Wrapper = styled(Paper).attrs({
+const Wrapper = muiStyled(Paper).attrs({
   square: true,
   elevation: 0,
-})`
-  && {
-    margin-top: 6px;
-  }
-`
+})({
+  marginTop: 6,
+})
 
 const FlexDiv = styled.div`
   display: flex;
@@ -27,9 +26,9 @@ const RightDiv = styled.div`
   text-align: right;
 `
 
-const SubTitle = styled(Typography).attrs({
+const SubTitle = muiStyled(Typography).attrs({
   color: 'textSecondary',
-})``
+})({})
 
 interface Props {
   /**

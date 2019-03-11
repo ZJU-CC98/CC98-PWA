@@ -1,8 +1,8 @@
-import React, { useRef, useMemo } from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 
-import MetaInfo, { MetaInfoContainer } from './MetaInfo'
-import Editor, { EditorContainer } from './Editor'
+import MetaInfo, { MetaInfoModel } from './MetaInfo'
+import Editor, { EditorModel } from './Editor'
 
 import useInit from './useInit'
 
@@ -44,37 +44,34 @@ export interface Props {
 export default (props: Props) => {
   const init = useInit(props)
 
-  const isContainerInit = useRef(false)
+  const isModelInit = useRef(false)
 
-  interface MutableRefObject<T> {
-    current: T
-  }
-  // 此处 @types/react 类型有误
-  const editor = useRef<EditorContainer>(null) as MutableRefObject<EditorContainer>
-  const metaContainer = useRef<MetaInfoContainer>(null) as MutableRefObject<MetaInfoContainer>
+  const editor = useRef<EditorModel | null>(null)
+  const metaModel = useRef<MetaInfoModel | null>(null)
 
   if (init === null) {
     // init 还在获取中
     return null
   }
 
-  if (!isContainerInit.current) {
-    editor.current = new EditorContainer(init.editor.initContent)
-    metaContainer.current = new MetaInfoContainer(init.metaInfo)
+  if (!isModelInit.current) {
+    editor.current = new EditorModel(init.editor.initContent)
+    metaModel.current = new MetaInfoModel(init.metaInfo)
 
-    isContainerInit.current = true
+    isModelInit.current = true
   }
 
-  const onSendCallback = useMemo(
-    () =>
-      chooseSendCallback(editor.current, metaContainer.current, props, init.boardId !== undefined),
-    []
+  const onSendCallback = chooseSendCallback(
+    editor.current!,
+    metaModel.current!,
+    props,
+    init.boardId !== undefined
   )
 
   return (
     <WrapperDiv>
-      {init.boardId && <MetaInfo container={metaContainer.current} boardId={init.boardId} />}
-      <Editor editor={editor.current} onSendCallback={onSendCallback} />
+      {init.boardId && <MetaInfo model={metaModel.current!} boardId={init.boardId} />}
+      <Editor editor={editor.current!} onSendCallback={onSendCallback} />
     </WrapperDiv>
   )
 }
@@ -83,8 +80,8 @@ export default (props: Props) => {
  * 选择合适的回调
  */
 function chooseSendCallback(
-  editor: EditorContainer,
-  metaInfo: MetaInfoContainer,
+  editor: EditorModel,
+  metaInfo: MetaInfoModel,
   props: Props,
   isEditorTopic: boolean
 ): () => void {
@@ -161,15 +158,15 @@ function chooseSendCallback(
     return () => {
       const params: ITopicParams | IPostParams = isEditorTopic
         ? {
-          ...metaInfo.state,
-          content: editor.fullContent,
-          contentType: 0,
-        }
+            ...metaInfo.state,
+            content: editor.fullContent,
+            contentType: 0,
+          }
         : {
-          title: '',
-          content: editor.fullContent,
-          contentType: 0,
-        }
+            title: '',
+            content: editor.fullContent,
+            contentType: 0,
+          }
 
       editorPost(postId, params).then(res =>
         res

@@ -57,7 +57,8 @@ const MySnackbarContent = ({ variant, message, onClose }: Props) => {
       action={
         <IconButton color="inherit" onClick={onClose}>
           <CloseIcon fontSize="small" />
-        </IconButton>}
+        </IconButton>
+      }
     />
   )
 }

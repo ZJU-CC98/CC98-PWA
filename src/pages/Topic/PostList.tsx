@@ -27,7 +27,8 @@ export function useUserMap() {
         userMap[user.id] = user
       })
 
-      setUserMap(userMap)
+      // react use Object.is algorithm for comparing
+      setUserMap({ ...userMap })
     })
   }
 
@@ -49,7 +50,7 @@ const PostList: React.FC<Props> = ({ service, isTrace, children }) => {
         info.floor === 1 ? (
           <React.Fragment key={info.id}>
             <PostItem isTrace={isTrace} postInfo={info} userInfo={userMap[info.userId]} />
-            {children/** <PostListHot /> */}
+            {children /** <PostListHot /> */}
           </React.Fragment>
         ) : (
           <PostItem

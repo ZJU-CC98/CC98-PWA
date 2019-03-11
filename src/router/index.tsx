@@ -3,8 +3,8 @@ import React, { useEffect, useRef } from 'react'
 import { Location, WindowLocation } from '@reach/router'
 import Router, { ILocation } from './Router'
 
-import useContainer, { Container } from '@/hooks/useContainer'
-import settingInstance from '@/containers/setting'
+import useModel, { Model } from '@/hooks/useModel'
+import settingModel from '@/models/setting'
 
 import './gesture'
 
@@ -22,17 +22,17 @@ interface State {
 /**
  * 路由级页面缓存
  */
-class RouterCacheContainer extends Container<State> {
+class RouterModel extends Model<State> {
   state: State = {
     locationStates: [],
-    MAX_CACHE_SIZE: settingInstance.state.routerCacheSize,
+    MAX_CACHE_SIZE: settingModel.state.cacheSize,
   }
 
   /**
    * 新增路由缓存 (LRU)
    * @param location
    */
-  push(location: WindowLocation) {
+  PUSH(location: WindowLocation) {
     const { locationStates, MAX_CACHE_SIZE } = this.state
     const index = locationStates.findIndex(locState => locState.href === location.href)
 
@@ -54,33 +54,27 @@ class RouterCacheContainer extends Container<State> {
 
     this.setState({ locationStates })
   }
+
+  /**
+   * 删除最后一个路由（配合 replace 使用
+   */
+  POP() {
+    const { locationStates } = this.state
+    locationStates.pop()
+
+    this.setState({ locationStates })
+  }
 }
 
 /**
  * 路由缓存实例
  */
-export const ROUTER_CACHE = new RouterCacheContainer()
-
-/**
- * 将函数触发限定在某一路由下（配合事件绑定用）
- * @param func 待绑定函数
- * @param href 路由
- */
-// tslint:disable-next-line
-export function bindURL(func: Function, href: string) {
-  return () => {
-    if (window.location.href === href) {
-      func()
-    }
-  }
-}
+export const routerModel = new RouterModel()
 
 // https://majido.github.io/scroll-restoration-proposal/history-based-api.html#web-idl
 history.scrollRestoration = 'manual'
 
-// @ts-ignore FIXME: no animated export from d.ts
-import { useSpring, animated } from 'react-spring/hooks'
-import { config } from 'react-spring'
+import { useSpring, animated, config } from 'react-spring'
 
 interface ScrollDivProps {
   show: boolean
@@ -91,26 +85,23 @@ const ScrollDiv = ({ show, locState }: ScrollDivProps) => {
   const lastShow = useRef(false)
   const [props, set] = useSpring(() => ({
     opacity: 0,
-    config: config.gentle,
+    config: config.slow,
   }))
 
   if (lastShow.current !== show) {
     if (show) {
-      // @ts-ignore
       set({ opacity: 1 })
 
-      setTimeout(() => {
+      setImmediate(() => {
         window.scrollTo({
           left: 0,
           top: locState.scrollTop,
           // behavior: 'smooth',
         })
-        // FIXME: choose a better delay
-      }, 300)
+      })
     }
 
     if (!show) {
-      // @ts-ignore
       set({ opacity: 0 })
       locState.scrollTop = window.scrollY
     }
@@ -128,14 +119,11 @@ const ScrollDiv = ({ show, locState }: ScrollDivProps) => {
 }
 
 const CacheRouter: React.FC<ILocation> = ({ location }) => {
-  const { locationStates } = useContainer(ROUTER_CACHE).state
+  const { locationStates } = useModel(routerModel)
 
-  useEffect(
-    () => {
-      ROUTER_CACHE.push(location)
-    },
-    [location]
-  )
+  useEffect(() => {
+    routerModel.PUSH(location)
+  }, [location])
 
   return (
     <>

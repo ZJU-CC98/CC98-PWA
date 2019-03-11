@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import {
   Typography,
@@ -19,11 +20,9 @@ const FlexDiv = styled.div`
   width: 100%;
 `
 
-const ExpansionPanelS = styled(ExpansionPanel)`
-  && {
-    width: 100%;
-  }
-`
+const ExpansionPanelS = muiStyled(ExpansionPanel)({
+  width: '100%',
+})
 
 interface Props {
   /**
@@ -38,7 +37,8 @@ export default ({ eventInfo }: Props) => (
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <FlexDiv>
           <Typography>
-            对象：{eventInfo.boardId === 182 ? '匿名用户' : eventInfo.targetUserName}
+            对象：
+            {eventInfo.boardId === 182 ? '匿名用户' : eventInfo.targetUserName}
           </Typography>
           <Typography>时间：{dayjs(eventInfo.time).format('YYYY/MM/DD HH:mm')}</Typography>
         </FlexDiv>

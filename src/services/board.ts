@@ -1,6 +1,13 @@
 import { GET, PUT, DELETE } from '@/utils/fetch'
 
-import { IBoardGroup, IBoard, ITagGroup, IBoardRecord, IBoardStopPostUser } from '@cc98/api'
+import {
+  IBoardGroup,
+  IBoard,
+  IBasicBoard,
+  ITagGroup,
+  IBoardRecord,
+  IBoardStopPostUser,
+} from '@cc98/api'
 
 import { cacheService } from './utils'
 
@@ -16,7 +23,7 @@ export const getBoardsInfo = cacheService(
 // Cache Map for Board
 let HAS_MAP = false
 const BOARD_MAP: {
-  [id: number]: IBoard
+  [id: number]: IBasicBoard
 } = {}
 
 /** 创建 BOARD_MAP */

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 import { navigate } from '@/utils/history'
 
 import { ListItem, Typography } from '@material-ui/core'
@@ -9,45 +10,48 @@ import { getBoardNameById } from '@/services/board'
 
 import dayjs from 'dayjs'
 
-const ListItemS = styled(ListItem)`
-  && {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    width: 100%;
-  }
-`
+const ListItemS = muiStyled(ListItem)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'stretch',
+  width: '100%',
+})
 
 const TitleArea = styled.div`
-  max-width: 80%;
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 
 const InfoArea = styled.div`
-  width: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
   flex-shrink: 0;
+  margin-left: 1em;
   text-align: right;
 `
 
-const Title = styled(Typography)`
-  && {
-    /* 多行截断，兼容性不好 */
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+const Title = muiStyled(Typography).attrs({
+  variant: 'subtitle2',
+})({
+  // marginTop: 3,
+  // lineHeight: 1.25,
+  flexGrow: 1,
+})
 
-    line-height: 1.25;
-  }
-`
+const SubTitle = muiStyled(Typography).attrs({
+  color: 'textSecondary',
+})({
+  marginTop: 4,
+})
 
-const SubTitle = styled(Typography)`
-  && {
-    margin-top: 3px;
-  }
-`
+const Info1 = muiStyled(Typography).attrs({
+  color: 'textSecondary',
+})({})
 
-const Info = SubTitle
+const Info2 = Info1
 
 /**
  * 布局：
@@ -65,13 +69,13 @@ interface ItemProps {
 export const TopicItem: React.FC<ItemProps> = ({ onClick, title, subtitle, info1, info2 }) => (
   <ListItemS button divider onClick={onClick}>
     <TitleArea>
-      <Title variant="subtitle1">{title}</Title>
-      <SubTitle color="textSecondary">{subtitle}</SubTitle>
+      <Title>{title}</Title>
+      <SubTitle>{subtitle}</SubTitle>
     </TitleArea>
 
     <InfoArea>
-      <Info color="textSecondary">{info1}</Info>
-      <Info color="textSecondary">{info2}</Info>
+      <Info1>{info1}</Info1>
+      <Info2>{info2}</Info2>
     </InfoArea>
   </ListItemS>
 )
@@ -85,15 +89,12 @@ interface Props {
 
 export default ({ data, place }: Props) => {
   const [boardName, setBoardName] = useState('')
-  useEffect(
-    () => {
-      if (place === 'inboard') {
-        return
-      }
-      getBoardNameById(data.boardId).then(boardName => setBoardName(boardName))
-    },
-    [place]
-  )
+  useEffect(() => {
+    if (place === 'inboard') {
+      return
+    }
+    getBoardNameById(data.boardId).then(boardName => setBoardName(boardName))
+  }, [place])
 
   const title = data.title
   let subtitle = data.userName || '[匿名]'
@@ -113,6 +114,9 @@ export default ({ data, place }: Props) => {
       info1 = dayjs(data.time).fromNow()
     case 'follow':
     case 'search':
+      // 搜索时使用发帖时间
+      // https://github.com/ZJU-CC98/CC98-PWA/issues/35
+      info1 = dayjs(data.time).fromNow()
       info2 = boardName
       break
 

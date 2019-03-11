@@ -3,50 +3,29 @@ import styled from 'styled-components'
 
 import useFetcher from '@/hooks/useFetcher'
 
-import { TextField, IconButton } from '@material-ui/core'
-
-import SearchIcon from '@material-ui/icons/Search'
-
 import BoardGroup from './BoardGroup'
 import BoardItem from './BoardItem'
 
 import { getBoardsInfo } from '@/services/board'
 import { navigateHandler } from '@/services/utils/errorHandler'
-import { IBoard } from '@cc98/api'
 
 import { throttle } from 'lodash-es'
 
-const SearchInputDiv = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 10px 25px 25px 5px;
-`
+import SearchInput from '@/components/SearchInput'
+import StickyBar from '@/components/StickyBar'
 
-interface Props {
-  value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
+import { IBasicBoard } from '@cc98/api'
 
-const SearchInput: React.FC<Props> = ({ value, onChange }) => (
-  <SearchInputDiv>
-    <IconButton>
-      <SearchIcon color="primary" />
-    </IconButton>
-    <TextField fullWidth placeholder="搜索版面" value={value} onChange={onChange} />
-  </SearchInputDiv>
-)
-
-const WrapperDiv = styled.div`
-  margin: 0 10px;
+const SearchDiv = styled.div`
+  margin: 24px 10px;
 `
 
 const EmptyDiv = styled.div`
-  height: 100px;
+  height: 110px;
 `
 
 export default () => {
-  const [childBoards, setChildBoards] = useState<IBoard[]>([])
+  const [childBoards, setChildBoards] = useState<IBasicBoard[]>([])
   const [boardList] = useFetcher(getBoardsInfo, {
     success: boards => {
       setChildBoards(
@@ -58,26 +37,28 @@ export default () => {
 
   // 版面搜索
   const [searchTerm, setSearchTerm] = useState('')
-  const [filteredBoards, setFilteredBoards] = useState<IBoard[]>([])
+  const [filteredBoards, setFilteredBoards] = useState<IBasicBoard[]>([])
 
-  const onSearchTermChange = throttle((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value)
-    setFilteredBoards(childBoards.filter(board => board.name.indexOf(e.target.value) !== -1))
+  const onSearchTermChange = throttle((value: string) => {
+    setSearchTerm(value)
+    setFilteredBoards(childBoards.filter(board => board.name.indexOf(value) !== -1))
   }, 250)
 
   return (
     <>
-      <SearchInput value={searchTerm} onChange={onSearchTermChange} />
+      <StickyBar>
+        <SearchInput placeholder="搜索版面" onChange={onSearchTermChange} />
+      </StickyBar>
       {searchTerm ? (
-        <WrapperDiv>
+        <SearchDiv>
           {filteredBoards.map(board => (
-            <BoardItem key={board.id} data={board} />
+            <BoardItem key={board.id} boardInfo={board} />
           ))}
-        </WrapperDiv>
+        </SearchDiv>
       ) : (
         <>
           {boardList &&
-            boardList.map(boardGroup => <BoardGroup key={boardGroup.id} data={boardGroup} />)}
+            boardList.map(boardGroup => <BoardGroup key={boardGroup.id} boardsInfo={boardGroup} />)}
           <EmptyDiv />
         </>
       )}

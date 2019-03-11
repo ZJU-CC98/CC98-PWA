@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { IPost, IUser } from '@cc98/api'
 
-import userInstance from '@/containers/user'
+import userModel from '@/models/user'
 
 import { navigate } from '@/utils/history'
 import snackbar from '@/utils/snackbar'
@@ -77,12 +77,9 @@ const MenuActions: React.FC<Props> = ({ postInfo, isTrace, refreshPost, userInfo
 
   const [boardMasters, setBoardMasters] = useState<string[]>([])
 
-  useEffect(
-    () => {
-      getBoardMastersById(postInfo.boardId).then(res => setBoardMasters(res))
-    },
-    [postInfo.boardId]
-  )
+  useEffect(() => {
+    getBoardMastersById(postInfo.boardId).then(res => setBoardMasters(res))
+  }, [postInfo.boardId])
 
   const judgeOpen = () => setShowJudge(true)
   const judgeClose = () => setShowJudge(false)
@@ -100,7 +97,7 @@ const MenuActions: React.FC<Props> = ({ postInfo, isTrace, refreshPost, userInfo
     handleClose()
   }
 
-  const myInfo = userInstance.state.myInfo
+  const myInfo = userModel.state.myInfo
   // 编辑操作
   const canEdit = judgeEdit(myInfo, userInfo, postInfo, boardMasters)
   // 管理操作

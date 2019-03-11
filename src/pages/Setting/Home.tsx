@@ -1,8 +1,8 @@
 import React from 'react'
 import { ListItem, TextField, MenuItem, ListItemText } from '@material-ui/core'
 
-import useContainer from '@/hooks/useContainer'
-import settingInstance from '@/containers/setting'
+import useModel from '@/hooks/useModel'
+import settingModel from '@/models/setting'
 
 const ranges = [
   { label: '推荐阅读', value: 1 },
@@ -11,11 +11,9 @@ const ranges = [
   { label: '关注列表', value: 4 },
 ]
 
-export default () => {
-  const {
-    state: { customHome },
-    CHANGE_CUSTOMHOME,
-  } = useContainer(settingInstance)
+const Home = () => {
+  const { customHome } = useModel(settingModel, ['customHome'])
+  const { CHANGE_CUSTOMHOME } = settingModel
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     CHANGE_CUSTOMHOME(parseInt(event.target.value, 10))
@@ -34,3 +32,5 @@ export default () => {
     </ListItem>
   )
 }
+
+export default React.memo(Home)

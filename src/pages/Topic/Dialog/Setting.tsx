@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { navigate } from '@/utils/history'
 
@@ -37,18 +37,16 @@ import snackbar from '@/utils/snackbar'
 
 import MoveTopic from './MoveTopic'
 
-const ButtonProgress = styled(CircularProgress).attrs({
+const ButtonProgress = muiStyled(CircularProgress).attrs({
   size: 20,
   color: 'secondary',
-})``
+})({})
 
-const TextFieldS = styled(TextField).attrs({
+const TextFieldS = muiStyled(TextField).attrs({
   fullWidth: true,
-})`
-  && {
-    margin-top: 16px;
-  }
-` as typeof TextField
+})({
+  marginTop: 16,
+})
 
 interface Props {
   /**
@@ -172,7 +170,7 @@ const Setting: React.FC<Props> = ({ topicInfo, handleClose, refreshFunc }) => {
               <MenuItem value={2}>删除</MenuItem>
               <MenuItem value={3}>提升</MenuItem>
               <MenuItem value={4}>
-                {/*固顶为2，全站置顶为4，其余未知，暂不做全站置顶*/}
+                {/* 固顶为2，全站置顶为4，其余未知，暂不做全站置顶 */}
                 {!topicInfo.topState ? '固顶' : '取消固顶'}
               </MenuItem>
               <MenuItem value={5}>{topicInfo.bestState ? '解除精华' : '加精'}</MenuItem>

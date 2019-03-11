@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import useInfList from '@/hooks/useInfList'
 import InfiniteList from '@/components/InfiniteList'
@@ -10,15 +11,13 @@ import DetailItem from './components/DetailItem'
 import Editor from './Editor'
 import { getMessageContent, sendMessage } from '@/services/message'
 
-const ListS = styled(List)`
-  && {
-    width: 100%;
-    position: absolute;
-    top: 56px;
-    bottom: 80px;
-    padding: 8px 0;
-  }
-`
+const ListS = muiStyled(List)({
+  width: '100%',
+  position: 'absolute',
+  top: 56,
+  bottom: 80,
+  padding: '8px 0',
+})
 
 const FixBottomDiv = styled.div`
   position: fixed;

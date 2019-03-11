@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { DialogTitle, DialogContent, Tabs, Tab } from '@material-ui/core'
-import { EditorContainer } from '../EditorContainer'
+import { EditorModel } from '../EditorModel'
 
 import { IMG_BASE_URL } from '@/config'
 
-const DialogTitleS = styled(DialogTitle)`
-  && {
-    padding: 12px;
-    padding-top: 0;
-  }
-`
+const DialogTitleS = muiStyled(DialogTitle)({
+  padding: 12,
+  paddingTop: 0,
+})
 
 const Img = styled.img`
   max-width: 25%;
@@ -25,14 +24,13 @@ const FlexDiv = styled.div`
 `
 
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
   handleClose: () => void
 }
 
 type StickerType = 'ac' | 'tb' | 'ms' | 'em'
 
 // TODO: refactor with UBB
-// tslint:disable-next-line
 function getStickerReactNode(type: StickerType, handleFunc: Function) {
   const stickerArr = []
 
@@ -84,10 +82,9 @@ export default ({ editor, handleClose }: Props) => {
         <Tabs
           value={type}
           onChange={handleChange}
-          indicatorColor="primary"
           textColor="primary"
-          variant="fullWidth"
-          scrollable
+          indicatorColor="primary"
+          variant="scrollable"
         >
           <Tab value="ac" label="AC娘" />
           <Tab value="ms" label="雀魂" />

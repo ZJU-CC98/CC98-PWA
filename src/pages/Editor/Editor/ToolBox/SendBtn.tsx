@@ -3,10 +3,10 @@ import React from 'react'
 import { IconButton, CircularProgress } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
 
-import { EditorContainer } from '../EditorContainer'
+import { EditorModel } from '../EditorModel'
 
 interface Props {
-  editor: EditorContainer
+  editor: EditorModel
   onSendCallback: () => void
 }
 
@@ -17,8 +17,8 @@ export default ({ editor, onSendCallback }: Props) => {
   }
 
   return (
-    <IconButton>
-      {!editor.state.isSending && <SendIcon onClick={clickHandler} />}
+    <IconButton onClick={clickHandler}>
+      {!editor.state.isSending && <SendIcon />}
       {editor.state.isSending && <CircularProgress size={24} />}
     </IconButton>
   )

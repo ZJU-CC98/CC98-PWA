@@ -1,4 +1,3 @@
-/* tslint:disable */
 import { Try, Success, Failure } from './fp/Try'
 import { getAccessToken } from './logIn'
 
@@ -42,6 +41,7 @@ async function cc98Fetch<T>(url: string, init: RequestInit): Promise<Try<T, Fetc
   try {
     data = await response.clone().json()
   } catch {
+    // tslint:disable-next-line
     console.warn(`FIX: ${requestURL} response.json() fail.`)
     data = await response.text()
   }
@@ -88,7 +88,7 @@ export async function GET<T>(url: string, options: GETOptions = {}) {
 
   const queryStr = options.params ? `?${encodeParams(options.params)}` : ''
 
-  return await cc98Fetch<T>(url + queryStr, requestInit)
+  return cc98Fetch<T>(url + queryStr, requestInit)
 }
 
 interface POSTOptions {
@@ -131,7 +131,7 @@ export async function POST<T = void>(url: string, options: POSTOptions = {}) {
     ...options.requestInit,
   }
 
-  return await cc98Fetch<T>(url, requestInit)
+  return cc98Fetch<T>(url, requestInit)
 }
 
 type PUTOptions = POSTOptions
@@ -157,7 +157,7 @@ export async function PUT<T = void>(url: string, options: PUTOptions = {}) {
     ...options.requestInit,
   }
 
-  return await cc98Fetch<T>(url, requestInit)
+  return cc98Fetch<T>(url, requestInit)
 }
 
 type DELETEOptions = GETOptions
@@ -183,7 +183,7 @@ export async function DELETE<T = void>(url: string, options: DELETEOptions = {})
     ...options.requestInit,
   }
 
-  return await cc98Fetch<T>(url, requestInit)
+  return cc98Fetch<T>(url, requestInit)
 }
 
 /**

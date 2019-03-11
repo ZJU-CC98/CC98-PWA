@@ -1,4 +1,4 @@
-import { Container } from '@/hooks/useContainer'
+import { Model } from '@/hooks/useModel'
 
 interface State {
   /**
@@ -7,7 +7,7 @@ interface State {
   isDrawerOpen: boolean
 }
 
-class StateContainer extends Container<State> {
+class StateModel extends Model<State> {
   state: State = {
     isDrawerOpen: false,
   }
@@ -25,4 +25,4 @@ class StateContainer extends Container<State> {
   }
 }
 
-export default new StateContainer()
+export default new StateModel()

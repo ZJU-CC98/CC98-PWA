@@ -1,26 +1,23 @@
 import React from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Paper } from '@material-ui/core'
 
-const Background = styled(Paper).attrs({
+const Background = muiStyled(Paper).attrs({
   square: true,
   elevation: 0,
-})`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-`
+})({
+  position: 'fixed',
+  width: '100%',
+  height: '100%',
+  zIndex: -1,
+})
 
 // 该占位符高度和 TopBar 保持一致
-const Placeholder = styled.div`
-  height: 56px;
-
-  @media (min-width: 600px) {
-    height: 64px;
-  }
-`
+const Placeholder = muiStyled('div')(({ theme }) => ({
+  height: 56,
+  backgroundColor: theme.palette.primary.main,
+}))
 
 const BackGround: React.FC = ({ children }) => (
   <>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
 import { InfTopicList } from '@/components/TopicList'
-import SearchInput from './SearchInput'
+import SearchInput from '@/components/SearchInput'
+import StickyBar from '@/components/StickyBar'
 
 import { searchTopics } from '@/services/topic'
 
@@ -16,7 +17,9 @@ export default () => {
 
   return (
     <>
-      <SearchInput onSearch={onSearch} />
+      <StickyBar>
+        <SearchInput placeholder="搜索主题（限制10s一次）" onSearch={onSearch} />
+      </StickyBar>
       {searchTerm && (
         <InfTopicList
           key={searchTerm}

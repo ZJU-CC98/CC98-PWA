@@ -5,11 +5,12 @@ import handlerHub from './handlerHub'
 import { IContext } from '@cc98/context'
 
 import { IMG_BASE_URL } from '@/config'
+import { ModeEnum } from '@/theme'
 
 import './style.css'
 
 const defaultContext: IContext = {
-  theme: 'light',
+  mode: ModeEnum.LIGHT,
   imgBaseURL: IMG_BASE_URL,
 }
 

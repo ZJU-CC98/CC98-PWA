@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
 import { Typography } from '@material-ui/core'
 
@@ -15,17 +15,17 @@ function Markdown(content: string) {
     .processSync(content).contents
 }
 
-const TypographyS = styled(Typography)`
-  && {
-    margin: 12px 16px;
-    margin-bottom: 4px;
+const TypographyS = muiStyled(Typography).attrs({
+  component: 'div',
+})({
+  margin: '12px 16px',
+  marginBottom: 4,
 
-    /* for markdown */
-    img {
-      max-width: 100%;
-    }
-  }
-`
+  /* for markdown */
+  '& img': {
+    maxWidth: '100%',
+  },
+})
 
 interface Props {
   /**
@@ -38,5 +38,5 @@ export default ({ postInfo }: Props) => {
   const content =
     postInfo.contentType === 0 ? UBBReact(postInfo.content) : Markdown(postInfo.content)
 
-  return <TypographyS component="div">{content}</TypographyS>
+  return <TypographyS>{content}</TypographyS>
 }

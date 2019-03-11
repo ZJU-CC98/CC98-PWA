@@ -1,4 +1,4 @@
-import { Container } from '@/hooks/useContainer'
+import { Model } from '@/hooks/useModel'
 
 interface State {
   /**
@@ -18,7 +18,7 @@ interface State {
 /**
  * 编辑器句柄
  */
-export class EditorContainer extends Container<State> {
+export class EditorModel extends Model<State> {
   constructor(initContent?: string) {
     super()
 

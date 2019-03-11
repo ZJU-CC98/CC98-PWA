@@ -1,4 +1,4 @@
-import { Container } from '@/hooks/useContainer'
+import { Model } from '@/hooks/useModel'
 
 interface State {
   /**
@@ -22,7 +22,7 @@ interface State {
 /**
  * 帖子元信息 (title + type + tags)
  */
-export class MetaInfoContainer extends Container<State> {
+export class MetaInfoModel extends Model<State> {
   constructor(init: State) {
     super()
 

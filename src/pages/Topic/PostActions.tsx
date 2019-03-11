@@ -8,7 +8,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShareIcon from '@material-ui/icons/Share'
 import SettingIcon from '@material-ui/icons/Settings'
 
-import userInstace from '@/containers/user'
+import userInstace from '@/models/user'
 
 import snackbar from '@/utils/snackbar'
 import { judgeManagerOrBoardMasters } from '@/utils/ActionsJudge'
@@ -38,12 +38,9 @@ export default ({ topicInfo, refreshFunc }: Props) => {
   const [isFavorite, setIsFavorite] = useFetcher(() => getTopicFavorite(topicInfo.id))
   const [boardMasters, setBoardMasters] = useState<string[]>([])
 
-  useEffect(
-    () => {
-      getBoardMastersById(topicInfo.boardId).then(res => setBoardMasters(res))
-    },
-    [topicInfo.boardId]
-  )
+  useEffect(() => {
+    getBoardMastersById(topicInfo.boardId).then(res => setBoardMasters(res))
+  }, [topicInfo.boardId])
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -85,8 +82,8 @@ export default ({ topicInfo, refreshFunc }: Props) => {
 
   return (
     <>
-      <IconButton onClick={handleOpen}>
-        <MoreVertIcon />
+      <IconButton color="inherit" onClick={handleOpen}>
+        <MoreVertIcon fontSize="small" />
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem

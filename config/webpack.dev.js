@@ -17,6 +17,10 @@ module.exports = merge(common, {
   devtool: 'eval-source-map',
 
   devServer: {
+    contentBase: [
+      path.join(__dirname, '../public'),
+      path.join(__dirname, '../dist'),
+    ],
     disableHostCheck: true,
     historyApiFallback: true,
     port: 9898,

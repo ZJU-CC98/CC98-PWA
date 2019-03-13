@@ -72,8 +72,11 @@ const FormBody = () => {
   const handleChange = (name: keyof typeof info) => (
     evt: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    info[name] = evt.target.value
-    setInfo(info)
+    const updatedInfo = {
+      ...info,
+      [name]: evt.target.value,
+    }
+    setInfo(updatedInfo)
   }
 
   const handleSubmit = () => {

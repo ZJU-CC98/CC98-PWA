@@ -21,8 +21,8 @@ const IconMap = {
 
 const ColorMap = {
   info: undefined,
-  success: green[600],
-  error: red[600],
+  success: green[400],
+  error: red[400],
 }
 
 interface Props {

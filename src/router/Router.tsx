@@ -20,6 +20,7 @@ import Topic, { TopicReverse } from '@/pages/Topic'
 import UserCenter from '@/pages/UserCenter'
 import UserCenterEdit from '@/pages/UserCenter/Edit'
 import Help from '@/pages/Help'
+import History from '@/pages/History'
 
 import LogIn from '@/pages/LogIn'
 import Error from '@/pages/Error'
@@ -73,6 +74,8 @@ const MyRouter: React.FC<ILocation> = ({ location }) => (
     <Route path="editor/replyTopic/:topicId/" component={Editor} />
     <Route path="editor/replyTopic/:topicId/quote/:floor" component={Editor} />
     <Route path="editor/edit/:postId" component={Editor} />
+
+    <Route path="history" component={History} />
 
     <Route path="setting" component={Setting} />
     <Route path="messageList" component={MessageList} />

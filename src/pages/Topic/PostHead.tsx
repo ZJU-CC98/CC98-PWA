@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 
+import StickyHeadBar from '@/components/StickyBar/StickyHeadBar'
+import PostActions from './PostActions'
+
+import historyModel from '@/models/history'
+
 import { ITopic } from '@cc98/api'
 import { getBoardNameById } from '@/services/board'
 
 import { navigate } from '@/utils/history'
-
-import PostActions from './PostActions'
-
-import StickyHeadBar from '@/components/StickyBar/StickyHeadBar'
 
 interface Props {
   topicInfo: ITopic
@@ -20,6 +21,14 @@ const PostHead: React.FC<Props> = ({ topicInfo, refreshFunc }) => {
   useEffect(() => {
     getBoardNameById(topicInfo.boardId).then(boardName => setBoardName(boardName))
   }, [topicInfo.boardId])
+
+  useEffect(() => {
+    historyModel.PUSH({
+      id: topicInfo.id,
+      title: topicInfo.title,
+      lastViewTime: Date.now(),
+    })
+  }, [])
 
   return (
     <StickyHeadBar

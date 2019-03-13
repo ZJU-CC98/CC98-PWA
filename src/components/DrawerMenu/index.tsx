@@ -15,6 +15,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import FiberNewIcon from '@material-ui/icons/FiberNew'
 import HomeIcon from '@material-ui/icons/Home'
 import SearchIcon from '@material-ui/icons/Search'
+import HistoryIcon from '@material-ui/icons/History'
 import SettingsIcon from '@material-ui/icons/Settings'
 import HelpIcon from '@material-ui/icons/Help'
 import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes'
@@ -90,6 +91,7 @@ const DrawerMenu: React.FC = () => {
             <Item icon={<SpeakerNotesIcon />} text="私信" onClick={jump('/messageList')} />
           </>
         )}
+        <Item icon={<HistoryIcon />} text="足迹" onClick={jump('/history')} />
         <Item icon={<SettingsIcon />} text="设置" onClick={jump('/setting')} />
         <Item icon={<HelpIcon />} text="帮助" onClick={jump('/help')} />
         {user.isLogIn && (

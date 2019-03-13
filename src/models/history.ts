@@ -30,10 +30,10 @@ class HistoryModel extends Model<State> {
     const { historyList } = this.state
     const list = historyList.filter(item => history.id !== item.id)
 
-    list.push(history)
+    list.unshift(history)
 
     if (list.length > 50) {
-      list.shift()
+      list.pop()
     }
 
     this.setState({ historyList: list })

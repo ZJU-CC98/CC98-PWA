@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import vpn from '@/assets/vpn.jpg'

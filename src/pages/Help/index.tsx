@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Router } from '@reach/router'
 import { Route } from '@/router/Router'
 
@@ -11,10 +11,22 @@ import CopyrightIcon from '@material-ui/icons/Copyright'
 
 import { navigate } from '@/utils/history'
 
-import HowVPN from './HowVPN'
-import HowPWA from './HowPWA'
 import SiteInfo from './SiteInfo'
 import DevTeam from './DevTeam'
+const HowVPN = React.lazy(() => import('./HowVPN'))
+const HowPWA = React.lazy(() => import('./HowPWA'))
+
+const LazyHowVPN = () => (
+  <Suspense fallback={null}>
+    <HowVPN />
+  </Suspense>
+)
+
+const LazyHowPWA = () => (
+  <Suspense fallback={null}>
+    <HowPWA />
+  </Suspense>
+)
 
 interface ItemProps {
   icon: React.ReactElement<any>
@@ -41,8 +53,8 @@ const Index = () => (
 export default () => (
   <Router>
     <Route path="/" component={Index} />
-    <Route path="VPN" component={HowVPN} />
-    <Route path="PWA" component={HowPWA} />
+    <Route path="VPN" component={LazyHowVPN} />
+    <Route path="PWA" component={LazyHowPWA} />
     <Route path="siteInfo" component={SiteInfo} />
     <Route path="devTeam" component={DevTeam} />
   </Router>

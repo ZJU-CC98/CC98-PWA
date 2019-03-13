@@ -1,12 +1,8 @@
 import React from 'react'
+import styled from 'styled-components'
+import muiStyled from '@/muiStyled'
 
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  IconButton,
-} from '@material-ui/core'
+import { List, ListItem, ListItemSecondaryAction, IconButton, Typography } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 
 import useModel from '@/hooks/useModel'
@@ -14,6 +10,22 @@ import historyModel from '@/models/history'
 
 import dayjs from 'dayjs'
 import { navigate } from '@/utils/history'
+
+const TitleArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
+
+const Title = muiStyled(Typography).attrs({
+  variant: 'subtitle2',
+})({})
+
+const SubTitle = muiStyled(Typography).attrs({
+  color: 'textSecondary',
+})({
+  marginTop: 4,
+})
 
 const History: React.FC = () => {
   const { historyList } = useModel(historyModel)
@@ -27,15 +39,15 @@ const History: React.FC = () => {
 
   return (
     <List>
-      {historyList.reverse().map(item => (
+      {historyList.map(item => (
         <ListItem key={item.id} onClick={() => navigate(`/topic/${item.id}`)}>
-          <ListItemText
-            primary={clamp(item.title)}
-            secondary={`${dayjs(item.lastViewTime).fromNow()}`}
-          />
+          <TitleArea>
+            <Title>{clamp(item.title)}</Title>
+            <SubTitle>{`${dayjs(item.lastViewTime).fromNow()}`}</SubTitle>
+          </TitleArea>
           <ListItemSecondaryAction>
             <IconButton onClick={() => historyModel.DELETE(item.id)}>
-              <DeleteIcon />
+              <DeleteIcon fontSize="small" />
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>

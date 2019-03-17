@@ -122,5 +122,9 @@ declare module '@cc98/api' {
      * 被删除的数量
      */
     deleteCount: number
+    /**
+     * 获得的赞
+     */
+    receivedLikeCount: number
   }
 }

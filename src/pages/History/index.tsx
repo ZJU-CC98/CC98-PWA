@@ -40,7 +40,7 @@ const History: React.FC = () => {
   return (
     <List>
       {historyList.map(item => (
-        <ListItem key={item.id} onClick={() => navigate(`/topic/${item.id}`)}>
+        <ListItem key={item.id} button onClick={() => navigate(`/topic/${item.id}`)}>
           <TitleArea>
             <Title>{clamp(item.title)}</Title>
             <SubTitle>{`${dayjs(item.lastViewTime).fromNow()}`}</SubTitle>

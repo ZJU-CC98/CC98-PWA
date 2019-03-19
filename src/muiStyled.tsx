@@ -7,7 +7,7 @@ export { Theme }
 export default function muiStyled<Props>(Component: React.ComponentType<Props> | React.ReactType) {
   function styledCreator(
     styles: CSSProperties | ((theme: { theme: Theme }) => CSSProperties),
-    options?: WithStylesOptions
+    options?: WithStylesOptions<{ theme: Theme }>
   ) {
     // 强制保留原组件类型，对类型提示有帮助
     return styled(Component)(styles, options) as React.ComponentType<Props>

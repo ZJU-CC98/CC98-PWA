@@ -22,9 +22,9 @@
   "dependencies": {
     "@aspnet/signalr": "^1.1.2",
     "@cc98/ubb-core": "1.1.0",
-    "@material-ui/core": "^4.0.0-alpha.3",
+    "@material-ui/core": "^4.0.0-alpha.4",
     "@material-ui/icons": "^4.0.0-alpha.1",
-    "@material-ui/styles": "^4.0.0-alpha.3",
+    "@material-ui/styles": "^4.0.0-alpha.4",
     "@reach/router": "^1.2.1",
     "aplayer": "^1.10.1",
     "copy-to-clipboard": "^3.0.8",
@@ -63,11 +63,11 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-styled-components": "^1.10.0",
     "babel-plugin-transform-imports": "^1.5.1",
-    "clean-webpack-plugin": "^2.0.0",
+    "clean-webpack-plugin": "^2.0.1",
     "copy-webpack-plugin": "^5.0.1",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
-    "eslint": "^5.15.1",
+    "eslint": "^5.15.3",
     "eslint-config-alloy": "^1.4.2",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-react-hooks": "^1.5.0",
@@ -82,9 +82,9 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.29.6",
     "webpack-bundle-analyzer": "^3.1.0",
-    "webpack-cli": "^3.2.3",
+    "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1",
     "webpack-merge": "^4.2.1",
-    "workbox-webpack-plugin": "^4.1.0"
+    "workbox-webpack-plugin": "^4.1.1"
   }
 }

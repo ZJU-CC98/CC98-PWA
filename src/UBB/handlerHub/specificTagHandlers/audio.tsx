@@ -1,4 +1,4 @@
-import { ITagHandler, TagNode, ITagData } from '@cc98/ubb-core'
+import { ITagHandler, TagNode } from '@cc98/ubb-core'
 import { IContext } from '@cc98/context'
 
 import React, { useRef, useEffect } from 'react'
@@ -11,7 +11,7 @@ const handler: ITagHandler<React.ReactNode> = {
   isRecursive: false,
 
   render(node: TagNode, context: IContext) {
-    return <Audio src={node.innerText} tag={node.tagData} />
+    return <Audio src={node.innerText} />
   },
 }
 
@@ -20,16 +20,15 @@ interface Props {
    * 音频文件地址
    */
   src: string
-  tag: ITagData
 }
 
-const Audio: React.FC<Props> = ({ src, tag }) => {
+const Audio: React.FC<Props> = ({ src }) => {
   const divRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     let aplayer: any = null
     let unsubscribe: HistoryUnsubscribe | null
-    const { title, author } = tag
+
     import('aplayer').then(({ default: APlayer }) => {
       aplayer = new APlayer({
         container: divRef.current,
@@ -37,8 +36,7 @@ const Audio: React.FC<Props> = ({ src, tag }) => {
         preload: 'metadata',
         audio: {
           url: encodeURI(src),
-          name: title ? title : encodeURI(src),
-          author: author ? author : null,
+          name: encodeURI(src),
           cover: `${IMG_BASE_URL}/audio_cover.png`,
         },
       })

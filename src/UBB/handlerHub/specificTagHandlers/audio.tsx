@@ -11,7 +11,8 @@ const handler: ITagHandler<React.ReactNode> = {
   isRecursive: false,
 
   render(node: TagNode, context: IContext) {
-    return <Audio src={node.innerText} />
+    const { title, author } = node.tagData
+    return <Audio src={node.innerText} title={title} author={author} />
   },
 }
 
@@ -20,9 +21,11 @@ interface Props {
    * 音频文件地址
    */
   src: string
+  title: string
+  author: string
 }
 
-const Audio: React.FC<Props> = ({ src }) => {
+const Audio: React.FC<Props> = ({ src, title, author }) => {
   const divRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -36,7 +39,8 @@ const Audio: React.FC<Props> = ({ src }) => {
         preload: 'metadata',
         audio: {
           url: encodeURI(src),
-          name: encodeURI(src),
+          name: title ? title : encodeURI(src),
+          author: author ? author : null,
           cover: `${IMG_BASE_URL}/audio_cover.png`,
         },
       })

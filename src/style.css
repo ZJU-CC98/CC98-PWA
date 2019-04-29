@@ -21,6 +21,8 @@ body {
 
 #root {
   height: 100%;
+  max-width: 600px;
+  margin: auto;
 }
 
 /* https://stackoverflow.com/questions/2781549/removing-input-background-colour-for-chrome-autocomplete */

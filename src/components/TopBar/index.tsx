@@ -9,6 +9,12 @@ import MenuIcon from '@material-ui/icons/Menu'
 
 import version from '@/version'
 
+const ToolbarS = muiStyled(Toolbar)({
+  '@media (min-width: 600px)': {
+    minHeight: 56,
+  },
+})
+
 const IconButtonS = muiStyled(IconButton).attrs({
   color: 'inherit',
 })({
@@ -31,14 +37,14 @@ const Version = muiStyled(Button).attrs({
 
 const TopBar: React.FC = () => (
   <AppBar position="fixed" elevation={0}>
-    <Toolbar>
+    <ToolbarS>
       <IconButtonS onClick={stateModel.OPEN_DRAWER}>
         <MenuIcon />
       </IconButtonS>
 
       <MainText>CC98</MainText>
       <Version>{version}</Version>
-    </Toolbar>
+    </ToolbarS>
   </AppBar>
 )
 

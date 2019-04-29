@@ -8,9 +8,10 @@ const Background = muiStyled(Paper).attrs({
   elevation: 0,
 })({
   position: 'fixed',
-  width: '100%',
+  width: '200vw',
   height: '100%',
   zIndex: -1,
+  transform: 'translateX(-100vw)',
 })
 
 // 该占位符高度和 TopBar 保持一致

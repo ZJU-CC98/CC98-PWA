@@ -4,7 +4,7 @@ import muiStyled from '@/muiStyled'
 
 import { Avatar, Typography } from '@material-ui/core'
 import Whatshot from '@material-ui/icons/Whatshot'
-import red from '@material-ui/core/colors/red'
+// import red from '@material-ui/core/colors/red'
 
 import { IPost, IUser } from '@cc98/api'
 
@@ -38,9 +38,11 @@ const Floor = muiStyled(Typography).attrs({
   color: 'textSecondary',
 })({})
 
-const HotIcon = muiStyled(Whatshot)({
-  color: red[400],
-})
+// const HotIcon = muiStyled(Whatshot)({
+//   color: red[400],
+// })
+
+const HotIcon = <Whatshot color="error" />
 
 interface Props {
   /**
@@ -85,6 +87,6 @@ export default ({ postInfo, userInfo, isHot }: Props) => (
       </div>
     </AvatarArea>
 
-    <Floor>{isHot ? <HotIcon /> : `${postInfo.floor}L`}</Floor>
+    <Floor>{isHot ? HotIcon : `${postInfo.floor}L`}</Floor>
   </FlexDiv>
 )

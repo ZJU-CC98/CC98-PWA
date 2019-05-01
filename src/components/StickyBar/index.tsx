@@ -12,10 +12,11 @@ const Div = styled.div`
   padding: 0 16px;
 `
 
+// hack for iOS
 const AppBarSticky = styled(AppBar)`
   position: sticky;
   position: -webkit-sticky;
-`
+` as typeof AppBar
 
 const StickyBar: React.FC = ({ children }) => (
   <AppBarSticky elevation={0} position="sticky">

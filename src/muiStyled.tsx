@@ -10,7 +10,7 @@ export default function muiStyled<Props>(Component: React.ComponentType<Props> |
     options?: WithStylesOptions<{ theme: Theme }>
   ) {
     // 强制保留原组件类型，对类型提示有帮助
-    return styled(Component)(styles, options) as React.ComponentType<Props>
+    return styled(Component)(styles, options as any) as React.ComponentType<Props>
   }
 
   // 参考 styled-components 的 api

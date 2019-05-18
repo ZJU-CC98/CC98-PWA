@@ -3,9 +3,10 @@ import styled from 'styled-components'
 
 const LayoutCenter = styled.div`
   position: absolute;
+  max-width: 600px;
   top: 0;
-  left: 0;
-  right: 0;
+  left: auto;
+  right: auto;
   bottom: 0;
   display: flex;
   justify-content: center;

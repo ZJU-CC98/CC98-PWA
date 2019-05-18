@@ -2,7 +2,8 @@ import React from 'react'
 import { navigate } from '@/utils/history'
 import muiStyled from '@/muiStyled'
 
-import { List, ListItem, ListItemText, ListItemIcon, Divider, Avatar } from '@material-ui/core'
+import { List, ListItem, ListItemIcon, Divider, Avatar } from '@material-ui/core'
+import ListItemText from '@/hotfix/ListItemText'
 
 import Event from '@material-ui/icons/Event'
 

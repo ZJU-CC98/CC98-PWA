@@ -7,7 +7,8 @@ import userModel from '@/models/user'
 import stateModel from '@/models/state'
 import settingModel from '@/models/setting'
 
-import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
+import { Divider, Drawer, List, ListItem, ListItemIcon } from '@material-ui/core'
+import ListItemText from '@/hotfix/ListItemText'
 
 import AspectRatioIcon from '@material-ui/icons/AspectRatio'
 import BookIcon from '@material-ui/icons/Book'
@@ -15,11 +16,11 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import FiberNewIcon from '@material-ui/icons/FiberNew'
 import HomeIcon from '@material-ui/icons/Home'
 import SearchIcon from '@material-ui/icons/Search'
-import HistoryIcon from '@material-ui/icons/History'
+import PetsIcon from '@material-ui/icons/Pets'
 import SettingsIcon from '@material-ui/icons/Settings'
 import HelpIcon from '@material-ui/icons/Help'
 import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes'
-import WhatshotIcon from '@material-ui/icons/Whatshot'
+import TrendingUpIcon from '@material-ui/icons/TrendingUp'
 import EventIcon from '@material-ui/icons/Event'
 
 import UserInfo from './UserInfo'
@@ -47,7 +48,7 @@ const Item: React.FC<ItemProps> = ({ icon, text, onClick }) => (
 )
 
 const ListS = muiStyled(List)({
-  width: 190,
+  width: 180,
 })
 
 const DividerS = muiStyled(Divider)({
@@ -76,7 +77,7 @@ const DrawerMenu: React.FC = () => {
           <Item icon={<EventIcon />} text="推荐" onClick={jump('/recommedation')} />
         )}
         {customHome !== 2 && (
-          <Item icon={<WhatshotIcon />} text="热门" onClick={jump('/hotTopics')} />
+          <Item icon={<TrendingUpIcon />} text="热门" onClick={jump('/hotTopics')} />
         )}
         {customHome !== 3 && (
           <Item icon={<FiberNewIcon />} text="新帖" onClick={jump('/newTopics')} />
@@ -91,7 +92,7 @@ const DrawerMenu: React.FC = () => {
             <Item icon={<SpeakerNotesIcon />} text="私信" onClick={jump('/messageList')} />
           </>
         )}
-        <Item icon={<HistoryIcon />} text="足迹" onClick={jump('/history')} />
+        <Item icon={<PetsIcon />} text="足迹" onClick={jump('/history')} />
         <Item icon={<SettingsIcon />} text="设置" onClick={jump('/setting')} />
         <Item icon={<HelpIcon />} text="帮助" onClick={jump('/help')} />
         {user.isLogIn && (

@@ -38,6 +38,10 @@ const HeaderDiv = styled.div`
 
 const ExpansionPanelS = muiStyled(ExpansionPanel)({
   width: '100%',
+  border: 'none',
+  boxShadow: `
+    0px 2px 1px -1px rgba(0,0,0,0.12)
+  `,
 })
 
 export default ({ data }: Props) => {
@@ -98,7 +102,7 @@ export default ({ data }: Props) => {
           </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <Typography>{data.description}</Typography>
+          <Typography variant="body2">{data.description}</Typography>
         </ExpansionPanelDetails>
       </ExpansionPanelS>
     </FlexDiv>

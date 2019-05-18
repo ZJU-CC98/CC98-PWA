@@ -53,9 +53,9 @@ export default ({ topicInfo, isReverse, refreshFunc }: Props) => {
       )}
       <FixFab>
         {expand ? (
-          <RemoveIcon onTouchStart={() => setExpand(false)} />
+          <RemoveIcon onClick={() => setExpand(false)} />
         ) : (
-          <AddIcon onTouchStart={() => setExpand(true)} />
+          <AddIcon onClick={() => setExpand(true)} />
         )}
       </FixFab>
     </>

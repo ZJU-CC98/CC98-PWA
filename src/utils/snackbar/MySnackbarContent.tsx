@@ -40,11 +40,12 @@ const Message = styled.div`
   margin-left: 1rem;
 `
 
-const MySnackbarContent = ({ variant, message, onClose }: Props) => {
+const MySnackbarContent: React.FC<Props> = ({ variant, message, onClose }, ref) => {
   const Icon = IconMap[variant]
 
   return (
     <SnackbarContent
+      ref={ref}
       style={{
         backgroundColor: ColorMap[variant],
       }}
@@ -63,4 +64,4 @@ const MySnackbarContent = ({ variant, message, onClose }: Props) => {
   )
 }
 
-export default MySnackbarContent
+export default React.forwardRef(MySnackbarContent)

@@ -14,6 +14,8 @@ const globalBack = {
 document.addEventListener(
   'touchstart',
   (event: TouchEvent) => {
+    event.preventDefault()
+
     globalBack.clientX = event.changedTouches[0].clientX
     globalBack.clientY = event.changedTouches[0].clientY
   },

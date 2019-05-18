@@ -55,7 +55,7 @@ export default ({ boardInfo, hasCover }: Props) => {
   return (
     <div className={classes.card} onClick={() => navigate(`board/${boardInfo.id}`)}>
       <div className={classes.content}>
-        <Typography variant="subtitle1" className={classes.name}>
+        <Typography variant="subtitle1" color="primary" className={classes.name}>
           {boardInfo.name}
         </Typography>
         <Typography color="textSecondary" className={classes.desc}>

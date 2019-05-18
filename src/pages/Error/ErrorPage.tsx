@@ -29,8 +29,14 @@ export default ({ errMessage, secondMessage }: Props) => (
   <LayoutCenter>
     <FlexDiv>
       <ErrorImage status="404" />
-      <Typography variant="h6">{errMessage}</Typography>
-      {secondMessage && <Typography variant="subtitle1">{secondMessage}</Typography>}
+      <Typography variant="h6" color="textPrimary">
+        {errMessage}
+      </Typography>
+      {secondMessage && (
+        <Typography variant="subtitle1" color="textPrimary">
+          {secondMessage}
+        </Typography>
+      )}
     </FlexDiv>
   </LayoutCenter>
 )

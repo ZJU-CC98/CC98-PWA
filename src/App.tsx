@@ -7,8 +7,8 @@ import { ThemeProvider } from '@material-ui/styles'
 
 import { getTheme } from '@/theme'
 
-import TopBar from '@/components/TopBar'
-import DrawerMenu from '@/components/DrawerMenu'
+import TopBar from '@/modules/TopBar'
+import DrawerMenu from '@/modules/DrawerMenu'
 import BackGround from '@/components/BackGround'
 import Router from '@/router'
 

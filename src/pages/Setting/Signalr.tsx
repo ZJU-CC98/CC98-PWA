@@ -3,7 +3,8 @@ import React from 'react'
 import useModel from '@/hooks/useModel'
 import settingModel from '@/models/setting'
 
-import { ListItem, ListItemText, Switch } from '@material-ui/core'
+import { ListItem, Switch } from '@material-ui/core'
+import ListItemText from '@/hotfix/ListItemText'
 
 export default () => {
   const { useSignalr } = useModel(settingModel, ['useSignalr'])

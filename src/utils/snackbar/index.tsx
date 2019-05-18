@@ -39,7 +39,7 @@ const MySnackBar: React.FC = () => {
       onClose={handleClose}
       anchorOrigin={{
         vertical: 'top',
-        horizontal: 'right',
+        horizontal: 'center',
       }}
       autoHideDuration={snackBarProps.autoHideDuration || 4000}
       message={snackBarProps.message}

@@ -9,6 +9,12 @@ import MenuIcon from '@material-ui/icons/Menu'
 
 import version from '@/version'
 
+const AppBarS = muiStyled(AppBar)({
+  maxWidth: 600,
+  left: 'auto',
+  right: 'auto',
+})
+
 const ToolbarS = muiStyled(Toolbar)({
   '@media (min-width: 600px)': {
     minHeight: 56,
@@ -36,7 +42,7 @@ const Version = muiStyled(Button).attrs({
 })
 
 const TopBar: React.FC = () => (
-  <AppBar position="fixed" elevation={0}>
+  <AppBarS elevation={0}>
     <ToolbarS>
       <IconButtonS onClick={stateModel.OPEN_DRAWER}>
         <MenuIcon />
@@ -45,7 +51,7 @@ const TopBar: React.FC = () => (
       <MainText>CC98</MainText>
       <Version>{version}</Version>
     </ToolbarS>
-  </AppBar>
+  </AppBarS>
 )
 
 export default TopBar

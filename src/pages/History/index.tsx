@@ -19,9 +19,11 @@ const TitleArea = styled.div`
 
 const Title = muiStyled(Typography).attrs({
   variant: 'subtitle2',
+  color: 'textPrimary',
 })({})
 
 const SubTitle = muiStyled(Typography).attrs({
+  variant: 'body2',
   color: 'textSecondary',
 })({
   marginTop: 4,

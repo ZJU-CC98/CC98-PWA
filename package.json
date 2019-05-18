@@ -23,9 +23,9 @@
   "dependencies": {
     "@aspnet/signalr": "^1.1.4",
     "@cc98/ubb-core": "1.1.0",
-    "@material-ui/core": "^4.0.0-beta.0",
+    "@material-ui/core": "^4.0.0-beta.2",
     "@material-ui/icons": "^4.0.0-beta.0",
-    "@material-ui/styles": "^4.0.0-beta.0",
+    "@material-ui/styles": "^4.0.0-beta.2",
     "@reach/router": "^1.2.1",
     "aplayer": "^1.10.1",
     "copy-to-clipboard": "^3.1.0",

@@ -2,7 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import muiStyled from '@/muiStyled'
 
-import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
+import { Avatar, ListItem, ListItemAvatar } from '@material-ui/core'
+import ListItemText from '@/hotfix/ListItemText'
 
 import useFetcher from '@/hooks/useFetcher'
 import useModel from '@/hooks/useModel'

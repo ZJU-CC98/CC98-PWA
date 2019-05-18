@@ -5,13 +5,9 @@ import { IRecentMessage } from '@cc98/api'
 
 import dayjs from 'dayjs'
 
-import {
-  Avatar,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
-} from '@material-ui/core'
+import { Avatar, ListItem, ListItemAvatar, ListItemSecondaryAction } from '@material-ui/core'
+
+import ListItemText from '@/hotfix/ListItemText'
 
 import useFetcher from '@/hooks/useFetcher'
 

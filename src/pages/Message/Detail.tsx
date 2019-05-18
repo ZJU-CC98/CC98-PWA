@@ -12,7 +12,8 @@ import Editor from './Editor'
 import { getMessageContent, sendMessage } from '@/services/message'
 
 const ListS = muiStyled(List)({
-  width: '100%',
+  width: '100vw',
+  maxWidth: 600,
   position: 'absolute',
   top: 56,
   bottom: 80,
@@ -21,8 +22,10 @@ const ListS = muiStyled(List)({
 
 const FixBottomDiv = styled.div`
   position: fixed;
-  left: 0px;
-  right: 0px;
+  width: 100vw;
+  max-width: 600px;
+  left: auto;
+  right: auto;
   bottom: 0px;
 `
 interface Props {

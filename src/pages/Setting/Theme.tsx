@@ -1,5 +1,6 @@
 import React from 'react'
-import { ListItem, TextField, MenuItem, ListItemText } from '@material-ui/core'
+import { ListItem, TextField, MenuItem } from '@material-ui/core'
+import ListItemText from '@/hotfix/ListItemText'
 
 import useModel from '@/hooks/useModel'
 import settingModel from '@/models/setting'

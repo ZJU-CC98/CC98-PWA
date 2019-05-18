@@ -10,10 +10,13 @@ import { getSiteInfo } from '@/services/global'
 const Title = muiStyled(Typography).attrs({
   align: 'center',
   variant: 'h6',
+  color: 'textPrimary',
 })({
   marginTop: 16,
   marginBottom: 16,
 })
+
+export { Title }
 
 export default () => {
   const [info] = useFetcher(getSiteInfo)

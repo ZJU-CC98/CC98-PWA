@@ -11,13 +11,7 @@ import { Avatar, CardHeader, Divider, Typography } from '@material-ui/core'
 import { getUsersInfoByIds } from '@/services/user'
 import { IUser } from '@cc98/api'
 
-const Title = muiStyled(Typography).attrs({
-  align: 'center',
-  variant: 'h6',
-})({
-  marginTop: 16,
-  marginBottom: 16,
-})
+import { Title } from './SiteInfo'
 
 const CardHeaderS = muiStyled(CardHeader)({
   width: '48%',
@@ -30,7 +24,7 @@ interface Props {
 const DevCard: React.FC<Props> = ({ userInfo }) => (
   <CardHeaderS
     avatar={<Avatar src={userInfo.portraitUrl} />}
-    title={userInfo.name}
+    title={<Typography color="textPrimary">{userInfo.name}</Typography>}
     subheader={userInfo.introduction}
     onClick={() => navigate(`/user/${userInfo.id}`)}
   />
@@ -44,9 +38,9 @@ const CardFlexDiv = styled.div`
 export default () => {
   const ids = [530817, 556551, 569380, 405730, 559244, 558467, 539102]
   const descriptions = [
-    '前项目背锅人',
-    '苦力',
-    '高级 Webpack 配置工程师',
+    '前端架构师',
+    '前端开发',
+    'Webpack 配置工程师',
     '后端开发',
     '低级前端开发',
     '前端开发',

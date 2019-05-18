@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
+import { ThemeOptions, Theme } from '@material-ui/core/styles/createMuiTheme'
 
 import blue from '@material-ui/core/colors/blue'
 import pink from '@material-ui/core/colors/pink'
@@ -91,6 +91,16 @@ function _getTheme(theme: ThemeEnum, mode: ModeEnum): ThemeOptions {
 /**
  * 根据设置的主题和模式获取 MUI Theme
  */
-export function getTheme(theme: ThemeEnum, mode: ModeEnum) {
-  return createMuiTheme(_getTheme(theme, mode))
+export function getTheme(themeColor: ThemeEnum, mode: ModeEnum) {
+  const theme: Theme = {
+    ..._getTheme(themeColor, mode),
+    typography: {
+      // @ts-ignore
+      body1: {
+        fontSize: 14,
+      },
+    },
+  }
+
+  return createMuiTheme(theme)
 }

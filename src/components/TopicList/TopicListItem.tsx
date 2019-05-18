@@ -35,6 +35,7 @@ const InfoArea = styled.div`
 
 const Title = muiStyled(Typography).attrs({
   variant: 'subtitle2',
+  color: 'textPrimary',
 })({
   // marginTop: 3,
   // lineHeight: 1.25,

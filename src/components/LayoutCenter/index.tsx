@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 const LayoutCenter = styled.div`
   position: absolute;
+  width: 100%;
   max-width: 600px;
   top: 0;
   left: auto;

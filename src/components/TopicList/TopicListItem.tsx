@@ -43,12 +43,14 @@ const Title = muiStyled(Typography).attrs({
 })
 
 const SubTitle = muiStyled(Typography).attrs({
+  variant: 'body2',
   color: 'textSecondary',
 })({
   marginTop: 4,
 })
 
 const Info1 = muiStyled(Typography).attrs({
+  variant: 'body2',
   color: 'textSecondary',
 })({})
 

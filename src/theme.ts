@@ -92,14 +92,8 @@ function _getTheme(theme: ThemeEnum, mode: ModeEnum): ThemeOptions {
  * 根据设置的主题和模式获取 MUI Theme
  */
 export function getTheme(themeColor: ThemeEnum, mode: ModeEnum) {
-  const theme: Theme = {
+  const theme = {
     ..._getTheme(themeColor, mode),
-    typography: {
-      // @ts-ignore
-      body1: {
-        fontSize: 14,
-      },
-    },
   }
 
   return createMuiTheme(theme)

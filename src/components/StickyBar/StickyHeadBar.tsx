@@ -33,6 +33,7 @@ const AcitonDiv = styled.div`
 `
 
 const SubTitle = muiStyled(Typography).attrs({
+  variant: 'body2',
   color: 'inherit',
 })({
   minWidth: '4rem',

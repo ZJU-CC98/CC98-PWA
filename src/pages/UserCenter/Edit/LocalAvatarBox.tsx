@@ -29,14 +29,14 @@ interface Props {
 export default ({ imgSrc, uploadAvatorCallback }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const cropRef = useRef<{
-    cropper: Cropper
+    getCropper: () => Cropper
   }>(null)
 
   const submitHandle = () => {
     if (!cropRef.current) {
       return
     }
-    const cropper = cropRef.current.cropper
+    const cropper = cropRef.current.getCropper()
 
     setIsLoading(true)
     const canvas = cropper.getCroppedCanvas()

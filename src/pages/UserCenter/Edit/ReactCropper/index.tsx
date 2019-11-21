@@ -28,7 +28,7 @@ const ReactCropper: React.FC<Props> = (props, ref) => {
   }, [])
 
   useImperativeHandle(ref, () => ({
-    cropper: cropper.current,
+    getCropper: () => cropper.current,
   }))
 
   return (

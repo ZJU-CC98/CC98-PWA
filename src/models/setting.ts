@@ -2,7 +2,8 @@ import { Model } from '@/hooks/useModel'
 
 import { getLocalStorage, setLocalStorage } from '@/utils/storage'
 
-import { ThemeEnum, ModeEnum } from '@/theme'
+import { ModeEnum, ThemeEnum } from '@/theme'
+import { STORAGE_KEY } from '@/config/storage'
 
 interface State {
   /**
@@ -41,6 +42,20 @@ class SettingModel extends Model<State> {
 
     const setting = getLocalStorage('setting') as State | null
     this.setState(setting)
+    this.SYNC_MODE_FROM_SYSTEM()
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', this.SYNC_MODE_FROM_SYSTEM)
+  }
+
+  SYNC_MODE_FROM_SYSTEM = () => {
+    if (!getLocalStorage(STORAGE_KEY.DISABLE_FOLLOW_SYSTEM_THEME_MODE)) {
+      this.setState(state => ({
+        mode: window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? ModeEnum.DARK
+          : ModeEnum.LIGHT,
+      }))
+    }
   }
 
   SYNC_SETTING = () => {
